@@ -1,49 +1,50 @@
-package com.egg.wmic.main;
+package com.egg.system.cpu;
 
 import java.io.IOException;
+import com.egg.wmic.formatter.WMIC;
 
-public class CPUAccess extends CPU {
+public class CPU{
 	public static String getName() throws IOException {
-		return getValues("Name");
+		return WMIC.getValues("cpu", "Name");
 	}
 	
 	public static String getCores() throws IOException {
-		return getValues("NumberOfCores");
+		return WMIC.getValues("cpu", "NumberOfCores");
 	}
 	
 	public static String getThreads() throws IOException {
-		return getValues("ThreadCount");
+		return WMIC.getValues("cpu", "ThreadCount");
 	}
 	
 	public static String getManufacturer() throws IOException{
-		return getValues("Manufacturer");
+		return WMIC.getValues("cpu", "Manufacturer");
 	}
 	
 	public static String getAddressWidth() throws IOException{
-		return getValues("AddressWidth");
+		return WMIC.getValues("cpu", "AddressWidth");
 	}
 	
 	public static String getL2CacheSize() throws IOException{
-		return getValues("L2CacheSize");
+		return WMIC.getValues("cpu", "L2CacheSize");
 	}
 	
 	public static String getL3CacheSize() throws IOException{
-		return getValues("L3CacheSize");
+		return WMIC.getValues("cpu", "L3CacheSize");
 	}
 	
 	public static String getCurrentClockSpeed() throws IOException{
-		return getValues("CurrentClockSpeed");
+		return WMIC.getValues("cpu", "CurrentClockSpeed");
 	}
 	
 	public static String getMaxClockSpeed() throws IOException{
-		return getValues("MaxClockSpeed");
+		return WMIC.getValues("cpu", "MaxClockSpeed");
 	}
 	
 	public static String getBusSpeed() throws IOException{
-		return getValues("ExtClock");
+		return WMIC.getValues("cpu", "ExtClock");
 	}
 	
 	public static String getSocket() throws IOException{
-		return getValues("SocketDesignation");
+		return WMIC.getValues("cpu", "SocketDesignation");
 	}
 }
