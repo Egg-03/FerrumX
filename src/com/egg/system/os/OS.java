@@ -5,6 +5,10 @@ import java.io.IOException;
 import com.egg.wmic.formatter.WMIC;
 
 public class OS {
+	private OS(){
+		throw new IllegalStateException("Utility Class");
+	}
+	
 	public static String getName() {
 		return System.getProperty("os.name");
 	}

@@ -1,6 +1,10 @@
 package com.egg.system.user;
 
 public class User {
+	private User(){
+		throw new IllegalStateException("Utility Class");
+	}
+	
 	public static String getUsername() {
 		return System.getProperty("user.name");
 	}

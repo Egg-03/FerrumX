@@ -4,6 +4,11 @@ import java.io.IOException;
 import com.egg.wmic.formatter.WMIC;
 
 public class CPU{
+	
+	private CPU() {
+		throw new IllegalStateException("Utility Class");
+	}
+	
 	public static String getName() throws IOException {
 		return WMIC.getValues("cpu", "Name");
 	}
