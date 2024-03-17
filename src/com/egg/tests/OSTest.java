@@ -15,6 +15,13 @@ public class OSTest {
 		//WMIC
 		try {
 			System.out.println(OS.getWMICName());
+			System.out.println(OS.getWMICArchitecture());
+			System.out.println(OS.getBuildNumber());
+			System.out.println(OS.getInstallDate());
+			System.out.println(OS.getManufacturer());
+			System.out.println(OS.getWMICName());
+			System.out.println(OS.getSystemDrive());
+			System.out.println(OS.getWindowsDirectory());
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
