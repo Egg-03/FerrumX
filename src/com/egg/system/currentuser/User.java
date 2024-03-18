@@ -1,4 +1,4 @@
-package com.egg.system.user;
+package com.egg.system.currentuser;
 
 public class User {
 	private User(){

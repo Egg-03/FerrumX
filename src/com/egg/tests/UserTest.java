@@ -1,6 +1,6 @@
 package com.egg.tests;
 
-import com.egg.system.user.User;
+import com.egg.system.currentuser.User;
 
 public class UserTest {
 
