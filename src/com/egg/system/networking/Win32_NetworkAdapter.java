@@ -1,8 +1,9 @@
 package com.egg.system.networking;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-
-import com.egg.formatter.CIM.CIM;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 //Very often there exists more than one network adapter for a single device. For this reason, I am not going to use CIM or WMIC formatter
 //Because they can only read a single line
@@ -13,11 +14,31 @@ import com.egg.formatter.CIM.CIM;
 //If this succeeds, I will modify the original adapters sometime later, to incorporate this change
 //which will allow detection of multiple hardware of the same class/category
 public class Win32_NetworkAdapter {
+	
+	private static ArrayList<String> deviceIDList = new ArrayList<String>();
+	
 	private Win32_NetworkAdapter() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static String getDeviceID() throws IOException {
-		return CIM.getValues("Win32_NetworkAdapter", "DeviceID");
-	}
+	//will retrieve all the adapter IDs which are currently active and providing Internet
+	public static ArrayList<String> getDeviceIDList() throws IOException {
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter -Filter \"NetEnabled='True'\" | Select-Object DeviceID | Format-List"};
+		Process process = Runtime.getRuntime().exec(command);
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			
+		String currentLine;
+			
+		while((currentLine=br.readLine())!=null)
+			if(!currentLine.isBlank() || !currentLine.isEmpty())
+				deviceIDList.add(currentLine);
+			
+		br.close();
+		
+		for(int i=0 ; i<deviceIDList.size(); i++) {
+			deviceIDList.set(i, deviceIDList.get(i).substring(deviceIDList.get(i).indexOf(":")+1).strip());
+		}
+			
+		return deviceIDList;
+		}
 }

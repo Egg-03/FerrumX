@@ -22,7 +22,7 @@ class CIMFormat {
 		br.close();
 		return actualName.substring(actualName.indexOf(":")+1).strip();
 	}
-		
+	
 	private static String runCommand(String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" Where-Object "+whereCondition+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		process = Runtime.getRuntime().exec(command);

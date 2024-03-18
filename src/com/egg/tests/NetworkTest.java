@@ -6,6 +6,6 @@ public class NetworkTest {
 	public static void main(String[] args) throws Exception {
 		//NetworkInfo.NetworkAdapters();
 		
-		System.out.println(Win32_NetworkAdapter.getDeviceID());
+		System.out.println(Win32_NetworkAdapter.getDeviceIDList());
 	}
 }
