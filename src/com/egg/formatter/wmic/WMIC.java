@@ -1,4 +1,4 @@
-package com.egg.wmic.formatter;
+package com.egg.formatter.wmic;
 
 import java.io.IOException;
 

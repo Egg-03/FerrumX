@@ -1,11 +1,12 @@
-package com.egg.system.cpu;
+package com.egg.system.hardware;
 
 import java.io.IOException;
-import com.egg.wmic.formatter.WMIC;
 
-public class CPU{
+import com.egg.formatter.wmic.WMIC;
+
+public class Win32_Processor{
 	
-	private CPU() {
+	private Win32_Processor() {
 		throw new IllegalStateException("Utility Class");
 	}
 	

@@ -1,11 +1,11 @@
-package com.egg.system.os;
+package com.egg.system.operating_system;
 
 import java.io.IOException;
 
-import com.egg.wmic.formatter.WMIC;
+import com.egg.formatter.wmic.WMIC;
 
-public class OS {
-	private OS(){
+public class Win32_OperatingSystem {
+	private Win32_OperatingSystem(){
 		throw new IllegalStateException("Utility Class");
 	}
 	
