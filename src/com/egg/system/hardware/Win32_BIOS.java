@@ -12,7 +12,7 @@ public class Win32_BIOS {
 	}
 	
 	public static HashMap<String, String> getPrimaryBIOS() throws IOException {
-		String[] command = {"powershell.exe", "/c", " Get-CimInstance -ClassName Win32_BIOS | Where-Object {$_.PrimaryBIOS -eq 'True'} |Select-Object Name, Caption, SMBIOSPResent, Status, Version, CurrentLanguage, SMBIOSBIOSVersion, Manufacturer | Format-List"};
+		String[] command = {"powershell.exe", "/c", " Get-CimInstance -ClassName Win32_BIOS | Where-Object {$_.PrimaryBIOS -eq 'True'} |Select-Object Name, Caption, SMBIOSPResent, Status, Version, CurrentLanguage, SMBIOSBIOSVersion, Manufacturer, ReleaseDate | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
