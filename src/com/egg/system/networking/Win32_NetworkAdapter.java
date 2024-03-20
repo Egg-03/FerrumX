@@ -11,7 +11,7 @@ import java.util.HashMap;
 //This also means that this program cannot support detecting more than one hardware at a time. 
 //For example, if there are two physical CPUs in a PC, this program will detect only one.
 //I plan to modify this behavior later as network adapters and RAMs often have multiple physical hardware.
-// I will implement a custom CIM formatter here that will first get the device IDs and then loop through all the device IDs and get the required adapter info
+//I will implement a custom CIM formatter here that will first get the device IDs and then loop through all the device IDs and get the required adapter info
 //If this succeeds, I will modify the original adapters sometime later, to incorporate this change
 //which will allow detection of multiple hardware of the same class/category
 public class Win32_NetworkAdapter {
@@ -45,7 +45,27 @@ public class Win32_NetworkAdapter {
 	//will return a hashmap of the following properties as a key and their corresponding values:
 	//Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset
 	public static HashMap<String, String> getNetworkAdapters(String deviceID) throws IOException {
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter -Filter \"DeviceID='"+deviceID+"'\" | Select-Object Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset | Format-List"};
+	
+		Process process = Runtime.getRuntime().exec(command);
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		
+		String currentLine;
+		HashMap<String, String> propertyValues = new HashMap<>();
+		
+		while((currentLine=br.readLine())!=null)
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
+				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+			}
+				
+			
+		br.close();
+		return propertyValues;
+	}
+	
+	public static HashMap<String,String> getAdapterConfiguration(String deviceID) throws IOException {
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Where-Object {$_.Index -eq '"+deviceID+"'} | Select-Object DHCPLeaseObtained, DHCPLeaseExpires, DHCPEnabled, DHCPServer, DNSHostName, DNSServerSearchOrder, IPAddress, IPEnabled, DefaultIPGateway, IPSubnet | Format-List"};
+		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		

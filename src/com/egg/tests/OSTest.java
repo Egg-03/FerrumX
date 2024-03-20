@@ -1,32 +1,22 @@
 package com.egg.tests;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.egg.system.operating_system.Win32_OperatingSystem;
 
 public class OSTest {
 
-	public static void main(String[] args) {
-		//Java System.properties
-		System.out.println(Win32_OperatingSystem.getName());
-		System.out.println(Win32_OperatingSystem.getVersion());
-		System.out.println(Win32_OperatingSystem.getArchitecture());
+	public static void main(String[] args) throws IOException {
+		ArrayList<String> oslist = Win32_OperatingSystem.getOSList();
+		HashMap<String, String> osinfo;
 		
-		//WMIC
-		try {
-			System.out.println(Win32_OperatingSystem.getWMICName());
-			System.out.println(Win32_OperatingSystem.getWMICArchitecture());
-			System.out.println(Win32_OperatingSystem.getBuildNumber());
-			System.out.println(Win32_OperatingSystem.getInstallDate());
-			System.out.println(Win32_OperatingSystem.getManufacturer());
-			System.out.println(Win32_OperatingSystem.getWMICName());
-			System.out.println(Win32_OperatingSystem.getSystemDrive());
-			System.out.println(Win32_OperatingSystem.getWindowsDirectory());
+		for(String currentOS : oslist) {
+			osinfo = Win32_OperatingSystem.getOSInfo(currentOS);
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			for(String key: osinfo.keySet())
+				System.out.println(key+": "+osinfo.get(key));
 		}
 	}
-
 }

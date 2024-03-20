@@ -1,52 +1,54 @@
 package com.egg.system.operating_system;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-
-import com.egg.formatter.wmic.WMIC;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Win32_OperatingSystem {
 	private Win32_OperatingSystem(){
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static String getName() {
-		return System.getProperty("os.name");
-	}
+	public static ArrayList<String> getOSList() throws IOException {
+		ArrayList<String> operatingSystemList = new ArrayList<String>();
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object Name | Format-List"};
+		Process process = Runtime.getRuntime().exec(command);
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			
+		String currentLine;
+			
+		while((currentLine=br.readLine())!=null)
+			if(!currentLine.isBlank() || !currentLine.isEmpty())
+				operatingSystemList.add(currentLine);
+			
+		br.close();
+		
+		//strip the property_name and keep only the property value
+		for(int i=0 ; i<operatingSystemList.size(); i++) {
+			operatingSystemList.set(i, operatingSystemList.get(i).substring(operatingSystemList.get(i).indexOf(":")+1).strip());
+		}
+		
+		return operatingSystemList;
+		}
 	
-	public static String getVersion() {
-		return System.getProperty("os.version");
-	}
-	
-	public static String getArchitecture() {
-		return System.getProperty("os.arch");
-	}
-	
-	public static String getWMICName() throws IOException {
-		return WMIC.getValues("os", "Caption");
-	}
-	
-	public static String getWMICArchitecture() throws IOException {
-		return WMIC.getValues("os", "OSArchitecture");
-	}
-	
-	public static String getManufacturer() throws IOException{
-		return WMIC.getValues("os", "Manufacturer");
-	}
-	
-	public static String getSystemDrive() throws IOException{
-		return WMIC.getValues("os", "SystemDrive");
-	}
-	
-	public static String getWindowsDirectory() throws IOException {
-		return WMIC.getValues("os", "WindowsDirectory");
-	}
-	
-	public static String getBuildNumber() throws IOException{
-		return WMIC.getValues("os", "BuildNumber");
-	}
-	
-	public static String getInstallDate() throws IOException{
-		String date = WMIC.getValues("os", "InstallDate");
-		return date.substring(0,4)+"/"+date.substring(4,6)+"/"+date.substring(6,8);
+	public static HashMap<String, String> getOSInfo(String OSName) throws IOException {
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Where-Object {$_.Name -eq '"+OSName+"'} | Select-Object Caption, InstallDate, CSName, LastBootUpTime, LocalDateTime, Distributed, NumberOfUsers, Version, BootDevice, BuildNumber, BuildType, Manufacturer, OSArchitecture, MUILanguages, PortableOperatingSystem, Primary, RegisteredUser, SerialNumber, ServicePackMajorVersion, ServicePackMinorVersion, SystemDirectory, SystemDrive, WindowsDirectory | Format-List"};
+		
+		Process process = Runtime.getRuntime().exec(command);
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		
+		String currentLine;
+		HashMap<String, String> propertyValues = new HashMap<>();
+		
+		while((currentLine=br.readLine())!=null)
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
+				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+			}
+				
+			
+		br.close();
+		return propertyValues;
 	}
 }
