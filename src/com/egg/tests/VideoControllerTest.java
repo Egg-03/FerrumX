@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import com.egg.system.hardware.Win32_VideoController;
 
-public class VideoController {
+public class VideoControllerTest {
 
 	public static void main(String[] args) throws IOException {
 		ArrayList<String> gpuIDs = Win32_VideoController.getGPUID();

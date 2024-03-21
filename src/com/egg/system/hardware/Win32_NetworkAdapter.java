@@ -1,4 +1,4 @@
-package com.egg.system.networking;
+package com.egg.system.hardware;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,22 +63,4 @@ public class Win32_NetworkAdapter {
 		return propertyValues;
 	}
 	
-	public static HashMap<String,String> getAdapterConfiguration(String deviceID) throws IOException {
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Where-Object {$_.Index -eq '"+deviceID+"'} | Select-Object DHCPLeaseObtained, DHCPLeaseExpires, DHCPEnabled, DHCPServer, DNSHostName, DNSServerSearchOrder, IPAddress, IPEnabled, DefaultIPGateway, IPSubnet | Format-List"};
-		
-		Process process = Runtime.getRuntime().exec(command);
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		
-		String currentLine;
-		HashMap<String, String> propertyValues = new HashMap<>();
-		
-		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
-			}
-				
-			
-		br.close();
-		return propertyValues;
-	}
 }
