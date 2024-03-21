@@ -63,7 +63,7 @@ public class Win32_PhysicalMemory {
 	
 	
 	public static HashMap<String, String> getMemory(String memoryID) throws IOException{
-		HashMap<String, String> gpu = new HashMap<>();
+		HashMap<String, String> memory = new HashMap<>();
 		String property = "";
 		if(tagCounter)
 			property = "Tag";
@@ -78,10 +78,10 @@ public class Win32_PhysicalMemory {
 		String currentLine;
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				gpu.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+				memory.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
 			}
 		
-		return gpu;
+		return memory;
 	}
 	
 }
