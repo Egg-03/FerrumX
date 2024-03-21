@@ -59,9 +59,6 @@ public class Win32_PhysicalMemory {
 		}
 	}
 	
-	//an alternative to memory tag in case the tag property doesn't get exposed in a system
-	
-	
 	public static HashMap<String, String> getMemory(String memoryID) throws IOException{
 		HashMap<String, String> memory = new HashMap<>();
 		String property = "";
