@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.egg.formatter.CIM.CIM;
 
@@ -12,14 +13,14 @@ public class Win32_Baseboard {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static HashMap<String,String> getMotherboard() throws IOException {
+	public static Map<String,String> getMotherboard() throws IOException {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Baseboard | Select-Object Manufacturer, Model, Product, SerialNumber, Version | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
-		HashMap<String, String> mbProperty = new HashMap<>();
+		Map<String, String> mbProperty = new HashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {

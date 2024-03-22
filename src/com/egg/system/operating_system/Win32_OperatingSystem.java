@@ -5,14 +5,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Win32_OperatingSystem {
 	private Win32_OperatingSystem(){
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static ArrayList<String> getOSList() throws IOException {
-		ArrayList<String> operatingSystemList = new ArrayList<String>();
+	public static List<String> getOSList() throws IOException {
+		List<String> operatingSystemList = new ArrayList<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object Name | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -33,14 +35,14 @@ public class Win32_OperatingSystem {
 		return operatingSystemList;
 		}
 	
-	public static HashMap<String, String> getOSInfo(String OSName) throws IOException {
+	public static Map<String, String> getOSInfo(String OSName) throws IOException {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Where-Object {$_.Name -eq '"+OSName+"'} | Select-Object Caption, InstallDate, CSName, LastBootUpTime, LocalDateTime, Distributed, NumberOfUsers, Version, BootDevice, BuildNumber, BuildType, Manufacturer, OSArchitecture, MUILanguages, PortableOperatingSystem, Primary, RegisteredUser, SerialNumber, ServicePackMajorVersion, ServicePackMinorVersion, SystemDirectory, SystemDrive, WindowsDirectory | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
-		HashMap<String, String> propertyValues = new HashMap<>();
+		Map<String, String> propertyValues = new HashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {

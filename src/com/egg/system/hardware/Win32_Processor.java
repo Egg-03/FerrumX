@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Win32_Processor{
 	
@@ -12,8 +14,8 @@ public class Win32_Processor{
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static ArrayList<String> getDeviceIDList() throws IOException {
-		ArrayList<String> deviceIDList = new ArrayList<String>();
+	public static List<String> getDeviceIDList() throws IOException {
+		List<String> deviceIDList = new ArrayList<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -34,14 +36,14 @@ public class Win32_Processor{
 		return deviceIDList;
 		}
 	
-	public static HashMap<String, String> getCurrentProcessor(String deviceID) throws IOException {
+	public static Map<String, String> getCurrentProcessor(String deviceID) throws IOException {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, NumberOfCores, ThreadCount, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
-		HashMap<String, String> propertyValues = new HashMap<>();
+		Map<String, String> propertyValues = new HashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {

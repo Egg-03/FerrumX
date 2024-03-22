@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class WMICFormat{
-	private static Process process; //if, after project completion, this variable is not used outside of any local scope, move it to the local scope
+	private WMICFormat() {
+		throw new IllegalStateException("Utility Class");
+	}
 	
 	private static String runCommand(String WMIC_Class, String WMIC_Attribute) throws IOException {
+  
 		String[] command = {"cmd","/c", "wmic "+WMIC_Class+" get "+WMIC_Attribute+" /format:list"};
-		process = Runtime.getRuntime().exec(command);
+		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;

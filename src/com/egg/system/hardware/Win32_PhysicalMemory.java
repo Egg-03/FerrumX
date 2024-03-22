@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Win32_PhysicalMemory {
 	private Win32_PhysicalMemory() {
@@ -14,9 +16,9 @@ public class Win32_PhysicalMemory {
 	private static boolean tagCounter = false;
 	private static boolean bankCounter = false;
 	
-	public static ArrayList<String> getTagOrBank() throws IOException{
-		ArrayList<String> memoryTag = new ArrayList<String>();
-		ArrayList<String> memoryBank = new ArrayList<String>();
+	public static List<String> getTagOrBank() throws IOException{
+		List<String> memoryTag = new ArrayList<>();
+		List<String> memoryBank = new ArrayList<>();
 		
 		String[] tagCommand = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Select-Object Tag | Format-List"};
 		String[] bankCommand = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Select-Object BankLabel | Format-List"};
@@ -59,8 +61,8 @@ public class Win32_PhysicalMemory {
 		}
 	}
 	
-	public static HashMap<String, String> getMemory(String memoryID) throws IOException{
-		HashMap<String, String> memory = new HashMap<>();
+	public static Map<String, String> getMemory(String memoryID) throws IOException{
+		Map<String, String> memory = new HashMap<>();
 		String property = "";
 		if(tagCounter)
 			property = "Tag";

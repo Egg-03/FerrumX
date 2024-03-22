@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //Very often there exists more than one network adapter for a single device. For this reason, I am not going to use CIM or WMIC formatter
 //Because they can only read a single line
@@ -21,8 +23,8 @@ public class Win32_NetworkAdapter {
 	}
 	
 	//will retrieve all the adapter IDs which are currently active and providing Internet
-	public static ArrayList<String> getDeviceIDList() throws IOException {
-		ArrayList<String> deviceIDList = new ArrayList<String>();
+	public static List<String> getDeviceIDList() throws IOException {
+		List<String> deviceIDList = new ArrayList<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter -Filter \"NetEnabled='True'\" | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -44,14 +46,14 @@ public class Win32_NetworkAdapter {
 	
 	//will return a hashmap of the following properties as a key and their corresponding values:
 	//Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset
-	public static HashMap<String, String> getNetworkAdapters(String deviceID) throws IOException {
+	public static Map<String, String> getNetworkAdapters(String deviceID) throws IOException {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset | Format-List"};
 	
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
-		HashMap<String, String> propertyValues = new HashMap<>();
+		Map<String, String> propertyValues = new HashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {

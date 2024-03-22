@@ -5,14 +5,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Win32_VideoController {
 	private Win32_VideoController() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static ArrayList<String> getGPUID() throws IOException{
-		ArrayList<String> gpuID = new ArrayList<String>();
+	public static List<String> getGPUID() throws IOException{
+		List<String> gpuID = new ArrayList<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_VideoController | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		
@@ -31,8 +33,8 @@ public class Win32_VideoController {
 		return gpuID;		
 	}
 	
-	public static HashMap<String, String> getGPU(String gpuID) throws IOException{
-		HashMap<String, String> gpu = new HashMap<>();
+	public static Map<String, String> getGPU(String gpuID) throws IOException{
+		Map<String, String> gpu = new HashMap<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.DeviceID -eq '"+gpuID+"'} | Select-Object Name, PNPDeviceID, CurrentBitsPerPixel, CurrentHorizontalResolution, CurrentVerticalResolution, CurrentRefreshRate, MaxRefreshRate, MinRefreshRate, AdapterDACType, AdapterRAM, DriverDate, DriverVersion | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
