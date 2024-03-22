@@ -69,7 +69,7 @@ public class Win32_PhysicalMemory {
 		else if(bankCounter)
 			property = "BankLabel";
 		
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Where-Object {$_."+property+" -eq '"+memoryID+"'} | Select-Object Name, Manufacturer, Model, OtherIdentifyingInfo, PartNumber, Tag, FormFactor, BankLabel, Capacity, DataWidth, Speed, ConfiguredClockSpeed | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Where-Object {$_."+property+" -eq '"+memoryID+"'} | Select-Object Name, Manufacturer, Model, OtherIdentifyingInfo, PartNumber, Tag, FormFactor, BankLabel, Capacity, DataWidth, Speed, ConfiguredClockSpeed, DeviceLocator, SerialNumber | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
