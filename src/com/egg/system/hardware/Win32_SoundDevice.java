@@ -8,15 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Win32_Processor{
-	
-	private Win32_Processor() {
+public class Win32_SoundDevice {
+	private Win32_SoundDevice() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getDeviceIDList() throws IOException {
+	public static List<String> getSoundDeviceID() throws IOException {
 		List<String> deviceIDList = new ArrayList<>();
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Select-Object DeviceID | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
@@ -36,8 +35,8 @@ public class Win32_Processor{
 		return deviceIDList;
 	}
 	
-	public static Map<String, String> getCurrentProcessor(String deviceID) throws IOException {
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, NumberOfCores, ThreadCount, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID | Format-List"};
+	public static Map<String, String> getCurrentAudioDevice(String deviceID) throws IOException {
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object ProductName, Status, Caption, PNPDeviceID, Manufacturer | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
