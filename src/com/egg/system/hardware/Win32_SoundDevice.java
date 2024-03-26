@@ -24,7 +24,19 @@ public class Win32_SoundDevice {
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
 				deviceIDList.add(currentLine);
+		
+		if(deviceIDList.isEmpty()) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
 			
+			while((errorLine=error.readLine())!=null)
+				if(!errorLine.isBlank() || !errorLine.isEmpty())
+					errorList.add(errorLine);
+			
+			error.close();
+			System.err.println(errorList.toString());
+		}
 		br.close();
 		
 		//strip the property_name and keep only the property value
