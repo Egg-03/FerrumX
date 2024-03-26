@@ -25,6 +25,7 @@ public class Win32_SoundDevice {
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
 				deviceIDList.add(currentLine);
 		
+		//getting error stream
 		if(deviceIDList.isEmpty()) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String errorLine;
