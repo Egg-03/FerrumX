@@ -17,7 +17,7 @@ public class Win32_SoundDevice {
 	
 	public static List<String> getSoundDeviceID() throws IOException {
 		List<String> deviceIDList = new ArrayList<>();
-		String[] command = {"powershell.exe", "/c", "Get-CimInstace -ClassName Win32_SoundDevice | Select-Object DeviceID | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
