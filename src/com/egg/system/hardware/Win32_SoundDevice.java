@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.egg.system.logger.ErrorLog;
+
 public class Win32_SoundDevice {
 	private Win32_SoundDevice() {
 		throw new IllegalStateException("Utility Class");
@@ -15,7 +17,7 @@ public class Win32_SoundDevice {
 	
 	public static List<String> getSoundDeviceID() throws IOException {
 		List<String> deviceIDList = new ArrayList<>();
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Select-Object DeviceID | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstace -ClassName Win32_SoundDevice | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
@@ -36,7 +38,8 @@ public class Win32_SoundDevice {
 					errorList.add(errorLine);
 			
 			error.close();
-			System.err.println(errorList.toString());
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log(errorList.toString()+"\n\n");
 		}
 		br.close();
 		
@@ -61,8 +64,21 @@ public class Win32_SoundDevice {
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
 			}
-				
+		br.close();
+		
+		if(propertyValues.isEmpty()) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
 			
+			while((errorLine=error.readLine())!=null)
+				if(!errorLine.isBlank() || !errorLine.isEmpty())
+					errorList.add(errorLine);
+			
+			error.close();
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log(errorList.toString()+"\n\n");
+		}
 		br.close();
 		return propertyValues;
 	}
