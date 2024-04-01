@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-//this class servers as a relationship between Win32_Processor and Win32_CacheMemory
+//this class serves as a relationship between Win32_Processor and Win32_CacheMemory
 //this class will server the CacheMemory IDs (L1, L2 and L3 ID) of a CPU based on the CPU ID given by Win32_Processor
 //The ID's gained from this class will then be used in WIn32_CacheMemory to retrieve the related information
 public class Win32_AssociatedProcessorMemory {

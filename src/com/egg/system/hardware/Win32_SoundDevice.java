@@ -11,11 +11,14 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_SoundDevice {
+	private static String classname = new Object() {}.getClass().getName();
 	private Win32_SoundDevice() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getSoundDeviceID() throws IOException {
+		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		
 		List<String> deviceIDList = new ArrayList<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
@@ -39,7 +42,8 @@ public class Win32_SoundDevice {
 			
 			error.close();
 			ErrorLog errorLog = new ErrorLog();
-			errorLog.log(errorList.toString()+"\n\n");
+			
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
 		}
 		br.close();
 		
@@ -52,6 +56,7 @@ public class Win32_SoundDevice {
 	}
 	
 	public static Map<String, String> getCurrentAudioDevice(String deviceID) throws IOException {
+		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object ProductName, Status, Caption, PNPDeviceID, Manufacturer | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
@@ -77,7 +82,7 @@ public class Win32_SoundDevice {
 			
 			error.close();
 			ErrorLog errorLog = new ErrorLog();
-			errorLog.log(errorList.toString()+"\n\n");
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
 		}
 		br.close();
 		return propertyValues;

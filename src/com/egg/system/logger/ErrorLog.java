@@ -17,9 +17,11 @@ public class ErrorLog {
 		
 		use_flag = true;
 		try {
-			fos = new FileOutputStream(System.getProperty("user.home")+"\\Desktop\\Error.log", true);
 			LocalDateTime ldt = LocalDateTime.now();
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			fos = new FileOutputStream(System.getProperty("user.home")+"\\Desktop\\ERRORLOG-"+ldt.format(dtf2)+".log", true);
+			
 			String timestamp = ldt.format(dtf);
 			
 			fos.write(timestamp.getBytes());
