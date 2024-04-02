@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +99,7 @@ public class Win32_PhysicalMemory {
 	
 	public static Map<String, String> getMemory(String memoryID) throws IOException{
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		Map<String, String> memory = new HashMap<>();
+		Map<String, String> memory = new LinkedHashMap<>();
 		String property = "";
 		if(tagCounter)
 			property = "Tag";

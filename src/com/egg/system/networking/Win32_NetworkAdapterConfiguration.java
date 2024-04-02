@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +18,13 @@ public class Win32_NetworkAdapterConfiguration {
 	
 	public static Map<String,String> getAdapterConfiguration(String adapterIndex) throws IOException {
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Where-Object {$_.Index -eq '"+adapterIndex+"'} | Select-Object DHCPLeaseObtained, DHCPLeaseExpires, DHCPEnabled, DHCPServer, DNSHostName, DNSServerSearchOrder, IPAddress, IPEnabled, DefaultIPGateway, IPSubnet | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Where-Object {$_.Index -eq '"+adapterIndex+"'} | Select-Object IPEnabled, IPAddress, IPSubnet, DefaultIPGateway, DHCPEnabled, DHCPServer, DHCPLeaseObtained, DHCPLeaseExpires, DNSHostName, DNSServerSearchOrder | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
-		Map<String, String> propertyValues = new HashMap<>();
+		Map<String, String> propertyValues = new LinkedHashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {

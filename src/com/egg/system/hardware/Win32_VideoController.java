@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +56,7 @@ public class Win32_VideoController {
 	
 	public static Map<String, String> getGPU(String gpuID) throws IOException{
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		Map<String, String> gpu = new HashMap<>();
+		Map<String, String> gpu = new LinkedHashMap<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.DeviceID -eq '"+gpuID+"'} | Select-Object Name, PNPDeviceID, CurrentBitsPerPixel, CurrentHorizontalResolution, CurrentVerticalResolution, CurrentRefreshRate, MaxRefreshRate, MinRefreshRate, AdapterDACType, AdapterRAM, DriverDate, DriverVersion, VideoProcessor | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

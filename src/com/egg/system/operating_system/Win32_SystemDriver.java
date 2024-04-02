@@ -16,7 +16,7 @@ public class Win32_SystemDriver {
 	
 	public static List<String> getDrivers() throws IOException {
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SystemDriver | Select-Object State, Started, Caption, PathName | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SystemDriver | Select-Object Caption, PathName, State | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

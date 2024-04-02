@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +18,13 @@ public class Win32_CacheMemory {
 	
 	public static Map<String, String> getCPUCache(String cacheID) throws IOException {
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_CacheMemory | Where-Object {$_.DeviceID -eq '"+cacheID+"'} | Select-Object DeviceID, InstalledSize, Purpose, Associativity | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_CacheMemory | Where-Object {$_.DeviceID -eq '"+cacheID+"'} | Select-Object DeviceID, Purpose, InstalledSize, Associativity | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
-		Map<String, String> cache = new HashMap<>();
+		Map<String, String> cache = new LinkedHashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
