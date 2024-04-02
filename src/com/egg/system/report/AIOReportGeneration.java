@@ -237,8 +237,4 @@ public class AIOReportGeneration {
 		report.println("Current Username: "+User.getUsername());
 		report.println("User Home Directory: "+User.getHome());
 	}
-	// TODO Remove the main method later
-	public static void main(String[] args) {
-		generate();
-	}
 }
