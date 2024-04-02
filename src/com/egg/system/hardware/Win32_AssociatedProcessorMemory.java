@@ -6,16 +6,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-//this class servers as a relationship between Win32_Processor and Win32_CacheMemory
+import com.egg.system.logger.ErrorLog;
+
+//this class serves as a relationship between Win32_Processor and Win32_CacheMemory
 //this class will server the CacheMemory IDs (L1, L2 and L3 ID) of a CPU based on the CPU ID given by Win32_Processor
 //The ID's gained from this class will then be used in WIn32_CacheMemory to retrieve the related information
 public class Win32_AssociatedProcessorMemory {
-	
+	private static String classname = new Object() {}.getClass().getName();
 	private Win32_AssociatedProcessorMemory() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getCacheID(String cpuID) throws IOException{
+		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		String command[] = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_AssociatedProcessorMemory | Where-Object {$_.Dependent.DeviceID -eq '"+cpuID+"'} | Select-Object Antecedent | Format-List"};
 		
 		List<String> cacheIDList = new ArrayList<>();
@@ -28,6 +31,22 @@ public class Win32_AssociatedProcessorMemory {
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
 				cacheIDList.add(currentLine.substring(currentLine.indexOf("\"")+1, currentLine.lastIndexOf("\"")));
 		br.close();
+		
+		//getting error stream
+				if(cacheIDList.isEmpty()) {
+					BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+					String errorLine;
+					List<String> errorList = new ArrayList<>();
+					
+					while((errorLine=error.readLine())!=null)
+						if(!errorLine.isBlank() || !errorLine.isEmpty())
+							errorList.add(errorLine);
+					
+					error.close();
+					ErrorLog errorLog = new ErrorLog();
+					
+					errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
+				}
 		return cacheIDList;
 	}
 }
