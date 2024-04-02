@@ -8,13 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.egg.system.logger.ErrorLog;
+
 public class Win32_Processor{
-	
+	private static String classname = new Object() {}.getClass().getName();
 	private Win32_Processor() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getDeviceIDList() throws IOException {
+		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		List<String> deviceIDList = new ArrayList<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
@@ -28,6 +31,22 @@ public class Win32_Processor{
 			
 		br.close();
 		
+		//getting error stream
+		if(deviceIDList.isEmpty()) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
+			
+			while((errorLine=error.readLine())!=null)
+				if(!errorLine.isBlank() || !errorLine.isEmpty())
+					errorList.add(errorLine);
+			
+			error.close();
+			ErrorLog errorLog = new ErrorLog();
+			
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
+		}
+		
 		//strip the property_name and keep only the property value
 		for(int i=0 ; i<deviceIDList.size(); i++) {
 			deviceIDList.set(i, deviceIDList.get(i).substring(deviceIDList.get(i).indexOf(":")+1).strip());
@@ -37,6 +56,7 @@ public class Win32_Processor{
 	}
 	
 	public static Map<String, String> getCurrentProcessor(String deviceID) throws IOException {
+		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, NumberOfCores, ThreadCount, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
@@ -49,9 +69,23 @@ public class Win32_Processor{
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
 			}
-				
-			
 		br.close();
+		
+		//getting error stream
+		if(propertyValues.isEmpty()) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
+			
+			while((errorLine=error.readLine())!=null)
+				if(!errorLine.isBlank() || !errorLine.isEmpty())
+					errorList.add(errorLine);
+			
+			error.close();
+			ErrorLog errorLog = new ErrorLog();
+			
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
+		}
 		return propertyValues;
 	}
 }

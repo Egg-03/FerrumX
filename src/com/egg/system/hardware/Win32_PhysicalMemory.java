@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.egg.system.logger.ErrorLog;
+
 public class Win32_PhysicalMemory {
+	private static String classname = new Object() {}.getClass().getName();
 	private Win32_PhysicalMemory() {
 		throw new IllegalStateException("Utility Class");
 	}
@@ -17,6 +20,7 @@ public class Win32_PhysicalMemory {
 	private static boolean bankCounter = false;
 	
 	public static List<String> getTagOrBank() throws IOException{
+		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		List<String> memoryTag = new ArrayList<>();
 		List<String> memoryBank = new ArrayList<>();
 		
@@ -38,6 +42,38 @@ public class Win32_PhysicalMemory {
 		while((currentLine=br2.readLine())!=null) {
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
 				memoryBank.add(currentLine);
+		}
+		
+		//getting error stream
+		if(memoryTag.isEmpty()) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(tagProcess.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
+			
+			while((errorLine=error.readLine())!=null)
+				if(!errorLine.isBlank() || !errorLine.isEmpty())
+					errorList.add(errorLine);
+			
+			error.close();
+			ErrorLog errorLog = new ErrorLog();
+			
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
+		}
+		
+		//getting error stream
+		if(memoryBank.isEmpty()) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(bankProcess.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
+			
+			while((errorLine=error.readLine())!=null)
+				if(!errorLine.isBlank() || !errorLine.isEmpty())
+					errorList.add(errorLine);
+			
+			error.close();
+			ErrorLog errorLog = new ErrorLog();
+			
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
 		}
 		
 		//strip the property_name and keep only the property value
@@ -62,6 +98,7 @@ public class Win32_PhysicalMemory {
 	}
 	
 	public static Map<String, String> getMemory(String memoryID) throws IOException{
+		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		Map<String, String> memory = new HashMap<>();
 		String property = "";
 		if(tagCounter)
@@ -79,7 +116,23 @@ public class Win32_PhysicalMemory {
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				memory.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
 			}
+		br.close();
 		
+		//getting error stream
+		if(memory.isEmpty()) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
+			
+			while((errorLine=error.readLine())!=null)
+				if(!errorLine.isBlank() || !errorLine.isEmpty())
+					errorList.add(errorLine);
+			
+			error.close();
+			ErrorLog errorLog = new ErrorLog();
+			
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
+		}
 		return memory;
 	}
 	
