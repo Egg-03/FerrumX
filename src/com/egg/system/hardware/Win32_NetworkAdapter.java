@@ -11,7 +11,6 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_NetworkAdapter {
-	String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 	private static String classname = new Object() {}.getClass().getName();
 	private Win32_NetworkAdapter() {
 		throw new IllegalStateException("Utility Class");
