@@ -3,7 +3,6 @@ package com.egg.system.report;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,6 @@ import com.egg.system.networking.Win32_NetworkAdapterSetting;
 import com.egg.system.operating_system.Win32_DiskDriveToDiskPartition;
 import com.egg.system.operating_system.Win32_LogicalDiskToPartition;
 import com.egg.system.operating_system.Win32_OperatingSystem;
-import com.egg.system.operating_system.Win32_SystemDriver;
 import com.egg.system.operating_system.Win32_TimeZone;
 
 public class AIOReportGeneration {
@@ -84,13 +82,11 @@ public class AIOReportGeneration {
 			reportSound(report);
 			SwingUtilities.invokeLater(() -> label.setText("Gathering Audio Info"));
 			SwingUtilities.invokeLater(() -> progress.setValue(95));
-			reportDrivers(report);
-			SwingUtilities.invokeLater(() -> label.setText("Gathering Driver Info"));
-			SwingUtilities.invokeLater(() -> progress.setValue(100));
 			report.close();
 			
 			button.setEnabled(true);
 			label.setText("Finished");
+			SwingUtilities.invokeLater(() -> progress.setValue(100));
 			button.setText("Generate");
 			
 		} catch (IOException e) {
@@ -98,16 +94,7 @@ public class AIOReportGeneration {
 		}
 	}).start();
 	}
-
-	private static void reportDrivers(PrintStream report) throws IOException {
-		List<String> drivers = Win32_SystemDriver.getDrivers();
-		Iterator<String> itr = drivers.iterator();
-		
-		report.println("----------------------SYSTEM DRIVERS------------------------");
-		while(itr.hasNext())
-			report.println(itr.next());	
-	}
-
+	
 	private static void reportSound(PrintStream report) throws IOException {
 		List<String> deviceIDs = Win32_SoundDevice.getSoundDeviceID();
 		Map<String, String> currentAudio;
