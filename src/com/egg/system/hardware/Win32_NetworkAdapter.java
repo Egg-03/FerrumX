@@ -10,14 +10,6 @@ import java.util.Map;
 
 import com.egg.system.logger.ErrorLog;
 
-//Very often there exists more than one network adapter for a single device. For this reason, I am not going to use CIM or WMIC formatter
-//Because they can only read a single line
-//This also means that this program cannot support detecting more than one hardware at a time. 
-//For example, if there are two physical CPUs in a PC, this program will detect only one.
-//I plan to modify this behavior later as network adapters and RAMs often have multiple physical hardware.
-//I will implement a custom CIM formatter here that will first get the device IDs and then loop through all the device IDs and get the required adapter info
-//If this succeeds, I will modify the original adapters sometime later, to incorporate this change
-//which will allow detection of multiple hardware of the same class/category
 public class Win32_NetworkAdapter {
 	String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 	private static String classname = new Object() {}.getClass().getName();
@@ -35,9 +27,16 @@ public class Win32_NetworkAdapter {
 			
 		String currentLine;
 			
+		int lastIndex;
+		String value = "";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				deviceIDList.add(currentLine);
+				if(currentLine.contains(" : "))
+					deviceIDList.add(value =currentLine);
+				else {
+					lastIndex = deviceIDList.size()-1;
+					deviceIDList.set(lastIndex, deviceIDList.get(lastIndex).concat(value));
+				}
 			
 		br.close();
 		//getting error stream
@@ -77,7 +76,12 @@ public class Win32_NetworkAdapter {
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					propertyValues.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					propertyValues.replace(key, value.concat(currentLine.strip()));
 			}
 		br.close();
 		

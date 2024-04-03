@@ -25,9 +25,15 @@ public class Win32_OperatingSystem {
 			
 		String currentLine;
 			
+		String value = "";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				operatingSystemList.add(currentLine);
+				if(currentLine.contains(" : "))
+					operatingSystemList.add(value =currentLine);
+				else {
+					int lastIndex = operatingSystemList.size()-1;
+					operatingSystemList.set(lastIndex, operatingSystemList.get(lastIndex).concat(value));
+				}
 			
 		br.close();
 		//getting error stream
@@ -65,7 +71,12 @@ public class Win32_OperatingSystem {
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					propertyValues.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					propertyValues.replace(key, value.concat(currentLine.strip()));
 			}
 		br.close();
 		

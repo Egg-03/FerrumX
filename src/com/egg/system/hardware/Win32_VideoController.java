@@ -25,10 +25,16 @@ public class Win32_VideoController {
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		String currentLine;
 		
-		while((currentLine=br.readLine())!=null) {
+		int lastIndex;
+		String value = "";
+		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				gpuID.add(currentLine);
-		}
+				if(currentLine.contains(" : "))
+					gpuID.add(value =currentLine);
+				else {
+					lastIndex = gpuID.size()-1;
+					gpuID.set(lastIndex, gpuID.get(lastIndex).concat(value));
+				}
 		br.close();
 		
 		//getting error stream
@@ -65,7 +71,12 @@ public class Win32_VideoController {
 		String currentLine;
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				gpu.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					gpu.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					gpu.replace(key, value.concat(currentLine.strip()));
 			}
 		br.close();
 		

@@ -27,9 +27,15 @@ public class Win32_AssociatedProcessorMemory {
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		String currentLine;
 		
+		String value = "";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				cacheIDList.add(currentLine.substring(currentLine.indexOf("\"")+1, currentLine.lastIndexOf("\"")));
+				if(currentLine.contains(" : "))
+					cacheIDList.add(value=currentLine.substring(currentLine.indexOf("\"")+1, currentLine.lastIndexOf("\"")));
+				else {
+					int lastIndex = cacheIDList.size()-1;
+					cacheIDList.set(lastIndex, cacheIDList.get(lastIndex).concat(value));
+				}
 		br.close();
 		
 		//getting error stream

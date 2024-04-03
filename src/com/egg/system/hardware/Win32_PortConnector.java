@@ -27,9 +27,15 @@ public class Win32_PortConnector {
 		String currentLine;
 		List<String> portID = new ArrayList<>();
 		
+		String value="";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				portID.add(currentLine.substring(currentLine.indexOf(":")+1).strip());
+				if(currentLine.contains(" : "))
+					portID.add(value=currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else {
+					int lastIndex = portID.size()-1;
+					portID.set(lastIndex, portID.get(lastIndex).concat(value));
+				}
 				
 		br.close();
 		
@@ -62,9 +68,14 @@ public class Win32_PortConnector {
 		Map<String, String> ioPorts = new LinkedHashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				ioPorts.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
-				
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					ioPorts.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					ioPorts.replace(key, value.concat(currentLine.strip()));
+			}
 		br.close();
 		
 		//getting error stream

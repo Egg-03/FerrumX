@@ -28,8 +28,13 @@ public class Win32_CacheMemory {
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				cache.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
-			}	
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					cache.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					cache.replace(key, value.concat(currentLine.strip()));
+			}
 		br.close();
 		
 		//getting error stream

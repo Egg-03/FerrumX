@@ -17,7 +17,7 @@ public class Win32_NetworkAdapterSetting {
 	
 	public static String getIndex(String deviceID) throws IOException {
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		String index = "";
+		String setting = "";
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterSetting |Where-Object {$_.Element.DeviceID -eq '"+deviceID+"'} | Select-Object Setting | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
@@ -27,11 +27,14 @@ public class Win32_NetworkAdapterSetting {
 			
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				index = currentLine;
+				if(currentLine.contains(" : "))
+					setting = currentLine;
+				else
+					setting.concat(currentLine);
 			
 		br.close();
 		//getting error stream
-		if(index.isEmpty()) {
+		if(setting.isEmpty()) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String errorLine;
 			List<String> errorList = new ArrayList<>();
@@ -45,6 +48,6 @@ public class Win32_NetworkAdapterSetting {
 			
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
 		}
-		return index.substring(index.indexOf("=")+1, index.indexOf(")")).trim();
+		return setting.substring(setting.indexOf("=")+1, setting.indexOf(")")).trim();
 	}
 }

@@ -29,7 +29,12 @@ public class Win32_Baseboard {
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				mbProperty.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					mbProperty.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					mbProperty.replace(key, value.concat(currentLine.strip()));
 			}
 				
 		br.close();

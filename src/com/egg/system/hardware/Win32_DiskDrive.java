@@ -26,9 +26,15 @@ public class Win32_DiskDrive {
 		String currentLine;
 		List<String> driveID = new ArrayList<>();
 		
+		String value="";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				driveID.add(currentLine.substring(currentLine.indexOf(":")+1).strip());
+				if(currentLine.contains(" : "))
+					driveID.add(value=currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else {
+					int lastIndex = driveID.size()-1;
+					driveID.set(lastIndex, driveID.get(lastIndex).concat(value));
+				}
 				
 		br.close();
 		
@@ -61,9 +67,14 @@ public class Win32_DiskDrive {
 		Map<String, String> drives = new LinkedHashMap<>();
 		
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				drives.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
-				
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					drives.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					drives.replace(key, value.concat(currentLine.strip()));
+			}
 		br.close();
 		
 		//getting error stream

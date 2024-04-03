@@ -32,19 +32,31 @@ public class Win32_PhysicalMemory {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(tagProcess.getInputStream()));
 		BufferedReader br2 = new BufferedReader(new InputStreamReader(bankProcess.getInputStream()));
-		String currentLine;
+		String currentTagLine;
+		String currentBankLine;
 		
-		while((currentLine=br.readLine())!=null) {
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				memoryTag.add(currentLine);
-		}
+		String tagValue = "";
+		while((currentTagLine=br.readLine())!=null)
+			if(!currentTagLine.isBlank() || !currentTagLine.isEmpty())
+				if(currentTagLine.contains(" : "))
+					memoryTag.add(tagValue= currentTagLine);
+				else {
+					int lastIndex = memoryTag.size()-1;
+					memoryTag.set(lastIndex, memoryTag.get(lastIndex).concat(tagValue));
+				}
 		
-		while((currentLine=br2.readLine())!=null) {
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				memoryBank.add(currentLine);
-		}
+		String bankValue = "";
+		while((currentBankLine=br2.readLine())!=null)
+			if(!currentBankLine.isBlank() || !currentBankLine.isEmpty())
+				if(currentBankLine.contains(" : "))
+					memoryBank.add(bankValue= currentBankLine);
+				else {
+					int lastIndex = memoryBank.size()-1;
+					memoryBank.set(lastIndex, memoryBank.get(lastIndex).concat(bankValue));
+				}
+			
 		
-		//getting error stream
+		//getting error stream for Tag
 		if(memoryTag.isEmpty()) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(tagProcess.getErrorStream()));
 			String errorLine;
@@ -60,7 +72,7 @@ public class Win32_PhysicalMemory {
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
 		}
 		
-		//getting error stream
+		//getting error stream for Bank
 		if(memoryBank.isEmpty()) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(bankProcess.getErrorStream()));
 			String errorLine;
@@ -114,8 +126,13 @@ public class Win32_PhysicalMemory {
 		String currentLine;
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				memory.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
-			}
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					memory.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					memory.replace(key, value.concat(currentLine.strip()));
+			}		
 		br.close();
 		
 		//getting error stream

@@ -24,11 +24,16 @@ public class Win32_Printer {
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
 		String currentLine;
-			
+		int lastIndex;
+		String value = "";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				deviceIDList.add(currentLine);
-			
+				if(currentLine.contains(" : "))
+					deviceIDList.add(value =currentLine);
+				else {
+					lastIndex = deviceIDList.size()-1;
+					deviceIDList.set(lastIndex, deviceIDList.get(lastIndex).concat(value));
+				}
 		br.close();
 		
 		//getting error stream
@@ -67,7 +72,12 @@ public class Win32_Printer {
 		
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				propertyValues.put(currentLine.substring(0, currentLine.indexOf(":")).strip(), currentLine.substring(currentLine.indexOf(":")+1).strip());
+				String key = "";
+				String value = "";
+				if(currentLine.contains(" : "))
+					propertyValues.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+				else
+					propertyValues.replace(key, value.concat(currentLine.strip()));
 			}
 		br.close();
 		

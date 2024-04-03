@@ -25,9 +25,16 @@ public class Win32_DiskDriveToDiskPartition {
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		String currentLine;
 		
+		String value="";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				partitionList.add(currentLine.substring(currentLine.indexOf("\"")+1, currentLine.lastIndexOf("\"")));
+				if(currentLine.contains(" : "))
+					partitionList.add(value=currentLine.substring(currentLine.indexOf("\"")+1, currentLine.lastIndexOf("\"")));
+				else {
+					int lastIndex = partitionList.size()-1;
+					partitionList.set(lastIndex, partitionList.get(lastIndex).concat(value));
+				}
+					
 		br.close();
 		
 		//getting error stream

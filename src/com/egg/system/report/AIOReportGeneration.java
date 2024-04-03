@@ -7,6 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+
 import com.egg.system.currentuser.User;
 import com.egg.system.hardware.Win32_AssociatedProcessorMemory;
 import com.egg.system.hardware.Win32_BIOS;
@@ -29,29 +34,69 @@ import com.egg.system.operating_system.Win32_SystemDriver;
 import com.egg.system.operating_system.Win32_TimeZone;
 
 public class AIOReportGeneration {
-	public static void generate() {
+	protected static void generate(JProgressBar progress, JLabel label, JButton button) {
+		new Thread(()-> {
 		try(FileOutputStream fos = new FileOutputStream(System.getProperty("user.home")+"\\Desktop\\Report.txt");){
 			PrintStream report = new PrintStream(fos);
+			
+			button.setEnabled(false);
+			button.setText("Generating");
+			
 			reportOS(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering OS Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(6));
 			reportUser(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering User Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(13));
 			reportTimeZone(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering TimeZone Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(20));
 			reportCPU(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering CPU Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(28));
 			reportCPUCache(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering CPU Cache Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(35));
 			reportRAM(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering RAM Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(42));
 			reportGPU(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering Video Controller Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(50));
 			reportMotherboard(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering Mainboard Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(57));
 			reportBIOS(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering BIOS Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(64));
 			reportIO(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering I/O Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(70));
 			reportNetwork(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering Network Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(77));
 			reportDisk(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering Storage Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(85));
 			reportPrinter(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering Printer Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(90));
 			reportSound(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering Audio Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(95));
 			reportDrivers(report);
+			SwingUtilities.invokeLater(() -> label.setText("Gathering Driver Info"));
+			SwingUtilities.invokeLater(() -> progress.setValue(100));
 			report.close();
+			
+			button.setEnabled(true);
+			label.setText("Finished");
+			button.setText("Generate");
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}).start();
 	}
 
 	private static void reportDrivers(PrintStream report) throws IOException {
