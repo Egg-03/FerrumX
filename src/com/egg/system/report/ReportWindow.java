@@ -38,7 +38,7 @@ public class ReportWindow extends JFrame {
 	public ReportWindow() {
 		setTitle("WSIL Report GUI Pre-Alpha Build v0.1");
 		setResizable(false);
-		setAlwaysOnTop(true);
+		setAlwaysOnTop(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
@@ -50,22 +50,28 @@ public class ReportWindow extends JFrame {
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		progressBar.setBounds(10, 72, 414, 14);
+		progressBar.setVisible(false);
 		contentPane.add(progressBar);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(10, 40, 414, 23);
-		contentPane.add(lblNewLabel);
+		JProgressBar progressBar_1 = new JProgressBar();
+		progressBar_1.setIndeterminate(true);
+		progressBar_1.setBounds(10, 72, 414, 14);
+		progressBar_1.setVisible(true);
+		contentPane.add(progressBar_1);
+		
+		JLabel currentOperation = new JLabel("");
+		currentOperation.setBounds(10, 40, 414, 23);
+		contentPane.add(currentOperation);
 		
 		JButton btnNewButton = new JButton("Generate");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AIOReportGeneration.generate(progressBar, lblNewLabel, btnNewButton);
+				progressBar_1.setVisible(false);
+				progressBar.setVisible(true);
+				AIOReportGeneration.generate(progressBar, currentOperation, btnNewButton);
 			}
 		});
 		btnNewButton.setBounds(162, 11, 108, 23);
-		contentPane.add(btnNewButton);
-		
-		
-		
+		contentPane.add(btnNewButton);	
 	}
 }
