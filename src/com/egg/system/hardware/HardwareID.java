@@ -21,8 +21,4 @@ public class HardwareID {
 		
 		return userName+"/"+deviceName+"/"+cpuName+"/"+cpuId+"/"+motherBoardName+"/"+countRAM+"/"+countStorage;
 	}
-	
-	public static void main(String[] args) throws IOException {
-		System.out.println(getHardwareID());
-	}
 }

@@ -8,8 +8,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
+
+import java.awt.Font;
+import java.awt.Color;
 
 public class ReportWindow extends JFrame {
 
@@ -36,11 +42,11 @@ public class ReportWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public ReportWindow() {
-		setTitle("WSIL Report GUI Pre-Alpha Build v0.1");
+		setTitle("WSIL Report GUI Alpha Build v0.2");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 150);
+		setBounds(100, 100, 450, 278);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -63,15 +69,35 @@ public class ReportWindow extends JFrame {
 		currentOperation.setBounds(10, 40, 414, 23);
 		contentPane.add(currentOperation);
 		
-		JButton btnNewButton = new JButton("Generate");
-		btnNewButton.addActionListener(new ActionListener() {
+		JTextArea errorDisplay = new JTextArea();
+		errorDisplay.setWrapStyleWord(true);
+		errorDisplay.setToolTipText("Error Log");
+		errorDisplay.setLineWrap(true);
+		errorDisplay.setForeground(Color.RED);
+		errorDisplay.setFont(new Font("Consolas", Font.PLAIN, 13));
+		errorDisplay.setBackground(Color.LIGHT_GRAY);
+		errorDisplay.setEditable(false);
+		
+		
+		JScrollPane errorDisplayScroll = new JScrollPane(errorDisplay);
+		errorDisplayScroll.setBounds(10, 97, 414, 127);
+		errorDisplayScroll.setAutoscrolls(true);
+		errorDisplayScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		errorDisplayScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		contentPane.add(errorDisplayScroll);
+		
+		
+		JButton mainOperation = new JButton("Generate");
+		mainOperation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				progressBar_1.setVisible(false);
 				progressBar.setVisible(true);
-				AIOReportGeneration.generate(progressBar, currentOperation, btnNewButton);
+				errorDisplay.setText("");
+				AIOReportGeneration.generate(progressBar, currentOperation, mainOperation, errorDisplay);
 			}
 		});
-		btnNewButton.setBounds(162, 11, 108, 23);
-		contentPane.add(btnNewButton);	
+		mainOperation.setBounds(162, 11, 108, 23);
+		contentPane.add(mainOperation);	
+		
 	}
 }
