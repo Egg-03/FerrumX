@@ -3,6 +3,8 @@ package com.egg.system.report;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,13 +12,19 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+
+import com.egg.system.currentuser.User;
+
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Desktop;
+
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class ReportWindow extends JFrame {
 
@@ -27,6 +35,11 @@ public class ReportWindow extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -66,7 +79,7 @@ public class ReportWindow extends JFrame {
 		progressBar_1.setVisible(true);
 		contentPane.add(progressBar_1);
 		
-		JLabel currentOperation = new JLabel("");
+		JLabel currentOperation = new JLabel("READY");
 		currentOperation.setHorizontalAlignment(SwingConstants.CENTER);
 		currentOperation.setFont(new Font("Consolas", Font.PLAIN, 14));
 		currentOperation.setBounds(10, 40, 414, 23);
@@ -74,11 +87,11 @@ public class ReportWindow extends JFrame {
 		
 		JTextArea errorDisplay = new JTextArea();
 		errorDisplay.setWrapStyleWord(true);
-		errorDisplay.setToolTipText("Error Log");
+		errorDisplay.setToolTipText("Progress Log");
 		errorDisplay.setLineWrap(true);
 		errorDisplay.setForeground(Color.RED);
 		errorDisplay.setFont(new Font("Consolas", Font.PLAIN, 13));
-		errorDisplay.setBackground(Color.LIGHT_GRAY);
+		errorDisplay.setBackground(UIManager.getColor("Actions.GreyInline"));
 		errorDisplay.setEditable(false);
 		
 		
@@ -99,8 +112,21 @@ public class ReportWindow extends JFrame {
 				AIOReportGeneration.generate(progressBar, currentOperation, mainOperation, errorDisplay);
 			}
 		});
-		mainOperation.setBounds(162, 11, 108, 23);
+		mainOperation.setBounds(95, 11, 117, 23);
 		contentPane.add(mainOperation);	
+		
+		JButton btnShowReport = new JButton("Show Report");
+		btnShowReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(User.getHome()+"\\Desktop\\Report.txt"));
+				} catch (IOException | NullPointerException | IllegalArgumentException | UnsupportedOperationException | SecurityException e0) {
+					errorDisplay.setText("SHOW REPORT ERROR: "+e0.getMessage());
+				}
+			}
+		});
+		btnShowReport.setBounds(224, 11, 117, 23);
+		contentPane.add(btnShowReport);
 		
 	}
 }

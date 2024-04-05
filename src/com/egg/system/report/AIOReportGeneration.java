@@ -113,7 +113,7 @@ public class AIOReportGeneration {
 			button.setText("Generate");
 			
 		} catch (IOException e) {
-			errorDisplay.setText(e.getMessage());
+			errorDisplay.setText("REPORT FILE ERROR: "+e.getMessage());
 		}
 	}).start();
 	}
