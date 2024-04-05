@@ -56,7 +56,7 @@ public class ReportWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public ReportWindow() {
-		setTitle("WSIL Report GUI Alpha Build v0.2");
+		setTitle("WSIL Report GUI Alpha Build v0.3");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
