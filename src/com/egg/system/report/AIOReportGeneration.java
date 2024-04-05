@@ -105,7 +105,7 @@ public class AIOReportGeneration {
 			report.close();
 			
 			button.setEnabled(true);
-			if(errorDisplay.getText().isEmpty())
+			if(!errorDisplay.getText().contains("ERROR"))
 				label.setText("Finished");
 			else
 				label.setText("Finished With Errors");
@@ -113,7 +113,7 @@ public class AIOReportGeneration {
 			button.setText("Generate");
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			errorDisplay.setText(e.getMessage());
 		}
 	}).start();
 	}
@@ -122,6 +122,7 @@ public class AIOReportGeneration {
 		report.println("----------------------HUMAN READABLE HARDWARE ID------------------------");
 		try {
 		report.println(HardwareID.getHardwareID());
+		errorDisplay.append("HWID Generation: Success\n");
 		} catch (IOException | StringIndexOutOfBoundsException e) {
 			report.println("Could not fetch Hardware ID");
 			report.println(e);
@@ -135,13 +136,14 @@ public class AIOReportGeneration {
 		
 		report.println("----------------------AUDIO INFO------------------------");
 		try {
-		deviceIDs = Win32_SoundDevice.getSoundDeviceID();	
-		for(String currentID : deviceIDs) {
-			currentAudio = Win32_SoundDevice.getCurrentAudioDevice(currentID);
-			for(Map.Entry<String, String> entry: currentAudio.entrySet())
+			deviceIDs = Win32_SoundDevice.getSoundDeviceID();	
+			for(String currentID : deviceIDs) {
+				currentAudio = Win32_SoundDevice.getCurrentAudioDevice(currentID);
+				for(Map.Entry<String, String> entry: currentAudio.entrySet())
 				report.println(entry.getKey()+": "+entry.getValue());
-			report.println();
-	    }
+				report.println();
+			}
+			errorDisplay.append("Audio Info: Success\n");
 		}catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Unable to fetch Audio Info");
 			report.println(e);
@@ -162,6 +164,7 @@ public class AIOReportGeneration {
 				report.println(entry.getKey()+": "+entry.getValue());
 			report.println();
 	    }
+		errorDisplay.append("Printer Info: Success\n");
 	  }catch (IOException | IndexOutOfBoundsException e) {
 		  report.println("Unable to fetch Audio Info");
 		  report.println(e);
@@ -188,7 +191,8 @@ public class AIOReportGeneration {
 							+ Win32_LogicalDiskToPartition.getDriveLetter(currentPartition));
 				}
 				report.println();
-			} 
+			}
+			errorDisplay.append("Storage Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Unable to fetch Storage Info");
 			report.println(e);
@@ -215,7 +219,8 @@ public class AIOReportGeneration {
 				for (Map.Entry<String, String> entry : networkAdapterConfiguration.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
-			} 
+			}
+			errorDisplay.append("Network Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Network Info");
 			report.println(e);
@@ -235,7 +240,8 @@ public class AIOReportGeneration {
 				for (Map.Entry<String, String> port : ports.entrySet())
 					report.println(port.getKey() + ": " + port.getValue());
 				report.println();
-			} 
+			}
+			errorDisplay.append("I/O Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch I/O Info");
 			report.println(e);
@@ -249,6 +255,7 @@ public class AIOReportGeneration {
 			Map<String, String> BIOS = Win32_BIOS.getPrimaryBIOS();
 			for (Map.Entry<String, String> entry : BIOS.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
+			errorDisplay.append("BIOS Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch BIOS Info");
 			report.println(e);
@@ -262,6 +269,7 @@ public class AIOReportGeneration {
 			Map<String, String> motherboard = Win32_Baseboard.getMotherboard();
 			for (Map.Entry<String, String> entry : motherboard.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
+			errorDisplay.append("Mainboard Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Motherboard Info");
 			report.println(e);
@@ -280,7 +288,8 @@ public class AIOReportGeneration {
 				currentGPU = Win32_VideoController.getGPU(currentID);
 				for (Map.Entry<String, String> entry : currentGPU.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
-			} 
+			}
+			errorDisplay.append("GPU Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch GPU Info");
 			report.println(e);
@@ -300,7 +309,8 @@ public class AIOReportGeneration {
 				for (Map.Entry<String, String> entry : memory.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
-			} 
+			}
+			errorDisplay.append("Memory Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Memory Info");
 			report.println(e);
@@ -324,7 +334,8 @@ public class AIOReportGeneration {
 						report.println(currentCache.getKey() + ": " + currentCache.getValue());
 					report.println();
 				}
-			} 
+			}
+			errorDisplay.append("CPU Cache Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch CPU Cache");
 			report.println(e);
@@ -343,7 +354,8 @@ public class AIOReportGeneration {
 				osinfo = Win32_OperatingSystem.getOSInfo(currentOS);
 				for (Map.Entry<String, String> entry : osinfo.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
-			} 
+			}
+			errorDisplay.append("OS Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch OS Info");
 			report.println(e);
@@ -363,7 +375,8 @@ public class AIOReportGeneration {
 				for (Map.Entry<String, String> entry : currentCPU.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
-			} 
+			}
+			errorDisplay.append("CPU Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch CPU Info");
 			report.println(e);
@@ -379,6 +392,7 @@ public class AIOReportGeneration {
 			currentTimeZone= Win32_TimeZone.getOSTimeZone();
 			for (Map.Entry<String, String> entry : currentTimeZone.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
+			errorDisplay.append("Time-zone Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Timezone Info");
 			report.println(e);
@@ -391,5 +405,6 @@ public class AIOReportGeneration {
 		report.println("----------------------USER INFO------------------------");
 		report.println("Current Username: "+User.getUsername());
 		report.println("User Home Directory: "+User.getHome());
+		errorDisplay.append("User Info: Success\n");
 	}
 }

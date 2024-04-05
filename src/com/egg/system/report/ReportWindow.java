@@ -16,6 +16,7 @@ import javax.swing.ScrollPaneConstants;
 
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.SwingConstants;
 
 public class ReportWindow extends JFrame {
 
@@ -66,6 +67,8 @@ public class ReportWindow extends JFrame {
 		contentPane.add(progressBar_1);
 		
 		JLabel currentOperation = new JLabel("");
+		currentOperation.setHorizontalAlignment(SwingConstants.CENTER);
+		currentOperation.setFont(new Font("Consolas", Font.PLAIN, 14));
 		currentOperation.setBounds(10, 40, 414, 23);
 		contentPane.add(currentOperation);
 		
