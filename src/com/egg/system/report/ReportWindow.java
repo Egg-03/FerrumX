@@ -25,6 +25,8 @@ import java.awt.Desktop;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.EtchedBorder;
+import javax.swing.text.DefaultCaret;
 
 public class ReportWindow extends JFrame {
 
@@ -36,7 +38,7 @@ public class ReportWindow extends JFrame {
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -87,33 +89,23 @@ public class ReportWindow extends JFrame {
 		
 		JTextArea errorDisplay = new JTextArea();
 		errorDisplay.setWrapStyleWord(true);
-		errorDisplay.setToolTipText("Progress Log");
 		errorDisplay.setLineWrap(true);
-		errorDisplay.setForeground(Color.RED);
+		errorDisplay.setForeground(new Color(0, 153, 255));
 		errorDisplay.setFont(new Font("Consolas", Font.PLAIN, 13));
 		errorDisplay.setBackground(UIManager.getColor("Actions.GreyInline"));
 		errorDisplay.setEditable(false);
 		
+		DefaultCaret caret = (DefaultCaret)errorDisplay.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE); 
+		
 		
 		JScrollPane errorDisplayScroll = new JScrollPane(errorDisplay);
+		errorDisplayScroll.setViewportBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		errorDisplayScroll.setBounds(10, 97, 414, 127);
 		errorDisplayScroll.setAutoscrolls(true);
 		errorDisplayScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		errorDisplayScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		contentPane.add(errorDisplayScroll);
-		
-		
-		JButton mainOperation = new JButton("Generate");
-		mainOperation.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				progressBar_1.setVisible(false);
-				progressBar.setVisible(true);
-				errorDisplay.setText("");
-				AIOReportGeneration.generate(progressBar, currentOperation, mainOperation, errorDisplay);
-			}
-		});
-		mainOperation.setBounds(95, 11, 117, 23);
-		contentPane.add(mainOperation);	
 		
 		JButton btnShowReport = new JButton("Show Report");
 		btnShowReport.addActionListener(new ActionListener() {
@@ -127,6 +119,18 @@ public class ReportWindow extends JFrame {
 		});
 		btnShowReport.setBounds(224, 11, 117, 23);
 		contentPane.add(btnShowReport);
+		
+		JButton mainOperation = new JButton("Generate");
+		mainOperation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				progressBar_1.setVisible(false);
+				progressBar.setVisible(true);
+				errorDisplay.setText("");
+				AIOReportGeneration.generate(progressBar, currentOperation, mainOperation, errorDisplay, btnShowReport);
+			}
+		});
+		mainOperation.setBounds(95, 11, 117, 23);
+		contentPane.add(mainOperation);	
 		
 	}
 }

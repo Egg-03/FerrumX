@@ -34,12 +34,13 @@ import com.egg.system.operating_system.Win32_OperatingSystem;
 import com.egg.system.operating_system.Win32_TimeZone;
 
 public class AIOReportGeneration {
-	protected static void generate(JProgressBar progress, JLabel label, JButton button, JTextArea errorDisplay) {
+	protected static void generate(JProgressBar progress, JLabel label, JButton button, JTextArea errorDisplay, JButton btnShowReport) {
 		new Thread(()-> {
 		try(FileWriter fos = new FileWriter(System.getProperty("user.home")+"\\Desktop\\Report.txt");){
 			PrintWriter report = new PrintWriter(fos);
 			
 			button.setEnabled(false);
+			btnShowReport.setEnabled(false);
 			button.setText("Generating");
 			
 			SwingUtilities.invokeLater(() -> label.setText("Generating HWID"));
@@ -105,6 +106,7 @@ public class AIOReportGeneration {
 			report.close();
 			
 			button.setEnabled(true);
+			btnShowReport.setEnabled(true);
 			if(!errorDisplay.getText().contains("ERROR"))
 				label.setText("Finished");
 			else
@@ -143,11 +145,11 @@ public class AIOReportGeneration {
 				report.println(entry.getKey()+": "+entry.getValue());
 				report.println();
 			}
-			errorDisplay.append("Audio Info: Success\n");
+			errorDisplay.append("Audio Info: Success");
 		}catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Unable to fetch Audio Info");
 			report.println(e);
-			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n"+e+"\n");
+			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n"+e);
 		}
 	}
 
