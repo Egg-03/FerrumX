@@ -31,6 +31,7 @@ import javax.swing.text.DefaultCaret;
 public class ReportWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static ReportWindow instance = null;
 	private JPanel contentPane;
 
 	/**
@@ -45,7 +46,7 @@ public class ReportWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ReportWindow frame = new ReportWindow();
+					ReportWindow frame = ReportWindow.getInstance();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,12 +54,21 @@ public class ReportWindow extends JFrame {
 			}
 		});
 	}
-
+	
+	//Create the instance; make it singleton
+	public static ReportWindow getInstance() {
+		synchronized(ReportWindow.class) {
+			if(instance==null)
+				instance = new ReportWindow();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public ReportWindow() {
-		setTitle("WSIL Report GUI Alpha Build v0.3");
+	private ReportWindow() {
+		setTitle("WSIL Report GUI Beta Build v0.4");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

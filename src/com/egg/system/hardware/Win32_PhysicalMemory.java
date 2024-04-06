@@ -28,7 +28,48 @@ public class Win32_PhysicalMemory {
 		String[] bankCommand = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Select-Object BankLabel | Format-List"};
 		
 		Process tagProcess = Runtime.getRuntime().exec(tagCommand);
+		try {
+			int exitCode = tagProcess.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(tagProcess.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
+		
 		Process bankProcess = Runtime.getRuntime().exec(bankCommand);
+		try {
+			int exitCode = bankProcess.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(bankProcess.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(tagProcess.getInputStream()));
 		BufferedReader br2 = new BufferedReader(new InputStreamReader(bankProcess.getInputStream()));
@@ -55,39 +96,6 @@ public class Win32_PhysicalMemory {
 					memoryBank.set(lastIndex, memoryBank.get(lastIndex).concat(bankValue));
 				}
 			
-		
-		//getting error stream for Tag
-		if(memoryTag.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(tagProcess.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
-		
-		//getting error stream for Bank
-		if(memoryBank.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(bankProcess.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
-		
 		//strip the property_name and keep only the property value
 		for(int i=0 ; i<memoryTag.size(); i++) {
 			memoryTag.set(i, memoryTag.get(i).substring(memoryTag.get(i).indexOf(":")+1).strip());
@@ -121,6 +129,26 @@ public class Win32_PhysicalMemory {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Where-Object {$_."+property+" -eq '"+memoryID+"'} | Select-Object Name, Manufacturer, Model, OtherIdentifyingInfo, PartNumber, Tag, FormFactor, BankLabel, Capacity, DataWidth, Speed, ConfiguredClockSpeed, DeviceLocator, SerialNumber | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
@@ -135,21 +163,6 @@ public class Win32_PhysicalMemory {
 			}		
 		br.close();
 		
-		//getting error stream
-		if(memory.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
 		return memory;
 	}
 	

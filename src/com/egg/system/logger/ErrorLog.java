@@ -30,6 +30,11 @@ public class ErrorLog {
 			e.printStackTrace();
 		} finally {
 			use_flag= false;
+			try {
+				fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

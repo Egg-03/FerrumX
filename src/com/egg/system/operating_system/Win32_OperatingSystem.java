@@ -19,8 +19,30 @@ public class Win32_OperatingSystem {
 	public static List<String> getOSList() throws IOException {
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		List<String> operatingSystemList = new ArrayList<>();
+		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object Name | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
 		String currentLine;
@@ -36,21 +58,7 @@ public class Win32_OperatingSystem {
 				}
 			
 		br.close();
-		//getting error stream
-		if(operatingSystemList.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
+		
 		//strip the property_name and keep only the property value
 		for(int i=0 ; i<operatingSystemList.size(); i++) {
 			operatingSystemList.set(i, operatingSystemList.get(i).substring(operatingSystemList.get(i).indexOf(":")+1).strip());
@@ -64,6 +72,27 @@ public class Win32_OperatingSystem {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Where-Object {$_.Name -eq '"+OSName+"'} | Select-Object Caption, InstallDate, CSName, LastBootUpTime, LocalDateTime, Distributed, NumberOfUsers, Version, BootDevice, BuildNumber, BuildType, Manufacturer, OSArchitecture, MUILanguages, PortableOperatingSystem, Primary, RegisteredUser, SerialNumber, ServicePackMajorVersion, ServicePackMinorVersion, SystemDirectory, SystemDrive, WindowsDirectory | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
@@ -79,22 +108,6 @@ public class Win32_OperatingSystem {
 					propertyValues.replace(key, value.concat(currentLine.strip()));
 			}
 		br.close();
-		
-		//getting error stream
-		if(propertyValues.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
 		return propertyValues;
 	}
 }

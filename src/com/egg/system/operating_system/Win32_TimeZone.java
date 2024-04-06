@@ -21,6 +21,27 @@ public class Win32_TimeZone {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_TimeZone | Select-Object Caption, Bias, StandardName | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
@@ -36,21 +57,7 @@ public class Win32_TimeZone {
 					propertyValues.replace(key, value.concat(currentLine.strip()));
 			}
 		br.close();
-		//getting error stream
-		if(propertyValues.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
+		
 		return propertyValues;
 	}
 }

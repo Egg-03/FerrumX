@@ -20,8 +20,30 @@ public class Win32_SoundDevice {
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		
 		List<String> deviceIDList = new ArrayList<>();
+		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Select-Object DeviceID | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
 		String currentLine;
@@ -36,23 +58,6 @@ public class Win32_SoundDevice {
 					deviceIDList.set(lastIndex, deviceIDList.get(lastIndex).concat(value));
 				}
 		
-		//getting error stream
-		if(deviceIDList.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
-		br.close();
-		
 		//strip the property_name and keep only the property value
 		for(int i=0 ; i<deviceIDList.size(); i++) {
 			deviceIDList.set(i, deviceIDList.get(i).substring(deviceIDList.get(i).indexOf(":")+1).strip());
@@ -66,6 +71,27 @@ public class Win32_SoundDevice {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object ProductName, Status, Caption, PNPDeviceID, Manufacturer | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
@@ -80,21 +106,6 @@ public class Win32_SoundDevice {
 				else
 					propertyValues.replace(key, value.concat(currentLine.strip()));
 			}
-		br.close();
-		
-		if(propertyValues.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
 		br.close();
 		return propertyValues;
 	}

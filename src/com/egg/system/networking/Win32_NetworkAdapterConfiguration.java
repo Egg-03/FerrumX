@@ -21,6 +21,27 @@ public class Win32_NetworkAdapterConfiguration {
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Where-Object {$_.Index -eq '"+adapterIndex+"'} | Select-Object IPEnabled, IPAddress, IPSubnet, DefaultIPGateway, DHCPEnabled, DHCPServer, DHCPLeaseObtained, DHCPLeaseExpires, DNSHostName, DNSServerSearchOrder | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		
 		String currentLine;
@@ -37,21 +58,6 @@ public class Win32_NetworkAdapterConfiguration {
 			}
 		br.close();
 		
-		//getting error stream
-		if(propertyValues.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
 		return propertyValues;
 	}	
 }
