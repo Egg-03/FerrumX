@@ -30,6 +30,9 @@ public class ErrorLog {
 			fos.write(timestamp.getBytes());
 			fos.write(message.getBytes());
 		} catch (IOException e) {e.printStackTrace();} 
-		finally {use_flag= false;}
+		finally {
+			use_flag= false;
+			notifyAll();
+		}
 	}
 }
