@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultCaret;
+import java.awt.Toolkit;
 
 public class ReportWindow extends JFrame {
 
@@ -72,6 +73,7 @@ public class ReportWindow extends JFrame {
 	 * Create the frame.
 	 */
 	private ReportWindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ReportWindow.class.getResource("/resources/icon_main.png")));
 		setTitle("WSIL Report GUI Beta Build v0.5");
 		setResizable(false);
 		setAlwaysOnTop(false);
