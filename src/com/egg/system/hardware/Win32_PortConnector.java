@@ -41,6 +41,7 @@ public class Win32_PortConnector {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -50,13 +51,15 @@ public class Win32_PortConnector {
 		
 		String value="";
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
 					portID.add(value=currentLine.substring(currentLine.indexOf(":")+1).strip());
 				else {
 					int lastIndex = portID.size()-1;
 					portID.set(lastIndex, portID.get(lastIndex).concat(value));
 				}
+			}
+				
 				
 		br.close();
 		
@@ -86,6 +89,7 @@ public class Win32_PortConnector {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

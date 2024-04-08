@@ -17,7 +17,7 @@ public class Win32_LogicalDiskToPartition {
 	
 	public static String getDriveLetter(String partitionID) throws IOException{
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		String command[] = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_LogicalDiskToPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+partitionID+"'} | Select-Object Dependent | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_LogicalDiskToPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+partitionID+"'} | Select-Object Dependent | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		try {
@@ -39,6 +39,7 @@ public class Win32_LogicalDiskToPartition {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

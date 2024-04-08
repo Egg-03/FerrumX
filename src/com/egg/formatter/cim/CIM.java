@@ -1,4 +1,4 @@
-package com.egg.formatter.CIM;
+package com.egg.formatter.cim;
 
 import java.io.IOException;
 

@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.egg.formatter.CIM.CIM;
+import com.egg.formatter.cim.CIM;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_Baseboard {
@@ -41,6 +41,7 @@ public class Win32_Baseboard {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

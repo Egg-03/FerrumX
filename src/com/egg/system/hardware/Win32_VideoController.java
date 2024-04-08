@@ -41,6 +41,7 @@ public class Win32_VideoController {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -49,13 +50,15 @@ public class Win32_VideoController {
 		int lastIndex;
 		String value = "";
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
 					gpuID.add(value =currentLine);
 				else {
 					lastIndex = gpuID.size()-1;
 					gpuID.set(lastIndex, gpuID.get(lastIndex).concat(value));
 				}
+			}
+				
 		br.close();
 		
 		//strip the property_name and keep only the property value
@@ -90,6 +93,7 @@ public class Win32_VideoController {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

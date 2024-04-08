@@ -2,7 +2,7 @@ package com.egg.system.hardware;
 
 import java.io.IOException;
 
-import com.egg.formatter.CIM.CIM;
+import com.egg.formatter.cim.CIM;
 import com.egg.system.currentuser.User;
 
 public class HardwareID {

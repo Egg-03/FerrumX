@@ -17,7 +17,7 @@ public class Win32_DiskDriveToDiskPartition {
 	
 	public static List<String> getPartitionList(String driveID) throws IOException{
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		String command[] = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDriveToDiskPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+driveID+"'} | Select-Object Dependent | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDriveToDiskPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+driveID+"'} | Select-Object Dependent | Format-List"};
 		
 		List<String> partitionList = new ArrayList<>();
 		
@@ -41,6 +41,7 @@ public class Win32_DiskDriveToDiskPartition {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -48,13 +49,15 @@ public class Win32_DiskDriveToDiskPartition {
 		
 		String value="";
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
 					partitionList.add(value=currentLine.substring(currentLine.indexOf("\"")+1, currentLine.lastIndexOf("\"")));
 				else {
 					int lastIndex = partitionList.size()-1;
 					partitionList.set(lastIndex, partitionList.get(lastIndex).concat(value));
 				}
+			}
+				
 					
 		br.close();
 		

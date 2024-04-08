@@ -47,6 +47,7 @@ public class Win32_PhysicalMemory {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		Process bankProcess = Runtime.getRuntime().exec(bankCommand);
@@ -69,6 +70,7 @@ public class Win32_PhysicalMemory {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(tagProcess.getInputStream()));
@@ -78,23 +80,27 @@ public class Win32_PhysicalMemory {
 		
 		String tagValue = "";
 		while((currentTagLine=br.readLine())!=null)
-			if(!currentTagLine.isBlank() || !currentTagLine.isEmpty())
+			if(!currentTagLine.isBlank() || !currentTagLine.isEmpty()) {
 				if(currentTagLine.contains(" : "))
 					memoryTag.add(tagValue= currentTagLine);
 				else {
 					int lastIndex = memoryTag.size()-1;
 					memoryTag.set(lastIndex, memoryTag.get(lastIndex).concat(tagValue));
 				}
+			}
+				
 		
 		String bankValue = "";
 		while((currentBankLine=br2.readLine())!=null)
-			if(!currentBankLine.isBlank() || !currentBankLine.isEmpty())
+			if(!currentBankLine.isBlank() || !currentBankLine.isEmpty()) {
 				if(currentBankLine.contains(" : "))
 					memoryBank.add(bankValue= currentBankLine);
 				else {
 					int lastIndex = memoryBank.size()-1;
 					memoryBank.set(lastIndex, memoryBank.get(lastIndex).concat(bankValue));
 				}
+			}
+				
 			
 		//strip the property_name and keep only the property value
 		for(int i=0 ; i<memoryTag.size(); i++) {
@@ -148,6 +154,7 @@ public class Win32_PhysicalMemory {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		

@@ -35,6 +35,11 @@ import com.egg.system.operating_system.Win32_OperatingSystem;
 import com.egg.system.operating_system.Win32_TimeZone;
 
 public class AIOReportGeneration {
+	
+	private AIOReportGeneration() {
+		throw new IllegalStateException("Utility Class");
+	}
+	
 	protected static void generate(JProgressBar progress, JLabel label, JButton button, JTextArea errorDisplay, JButton btnShowReport) {
 		new Thread(()-> {
 		try(FileWriter fos = new FileWriter(System.getProperty("user.home")+"\\Desktop\\Report.txt");){

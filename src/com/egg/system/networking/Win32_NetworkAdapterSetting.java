@@ -40,6 +40,7 @@ public class Win32_NetworkAdapterSetting {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -47,11 +48,13 @@ public class Win32_NetworkAdapterSetting {
 		String currentLine;
 			
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
 					setting = currentLine;
 				else
-					setting.concat(currentLine);
+					setting=setting.concat(currentLine);
+			}
+				
 			
 		br.close();
 		

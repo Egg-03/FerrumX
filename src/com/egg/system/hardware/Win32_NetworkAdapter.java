@@ -41,6 +41,7 @@ public class Win32_NetworkAdapter {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -50,13 +51,15 @@ public class Win32_NetworkAdapter {
 		int lastIndex;
 		String value = "";
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
 					deviceIDList.add(value =currentLine);
 				else {
 					lastIndex = deviceIDList.size()-1;
 					deviceIDList.set(lastIndex, deviceIDList.get(lastIndex).concat(value));
 				}
+			}
+				
 			
 		br.close();
 		
@@ -93,6 +96,7 @@ public class Win32_NetworkAdapter {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

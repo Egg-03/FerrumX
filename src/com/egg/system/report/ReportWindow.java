@@ -26,6 +26,7 @@ import java.awt.Desktop;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultCaret;
 
@@ -41,7 +42,7 @@ public class ReportWindow extends JFrame {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			ErrorLog l = new ErrorLog();
 			l.log(e.getMessage());
 		}
@@ -74,7 +75,7 @@ public class ReportWindow extends JFrame {
 		setTitle("WSIL Report GUI Beta Build v0.5");
 		setResizable(false);
 		setAlwaysOnTop(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 278);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

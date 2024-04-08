@@ -41,6 +41,7 @@ public class Win32_OperatingSystem {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -49,13 +50,15 @@ public class Win32_OperatingSystem {
 			
 		String value = "";
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
 					operatingSystemList.add(value =currentLine);
 				else {
 					int lastIndex = operatingSystemList.size()-1;
 					operatingSystemList.set(lastIndex, operatingSystemList.get(lastIndex).concat(value));
 				}
+			}
+				
 			
 		br.close();
 		
@@ -91,6 +94,7 @@ public class Win32_OperatingSystem {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

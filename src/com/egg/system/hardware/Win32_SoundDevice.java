@@ -42,6 +42,7 @@ public class Win32_SoundDevice {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -50,13 +51,15 @@ public class Win32_SoundDevice {
 		int lastIndex;
 		String value = "";
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
 					deviceIDList.add(value =currentLine);
 				else {
 					lastIndex = deviceIDList.size()-1;
 					deviceIDList.set(lastIndex, deviceIDList.get(lastIndex).concat(value));
 				}
+			}
+				
 		
 		//strip the property_name and keep only the property value
 		for(int i=0 ; i<deviceIDList.size(); i++) {
@@ -90,6 +93,7 @@ public class Win32_SoundDevice {
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
 		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
