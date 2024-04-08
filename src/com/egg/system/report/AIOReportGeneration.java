@@ -136,8 +136,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("HWID Generation: Success\n");
 		} catch (IOException | StringIndexOutOfBoundsException e) {
-			report.println("Could not fetch Hardware ID");
-			report.println(e);
+			report.println("Could not fetch Hardware ID: "+e);
 			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n"+e+"\n");
 		}
 	}
@@ -160,8 +159,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("Audio Info: Success");
 		}catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Unable to fetch Audio Info");
-			report.println(e);
+			report.println("Unable to fetch Audio Info: "+e);
 			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n"+e);
 		}
 	}
@@ -184,8 +182,7 @@ public class AIOReportGeneration {
 		else
 			errorDisplay.append("Printer Info: Success\n");
 	  }catch (IOException | IndexOutOfBoundsException e) {
-		  report.println("Unable to fetch Audio Info");
-		  report.println(e);
+		  report.println("Unable to fetch Audio Info: "+e);
 		  errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n"+e+"\n");
 	  }
 	}
@@ -215,8 +212,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("Storage Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Unable to fetch Storage Info");
-			report.println(e);
+			report.println("Unable to fetch Storage Info: "+e);
 			errorDisplay.append("STORAGE ERROR: Unable to fetch Storage Info\n"+e+"\n");
 		}
 	}
@@ -246,8 +242,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("Network Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch Network Info");
-			report.println(e);
+			report.println("Could not fetch Network Info: "+e);
 			errorDisplay.append("NETWORK ERROR: Unable to fetch Network Info\n"+e+"\n");
 		}
 	}
@@ -270,8 +265,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("I/O Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch I/O Info");
-			report.println(e);
+			report.println("Could not fetch I/O Info: "+e);
 			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n"+e+"\n");
 		}	
 	}
@@ -287,8 +281,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("BIOS Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch BIOS Info");
-			report.println(e);
+			report.println("Could not fetch BIOS Info: "+e);
 			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n"+e+"\n");
 		}
 	}
@@ -305,8 +298,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("Mainboard Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch Motherboard Info");
-			report.println(e);
+			report.println("Could not fetch Motherboard Info : "+e);
 			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n"+e+"\n");
 		}
 	}
@@ -328,8 +320,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("GPU Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch GPU Info");
-			report.println(e);
+			report.println("Could not fetch GPU Info : "+e);
 			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n"+e+"\n");
 		}
 	}
@@ -352,8 +343,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("Memory Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch Memory Info");
-			report.println(e);
+			report.println("Could not fetch Memory Info : "+e);
 			errorDisplay.append("MEMORY ERROR: Unable to fetch Memory Info\n"+e+"\n");
 		}
 	}
@@ -380,8 +370,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("CPU Cache Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch CPU Cache");
-			report.println(e);
+			report.println("Could not fetch CPU Cache: "+e);
 			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n"+e+"\n");
 		}
 	}
@@ -403,8 +392,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("OS Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch OS Info");
-			report.println(e);
+			report.println("Could not fetch OS Info: "+e);
 			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n"+e+"\n");
 		}
 	}
@@ -427,8 +415,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("CPU Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch CPU Info");
-			report.println(e);
+			report.println("Could not fetch CPU Info: "+e);
 			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n"+e+"\n");
 		}
 	}
@@ -447,8 +434,7 @@ public class AIOReportGeneration {
 			else
 				errorDisplay.append("Time-zone Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
-			report.println("Could not fetch Timezone Info");
-			report.println(e);
+			report.println("Could not fetch Timezone Info : "+e);
 			errorDisplay.append("TIMEZONE ERROR: Unable to fetch TimeZone Info\n"+e+"\n");
 		}
     }
