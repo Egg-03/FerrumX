@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.egg.system.currentuser.User;
+import com.egg.system.logger.ErrorLog;
 
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -41,7 +42,8 @@ public class ReportWindow extends JFrame {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Throwable e) {
-			e.printStackTrace();
+			ErrorLog l = new ErrorLog();
+			l.log(e.getMessage());
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -49,7 +51,8 @@ public class ReportWindow extends JFrame {
 					ReportWindow frame = ReportWindow.getInstance();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					ErrorLog l = new ErrorLog();
+					l.log(e.getMessage());
 				}
 			}
 		});
@@ -68,7 +71,7 @@ public class ReportWindow extends JFrame {
 	 * Create the frame.
 	 */
 	private ReportWindow() {
-		setTitle("WSIL Report GUI Beta Build v0.4");
+		setTitle("WSIL Report GUI Beta Build v0.5");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

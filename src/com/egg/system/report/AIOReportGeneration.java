@@ -3,6 +3,7 @@ package com.egg.system.report;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -123,8 +124,12 @@ public class AIOReportGeneration {
 	private static void reportHardwareID(PrintWriter report, JTextArea errorDisplay){
 		report.println("----------------------HUMAN READABLE HARDWARE ID------------------------");
 		try {
-		report.println(HardwareID.getHardwareID());
-		errorDisplay.append("HWID Generation: Success\n");
+			String hwid = HardwareID.getHardwareID();
+			report.println(hwid);
+			if(hwid.isBlank() || hwid.isEmpty())
+				errorDisplay.append("HWID Generation: Unavailable\n");
+			else
+				errorDisplay.append("HWID Generation: Success\n");
 		} catch (IOException | StringIndexOutOfBoundsException e) {
 			report.println("Could not fetch Hardware ID");
 			report.println(e);
@@ -134,7 +139,7 @@ public class AIOReportGeneration {
 
 	private static void reportSound(PrintWriter report, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> currentAudio;
+		Map<String, String> currentAudio = Collections.emptyMap();
 		
 		report.println("----------------------AUDIO INFO------------------------");
 		try {
@@ -142,10 +147,13 @@ public class AIOReportGeneration {
 			for(String currentID : deviceIDs) {
 				currentAudio = Win32_SoundDevice.getCurrentAudioDevice(currentID);
 				for(Map.Entry<String, String> entry: currentAudio.entrySet())
-				report.println(entry.getKey()+": "+entry.getValue());
+					report.println(entry.getKey()+": "+entry.getValue());
 				report.println();
 			}
-			errorDisplay.append("Audio Info: Success");
+			if(currentAudio.isEmpty())
+				errorDisplay.append("Audio Info: Unavailable");
+			else
+				errorDisplay.append("Audio Info: Success");
 		}catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Unable to fetch Audio Info");
 			report.println(e);
@@ -155,7 +163,7 @@ public class AIOReportGeneration {
 
 	private static void reportPrinter(PrintWriter report, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> currentPrinter;
+		Map<String, String> currentPrinter = Collections.emptyMap();
 		
 		report.println("----------------------PRINTER INFO------------------------");
 		try {
@@ -166,7 +174,10 @@ public class AIOReportGeneration {
 				report.println(entry.getKey()+": "+entry.getValue());
 			report.println();
 	    }
-		errorDisplay.append("Printer Info: Success\n");
+		if(currentPrinter.isEmpty())
+			errorDisplay.append("Printer Info: Unavailable\n");
+		else
+			errorDisplay.append("Printer Info: Success\n");
 	  }catch (IOException | IndexOutOfBoundsException e) {
 		  report.println("Unable to fetch Audio Info");
 		  report.println(e);
@@ -177,7 +188,7 @@ public class AIOReportGeneration {
 	private static void reportDisk(PrintWriter report, JTextArea errorDisplay) {
 		List<String> diskID;
 		List<String> diskPartition;
-		Map<String, String> disk;
+		Map<String, String> disk = Collections.emptyMap();
 		
 		report.println("----------------------STORAGE INFO------------------------");
 		try {
@@ -194,7 +205,10 @@ public class AIOReportGeneration {
 				}
 				report.println();
 			}
-			errorDisplay.append("Storage Info: Success\n");
+			if(disk.isEmpty())
+				errorDisplay.append("Storage Info: Unavailable\n");
+			else
+				errorDisplay.append("Storage Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Unable to fetch Storage Info");
 			report.println(e);
@@ -204,8 +218,8 @@ public class AIOReportGeneration {
 
 	private static void reportNetwork(PrintWriter report, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> networkAdapter;
-		Map<String, String> networkAdapterConfiguration;
+		Map<String, String> networkAdapter = Collections.emptyMap();
+		Map<String, String> networkAdapterConfiguration = Collections.emptyMap();
 		String index = "";
 		
 		report.println("----------------------NETWORK INFO------------------------");
@@ -222,7 +236,10 @@ public class AIOReportGeneration {
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
 			}
-			errorDisplay.append("Network Info: Success\n");
+			if(networkAdapter.isEmpty() || networkAdapterConfiguration.isEmpty())
+				errorDisplay.append("Network Info: Unavailable\n");
+			else
+				errorDisplay.append("Network Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Network Info");
 			report.println(e);
@@ -232,7 +249,7 @@ public class AIOReportGeneration {
 
 	private static void reportIO(PrintWriter report, JTextArea errorDisplay) {
 		List<String> portID;
-		Map<String, String> ports;
+		Map<String, String> ports= Collections.emptyMap();
 		
 		report.println("----------------------MAINBOARD I/O INFO------------------------");
 		try {
@@ -243,7 +260,10 @@ public class AIOReportGeneration {
 					report.println(port.getKey() + ": " + port.getValue());
 				report.println();
 			}
-			errorDisplay.append("I/O Info: Success\n");
+			if(ports.isEmpty())
+				errorDisplay.append("I/O Info: Unavailable\n");
+			else
+				errorDisplay.append("I/O Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch I/O Info");
 			report.println(e);
@@ -257,7 +277,10 @@ public class AIOReportGeneration {
 			Map<String, String> BIOS = Win32_BIOS.getPrimaryBIOS();
 			for (Map.Entry<String, String> entry : BIOS.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
-			errorDisplay.append("BIOS Info: Success\n");
+			if(BIOS.isEmpty())
+				errorDisplay.append("BIOS Info: Unavailable\n");
+			else
+				errorDisplay.append("BIOS Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch BIOS Info");
 			report.println(e);
@@ -271,7 +294,11 @@ public class AIOReportGeneration {
 			Map<String, String> motherboard = Win32_Baseboard.getMotherboard();
 			for (Map.Entry<String, String> entry : motherboard.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
-			errorDisplay.append("Mainboard Info: Success\n");
+			
+			if(motherboard.isEmpty())
+				errorDisplay.append("Mainboard Info: Unavailable\n");
+			else
+				errorDisplay.append("Mainboard Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Motherboard Info");
 			report.println(e);
@@ -281,7 +308,7 @@ public class AIOReportGeneration {
 
 	private static void reportGPU(PrintWriter report, JTextArea errorDisplay) {
 		List<String> gpuIDs;
-		Map<String, String> currentGPU;
+		Map<String, String> currentGPU = Collections.emptyMap();
 		
 		report.println("----------------------VIDEO CONTROLLER------------------------");
 		try {
@@ -291,7 +318,10 @@ public class AIOReportGeneration {
 				for (Map.Entry<String, String> entry : currentGPU.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 			}
-			errorDisplay.append("GPU Info: Success\n");
+			if(currentGPU.isEmpty())
+				errorDisplay.append("GPU Info: Unavailable\n");
+			else
+				errorDisplay.append("GPU Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch GPU Info");
 			report.println(e);
@@ -301,7 +331,7 @@ public class AIOReportGeneration {
 
 	private static void reportRAM(PrintWriter report, JTextArea errorDisplay) {
 		List<String> memoryID;
-		Map<String, String> memory;
+		Map<String, String> memory = Collections.emptyMap();
 		
 		report.println("----------------------SPD------------------------");
 		try {
@@ -312,7 +342,10 @@ public class AIOReportGeneration {
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
 			}
-			errorDisplay.append("Memory Info: Success\n");
+			if(memory.isEmpty())
+				errorDisplay.append("Memory Info: Unavailable\n");
+			else
+				errorDisplay.append("Memory Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Memory Info");
 			report.println(e);
@@ -324,7 +357,7 @@ public class AIOReportGeneration {
 		List<String> cpuID;
 		List<String> cacheID;
 		
-		Map<String, String> cache;
+		Map<String, String> cache = Collections.emptyMap();
 		report.println("----------------------CPU CACHE------------------------");
 		try {
 			cpuID = Win32_Processor.getDeviceIDList();
@@ -337,7 +370,10 @@ public class AIOReportGeneration {
 					report.println();
 				}
 			}
-			errorDisplay.append("CPU Cache Info: Success\n");
+			if(cache.isEmpty())
+				errorDisplay.append("CPU Cache Info: Unavailable\n");
+			else
+				errorDisplay.append("CPU Cache Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch CPU Cache");
 			report.println(e);
@@ -347,7 +383,7 @@ public class AIOReportGeneration {
 
 	private static void reportOS(PrintWriter report, JTextArea errorDisplay) {
 		List<String> oslist;
-		Map<String, String> osinfo;
+		Map<String, String> osinfo = Collections.emptyMap();
 		
 		report.println("----------------------OS INFO------------------------");
 		try {
@@ -357,7 +393,10 @@ public class AIOReportGeneration {
 				for (Map.Entry<String, String> entry : osinfo.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 			}
-			errorDisplay.append("OS Info: Success\n");
+			if(osinfo.isEmpty())
+				errorDisplay.append("OS Info: Unavailable\n");
+			else
+				errorDisplay.append("OS Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch OS Info");
 			report.println(e);
@@ -367,7 +406,7 @@ public class AIOReportGeneration {
 	
 	private static void reportCPU(PrintWriter report, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> currentCPU;
+		Map<String, String> currentCPU = Collections.emptyMap();
 		
 		report.println("----------------------CPU INFO------------------------");
 		try {
@@ -378,7 +417,10 @@ public class AIOReportGeneration {
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
 			}
-			errorDisplay.append("CPU Info: Success\n");
+			if(currentCPU.isEmpty())
+				errorDisplay.append("CPU Info: Unavailable\n");
+			else
+				errorDisplay.append("CPU Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch CPU Info");
 			report.println(e);
@@ -387,19 +429,22 @@ public class AIOReportGeneration {
 	}
 	
 	private static void reportTimeZone(PrintWriter report, JTextArea errorDisplay) {
-		Map<String, String> currentTimeZone;
+		Map<String, String> currentTimeZone= Collections.emptyMap();
 		
 		report.println("----------------------TIMEZONE------------------------");
 		try {
 			currentTimeZone= Win32_TimeZone.getOSTimeZone();
 			for (Map.Entry<String, String> entry : currentTimeZone.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
-			errorDisplay.append("Time-zone Info: Success\n");
+			
+			if(currentTimeZone.isEmpty())
+				errorDisplay.append("Time-zone Info: Unavailable\n");
+			else
+				errorDisplay.append("Time-zone Info: Success\n");
 		} catch (IOException | IndexOutOfBoundsException e) {
 			report.println("Could not fetch Timezone Info");
 			report.println(e);
 			errorDisplay.append("TIMEZONE ERROR: Unable to fetch TimeZone Info\n"+e+"\n");
-			
 		}
     }
 
