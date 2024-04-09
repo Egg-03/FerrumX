@@ -13,7 +13,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import com.egg.system.currentuser.User;
 import com.egg.system.logger.ErrorLog;
 
 import javax.swing.JLabel;
@@ -127,7 +126,7 @@ public class ReportWindow extends JFrame {
 		btnShowReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().open(new File(User.getHome()+"\\Desktop\\Report.txt"));
+					Desktop.getDesktop().open(new File("WSIReport.txt"));
 				} catch (IOException | NullPointerException | IllegalArgumentException | UnsupportedOperationException | SecurityException e0) {
 					errorDisplay.setText("SHOW REPORT ERROR: "+e0.getMessage());
 				}
