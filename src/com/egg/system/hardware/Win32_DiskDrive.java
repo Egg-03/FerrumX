@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_DiskDrive {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_DiskDrive";
 	private Win32_DiskDrive() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getDriveID() throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getDriveID()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDrive | Select-Object DeviceID | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
@@ -66,7 +66,7 @@ public class Win32_DiskDrive {
 	}
 	
 	public static Map<String, String> getDrive(String driveID) throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getDrive(String driveID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDrive | Where-Object {$_.DeviceID -eq '"+driveID+"'} | Select-Object Caption, Model, Size, FirmwareRevision, SerialNumber, Partitions, Status, InterfaceType, PNPDeviceID | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

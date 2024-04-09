@@ -15,7 +15,7 @@ class CIMFormat {
 	}
 	
 	private static String runCommand(String WMI_Class, String WMI_Attribute) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "runCommand(String WMI_Class, String WMI_Attribute)";
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
@@ -60,7 +60,7 @@ class CIMFormat {
 	}
 	
 	private static String runCommand(String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "runCommand(String WMI_Class, String whereCondition, String WMI_Attribute)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" Where-Object "+whereCondition+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

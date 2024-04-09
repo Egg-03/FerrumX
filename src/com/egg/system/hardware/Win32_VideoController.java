@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_VideoController {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_VideoController";
 	private Win32_VideoController() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getGPUID() throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getGPUID()";
 		List<String> gpuID = new ArrayList<>();
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_VideoController | Select-Object DeviceID | Format-List"};
@@ -69,7 +69,7 @@ public class Win32_VideoController {
 	}
 	
 	public static Map<String, String> getGPU(String gpuID) throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getGPU(String gpuID)";
 		Map<String, String> gpu = new LinkedHashMap<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.DeviceID -eq '"+gpuID+"'} | Select-Object Name, PNPDeviceID, CurrentBitsPerPixel, CurrentHorizontalResolution, CurrentVerticalResolution, CurrentRefreshRate, MaxRefreshRate, MinRefreshRate, AdapterDACType, AdapterRAM, DriverDate, DriverVersion, VideoProcessor | Format-List"};
 		

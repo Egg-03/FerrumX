@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_SoundDevice {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_SoundDevice";
 	private Win32_SoundDevice() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getSoundDeviceID() throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getSoundDeviceID()";
 		
 		List<String> deviceIDList = new ArrayList<>();
 		
@@ -70,7 +70,7 @@ public class Win32_SoundDevice {
 	}
 	
 	public static Map<String, String> getCurrentAudioDevice(String deviceID) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getCurrentAudioDevice(String deviceID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object ProductName, Status, Caption, PNPDeviceID, Manufacturer | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_OperatingSystem {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_OperatingSystem";
 	private Win32_OperatingSystem(){
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getOSList() throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getOSList()";
 		List<String> operatingSystemList = new ArrayList<>();
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object Name | Format-List"};
@@ -71,7 +71,7 @@ public class Win32_OperatingSystem {
 		}
 	
 	public static Map<String, String> getOSInfo(String OSName) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getOSInfo(String OSName)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Where-Object {$_.Name -eq '"+OSName+"'} | Select-Object Caption, InstallDate, CSName, LastBootUpTime, LocalDateTime, Distributed, NumberOfUsers, Version, BootDevice, BuildNumber, BuildType, Manufacturer, OSArchitecture, MUILanguages, PortableOperatingSystem, Primary, RegisteredUser, SerialNumber, ServicePackMajorVersion, ServicePackMinorVersion, SystemDirectory, SystemDrive, WindowsDirectory | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

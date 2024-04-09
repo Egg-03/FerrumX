@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_Processor{
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_Processor";
 	private Win32_Processor() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getDeviceIDList() throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getDeviceIDList()";
 		List<String> deviceIDList = new ArrayList<>();
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Select-Object DeviceID | Format-List"};
@@ -70,7 +70,7 @@ public class Win32_Processor{
 	}
 	
 	public static Map<String, String> getCurrentProcessor(String deviceID) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getCurrentProcessor(String deviceID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, NumberOfCores, ThreadCount, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

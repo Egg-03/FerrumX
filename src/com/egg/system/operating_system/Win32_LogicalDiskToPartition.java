@@ -10,13 +10,13 @@ import com.egg.system.logger.ErrorLog;
 
 //Associates a drive letter to a given partition
 public class Win32_LogicalDiskToPartition {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_LogicalDiskToPartition";
 	private Win32_LogicalDiskToPartition() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static String getDriveLetter(String partitionID) throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getDriveLetter(String partitionID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_LogicalDiskToPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+partitionID+"'} | Select-Object Dependent | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

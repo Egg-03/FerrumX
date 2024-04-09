@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_TimeZone {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_TimeZone";
 	private Win32_TimeZone() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static Map<String, String> getOSTimeZone() throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getOSTimeZone()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_TimeZone | Select-Object Caption, Bias, StandardName | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_Printer {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_Printer";
 	private Win32_Printer() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getDeviceIDList() throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getDeviceIDList()";
 		List<String> deviceIDList = new ArrayList<>();
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Printer | Select-Object DeviceID | Format-List"};
@@ -70,7 +70,7 @@ public class Win32_Printer {
 	}
 	
 	public static Map<String, String> getCurrentPrinter(String deviceID) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getCurrentPrinter(String deviceID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Printer | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, HorizontalResolution, VerticalResolution, Capabilites, CapabilityDescriptions, Default, DriverName, Hidden, Local, Network, PortName, PrintProcessor, Shared, ShareName, SpoolEnabled, WorkOffline  | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

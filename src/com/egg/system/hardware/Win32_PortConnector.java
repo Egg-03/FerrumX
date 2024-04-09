@@ -12,13 +12,13 @@ import com.egg.system.logger.ErrorLog;
 
 //represents a set of all the ports available in a motherboard
 public class Win32_PortConnector {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_PortConnector()";
 	private Win32_PortConnector() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getBaseboardPortID() throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getBaseboardPortID()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PortConnector | Select-Object Tag | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
@@ -67,7 +67,7 @@ public class Win32_PortConnector {
 	}
 	
 	public static Map<String, String> getBaseboardPorts(String portID) throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getBaseboardPorts()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PortConnector | Where-Object {$_.Tag -eq '"+portID+"'} | Select-Object Tag, ExternalReferenceDesignator, InternalReferenceDesignator | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

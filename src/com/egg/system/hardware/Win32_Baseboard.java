@@ -12,13 +12,13 @@ import com.egg.formatter.cim.CIM;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_Baseboard {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_Baseboard";
 	private Win32_Baseboard() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static Map<String,String> getMotherboard() throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getMotherboard()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Baseboard | Select-Object Manufacturer, Model, Product, SerialNumber, Version | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

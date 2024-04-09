@@ -9,13 +9,13 @@ import java.util.List;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_SystemDriver {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_SystemDriver";
 	private Win32_SystemDriver() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getDrivers() throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getDrivers()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SystemDriver | Select-Object Caption, PathName, State | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

@@ -1,8 +1,6 @@
 package com.egg.system.report;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -46,17 +44,15 @@ public class ReportWindow extends JFrame {
 			ErrorLog l = new ErrorLog();
 			l.log(e.getMessage());
 		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ReportWindow frame = ReportWindow.getInstance();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					ErrorLog l = new ErrorLog();
-					l.log(e.getMessage());
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+			  try {
+			    ReportWindow frame = ReportWindow.getInstance();
+			    frame.setVisible(true);
+			  } catch (Exception e) {
+			    ErrorLog l = new ErrorLog();
+			    l.log(e.getMessage());
+			  }
+			});
 	}
 	
 	//Create the instance; make it singleton
@@ -73,7 +69,7 @@ public class ReportWindow extends JFrame {
 	 */
 	private ReportWindow() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReportWindow.class.getResource("/resources/icon_main.png")));
-		setTitle("WSIL Report GUI Beta Build v0.5");
+		setTitle("WSIL Report GUI Beta Build v0.6");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -123,26 +119,23 @@ public class ReportWindow extends JFrame {
 		contentPane.add(errorDisplayScroll);
 		
 		JButton btnShowReport = new JButton("Show Report");
-		btnShowReport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnShowReport.addActionListener(e-> {
 				try {
 					Desktop.getDesktop().open(new File("WSIReport.txt"));
 				} catch (IOException | NullPointerException | IllegalArgumentException | UnsupportedOperationException | SecurityException e0) {
 					errorDisplay.setText("SHOW REPORT ERROR: "+e0.getMessage());
 				}
-			}
 		});
+		
 		btnShowReport.setBounds(224, 11, 117, 23);
 		contentPane.add(btnShowReport);
 		
 		JButton mainOperation = new JButton("Generate");
-		mainOperation.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mainOperation.addActionListener(e-> {
 				progressBar_1.setVisible(false);
 				progressBar.setVisible(true);
 				errorDisplay.setText("");
 				AIOReportGeneration.generate(progressBar, currentOperation, mainOperation, errorDisplay, btnShowReport);
-			}
 		});
 		mainOperation.setBounds(95, 11, 117, 23);
 		contentPane.add(mainOperation);	

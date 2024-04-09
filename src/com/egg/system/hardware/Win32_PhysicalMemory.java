@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_PhysicalMemory {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_PhysicalMemory";
 	private Win32_PhysicalMemory() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getTag() throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getTag()";
 		List<String> memoryTag = new ArrayList<>();
 		
 		String[] tagCommand = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Select-Object Tag | Format-List"};
@@ -69,7 +69,7 @@ public class Win32_PhysicalMemory {
 	}
 	
 	public static Map<String, String> getMemory(String memoryID) throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getMemory(String memoryID)";
 		Map<String, String> memory = new LinkedHashMap<>();
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Where-Object {$_.Tag -eq '"+memoryID+"'} | Select-Object Name, Manufacturer, Model, OtherIdentifyingInfo, PartNumber, Tag, FormFactor, BankLabel, Capacity, DataWidth, Speed, ConfiguredClockSpeed, DeviceLocator, SerialNumber | Format-List"};

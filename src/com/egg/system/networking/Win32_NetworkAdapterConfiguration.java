@@ -11,13 +11,13 @@ import java.util.Map;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_NetworkAdapterConfiguration {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_NetworkAdapterConfiguration";
 	private Win32_NetworkAdapterConfiguration() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static Map<String,String> getAdapterConfiguration(String adapterIndex) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getAdapterConfiguration(String adapterIndex)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Where-Object {$_.Index -eq '"+adapterIndex+"'} | Select-Object IPEnabled, IPAddress, IPSubnet, DefaultIPGateway, DHCPEnabled, DHCPServer, DHCPLeaseObtained, DHCPLeaseExpires, DNSHostName, DNSServerSearchOrder | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);

@@ -10,13 +10,13 @@ import com.egg.system.logger.ErrorLog;
 
 //Relates the Drive ID provided in Win32_DiskDrive with it's associated partitions in Win32_DiskPartition
 public class Win32_DiskDriveToDiskPartition {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_DiskDriveToDiskPartition";
 	private Win32_DiskDriveToDiskPartition() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static List<String> getPartitionList(String driveID) throws IOException{
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getPartitionList(String driveID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDriveToDiskPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+driveID+"'} | Select-Object Dependent | Format-List"};
 		
 		List<String> partitionList = new ArrayList<>();

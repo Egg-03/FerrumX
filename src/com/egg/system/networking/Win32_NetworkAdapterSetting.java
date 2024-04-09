@@ -10,13 +10,13 @@ import com.egg.system.logger.ErrorLog;
 
 //Relates a network adapter and its configuration settings.
 public class Win32_NetworkAdapterSetting {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_NetworkAdapterSetting";
 	private Win32_NetworkAdapterSetting() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	public static String getIndex(String deviceID) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+		String methodName = "getIndex(String deviceID)";
 		String setting = "";
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterSetting |Where-Object {$_.Element.DeviceID -eq '"+deviceID+"'} | Select-Object Setting | Format-List"};
