@@ -16,7 +16,7 @@ public class HardwareID {
 		String motherBoardName = CIM.getValues("Win32_BaseBoard", "Product");
 		String deviceName = CIM.getValues("Win32_OperatingSystem", "CSName");
 		String userName = User.getUsername();
-		int countRAM = Win32_PhysicalMemory.getTagOrBank().size();
+		int countRAM = Win32_PhysicalMemory.getTag().size();
 		int countStorage = Win32_DiskDrive.getDriveID().size();
 		
 		return userName+"/"+deviceName+"/"+cpuName+"/"+cpuId+"/"+motherBoardName+"/"+countRAM+"/"+countStorage;

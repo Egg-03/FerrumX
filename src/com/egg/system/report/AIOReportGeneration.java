@@ -331,7 +331,7 @@ public class AIOReportGeneration {
 		
 		report.println("----------------------SPD------------------------");
 		try {
-			memoryID=Win32_PhysicalMemory.getTagOrBank();
+			memoryID=Win32_PhysicalMemory.getTag();
 			for (String id : memoryID) {
 				memory = Win32_PhysicalMemory.getMemory(id);
 				for (Map.Entry<String, String> entry : memory.entrySet())

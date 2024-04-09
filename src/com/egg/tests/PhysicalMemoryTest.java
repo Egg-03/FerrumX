@@ -8,7 +8,7 @@ import com.egg.system.hardware.Win32_PhysicalMemory;
 
 public class PhysicalMemoryTest {
 	public static void main(String[] args) throws IOException {
-		List<String> memoryID = Win32_PhysicalMemory.getTagOrBank();
+		List<String> memoryID = Win32_PhysicalMemory.getTag();
 		Map<String, String> memory = null;
 		
 		System.out.println(memoryID);

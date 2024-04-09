@@ -16,16 +16,11 @@ public class Win32_PhysicalMemory {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	private static boolean tagCounter = false;
-	private static boolean bankCounter = false;
-	
-	public static List<String> getTagOrBank() throws IOException{
+	public static List<String> getTag() throws IOException{
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		List<String> memoryTag = new ArrayList<>();
-		List<String> memoryBank = new ArrayList<>();
 		
 		String[] tagCommand = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Select-Object Tag | Format-List"};
-		String[] bankCommand = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Select-Object BankLabel | Format-List"};
 		
 		Process tagProcess = Runtime.getRuntime().exec(tagCommand);
 		try {
@@ -50,33 +45,9 @@ public class Win32_PhysicalMemory {
 			Thread.currentThread().interrupt();
 		}
 		
-		Process bankProcess = Runtime.getRuntime().exec(bankCommand);
-		try {
-			int exitCode = bankProcess.waitFor();
-			if(exitCode!=0) {
-				BufferedReader error = new BufferedReader(new InputStreamReader(bankProcess.getErrorStream()));
-				String errorLine;
-     			List<String> errorList = new ArrayList<>();
-				
-				while((errorLine=error.readLine())!=null)
-					if(!errorLine.isBlank() || !errorLine.isEmpty())
-						errorList.add(errorLine);
-				
-				error.close();
-				ErrorLog errorLog = new ErrorLog();
-				
-				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
-			}
-		}catch (InterruptedException e) {
-			ErrorLog errorLog = new ErrorLog();
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
-			Thread.currentThread().interrupt();
-		}
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(tagProcess.getInputStream()));
-		BufferedReader br2 = new BufferedReader(new InputStreamReader(bankProcess.getInputStream()));
 		String currentTagLine;
-		String currentBankLine;
 		
 		String tagValue = "";
 		while((currentTagLine=br.readLine())!=null)
@@ -88,51 +59,20 @@ public class Win32_PhysicalMemory {
 					memoryTag.set(lastIndex, memoryTag.get(lastIndex).concat(tagValue));
 				}
 			}
-				
-		
-		String bankValue = "";
-		while((currentBankLine=br2.readLine())!=null)
-			if(!currentBankLine.isBlank() || !currentBankLine.isEmpty()) {
-				if(currentBankLine.contains(" : "))
-					memoryBank.add(bankValue= currentBankLine);
-				else {
-					int lastIndex = memoryBank.size()-1;
-					memoryBank.set(lastIndex, memoryBank.get(lastIndex).concat(bankValue));
-				}
-			}
-				
-			
 		//strip the property_name and keep only the property value
 		for(int i=0 ; i<memoryTag.size(); i++) {
 			memoryTag.set(i, memoryTag.get(i).substring(memoryTag.get(i).indexOf(":")+1).strip());
 		}
 		
-		for(int i=0 ; i<memoryBank.size(); i++) {
-			memoryBank.set(i, memoryBank.get(i).substring(memoryBank.get(i).indexOf(":")+1).strip());
-		}
 		br.close();
-		br2.close();
-		
-		if(!memoryTag.contains("") || !memoryTag.isEmpty()) {
-			tagCounter = true;
-			return memoryTag;
-		}	
-		else {
-			bankCounter = true;
-			return memoryBank;
-		}
+		return memoryTag;
 	}
 	
 	public static Map<String, String> getMemory(String memoryID) throws IOException{
 		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
 		Map<String, String> memory = new LinkedHashMap<>();
-		String property = "";
-		if(tagCounter)
-			property = "Tag";
-		else if(bankCounter)
-			property = "BankLabel";
 		
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Where-Object {$_."+property+" -eq '"+memoryID+"'} | Select-Object Name, Manufacturer, Model, OtherIdentifyingInfo, PartNumber, Tag, FormFactor, BankLabel, Capacity, DataWidth, Speed, ConfiguredClockSpeed, DeviceLocator, SerialNumber | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PhysicalMemory | Where-Object {$_.Tag -eq '"+memoryID+"'} | Select-Object Name, Manufacturer, Model, OtherIdentifyingInfo, PartNumber, Tag, FormFactor, BankLabel, Capacity, DataWidth, Speed, ConfiguredClockSpeed, DeviceLocator, SerialNumber | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		try {
