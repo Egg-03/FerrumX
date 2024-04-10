@@ -101,7 +101,7 @@ public class ReportWindow extends JFrame {
 		JTextArea errorDisplay = new JTextArea();
 		errorDisplay.setWrapStyleWord(true);
 		errorDisplay.setLineWrap(true);
-		errorDisplay.setForeground(new Color(0, 153, 255));
+		errorDisplay.setForeground(Color.YELLOW);
 		errorDisplay.setFont(new Font("Consolas", Font.PLAIN, 13));
 		errorDisplay.setBackground(UIManager.getColor("Actions.GreyInline"));
 		errorDisplay.setEditable(false);
