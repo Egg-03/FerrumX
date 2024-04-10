@@ -10,7 +10,7 @@ import com.egg.system.operating_system.Win32_LogicalDiskToPartition;
 
 public class DiskDriveTest {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException{
 		List<String> diskID = Win32_DiskDrive.getDriveID();
 		List<String> diskPartition;
 		Map<String, String> disk = null;

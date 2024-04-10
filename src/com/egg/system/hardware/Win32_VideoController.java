@@ -16,7 +16,7 @@ public class Win32_VideoController {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getGPUID() throws IOException{
+	public static List<String> getGPUID() throws IOException, IndexOutOfBoundsException{
 		String methodName = "getGPUID()";
 		List<String> gpuID = new ArrayList<>();
 		
@@ -68,7 +68,7 @@ public class Win32_VideoController {
 		return gpuID;		
 	}
 	
-	public static Map<String, String> getGPU(String gpuID) throws IOException{
+	public static Map<String, String> getGPU(String gpuID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getGPU(String gpuID)";
 		Map<String, String> gpu = new LinkedHashMap<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_VideoController | Where-Object {$_.DeviceID -eq '"+gpuID+"'} | Select-Object Name, PNPDeviceID, CurrentBitsPerPixel, CurrentHorizontalResolution, CurrentVerticalResolution, CurrentRefreshRate, MaxRefreshRate, MinRefreshRate, AdapterDACType, AdapterRAM, DriverDate, DriverVersion, VideoProcessor | Format-List"};

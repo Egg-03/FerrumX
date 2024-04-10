@@ -16,7 +16,7 @@ public class Win32_BIOS {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static Map<String, String> getPrimaryBIOS() throws IOException {
+	public static Map<String, String> getPrimaryBIOS() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getPrimaryBIOS()";
 		String[] command = {"powershell.exe", "/c", " Get-CimInstance -ClassName Win32_BIOS | Where-Object {$_.PrimaryBIOS -eq 'True'} |Select-Object Name, Caption, Manufacturer, ReleaseDate, SMBIOSPResent, Status, Version, CurrentLanguage, SMBIOSBIOSVersion | Format-List"};
 		

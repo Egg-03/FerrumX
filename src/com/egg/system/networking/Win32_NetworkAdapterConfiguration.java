@@ -16,7 +16,7 @@ public class Win32_NetworkAdapterConfiguration {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static Map<String,String> getAdapterConfiguration(String adapterIndex) throws IOException {
+	public static Map<String,String> getAdapterConfiguration(String adapterIndex) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getAdapterConfiguration(String adapterIndex)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Where-Object {$_.Index -eq '"+adapterIndex+"'} | Select-Object IPEnabled, IPAddress, IPSubnet, DefaultIPGateway, DHCPEnabled, DHCPServer, DHCPLeaseObtained, DHCPLeaseExpires, DNSHostName, DNSServerSearchOrder | Format-List"};
 		

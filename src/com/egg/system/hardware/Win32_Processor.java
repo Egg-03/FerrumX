@@ -16,7 +16,7 @@ public class Win32_Processor{
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getDeviceIDList() throws IOException {
+	public static List<String> getDeviceIDList() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getDeviceIDList()";
 		List<String> deviceIDList = new ArrayList<>();
 		
@@ -69,7 +69,7 @@ public class Win32_Processor{
 		return deviceIDList;
 	}
 	
-	public static Map<String, String> getCurrentProcessor(String deviceID) throws IOException {
+	public static Map<String, String> getCurrentProcessor(String deviceID) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getCurrentProcessor(String deviceID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Processor | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, NumberOfCores, ThreadCount, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID | Format-List"};
 		

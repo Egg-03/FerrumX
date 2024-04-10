@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -135,15 +136,23 @@ public class AIOReportGeneration {
 				errorDisplay.append("HWID Generation: Unavailable\n");
 			else
 				errorDisplay.append("HWID Generation: Success\n");
-		} catch (IOException | StringIndexOutOfBoundsException e) {
-			report.println("Could not fetch Hardware ID: "+e);
-			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n"+e+"\n");
+		} catch (InterruptedException | ExecutionException e) {
+			Throwable cause = e.getCause();
+			if(cause instanceof IOException || cause instanceof IndexOutOfBoundsException) {
+				report.println("Could not fetch Hardware ID: "+cause.getMessage());
+				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n"+cause.getMessage()+"\n");
+			}
+			else {
+				report.println("Could not fetch Hardware ID: "+e.getMessage());
+				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n"+e.getMessage()+"\n");
+				Thread.currentThread().interrupt();
+			}
 		}
 	}
 
 	private static void reportSound(PrintWriter report, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> currentAudio = Collections.emptyMap();
+		Map<String, String> currentAudio = Collections.emptyMap(); //this prevents null pointer exception
 		
 		report.println("----------------------AUDIO INFO------------------------");
 		try {

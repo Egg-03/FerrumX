@@ -39,7 +39,7 @@ public class ReportWindow extends JFrame {
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
 		} catch (Exception e) {
 			ErrorLog l = new ErrorLog();
 			l.log(e.getMessage());
@@ -69,7 +69,7 @@ public class ReportWindow extends JFrame {
 	 */
 	private ReportWindow() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReportWindow.class.getResource("/resources/icon_main.png")));
-		setTitle("WSIL Report GUI Beta Build v0.6");
+		setTitle("FerrumX Report Tool v1.0.0");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

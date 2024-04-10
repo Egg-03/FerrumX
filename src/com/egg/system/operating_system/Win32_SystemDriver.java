@@ -14,7 +14,7 @@ public class Win32_SystemDriver {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getDrivers() throws IOException {
+	public static List<String> getDrivers() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getDrivers()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SystemDriver | Select-Object Caption, PathName, State | Format-List"};
 		

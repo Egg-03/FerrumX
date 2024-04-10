@@ -16,7 +16,7 @@ public class Win32_SoundDevice {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getSoundDeviceID() throws IOException {
+	public static List<String> getSoundDeviceID() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getSoundDeviceID()";
 		
 		List<String> deviceIDList = new ArrayList<>();
@@ -69,7 +69,7 @@ public class Win32_SoundDevice {
 		return deviceIDList;
 	}
 	
-	public static Map<String, String> getCurrentAudioDevice(String deviceID) throws IOException {
+	public static Map<String, String> getCurrentAudioDevice(String deviceID) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getCurrentAudioDevice(String deviceID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_SoundDevice | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object ProductName, Status, Caption, PNPDeviceID, Manufacturer | Format-List"};
 		

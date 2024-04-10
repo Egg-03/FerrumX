@@ -17,7 +17,7 @@ public class Win32_Baseboard {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static Map<String,String> getMotherboard() throws IOException {
+	public static Map<String,String> getMotherboard() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getMotherboard()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Baseboard | Select-Object Manufacturer, Model, Product, SerialNumber, Version | Format-List"};
 		

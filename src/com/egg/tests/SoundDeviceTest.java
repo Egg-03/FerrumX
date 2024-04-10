@@ -8,7 +8,7 @@ import com.egg.system.hardware.Win32_SoundDevice;
 
 public class SoundDeviceTest {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
 		List<String> deviceIDs = Win32_SoundDevice.getSoundDeviceID();
 		Map<String, String> currentAudio;
 		

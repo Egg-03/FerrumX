@@ -16,7 +16,7 @@ public class Win32_TimeZone {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static Map<String, String> getOSTimeZone() throws IOException {
+	public static Map<String, String> getOSTimeZone() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getOSTimeZone()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_TimeZone | Select-Object Caption, Bias, StandardName | Format-List"};
 		

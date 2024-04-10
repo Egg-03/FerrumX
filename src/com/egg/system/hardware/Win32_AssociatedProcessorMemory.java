@@ -17,7 +17,7 @@ public class Win32_AssociatedProcessorMemory {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getCacheID(String cpuID) throws IOException{
+	public static List<String> getCacheID(String cpuID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getCacheID(String cpuID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_AssociatedProcessorMemory | Where-Object {$_.Dependent.DeviceID -eq '"+cpuID+"'} | Select-Object Antecedent | Format-List"};
 		

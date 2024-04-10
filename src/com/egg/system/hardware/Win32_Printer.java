@@ -16,7 +16,7 @@ public class Win32_Printer {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getDeviceIDList() throws IOException {
+	public static List<String> getDeviceIDList() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getDeviceIDList()";
 		List<String> deviceIDList = new ArrayList<>();
 		
@@ -69,7 +69,7 @@ public class Win32_Printer {
 		return deviceIDList;
 	}
 	
-	public static Map<String, String> getCurrentPrinter(String deviceID) throws IOException {
+	public static Map<String, String> getCurrentPrinter(String deviceID) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getCurrentPrinter(String deviceID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Printer | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, HorizontalResolution, VerticalResolution, Capabilites, CapabilityDescriptions, Default, DriverName, Hidden, Local, Network, PortName, PrintProcessor, Shared, ShareName, SpoolEnabled, WorkOffline  | Format-List"};
 		

@@ -8,7 +8,7 @@ import com.egg.system.hardware.Win32_VideoController;
 
 public class VideoControllerTest {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
 		List<String> gpuIDs = Win32_VideoController.getGPUID();
 		Map<String, String> currentGPU;
 		

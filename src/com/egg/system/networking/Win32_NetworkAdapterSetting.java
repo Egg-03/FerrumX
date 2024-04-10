@@ -15,7 +15,7 @@ public class Win32_NetworkAdapterSetting {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static String getIndex(String deviceID) throws IOException {
+	public static String getIndex(String deviceID) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getIndex(String deviceID)";
 		String setting = "";
 		

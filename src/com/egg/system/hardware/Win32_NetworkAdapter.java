@@ -17,7 +17,7 @@ public class Win32_NetworkAdapter {
 	}
 	
 	//will retrieve all the adapter IDs which are currently active and providing Internet
-	public static List<String> getDeviceIDList() throws IOException {
+	public static List<String> getDeviceIDList() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getDeviceIDList()";
 		List<String> deviceIDList = new ArrayList<>();
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter -Filter \"NetEnabled='True'\" | Select-Object DeviceID | Format-List"};
@@ -72,7 +72,7 @@ public class Win32_NetworkAdapter {
 	
 	//will return a hashmap of the following properties as a key and their corresponding values:
 	//Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset
-	public static Map<String, String> getNetworkAdapters(String deviceID) throws IOException {
+	public static Map<String, String> getNetworkAdapters(String deviceID) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getNetworkAdapters(String deviceID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset | Format-List"};
 	

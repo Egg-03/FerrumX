@@ -8,7 +8,7 @@ import com.egg.system.hardware.Win32_Printer;
 
 
 public class PrinterTest {
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException{
 		List<String> deviceIDs = Win32_Printer.getDeviceIDList();
 		Map<String, String> currentPrinter;
 		

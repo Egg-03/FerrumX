@@ -17,7 +17,7 @@ public class Win32_PortConnector {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getBaseboardPortID() throws IOException{
+	public static List<String> getBaseboardPortID() throws IOException, IndexOutOfBoundsException{
 		String methodName = "getBaseboardPortID()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PortConnector | Select-Object Tag | Format-List"};
 		
@@ -66,7 +66,7 @@ public class Win32_PortConnector {
 		return portID;
 	}
 	
-	public static Map<String, String> getBaseboardPorts(String portID) throws IOException{
+	public static Map<String, String> getBaseboardPorts(String portID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getBaseboardPorts()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_PortConnector | Where-Object {$_.Tag -eq '"+portID+"'} | Select-Object Tag, ExternalReferenceDesignator, InternalReferenceDesignator | Format-List"};
 		

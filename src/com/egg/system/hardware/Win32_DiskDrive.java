@@ -16,7 +16,7 @@ public class Win32_DiskDrive {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getDriveID() throws IOException{
+	public static List<String> getDriveID() throws IOException, IndexOutOfBoundsException{
 		String methodName = "getDriveID()";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDrive | Select-Object DeviceID | Format-List"};
 		
@@ -65,7 +65,7 @@ public class Win32_DiskDrive {
 		return driveID;
 	}
 	
-	public static Map<String, String> getDrive(String driveID) throws IOException{
+	public static Map<String, String> getDrive(String driveID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getDrive(String driveID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDrive | Where-Object {$_.DeviceID -eq '"+driveID+"'} | Select-Object Caption, Model, Size, FirmwareRevision, SerialNumber, Partitions, Status, InterfaceType, PNPDeviceID | Format-List"};
 		

@@ -15,7 +15,7 @@ public class Win32_LogicalDiskToPartition {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static String getDriveLetter(String partitionID) throws IOException{
+	public static String getDriveLetter(String partitionID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getDriveLetter(String partitionID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_LogicalDiskToPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+partitionID+"'} | Select-Object Dependent | Format-List"};
 		

@@ -16,7 +16,7 @@ public class Win32_OperatingSystem {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getOSList() throws IOException {
+	public static List<String> getOSList() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getOSList()";
 		List<String> operatingSystemList = new ArrayList<>();
 		
@@ -70,7 +70,7 @@ public class Win32_OperatingSystem {
 		return operatingSystemList;
 		}
 	
-	public static Map<String, String> getOSInfo(String OSName) throws IOException {
+	public static Map<String, String> getOSInfo(String OSName) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getOSInfo(String OSName)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_OperatingSystem | Where-Object {$_.Name -eq '"+OSName+"'} | Select-Object Caption, InstallDate, CSName, LastBootUpTime, LocalDateTime, Distributed, NumberOfUsers, Version, BootDevice, BuildNumber, BuildType, Manufacturer, OSArchitecture, MUILanguages, PortableOperatingSystem, Primary, RegisteredUser, SerialNumber, ServicePackMajorVersion, ServicePackMinorVersion, SystemDirectory, SystemDrive, WindowsDirectory | Format-List"};
 		

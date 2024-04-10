@@ -16,7 +16,7 @@ public class Win32_PhysicalMemory {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getTag() throws IOException{
+	public static List<String> getTag() throws IOException, IndexOutOfBoundsException{
 		String methodName = "getTag()";
 		List<String> memoryTag = new ArrayList<>();
 		
@@ -68,7 +68,7 @@ public class Win32_PhysicalMemory {
 		return memoryTag;
 	}
 	
-	public static Map<String, String> getMemory(String memoryID) throws IOException{
+	public static Map<String, String> getMemory(String memoryID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getMemory(String memoryID)";
 		Map<String, String> memory = new LinkedHashMap<>();
 		
