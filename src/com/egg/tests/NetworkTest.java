@@ -8,7 +8,7 @@ import com.egg.system.networking.Win32_NetworkAdapterConfiguration;
 import com.egg.system.networking.Win32_NetworkAdapterSetting;
 
 public class NetworkTest {
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception, IndexOutOfBoundsException {
 		List<String> deviceIDs = Win32_NetworkAdapter.getDeviceIDList();
 		Map<String, String> networkAdapter;
 		Map<String, String> networkAdapterConfiguration;

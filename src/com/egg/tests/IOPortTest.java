@@ -8,7 +8,7 @@ import com.egg.system.hardware.Win32_PortConnector;
 
 public class IOPortTest {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
 		List<String> portID = Win32_PortConnector.getBaseboardPortID();
 		Map<String, String> ports = null;
 		

@@ -7,7 +7,7 @@ import com.egg.system.hardware.Win32_Baseboard;
 
 public class MotherboardTest {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
 		
 		Map<String, String> motherboard = Win32_Baseboard.getMotherboard();
 		for(Map.Entry<String, String> entry: motherboard.entrySet())

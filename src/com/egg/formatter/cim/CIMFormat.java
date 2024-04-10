@@ -1,26 +1,23 @@
-package com.egg.system.hardware;
+package com.egg.formatter.cim;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.egg.system.logger.ErrorLog;
 
-public class Win32_NetworkAdapter {
-	private static String classname = "Win32_NetworkAdapter";
-	private Win32_NetworkAdapter() {
+class CIMFormat {
+	private static String classname = CIMFormat.class.getClass().getName();
+	private CIMFormat() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	//will retrieve all the adapter IDs which are currently active and providing Internet
-	public static List<String> getDeviceIDList() throws IOException, IndexOutOfBoundsException {
-		String methodName = "getDeviceIDList()";
-		List<String> deviceIDList = new ArrayList<>();
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter -Filter \"NetEnabled='True'\" | Select-Object DeviceID | Format-List"};
+	private static String runCommand(String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
+		String methodName = "runCommand(String WMI_Class, String WMI_Attribute)";
+		
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		try {
 			int exitCode = process.waitFor();
@@ -43,79 +40,75 @@ public class Win32_NetworkAdapter {
 			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
 			Thread.currentThread().interrupt();
 		}
-		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
 		String currentLine;
+		String actualName = "";
 			
-		int lastIndex;
-		String value = "";
 		while((currentLine=br.readLine())!=null)
 			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
 				if(currentLine.contains(" : "))
-					deviceIDList.add(value =currentLine);
-				else {
-					lastIndex = deviceIDList.size()-1;
-					deviceIDList.set(lastIndex, deviceIDList.get(lastIndex).concat(value));
-				}
-			}
-				
-			
-		br.close();
-		
-		for(int i=0 ; i<deviceIDList.size(); i++) {
-			deviceIDList.set(i, deviceIDList.get(i).substring(deviceIDList.get(i).indexOf(":")+1).strip());
-		}
-		
-		return deviceIDList;
-		}
-	
-	//will return a hashmap of the following properties as a key and their corresponding values:
-	//Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset
-	public static Map<String, String> getNetworkAdapters(String deviceID) throws IOException, IndexOutOfBoundsException {
-		String methodName = "getNetworkAdapters(String deviceID)";
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapter | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset | Format-List"};
-	
-		Process process = Runtime.getRuntime().exec(command);
-		try {
-			int exitCode = process.waitFor();
-			if(exitCode!=0) {
-				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-				String errorLine;
-     			List<String> errorList = new ArrayList<>();
-				
-				while((errorLine=error.readLine())!=null)
-					if(!errorLine.isBlank() || !errorLine.isEmpty())
-						errorList.add(errorLine);
-				
-				error.close();
-				ErrorLog errorLog = new ErrorLog();
-				
-				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
-			}
-		}catch (InterruptedException e) {
-			ErrorLog errorLog = new ErrorLog();
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
-			Thread.currentThread().interrupt();
-		}
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		
-		String currentLine;
-		Map<String, String> propertyValues = new LinkedHashMap<>();
-		
-		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
-				String key = "";
-				String value = "";
-				if(currentLine.contains(" : "))
-					propertyValues.put(key=currentLine.substring(0, currentLine.indexOf(":")).strip(), value =currentLine.substring(currentLine.indexOf(":")+1).strip());
+					actualName = currentLine;
 				else
-					propertyValues.replace(key, value.concat(currentLine.strip()));
+					actualName=actualName.concat(currentLine);
 			}
+				
+			
 		br.close();
 		
-		return propertyValues;
+		return actualName.substring(actualName.indexOf(":")+1).strip();
 	}
 	
+	private static String runCommand(String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
+		String methodName = "runCommand(String WMI_Class, String whereCondition, String WMI_Attribute)";
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" Where-Object "+whereCondition+" | Select-Object "+WMI_Attribute+" | Format-List"};
+		Process process = Runtime.getRuntime().exec(command);
+		
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
+		}
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			
+		String currentLine;
+		String actualName = "";
+			
+		while((currentLine=br.readLine())!=null)
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
+				if(currentLine.contains(" : "))
+					actualName = currentLine;
+				else
+					actualName=actualName.concat(currentLine);
+			}
+		br.close();
+		return actualName.substring(actualName.indexOf(":")+1).strip();
+	}
+		
+		
+	//access the private method runCommand() from here
+	protected static String accessrunCommand (String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException{
+		return runCommand(WMI_Class, WMI_Attribute);
+	}
+		
+	protected static String accessrunCommand (String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException, IndexOutOfBoundsException{
+		return runCommand(WMI_Class, whereCondition, WMI_Attribute);
+	}
 }

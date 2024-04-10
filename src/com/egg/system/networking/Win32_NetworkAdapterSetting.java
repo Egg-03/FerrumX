@@ -10,41 +10,54 @@ import com.egg.system.logger.ErrorLog;
 
 //Relates a network adapter and its configuration settings.
 public class Win32_NetworkAdapterSetting {
-	private static String classname = new Object() {}.getClass().getName();
+	private static String classname = "Win32_NetworkAdapterSetting";
 	private Win32_NetworkAdapterSetting() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static String getIndex(String deviceID) throws IOException {
-		String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-		String index = "";
+	public static String getIndex(String deviceID) throws IOException, IndexOutOfBoundsException {
+		String methodName = "getIndex(String deviceID)";
+		String setting = "";
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterSetting |Where-Object {$_.Element.DeviceID -eq '"+deviceID+"'} | Select-Object Setting | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
+		try {
+			int exitCode = process.waitFor();
+			if(exitCode!=0) {
+				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+				String errorLine;
+     			List<String> errorList = new ArrayList<>();
+				
+				while((errorLine=error.readLine())!=null)
+					if(!errorLine.isBlank() || !errorLine.isEmpty())
+						errorList.add(errorLine);
+				
+				error.close();
+				ErrorLog errorLog = new ErrorLog();
+				
+				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+			}
+		}catch (InterruptedException e) {
+			ErrorLog errorLog = new ErrorLog();
+			errorLog.log("\n"+classname+"-"+methodName+"\n"+e.getMessage()+"\n\n");
+			Thread.currentThread().interrupt();
+		}
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			
 		String currentLine;
 			
 		while((currentLine=br.readLine())!=null)
-			if(!currentLine.isBlank() || !currentLine.isEmpty())
-				index = currentLine;
+			if(!currentLine.isBlank() || !currentLine.isEmpty()) {
+				if(currentLine.contains(" : "))
+					setting = currentLine;
+				else
+					setting=setting.concat(currentLine);
+			}
+				
 			
 		br.close();
-		//getting error stream
-		if(index.isEmpty()) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			List<String> errorList = new ArrayList<>();
-			
-			while((errorLine=error.readLine())!=null)
-				if(!errorLine.isBlank() || !errorLine.isEmpty())
-					errorList.add(errorLine);
-			
-			error.close();
-			ErrorLog errorLog = new ErrorLog();
-			
-			errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\n\n");
-		}
-		return index.substring(index.indexOf("=")+1, index.indexOf(")")).trim();
+		
+		return setting.substring(setting.indexOf("=")+1, setting.indexOf(")")).trim();
 	}
 }
