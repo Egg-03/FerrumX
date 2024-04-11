@@ -9,7 +9,7 @@ import com.egg.system.hardware.Win32_Processor;
 
 public class CPUTest {
 	public static void main(String[] args) throws IOException, IndexOutOfBoundsException{
-		List<String> deviceIDs = Win32_Processor.getDeviceIDList();
+		List<String> deviceIDs = Win32_Processor.getProcessorList();
 		Map<String, String> currentCPU;
 		
 		System.out.println(deviceIDs);

@@ -364,7 +364,7 @@ public class AIOReportGeneration {
 		Map<String, String> cache = Collections.emptyMap();
 		report.println("----------------------CPU CACHE------------------------");
 		try {
-			cpuID = Win32_Processor.getDeviceIDList();
+			cpuID = Win32_Processor.getProcessorList();
 			for (String id : cpuID) {
 				cacheID = Win32_AssociatedProcessorMemory.getCacheID(id);
 				for (String currentCacheID : cacheID) {
@@ -412,7 +412,7 @@ public class AIOReportGeneration {
 		
 		report.println("----------------------CPU INFO------------------------");
 		try {
-			deviceIDs = Win32_Processor.getDeviceIDList();
+			deviceIDs = Win32_Processor.getProcessorList();
 			for (String currentID : deviceIDs) {
 				currentCPU = Win32_Processor.getCurrentProcessor(currentID);
 				for (Map.Entry<String, String> entry : currentCPU.entrySet())

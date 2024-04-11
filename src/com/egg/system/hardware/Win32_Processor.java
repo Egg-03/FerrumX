@@ -16,7 +16,7 @@ public class Win32_Processor{
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static List<String> getDeviceIDList() throws IOException, IndexOutOfBoundsException {
+	public static List<String> getProcessorList() throws IOException, IndexOutOfBoundsException {
 		String methodName = "getDeviceIDList()";
 		List<String> deviceIDList = new ArrayList<>();
 		
