@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class Win32_NetworkAdapterConfiguration {
 				ErrorLog errorLog = new ErrorLog();
 				
 				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+				return Collections.emptyMap();
 			}
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();

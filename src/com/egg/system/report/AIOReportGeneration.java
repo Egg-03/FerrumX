@@ -43,7 +43,7 @@ public class AIOReportGeneration {
 	
 	protected static void generate(JProgressBar progress, JLabel label, JButton button, JTextArea errorDisplay, JButton btnShowReport) {
 		new Thread(()-> {
-		try(FileWriter fos = new FileWriter("WSIReport.txt");){
+		try(FileWriter fos = new FileWriter(User.getUsername()+"WSIReport.txt");){
 			PrintWriter report = new PrintWriter(fos);
 			
 			button.setEnabled(false);

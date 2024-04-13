@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.egg.system.logger.ErrorLog;
@@ -34,6 +35,7 @@ public class Win32_SystemDriver {
 				ErrorLog errorLog = new ErrorLog();
 				
 				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+				return Collections.emptyList();
 			}
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();

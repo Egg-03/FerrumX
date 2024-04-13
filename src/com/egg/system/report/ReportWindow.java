@@ -11,6 +11,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import com.egg.system.currentuser.User;
 import com.egg.system.logger.ErrorLog;
 
 import javax.swing.JLabel;
@@ -69,7 +70,7 @@ public class ReportWindow extends JFrame {
 	 */
 	private ReportWindow() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReportWindow.class.getResource("/resources/icon_main.png")));
-		setTitle("FerrumX Report Tool v1.0.0");
+		setTitle("FerrumX Report Tool v1.0.1");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -121,7 +122,8 @@ public class ReportWindow extends JFrame {
 		JButton btnShowReport = new JButton("Show Report");
 		btnShowReport.addActionListener(e-> {
 				try {
-					Desktop.getDesktop().open(new File("WSIReport.txt"));
+					String uname = User.getUsername();
+					Desktop.getDesktop().open(new File(uname+"WSIReport.txt"));
 				} catch (IOException | NullPointerException | IllegalArgumentException | UnsupportedOperationException | SecurityException e0) {
 					errorDisplay.setText("SHOW REPORT ERROR: "+e0.getMessage());
 				}

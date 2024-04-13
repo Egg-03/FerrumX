@@ -34,6 +34,7 @@ class CIMFormat {
 				ErrorLog errorLog = new ErrorLog();
 				
 				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+				return "";
 			}
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
@@ -79,6 +80,7 @@ class CIMFormat {
 				ErrorLog errorLog = new ErrorLog();
 				
 				errorLog.log("\n"+classname+"-"+methodName+"\n"+errorList.toString()+"\nProcess Exited with code:"+exitCode+"\n");
+				return "";
 			}
 		}catch (InterruptedException e) {
 			ErrorLog errorLog = new ErrorLog();
