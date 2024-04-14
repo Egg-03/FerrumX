@@ -73,7 +73,7 @@ public class Win32_Printer {
 	
 	public static Map<String, String> getCurrentPrinter(String deviceID) throws IOException, IndexOutOfBoundsException {
 		String methodName = "getCurrentPrinter(String deviceID)";
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Printer | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, HorizontalResolution, VerticalResolution, Capabilites, CapabilityDescriptions, Default, DriverName, Hidden, Local, Network, PortName, PrintProcessor, Shared, ShareName, SpoolEnabled, WorkOffline  | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_Printer | Where-Object {$_.DeviceID -eq '"+deviceID+"'} | Select-Object Name, HorizontalResolution, VerticalResolution, Capabilities, CapabilityDescriptions, Default, DriverName, Hidden, Local, Network, PortName, PrintProcessor, Shared, ShareName, SpoolEnabled, WorkOffline  | Format-List"};
 		
 		Process process = Runtime.getRuntime().exec(command);
 		try {
