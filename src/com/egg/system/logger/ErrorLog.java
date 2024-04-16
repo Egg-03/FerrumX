@@ -23,7 +23,7 @@ public class ErrorLog {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		
-		try(FileOutputStream fos = new FileOutputStream("WSI_ERRORLOG-"+ldt.format(dtf2)+".log", true);) {
+		try(FileOutputStream fos = new FileOutputStream("FerrumX_ERRORLOG-"+ldt.format(dtf2)+".log", true);) {
 			
 			String timestamp = ldt.format(dtf);
 			
