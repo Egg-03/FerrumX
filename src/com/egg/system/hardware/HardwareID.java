@@ -20,8 +20,8 @@ public class HardwareID {
 		Future<String> cpuNameTask = EXEC.submit(()-> CIM.getValues("Win32_Processor", "Name"));
 		Future<String> cpuIdTask = EXEC.submit(()-> CIM.getValues("Win32_Processor", "ProcessorID"));
 		Future<String> motherBoardNameTask = EXEC.submit(()-> CIM.getValues("Win32_BaseBoard", "Product"));
-		Future<String> deviceNameTask = EXEC.submit(User::getUsername);
-		Future<String> userNameTask = EXEC.submit(()-> CIM.getValues("Win32_BaseBoard", "Product"));
+		Future<String> deviceNameTask = EXEC.submit(()-> CIM.getValues("Win32_OperatingSystem", "CSName"));
+		Future<String> userNameTask = EXEC.submit(User::getUsername);
 		Future<Integer> countRAMTask = EXEC.submit(()-> Win32_PhysicalMemory.getTag().size());
 		Future<Integer> countStorageTask = EXEC.submit(()-> Win32_DiskDrive.getDriveID().size());
 		
