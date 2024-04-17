@@ -8,13 +8,13 @@ import java.util.List;
 
 import com.egg.system.logger.ErrorLog;
 
-class CIMFormat {
-	private static String classname = CIMFormat.class.getClass().getName();
-	private CIMFormat() {
+public class CIM_SL {
+	private static String classname = CIM_SL.class.getClass().getName();
+	private CIM_SL() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	private static String runCommand(String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
+	public static String get(String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
 		String methodName = "runCommand(String WMI_Class, String WMI_Attribute)";
 		
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" | Select-Object "+WMI_Attribute+" | Format-List"};
@@ -60,7 +60,7 @@ class CIMFormat {
 		return actualName.substring(actualName.indexOf(":")+1).strip();
 	}
 	
-	private static String runCommand(String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
+	public static String getWhere(String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
 		String methodName = "runCommand(String WMI_Class, String whereCondition, String WMI_Attribute)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" Where-Object "+whereCondition+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
@@ -102,15 +102,5 @@ class CIMFormat {
 			}
 		br.close();
 		return actualName.substring(actualName.indexOf(":")+1).strip();
-	}
-		
-		
-	//access the private method runCommand() from here
-	protected static String accessrunCommand (String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException{
-		return runCommand(WMI_Class, WMI_Attribute);
-	}
-		
-	protected static String accessrunCommand (String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException, IndexOutOfBoundsException{
-		return runCommand(WMI_Class, whereCondition, WMI_Attribute);
 	}
 }

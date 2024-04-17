@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.egg.formatter.cim.CIM;
+import com.egg.formatter.cim.CIM_SL;
 import com.egg.system.logger.ErrorLog;
 
 public class Win32_Baseboard {
@@ -64,7 +64,7 @@ public class Win32_Baseboard {
 		br.close();
 		
 		//get motherbard's plug-n-play deviceID from another class 
-		mbProperty.put("PNPDeviceID", CIM.getValues("Win32_MotherBoardDevice", "PNPDeviceID"));
+		mbProperty.put("PNPDeviceID", CIM_SL.get("Win32_MotherBoardDevice", "PNPDeviceID"));
 		
 		return mbProperty;
 	}

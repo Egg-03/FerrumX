@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import com.egg.formatter.cim.CIM;
+import com.egg.formatter.cim.CIM_SL;
 import com.egg.system.currentuser.User;
 
 public class HardwareID {
@@ -17,10 +17,10 @@ public class HardwareID {
 		
 		ExecutorService EXEC = Executors.newFixedThreadPool(7);
 		
-		Future<String> cpuNameTask = EXEC.submit(()-> CIM.getValues("Win32_Processor", "Name"));
-		Future<String> cpuIdTask = EXEC.submit(()-> CIM.getValues("Win32_Processor", "ProcessorID"));
-		Future<String> motherBoardNameTask = EXEC.submit(()-> CIM.getValues("Win32_BaseBoard", "Product"));
-		Future<String> deviceNameTask = EXEC.submit(()-> CIM.getValues("Win32_OperatingSystem", "CSName"));
+		Future<String> cpuNameTask = EXEC.submit(()-> CIM_SL.get("Win32_Processor", "Name"));
+		Future<String> cpuIdTask = EXEC.submit(()-> CIM_SL.get("Win32_Processor", "ProcessorID"));
+		Future<String> motherBoardNameTask = EXEC.submit(()-> CIM_SL.get("Win32_BaseBoard", "Product"));
+		Future<String> deviceNameTask = EXEC.submit(()-> CIM_SL.get("Win32_OperatingSystem", "CSName"));
 		Future<String> userNameTask = EXEC.submit(User::getUsername);
 		Future<Integer> countRAMTask = EXEC.submit(()-> Win32_PhysicalMemory.getTag().size());
 		Future<Integer> countStorageTask = EXEC.submit(()-> Win32_DiskDrive.getDriveID().size());
