@@ -8,16 +8,25 @@ import java.util.Collections;
 import java.util.List;
 
 import com.ferrumx.system.logger.ErrorLog;
+/**
+ * This class serves as a relationship between {@link Win32_Processor} and {@link Win32_CacheMemory}. This class will fetch the CacheMemory IDs (L1, L2 and L3 ID) of a CPU based on the CPU ID given by Win32_Processor. The cache ID's extracted from this class will then be used in Win32_CacheMemory to retrieve cache related information
+ * @author Egg-03
+ * @version 1.1.0 
+ */
 
-//this class serves as a relationship between Win32_Processor and Win32_CacheMemory
-//this class will server the CacheMemory IDs (L1, L2 and L3 ID) of a CPU based on the CPU ID given by Win32_Processor
-//The ID's gained from this class will then be used in WIn32_CacheMemory to retrieve the related information
 public class Win32_AssociatedProcessorMemory {
 	private static String classname = "Win32_AssociatedProcessorMemory";
 	private Win32_AssociatedProcessorMemory() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
+	/**
+	 * Fetches a list of cache IDs for a particular CPU
+	 * @param cpuID The DeviceID property returned by {@link Win32_Processor}
+	 * @return a {@link java.util.List} of cacheIDs
+	 * @throws IOException re-throws the exception thrown by {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)} when there are I/O Errors during streaming of data from and to Powershell and other generated files
+	 * @throws IndexOutOfBoundsException re-throws the exception thrown by {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)} when there is a parsing error of data fetched from Windows Powershell
+	 */
 	public static List<String> getCacheID(String cpuID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getCacheID(String cpuID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_AssociatedProcessorMemory | Where-Object {$_.Dependent.DeviceID -eq '"+cpuID+"'} | Select-Object Antecedent | Format-List"};

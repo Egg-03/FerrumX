@@ -11,11 +11,28 @@ import java.util.Map;
 
 import com.ferrumx.system.logger.ErrorLog;
 
+/**
+ * This class queries all the WMI Classes based on the attributes passed to it's one of the four methods called by the methods in other packages.
+ * Supports Multi-line parsing of output from the powershell
+ * Is recommended for extracting multiple properties at once
+ * For single property extraction, see {@link CIM_SL}
+ * @author Egg-03
+ * @version 1.1.0
+ */
 public class CIM_ML {
 	private CIM_ML() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
+	/**
+	 * Internally runs the command "Get-CimInstance -ClassName {@literal win32Class} | Select-Object {@literal Key} | Format-List
+	 * where the parameters are provided by the calling methods
+	 * @param win32Class the classname passed to by the method calling it
+	 * @param Key passed to by the method calling it
+	 * @return a list of values requested by the method calling it. The values returned are of the property {@literal Key}
+	 * @throws IOException in case of general I/O errors
+	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
+	 */
 	public static List<String> getID(String win32Class, String Key) throws IOException, IndexOutOfBoundsException{
 		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Select-Object "+Key+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
@@ -69,6 +86,17 @@ public class CIM_ML {
 		return id;
 	}
 	
+	/**
+	 * Internally runs the command "Get-CimInstance -ClassName {@literal win32Class} | Where-Object {$_.{@literal determinantProperty} -eq {@literal determinantValue}} | Select-Object {@literal extractProperty} | Format-List
+	 * where the parameters are provided by the calling methods
+	 * @param win32Class the classname passed to by the calling method
+	 * @param determinantProperty a filtering parameter, passed to by the calling method
+	 * @param determinantValue the value of the filtering parameter, also passed to by the calling method
+	 * @param extractProperty the property to be extracted, provided by the calling method.
+	 * @return a list of values requested by the method calling it. The values returned are the values of the property {@literal extractProperty}
+	 * @throws IOException in case of general I/O errors
+	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
+	 */
 	public static List<String> getIDWhere(String win32Class, String determinantProperty, String determinantValue,  String extractProperty) throws IOException, IndexOutOfBoundsException{
 		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+extractProperty+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
@@ -120,6 +148,15 @@ public class CIM_ML {
 		return id;
 	}
 	
+	/**
+	 * Internally runs the command "Get-CimInstance -ClassName {@literal win32Class} | Select-Object {@literal attributes} | Format-List
+	 * where the parameters are provided by the calling methods
+	 * @param win32Class the classname passed to by the calling method
+	 * @param attributes a list of properties requested for a particular class. The properties requested by the calling methods can be found in their respective class descriptions
+	 * @return a {@link java.util.Map} of the attribute values requested by the calling method
+	 * @throws IOException in case of general I/O errors
+	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
+	 */
 	public static Map<String, String> get(String win32Class, String attributes) throws IOException, IndexOutOfBoundsException {
 		
 		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Select-Object "+attributes+" | Format-List"};
@@ -166,7 +203,17 @@ public class CIM_ML {
 		return propertyValues;
 	}
 	
-	
+	/**
+	 * Internally runs the command "Get-CimInstance -ClassName {@literal win32Class} | Where-Object {$_.{@literal determinantProperty} -eq {@literal determinantValue}} | Select-Object {@literal extractProperty} | Format-List
+	 * where the parameters are provided by the calling methods
+	 * @param win32Class win32Class the classname passed to by the calling method
+	 * @param determinantProperty a filtering parameter, passed to by the calling method
+	 * @param determinantValue the value of the filtering parameter, also passed to by the calling method
+	 * @param attributes a list of properties requested for a particular class. The properties requested by the calling methods can be found in their respective class descriptions
+	 * @return a {@link java.util.Map} of the attribute values requested by the calling method
+	 * @throws IOException in case of general I/O errors
+	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
+	 */
 	public static Map<String, String> getWhere(String win32Class, String determinantProperty, String determinantValue, String attributes) throws IOException, IndexOutOfBoundsException {
 		
 		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+attributes+" | Format-List"};

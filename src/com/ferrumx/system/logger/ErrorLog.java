@@ -5,9 +5,22 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This class is used by {@link com.ferrumx.formatter.cim.CIM_ML} and {@link com.ferrumx.formatter.cim.CIM_SL} classes to log errors in a file.
+ * While not necessary, the developers can use this class to log additional errors if the development demands it.
+ * @author Egg-03
+ * @version 1.1.0
+ */
 public class ErrorLog {
 	private static boolean use_flag = false;
 	
+	/**
+	 * This method logs the given message in a file.
+	 * The naming convention of the file is as follows: "FerrumX_ERRORLOG-currentDate.log"
+	 * This means new log files are created on a day basis and a single log file will contain all the error logs for a particular day
+	 * All files are created in the current working directory
+	 * @param message takes the error message and logs it to a file
+	 */
 	public synchronized void log(String message) {
 		while(ErrorLog.use_flag)
 			try {

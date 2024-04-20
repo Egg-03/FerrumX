@@ -8,14 +8,26 @@ import java.util.Collections;
 import java.util.List;
 
 import com.ferrumx.system.logger.ErrorLog;
-
-//Relates the Drive ID provided in Win32_DiskDrive with it's associated partitions in Win32_DiskPartition
+/**
+ * This class relates {@link com.ferrumx.system.hardware.Win32_DiskDrive} with {@link Win32_LogicalDiskToPartition}.
+ * The DeviceID of the Disk Drive queried from {@link com.ferrumx.system.hardware.Win32_DiskDrive} is fetched into this class which then gets all the partition list for the selected Drive.
+ * This list can be then fetched to {@link Win32_LogicalDiskToPartition#getDriveLetter(String)} to output the drive letters for the given partitions in a drive
+ * @author Egg-03
+ * @version 1.1.0
+ */
 public class Win32_DiskDriveToDiskPartition {
 	private static String classname = "Win32_DiskDriveToDiskPartition";
 	private Win32_DiskDriveToDiskPartition() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
+	/**
+	 * Fetches a list of partitions for a particular drive
+	 * @param driveID the DeviceID of the drive that is fetched form {@link com.ferrumx.system.hardware.Win32_DiskDrive#getDriveID()}
+	 * @return a {@link java.util.List} of partitions for a particular drive
+	 * @throws IOException in case of general I/O errors
+	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
+	 */
 	public static List<String> getPartitionList(String driveID) throws IOException, IndexOutOfBoundsException{
 		String methodName = "getPartitionList(String driveID)";
 		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName Win32_DiskDriveToDiskPartition | Where-Object {$_.Antecedent.DeviceID -eq '"+driveID+"'} | Select-Object Dependent | Format-List"};
@@ -58,9 +70,7 @@ public class Win32_DiskDriveToDiskPartition {
 					int lastIndex = partitionList.size()-1;
 					partitionList.set(lastIndex, partitionList.get(lastIndex).concat(value));
 				}
-			}
-				
-					
+			}	
 		br.close();
 		
 		return partitionList;
