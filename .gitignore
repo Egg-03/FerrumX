@@ -29,3 +29,5 @@ replay_pid*
 /.settings
 /bin/
 WSIReport.txt
+/doc
+Egg-03-FerrumX-Report.txt
