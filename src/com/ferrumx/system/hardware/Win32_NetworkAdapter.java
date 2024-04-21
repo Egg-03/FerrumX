@@ -7,7 +7,8 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class contains methods that query the Win32_NetworkAdapter class of WMI to fetch the Network Adapters that a installed and active
+ * This class contains methods that query the Win32_NetworkAdapter class of WMI to fetch the Network Adapters that a installed and active.
+ * <p>
  * The following properties are fetched: Name, Description, PNPDeviceID, MACAddress, Installed, NetEnabled, NetConnectionID, PhysicalAdapter, TimeOfLastReset
  * @author Egg-03
  * @version 1.1.0

@@ -6,8 +6,9 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class contains methods that query the Win32_BIOS class of WMI
- * and fetches the following properties and their values: Name, Caption, Manufacturer, ReleaseDate, SMBIOSPResent, Status, Version, CurrentLanguage, SMBIOSBIOSVersion
+ * This class contains methods that query the Win32_BIOS class of WMI and fetch BIOS information.
+ * <p>
+ * Fetches the following properties and their values: Name, Caption, Manufacturer, ReleaseDate, SMBIOSPResent, Status, Version, CurrentLanguage, SMBIOSBIOSVersion
  * @author Egg-03
  * @version 1.1.0
  */

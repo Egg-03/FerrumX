@@ -8,6 +8,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
  * This class queries the Win32_VideoController class of WMI and represents the basic GPU details of your system.
+ * <p>
  * Fetches the following properties: Name, PNPDeviceID, CurrentBitsPerPixel, CurrentHorizontalResolution, CurrentVerticalResolution, CurrentRefreshRate, MaxRefreshRate, MinRefreshRate, AdapterDACType, AdapterRAM, DriverDate, DriverVersion, VideoProcessor
  * @author Egg-03
  * @version 1.1.0

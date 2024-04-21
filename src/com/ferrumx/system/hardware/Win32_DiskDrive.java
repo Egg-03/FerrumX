@@ -6,7 +6,8 @@ import java.util.Map;
 
 import com.ferrumx.formatter.cim.CIM_ML;
 /**
- * This class contains methods that query Win32_DiskDrive class of WMI to fetch Disk Information
+ * This class contains methods that query Win32_DiskDrive class of WMI to fetch Disk Information.
+ * <p>
  * The class fetches the values of the following properties: Caption, Model, Size, FirmwareRevision, SerialNumber, Partitions, Status, InterfaceType, PNPDeviceID
  * @author Egg-03
  * @version 1.1.0

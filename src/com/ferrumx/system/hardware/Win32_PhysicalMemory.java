@@ -7,7 +7,8 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class contains methods that query the Win32_PhysicalMemory class of WMI to fetch RAM info
+ * This class contains methods that query the Win32_PhysicalMemory class of WMI to fetch RAM info.
+ * <p>
  * The following properties are fetched: Name, Manufacturer, Model, OtherIdentifyingInfo, PartNumber, Tag, FormFactor, BankLabel, Capacity, DataWidth, Speed, ConfiguredClockSpeed, DeviceLocator, SerialNumber
  * @author Egg-03
  * @version 1.1.0

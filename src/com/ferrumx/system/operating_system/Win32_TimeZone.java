@@ -6,7 +6,8 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * Fetches the OS Time-Zone information by querying WIn32_TimeZone class of WMI
+ * Fetches the OS Time-Zone information by querying WIn32_TimeZone class of WMI.
+ * <p>
  * The following attributes are fetched: Caption, Bias, StandardName
  * @author Egg-03
  * @version 1.1.0

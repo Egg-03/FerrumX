@@ -7,7 +7,8 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class queries the Win32_Printer class of WMI and represents the installed printers in your device
+ * This class queries the Win32_Printer class of WMI and represents the installed printers in your device.
+ * <p>
  * Fetches the following properties: Name, HorizontalResolution, VerticalResolution, Capabilities, CapabilityDescriptions, Default, DriverName, Hidden, Local, Network, PortName, PrintProcessor, Shared, ShareName, SpoolEnabled, WorkOffline
  * @author Egg-03
  * @version 1.1.0

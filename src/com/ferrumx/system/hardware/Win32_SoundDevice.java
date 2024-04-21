@@ -1,3 +1,4 @@
+
 package com.ferrumx.system.hardware;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
  * This class queries the Win32_SoundDevice class of WMI and represents the Audio Driver details of your system.
+ * <p>
  * Fetches the following properties: ProductName, Status, Caption, PNPDeviceID, Manufacturer
  * @author Egg-03
  * @version 1.1.0

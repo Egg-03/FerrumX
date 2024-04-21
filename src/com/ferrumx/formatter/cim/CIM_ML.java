@@ -13,6 +13,7 @@ import com.ferrumx.system.logger.ErrorLog;
 
 /**
  * This class queries all the WMI Classes based on the attributes passed to it's one of the four methods called by the methods in other packages.
+ * <p>
  * Supports Multi-line parsing of output from the powershell
  * Is recommended for extracting multiple properties at once
  * For single property extraction, see {@link CIM_SL}

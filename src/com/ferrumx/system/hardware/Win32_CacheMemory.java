@@ -6,8 +6,9 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class contains methods that query the Win32_CacheMemory class of WMI
- * and fetches the following properties and their values: DeviceID, Purpose, InstalledSize, Associativity
+ * This class contains methods that query the Win32_CacheMemory class of WMI to fetch CPU Cache information.
+ * <p>
+ * Fetches the following properties and their values: DeviceID, Purpose, InstalledSize, Associativity
  * @author Egg-03
  * @version 1.1.0
  */

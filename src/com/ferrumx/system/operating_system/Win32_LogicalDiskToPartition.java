@@ -10,7 +10,7 @@ import java.util.List;
 import com.ferrumx.system.logger.ErrorLog;
 
 /**
- * This class relates associates drive letters to partitions of a drive, if available
+ * This class relates associates drive letters to partitions of a drive, if available.
  * The list of Partitions of a particular Drive queried from {@link Win32_DiskDriveToDiskPartition} is fetched into this class which then fetches the letters assigned to a partition.
  * @author Egg-03
  * @version 1.1.0

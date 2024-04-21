@@ -10,6 +10,7 @@ import java.util.List;
 import com.ferrumx.system.logger.ErrorLog;
 /**
  * This class relates {@link com.ferrumx.system.hardware.Win32_DiskDrive} with {@link Win32_LogicalDiskToPartition}.
+ * <p>
  * The DeviceID of the Disk Drive queried from {@link com.ferrumx.system.hardware.Win32_DiskDrive} is fetched into this class which then gets all the partition list for the selected Drive.
  * This list can be then fetched to {@link Win32_LogicalDiskToPartition#getDriveLetter(String)} to output the drive letters for the given partitions in a drive
  * @author Egg-03

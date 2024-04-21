@@ -6,8 +6,10 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class queries the Win32_NetworkAdapterConfiguration class of WMI and fetches the following properties associated with a Network Adapter
- * that the {@link com.ferrumx.system.hardware.Win32_NetworkAdapter} class cannot provide:
+ * This class queries the Win32_NetworkAdapterConfiguration class of WMI and fetches additional information related to {@link com.ferrumx.system.hardware.Win32_NetworkAdapter}.
+ * <p>
+ * The following properties are extracted:
+ * <p>
  * IPEnabled, IPAddress, IPSubnet, DefaultIPGateway, DHCPEnabled, DHCPServer, DHCPLeaseObtained, DHCPLeaseExpires, DNSHostName, DNSServerSearchOrder
  * @author Egg-03
  * @version 1.1.0

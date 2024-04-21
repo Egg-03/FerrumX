@@ -8,6 +8,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
  * This class queries the Win32_OperatingSystem class of WMI and fetches the current OS details.
+ * <p>
  * The following properties are fetched: Caption, InstallDate, CSName, LastBootUpTime, LocalDateTime, Distributed, NumberOfUsers, Version, BootDevice, BuildNumber, BuildType, Manufacturer, OSArchitecture, MUILanguages, PortableOperatingSystem, Primary, RegisteredUser, SerialNumber, ServicePackMajorVersion, ServicePackMinorVersion, SystemDirectory, SystemDrive, WindowsDirectory
  * @author Egg-03
  * @version 1.1.0

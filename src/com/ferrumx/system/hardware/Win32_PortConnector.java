@@ -7,7 +7,8 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class queries the Win32_PortConnector class of WMI and represents the I/O Ports of your system's motherboard
+ * This class queries the Win32_PortConnector class of WMI and represents the I/O Ports of your system's motherboard.
+ * <p>
  * Fetches the following properties: Tag, ExternalReferenceDesignator, InternalReferenceDesignator
  * @author Egg-03
  * @version 1.1.0

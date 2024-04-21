@@ -6,8 +6,9 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.formatter.cim.CIM_SL;
 
-/** This class contains methods that query Win32_Baseboard and Win32_MotherboardDevice classes of WMI
- * and fetches the following properties: Manufacturer, Model, Product, SerialNumber, Version
+/** This class contains methods that query Win32_Baseboard and Win32_MotherboardDevice classes of WMI to fetch Motherboard information.
+ * <p>
+ * Fetches the following properties: Manufacturer, Model, Product, SerialNumber, Version
  * @author Egg-03
  * @version 1.1.0*/
 public class Win32_Baseboard {
