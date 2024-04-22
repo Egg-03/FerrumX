@@ -33,3 +33,6 @@ You can also check out some examples [here](https://github.com/Egg-03/FerrumX/tr
 # License
 This project is licensed under the MIT License. Read the LICENSE.md for more information.
 The GUI for FerrumX uses FlatLaf themes for it's Look and Feel, under the [Apache License 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE)
+
+# Special Thanks
+[Rugino3](https://github.com/Soumil-Biswas) for the icons for the GUI and documentation proofreading
