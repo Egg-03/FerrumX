@@ -24,7 +24,7 @@ public class Win32_PortConnector {
 	 * Gathers a list of port IDs based on their Tag property
 	 * @return a {@link java.util.List} of port IDs
 	 * @throws IOException re-throws the exception thrown by {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)} when there are I/O Errors during streaming of data from and to Powershell and other generated files
-	 * @throws IndexOutOfBoundsException IndexOutOfBoundsException re-throws the exception thrown by {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)} when there is a parsing error of data fetched from Windows Powershell
+	 * @throws IndexOutOfBoundsException re-throws the exception thrown by {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)} when there is a parsing error of data fetched from Windows Powershell
 	 */
 	public static List<String> getBaseboardPortID() throws IOException, IndexOutOfBoundsException{
 		return CIM_ML.getID(classname, "Tag");
