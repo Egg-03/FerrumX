@@ -1,3 +1,5 @@
+![banner_main_2](https://github.com/Egg-03/FerrumX/assets/111327101/9aee9cdf-5213-401b-814d-a9738ee1a24c)
+
 # About
 FerrumX is a lightweight Hardware and Network Information wrapper written in pure Java. It leverages Windows Management Instrumentation (WMI) classes through PowerShell to fetch comprehensive system details on Windows Operating Systems.
 
@@ -35,4 +37,4 @@ This project is licensed under the MIT License. Read the LICENSE.md for more inf
 The GUI for FerrumX uses FlatLaf themes for it's Look and Feel, under the [Apache License 2.0](https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE)
 
 # Special Thanks
-[Rugino3](https://github.com/Soumil-Biswas) for the icons for the GUI and documentation proofreading
+[Rugino3](https://github.com/Soumil-Biswas) for the banner, icons for the GUI and documentation proofreading
