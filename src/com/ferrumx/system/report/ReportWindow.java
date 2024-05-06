@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultCaret;
 import java.awt.Toolkit;
+import javax.swing.JRadioButton;
 
 public class ReportWindow extends JFrame {
 
@@ -129,18 +131,31 @@ public class ReportWindow extends JFrame {
 				}
 		});
 		
-		btnShowReport.setBounds(224, 11, 117, 23);
+		btnShowReport.setBounds(305, 11, 117, 23);
 		contentPane.add(btnShowReport);
 		
-		JButton mainOperation = new JButton("Generate");
-		mainOperation.addActionListener(e-> {
+		JButton detailedReport = new JButton("Generate");
+		detailedReport.addActionListener(e-> {
 				progressBar_1.setVisible(false);
 				progressBar.setVisible(true);
 				errorDisplay.setText("");
-				AIOReportGeneration.generate(progressBar, currentOperation, mainOperation, errorDisplay, btnShowReport);
+				AIOReportGeneration.generate(progressBar, currentOperation, detailedReport, errorDisplay, btnShowReport);
 		});
-		mainOperation.setBounds(95, 11, 117, 23);
-		contentPane.add(mainOperation);	
+		detailedReport.setBounds(12, 11, 117, 23);
+		contentPane.add(detailedReport);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Detailed");
+		rdbtnNewRadioButton.setSelected(true);
+		rdbtnNewRadioButton.setBounds(137, 10, 71, 24);
+		contentPane.add(rdbtnNewRadioButton);
+		
+		JRadioButton rdbtnSummary = new JRadioButton("Summary");
+		rdbtnSummary.setBounds(212, 10, 85, 24);
+		contentPane.add(rdbtnSummary);
+		
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(rdbtnNewRadioButton);
+		bg.add(rdbtnSummary);
 		
 	}
 }
