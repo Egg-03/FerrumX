@@ -11,7 +11,7 @@ FerrumX is a lightweight Hardware and Network Information wrapper written in pur
 <ins>GUI Report Tool:</ins> Included for end-users who require a quick and easy way to generate a system report encompassing hardware, network, and OS details.
 
 # Supported Operating Systems
-FerrumX has been tested to work exclusively on <strong>Windows 8.1, Windows 10 and Windows 11</strong> devices
+FerrumX has been tested to work exclusively on <strong>Windows 8.1, Windows 10 and Windows 11</strong> devices.
 For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/FerrumL)
 
 # Installation
