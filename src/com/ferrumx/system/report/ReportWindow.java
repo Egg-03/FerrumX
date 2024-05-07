@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultCaret;
 import java.awt.Toolkit;
+import javax.swing.JRadioButton;
 
 public class ReportWindow extends JFrame {
 
@@ -70,7 +72,7 @@ public class ReportWindow extends JFrame {
 	 */
 	private ReportWindow() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReportWindow.class.getResource("/resources/icon_main.png")));
-		setTitle("FerrumX Report Tool v1.1.0");
+		setTitle("FerrumX Report Tool v1.2.0");
 		setResizable(false);
 		setAlwaysOnTop(false);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -119,28 +121,50 @@ public class ReportWindow extends JFrame {
 		errorDisplayScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		contentPane.add(errorDisplayScroll);
 		
+		JRadioButton rdbtnDetailed = new JRadioButton("Detailed");
+		rdbtnDetailed.setFont(new Font("Arial", Font.ITALIC, 11));
+		rdbtnDetailed.setSelected(true);
+		rdbtnDetailed.setBounds(137, 10, 71, 24);
+		contentPane.add(rdbtnDetailed);
+		
+		JRadioButton rdbtnSummary = new JRadioButton("Summarized");
+		rdbtnSummary.setFont(new Font("Arial", Font.ITALIC, 11));
+		rdbtnSummary.setBounds(210, 10, 87, 24);
+		contentPane.add(rdbtnSummary);
+		
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(rdbtnDetailed);
+		bg.add(rdbtnSummary);
+		
 		JButton btnShowReport = new JButton("Show Report");
 		btnShowReport.addActionListener(e-> {
 				try {
 					String uname = User.getUsername();
-					Desktop.getDesktop().open(new File(uname+"-FerrumX-Report.txt"));
+					if(rdbtnDetailed.isSelected())
+						Desktop.getDesktop().open(new File(uname+"-FerrumX-Detailed-Report.txt"));
+					else if(rdbtnSummary.isSelected())
+						Desktop.getDesktop().open(new File(uname+"-FerrumX-Summary-Report.txt"));
 				} catch (IOException | NullPointerException | IllegalArgumentException | UnsupportedOperationException | SecurityException e0) {
 					errorDisplay.setText("SHOW REPORT ERROR: "+e0.getMessage());
 				}
 		});
 		
-		btnShowReport.setBounds(224, 11, 117, 23);
+		btnShowReport.setBounds(305, 11, 117, 23);
 		contentPane.add(btnShowReport);
 		
-		JButton mainOperation = new JButton("Generate");
-		mainOperation.addActionListener(e-> {
+		JButton detailedReport = new JButton("Generate");
+		detailedReport.addActionListener(e-> {
 				progressBar_1.setVisible(false);
 				progressBar.setVisible(true);
 				errorDisplay.setText("");
-				AIOReportGeneration.generate(progressBar, currentOperation, mainOperation, errorDisplay, btnShowReport);
+				
+				if(rdbtnDetailed.isSelected())
+					DetailedReportGeneration.generate(progressBar, currentOperation, detailedReport, errorDisplay, btnShowReport);
+				else if(rdbtnSummary.isSelected())
+					SummaryReportGeneration.generate(progressBar, currentOperation, detailedReport, errorDisplay, btnShowReport);
 		});
-		mainOperation.setBounds(95, 11, 117, 23);
-		contentPane.add(mainOperation);	
+		detailedReport.setBounds(12, 11, 117, 23);
+		contentPane.add(detailedReport);
 		
 	}
 }

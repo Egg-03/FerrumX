@@ -35,15 +35,15 @@ import com.ferrumx.system.operating_system.Win32_LogicalDiskToPartition;
 import com.ferrumx.system.operating_system.Win32_OperatingSystem;
 import com.ferrumx.system.operating_system.Win32_TimeZone;
 
-public class AIOReportGeneration {
+public class DetailedReportGeneration {
 	
-	private AIOReportGeneration() {
+	private DetailedReportGeneration() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	protected static void generate(JProgressBar progress, JLabel label, JButton button, JTextArea errorDisplay, JButton btnShowReport) {
 		new Thread(()-> {
-		try(FileWriter fos = new FileWriter(User.getUsername()+"-FerrumX-Report.txt");){
+		try(FileWriter fos = new FileWriter(User.getUsername()+"-FerrumX-Detailed-Report.txt");){
 			PrintWriter report = new PrintWriter(fos);
 			
 			button.setEnabled(false);
