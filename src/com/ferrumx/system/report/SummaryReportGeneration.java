@@ -278,7 +278,7 @@ public class SummaryReportGeneration {
 	private static void reportBIOS(PrintWriter report, JTextArea errorDisplay) {
 		report.println("----------------------BIOS INFO------------------------");
 		try {
-			Map<String, String> BIOS = CIM_ML.getWhere("Win32_BIOS", "PrimaryBIOS", "True", "Name, Manufacturer, ReleaseDate");;
+			Map<String, String> BIOS = CIM_ML.getWhere("Win32_BIOS", "PrimaryBIOS", "True", "Name, Manufacturer, ReleaseDate");
 			for (Map.Entry<String, String> entry : BIOS.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
 			if(BIOS.isEmpty())
