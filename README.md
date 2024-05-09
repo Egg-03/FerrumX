@@ -29,7 +29,7 @@ For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/Ferrum
 Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
 
 # Usage
-Please refer to our Wiki page to learn about the various functions and their usage, along with example code snippets.
+Please refer to our [Wiki](https://github.com/Egg-03/FerrumX/wiki) page to learn about the various functions and their usage, along with example code snippets.
 You can also check out some examples [here](https://github.com/Egg-03/FerrumX/tree/be360eeb6bbf1ca6e992d5d8fbb1e2109bfa6514/src/com/ferrumx/tests)
 
 # License
