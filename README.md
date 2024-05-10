@@ -1,7 +1,7 @@
 ![banner_main_2](https://github.com/Egg-03/FerrumX/assets/111327101/9aee9cdf-5213-401b-814d-a9738ee1a24c)
 
 # About
-FerrumX is a lightweight Hardware and Network Information wrapper written in pure Java. It leverages Windows Management Instrumentation (WMI) classes through PowerShell to fetch comprehensive system details on Windows Operating Systems.
+FerrumX is a lightweight Hardware and Network Information wrapper written in pure Java. It contacts some [Computer System Hardware Classes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes) and [Operating System Classes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/operating-system-classes) of Windows Management Instrumentation (WMI) through PowerShell to fetch comprehensive system details on Windows Operating Systems.
 
 # Key Features
 <ins>Lightweight and Easy to Integrate:</ins> Ideal for developers who want to incorporate hardware and network info retrieval functionalities into their Java applications.
@@ -29,7 +29,7 @@ For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/Ferrum
 Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
 
 # Usage
-Please refer to our Wiki page to learn about the various functions and their usage, along with example code snippets.
+Please refer to our [Wiki](https://github.com/Egg-03/FerrumX/wiki) page to learn about the various functions and their usage, along with example code snippets.
 You can also check out some examples [here](https://github.com/Egg-03/FerrumX/tree/be360eeb6bbf1ca6e992d5d8fbb1e2109bfa6514/src/com/ferrumx/tests)
 
 # License
