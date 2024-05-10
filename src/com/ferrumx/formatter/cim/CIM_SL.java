@@ -82,15 +82,16 @@ public class CIM_SL {
 	 * Internally runs the command "Get-CimInstance -ClassName {@literal WMI_Class} | Where-Object {@literal whereCondition} |Select-Object {@literal WMI_Attribute} | Format-List
 	 * where the parameters are provided by the calling methods 
 	 * @param WMI_Class the classname passed to by the calling method
-	 * @param whereCondition a filtering parameter, passed to by the calling method
+	 * @param determinantProperty a filtering parameter, passed to by the calling method
+	 * @param determinantValue the value of the filtering parameter, also passed to by the calling method
 	 * @param WMI_Attribute a single property requested for a particular class. The property requested by the calling methods can be found in their respective class descriptions
 	 * @return a {@link java.lang.String} of the attribute value requested by the calling method
 	 * @throws IOException in case of general I/O errors
 	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
 	 */
-	public static String getWhere(String WMI_Class, String whereCondition, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
+	public static String getWhere(String WMI_Class, String determinantProperty, String determinantValue, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
 		String methodName = "runCommand(String WMI_Class, String whereCondition, String WMI_Attribute)";
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" | Where-Object "+whereCondition+" | Select-Object "+WMI_Attribute+" | Format-List"};
+		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		
 		try {
