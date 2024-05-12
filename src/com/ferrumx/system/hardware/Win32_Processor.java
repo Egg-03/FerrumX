@@ -9,13 +9,13 @@ import com.ferrumx.formatter.cim.CIM_ML;
 /**
  * This class queries the Win32_Processor class of WMI and represents the CPU details of your system.
  * <p>
- * Fetches the following properties: Name, NumberOfCores, ThreadCount, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID
+ * Fetches the following properties: Name, NumberOfCores, ThreadCount, NumberOfLogicalProcessor, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID
  * @author Egg-03
- * @version 1.1.0
+ * @version 1.2.0
  */
 public class Win32_Processor{
 	private static String classname = "Win32_Processor";
-	private static String attributes = "Name, NumberOfCores, ThreadCount, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID";
+	private static String attributes = "Name, NumberOfCores, ThreadCount, NumberOfLogicalProcessors, Manufacturer, AddressWidth, L2CacheSize, L3CacheSize, MaxClockSpeed, ExtClock, SocketDesignation, Version, Caption, Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID";
 	private Win32_Processor() {
 		throw new IllegalStateException("Utility Class");
 	}

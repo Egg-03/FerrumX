@@ -410,7 +410,7 @@ public class SummaryReportGeneration {
 		try {
 			deviceIDs = Win32_Processor.getProcessorList();
 			for (String currentID : deviceIDs) {
-				currentCPU = CIM_ML.getWhere("Win32_Processor", "DeviceID", currentID, "Name, NumberOfCores, NumberOfLogicalProcessors, Manufacturer");
+				currentCPU = CIM_ML.getWhere("Win32_Processor", "DeviceID", currentID, "Name, NumberOfCores, ThreadCount, NumberOfLogicalProcessors, Manufacturer");
 				for (Map.Entry<String, String> entry : currentCPU.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
