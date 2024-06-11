@@ -14,7 +14,7 @@ import com.ferrumx.system.currentuser.User;
  * @version 1.1.0
  */
 public class HardwareID {
-	private HardwareID() {
+	protected HardwareID() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
