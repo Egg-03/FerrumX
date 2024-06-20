@@ -35,7 +35,7 @@ public class CIM_SL {
 	public static String get(String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
 		String methodName = "runCommand(String WMI_Class, String WMI_Attribute)";
 		
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" | Select-Object "+WMI_Attribute+" | Format-List"};
+		String[] command = {"powershell.exe", "Get-CimInstance -ClassName "+WMI_Class+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		try {
 			int exitCode = process.waitFor();
@@ -91,7 +91,7 @@ public class CIM_SL {
 	 */
 	public static String getWhere(String WMI_Class, String determinantProperty, String determinantValue, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
 		String methodName = "runCommand(String WMI_Class, String whereCondition, String WMI_Attribute)";
-		String[] command = {"powershell.exe", "/c", "Get-CimInstance -ClassName "+WMI_Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+WMI_Attribute+" | Format-List"};
+		String[] command = {"powershell.exe", "Get-CimInstance -ClassName "+WMI_Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+WMI_Attribute+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		
 		try {

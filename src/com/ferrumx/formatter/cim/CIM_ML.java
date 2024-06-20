@@ -35,7 +35,7 @@ public class CIM_ML {
 	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
 	 */
 	public static List<String> getID(String win32Class, String Key) throws IOException, IndexOutOfBoundsException{
-		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Select-Object "+Key+" | Format-List"};
+		String[] command = {"powershell.exe", "Get-CimInstance -ClassName "+win32Class+" | Select-Object "+Key+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		try {
 			int exitCode = process.waitFor();
@@ -99,7 +99,7 @@ public class CIM_ML {
 	 * @throws IndexOutOfBoundsException in case of text parsing issues from powershell
 	 */
 	public static List<String> getIDWhere(String win32Class, String determinantProperty, String determinantValue,  String extractProperty) throws IOException, IndexOutOfBoundsException{
-		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+extractProperty+" | Format-List"};
+		String[] command = {"powershell.exe", "Get-CimInstance -ClassName "+win32Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+extractProperty+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		try {
 			int exitCode = process.waitFor();
@@ -160,7 +160,7 @@ public class CIM_ML {
 	 */
 	public static Map<String, String> get(String win32Class, String attributes) throws IOException, IndexOutOfBoundsException {
 		
-		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Select-Object "+attributes+" | Format-List"};
+		String[] command = {"powershell.exe", "Get-CimInstance -ClassName "+win32Class+" | Select-Object "+attributes+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		
 		try {
@@ -217,7 +217,7 @@ public class CIM_ML {
 	 */
 	public static Map<String, String> getWhere(String win32Class, String determinantProperty, String determinantValue, String attributes) throws IOException, IndexOutOfBoundsException {
 		
-		String[] command = {"powershell.exe","/c", "Get-CimInstance -ClassName "+win32Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+attributes+" | Format-List"};
+		String[] command = {"powershell.exe", "Get-CimInstance -ClassName "+win32Class+" | Where-Object {$_."+determinantProperty+" -eq "+"'"+determinantValue+"'}"+" | Select-Object "+attributes+" | Format-List"};
 		Process process = Runtime.getRuntime().exec(command);
 		try {
 			int exitCode = process.waitFor();
