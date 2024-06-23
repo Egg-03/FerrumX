@@ -125,7 +125,7 @@ public class SummaryReportGeneration {
 	}
 	
 	private static void reportHardwareID(PrintWriter report, JTextArea errorDisplay){
-		report.println("----------------------HUMAN READABLE HARDWARE ID------------------------");
+		report.println("-------------------HARDWARE ID----------------------");
 		try {
 			String hwid = HardwareID.getHardwareID();
 			report.println(hwid);
