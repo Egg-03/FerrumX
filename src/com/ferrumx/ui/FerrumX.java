@@ -1,27 +1,29 @@
 package com.ferrumx.ui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-import javax.swing.UIManager;
-import java.awt.GridLayout;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import java.awt.Toolkit;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.border.TitledBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.TitledBorder;
+
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import javax.swing.JMenuBar;
 
 public class FerrumX {
 
@@ -64,6 +66,7 @@ public class FerrumX {
 			public void run() {
 				try {
 					FerrumX window = new FerrumX();
+					window.mainFrame.pack();
 					window.mainFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -84,7 +87,7 @@ public class FerrumX {
 	 */
 	private void initialize() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX");
+		mainFrame.setTitle("FerrumX [Build v30072024 Alpha]");
 		mainFrame.setResizable(false);
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 600, 450);
