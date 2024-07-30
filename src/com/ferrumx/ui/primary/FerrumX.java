@@ -157,6 +157,7 @@ public class FerrumX {
 		hwidPanel.add(hwidlabel, gbc_hwidlabel);
 		
 		hwidTf = new JTextField();
+		hwidTf.setForeground(Color.MAGENTA);
 		hwidTf.setEditable(false);
 		GridBagConstraints gbc_hwidTf = new GridBagConstraints();
 		gbc_hwidTf.fill = GridBagConstraints.HORIZONTAL;
