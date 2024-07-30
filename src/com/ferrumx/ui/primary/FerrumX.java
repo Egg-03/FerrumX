@@ -1,7 +1,6 @@
-package com.ferrumx.ui;
+package com.ferrumx.ui.primary;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,13 +21,13 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import javax.swing.JMenuBar;
-
 public class FerrumX {
 
 	private JFrame mainFrame;
+	
+	//HWID
 	private JTextField hwidTf;
+	//CPU
 	private JComboBox<String> cpuChoice;
 	private JTextField cpuCoreTf;
 	private JTextField cpuThreadTf;
@@ -79,13 +78,14 @@ public class FerrumX {
 	 * Create the application.
 	 */
 	public FerrumX() {
-		initialize();
+		initializeComponents();
+		initializeSystemInfo();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initializeComponents() {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("FerrumX [Build v30072024 Alpha]");
 		mainFrame.setResizable(false);
@@ -101,6 +101,30 @@ public class FerrumX {
 		
 		JPanel hwidCpuPanel = new JPanel();
 		tabbedPane.addTab("CPU", null, hwidCpuPanel, null);
+		initializeCpuPanel(tabbedPane, hwidCpuPanel);
+		
+		JPanel memoryPanel = new JPanel();
+		tabbedPane.addTab("Memory", null, memoryPanel, null);
+		
+		JPanel mainBoardPanel = new JPanel();
+		tabbedPane.addTab("Mainboard", null, mainBoardPanel, null);
+		
+		JPanel gpuPanel = new JPanel();
+		tabbedPane.addTab("GPU", null, gpuPanel, null);
+		
+		JPanel networkPanel = new JPanel();
+		tabbedPane.addTab("Network", null, networkPanel, null);
+		
+		JPanel storagePanel = new JPanel();
+		tabbedPane.addTab("Storage", null, storagePanel, null);
+		
+		JPanel osPanel = new JPanel();
+		tabbedPane.addTab("OS", null, osPanel, null);
+		//Keyboard Pane Tab Traversal
+		//mainFrame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{mainFrame.getContentPane(), tabbedPane, hwidCpuPanel, memoryPanel, mainBoardPanel, gpuPanel, networkPanel, storagePanel, osPanel, hwidPanel, cpuPanel, hwidlabel, hwidTf, cpuCount, cpuChoice, cpuCores, cpuCoreTf, cpuThreads, cpuThreadTf, cpuLogicalProcessors, cpuLogicProcessorTf, cpuName, cpuNameTf, addressWidth, addressWidthTf, cpuSocket, cpuSocketTf, cpuManufacturer, cpuManufacturerTf, cpuExtClock, cpuMultiplier, cpuEffectiveClock, cpuBaseClockTf, multiplierTf, effectiveClockTf, separator, separator_1, cpuVersion, cpuFamily, cpuVirtStatus, cpuCaption, cpuStepping, cpuId, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, separator_2, cpuLevelOneCache, cpuL1Tf, cpuL1Associativity, cpuL1AsTf, cpuLevelTwoCache, cpuL2Tf, cpuL2Associativity, cpuL2AsTf, cpuLevelThreeCache, cpuL3Tf, cpuL3Associativity, cpuL3AsTf}));
+	}
+	
+	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
 		tabbedPane.setEnabledAt(0, true);
 		GridBagLayout gbl_hwidCpuPanel = new GridBagLayout();
 		gbl_hwidCpuPanel.columnWidths = new int[]{0, 0};
@@ -582,25 +606,9 @@ public class FerrumX {
 		gbc_cpuL3AsTf.gridy = 11;
 		cpuPanel.add(cpuL3AsTf, gbc_cpuL3AsTf);
 		cpuL3AsTf.setColumns(10);
-		
-		JPanel memoryPanel = new JPanel();
-		tabbedPane.addTab("Memory", null, memoryPanel, null);
-		
-		JPanel mainBoardPanel = new JPanel();
-		tabbedPane.addTab("Mainboard", null, mainBoardPanel, null);
-		
-		JPanel gpuPanel = new JPanel();
-		tabbedPane.addTab("GPU", null, gpuPanel, null);
-		
-		JPanel networkPanel = new JPanel();
-		tabbedPane.addTab("Network", null, networkPanel, null);
-		
-		JPanel storagePanel = new JPanel();
-		tabbedPane.addTab("Storage", null, storagePanel, null);
-		
-		JPanel osPanel = new JPanel();
-		tabbedPane.addTab("OS", null, osPanel, null);
-		mainFrame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{mainFrame.getContentPane(), tabbedPane, hwidCpuPanel, memoryPanel, mainBoardPanel, gpuPanel, networkPanel, storagePanel, osPanel, hwidPanel, cpuPanel, hwidlabel, hwidTf, cpuCount, cpuChoice, cpuCores, cpuCoreTf, cpuThreads, cpuThreadTf, cpuLogicalProcessors, cpuLogicProcessorTf, cpuName, cpuNameTf, addressWidth, addressWidthTf, cpuSocket, cpuSocketTf, cpuManufacturer, cpuManufacturerTf, cpuExtClock, cpuMultiplier, cpuEffectiveClock, cpuBaseClockTf, multiplierTf, effectiveClockTf, separator, separator_1, cpuVersion, cpuFamily, cpuVirtStatus, cpuCaption, cpuStepping, cpuId, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, separator_2, cpuLevelOneCache, cpuL1Tf, cpuL1Associativity, cpuL1AsTf, cpuLevelTwoCache, cpuL2Tf, cpuL2Associativity, cpuL2AsTf, cpuLevelThreeCache, cpuL3Tf, cpuL3Associativity, cpuL3AsTf}));
 	}
 
+	private void initializeSystemInfo() {
+		HardwareId.initializeHardwareId(hwidTf);
+	}
 }

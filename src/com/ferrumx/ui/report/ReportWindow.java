@@ -1,4 +1,4 @@
-package com.ferrumx.system.report;
+package com.ferrumx.ui.report;
 
 import java.awt.EventQueue;
 import java.io.File;

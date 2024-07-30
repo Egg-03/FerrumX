@@ -1,4 +1,4 @@
-package com.ferrumx.system.report;
+package com.ferrumx.ui.report;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,12 +14,10 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.system.currentuser.User;
 import com.ferrumx.system.hardware.HardwareID;
 import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
-import com.ferrumx.system.hardware.Win32_BIOS;
-import com.ferrumx.system.hardware.Win32_Baseboard;
-import com.ferrumx.system.hardware.Win32_CacheMemory;
 import com.ferrumx.system.hardware.Win32_DiskDrive;
 import com.ferrumx.system.hardware.Win32_NetworkAdapter;
 import com.ferrumx.system.hardware.Win32_PhysicalMemory;
@@ -28,22 +26,21 @@ import com.ferrumx.system.hardware.Win32_Printer;
 import com.ferrumx.system.hardware.Win32_Processor;
 import com.ferrumx.system.hardware.Win32_SoundDevice;
 import com.ferrumx.system.hardware.Win32_VideoController;
-import com.ferrumx.system.networking.Win32_NetworkAdapterConfiguration;
 import com.ferrumx.system.networking.Win32_NetworkAdapterSetting;
 import com.ferrumx.system.operating_system.Win32_DiskDriveToDiskPartition;
 import com.ferrumx.system.operating_system.Win32_LogicalDiskToPartition;
 import com.ferrumx.system.operating_system.Win32_OperatingSystem;
 import com.ferrumx.system.operating_system.Win32_TimeZone;
 
-public class DetailedReportGeneration {
+public class SummaryReportGeneration {
 	
-	private DetailedReportGeneration() {
+	private SummaryReportGeneration() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
 	protected static void generate(JProgressBar progress, JLabel label, JButton button, JTextArea errorDisplay, JButton btnShowReport) {
 		new Thread(()-> {
-		try(FileWriter fos = new FileWriter(User.getUsername()+"-FerrumX-Detailed-Report.txt");){
+		try(FileWriter fos = new FileWriter(User.getUsername()+"-FerrumX-Summary-Report.txt");){
 			PrintWriter report = new PrintWriter(fos);
 			
 			button.setEnabled(false);
@@ -158,7 +155,7 @@ public class DetailedReportGeneration {
 		try {
 			deviceIDs = Win32_SoundDevice.getSoundDeviceID();	
 			for(String currentID : deviceIDs) {
-				currentAudio = Win32_SoundDevice.getCurrentAudioDevice(currentID);
+				currentAudio = CIM_ML.getWhere("Win32_SoundDevice", "DeviceID", currentID, "Caption, Manufacturer, Status");
 				for(Map.Entry<String, String> entry: currentAudio.entrySet())
 					report.println(entry.getKey()+": "+entry.getValue());
 				report.println();
@@ -181,7 +178,7 @@ public class DetailedReportGeneration {
 		try {
 		deviceIDs = Win32_Printer.getDeviceIDList();
 		for(String currentID : deviceIDs) {
-			currentPrinter = Win32_Printer.getCurrentPrinter(currentID);
+			currentPrinter = CIM_ML.getWhere("Win32_Printer", "DeviceID", currentID, "Name, HorizontalResolution, VerticalResolution, DriverName, Local, Network");
 			for(Map.Entry<String, String> entry: currentPrinter.entrySet())
 				report.println(entry.getKey()+": "+entry.getValue());
 			report.println();
@@ -205,7 +202,7 @@ public class DetailedReportGeneration {
 		try {
 			diskID = Win32_DiskDrive.getDriveID();
 			for (String id : diskID) {
-				disk = Win32_DiskDrive.getDrive(id);
+				disk = CIM_ML.getWhere("Win32_DiskDrive", "DeviceID", id, "Model, Size, Status");
 				diskPartition = Win32_DiskDriveToDiskPartition.getPartitionList(id);
 				for (Map.Entry<String, String> entry : disk.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
@@ -236,9 +233,9 @@ public class DetailedReportGeneration {
 		try {
 			deviceIDs = Win32_NetworkAdapter.getDeviceIDList();
 			for (String currentID : deviceIDs) {
-				networkAdapter = Win32_NetworkAdapter.getNetworkAdapters(currentID);
+				networkAdapter = CIM_ML.getWhere("Win32_NetworkAdapter", "DeviceID", currentID, "Name, MACAddress, NetConnectionID");
 				index = Win32_NetworkAdapterSetting.getIndex(currentID);
-				networkAdapterConfiguration = Win32_NetworkAdapterConfiguration.getAdapterConfiguration(index);
+				networkAdapterConfiguration = CIM_ML.getWhere("Win32_NetworkAdapterConfiguration", "Index", index, "IPAddress, IPSubnet, DefaultIPGateway, DHCPServer, DNSServerSearchOrder");
 				for (Map.Entry<String, String> entry : networkAdapter.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
@@ -264,10 +261,9 @@ public class DetailedReportGeneration {
 		try {
 			portID = Win32_PortConnector.getBaseboardPortID();
 			for (String id : portID) {
-				ports = Win32_PortConnector.getBaseboardPorts(id);
+				ports = CIM_ML.getWhere("Win32_PortConnector", "Tag", id, "ExternalReferenceDesignator");
 				for (Map.Entry<String, String> port : ports.entrySet())
-					report.println(port.getKey() + ": " + port.getValue());
-				report.println();
+					report.println(port.getValue());
 			}
 			if(ports.isEmpty())
 				errorDisplay.append("I/O Info: Unavailable\n");
@@ -282,7 +278,7 @@ public class DetailedReportGeneration {
 	private static void reportBIOS(PrintWriter report, JTextArea errorDisplay) {
 		report.println("----------------------BIOS INFO------------------------");
 		try {
-			Map<String, String> BIOS = Win32_BIOS.getPrimaryBIOS();
+			Map<String, String> BIOS = CIM_ML.getWhere("Win32_BIOS", "PrimaryBIOS", "True", "Name, Manufacturer, ReleaseDate");
 			for (Map.Entry<String, String> entry : BIOS.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
 			if(BIOS.isEmpty())
@@ -298,7 +294,7 @@ public class DetailedReportGeneration {
 	private static void reportMotherboard(PrintWriter report, JTextArea errorDisplay) {
 		report.println("----------------------MAINBOARD------------------------");
 		try {
-			Map<String, String> motherboard = Win32_Baseboard.getMotherboard();
+			Map<String, String> motherboard = CIM_ML.get("Win32_Baseboard", "Manufacturer, Model, Product");
 			for (Map.Entry<String, String> entry : motherboard.entrySet())
 				report.println(entry.getKey() + ": " + entry.getValue());
 			
@@ -320,7 +316,7 @@ public class DetailedReportGeneration {
 		try {
 			gpuIDs = Win32_VideoController.getGPUID();
 			for (String currentID : gpuIDs) {
-				currentGPU = Win32_VideoController.getGPU(currentID);
+				currentGPU = CIM_ML.getWhere("Win32_VideoController", "DeviceID", currentID, "Name, VideoProcessor, DriverVersion, AdapterRAM, CurrentHorizontalResolution, CurrentVerticalResolution");
 				for (Map.Entry<String, String> entry : currentGPU.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 			}
@@ -342,7 +338,7 @@ public class DetailedReportGeneration {
 		try {
 			memoryID=Win32_PhysicalMemory.getTag();
 			for (String id : memoryID) {
-				memory = Win32_PhysicalMemory.getMemory(id);
+				memory = CIM_ML.getWhere("Win32_PhysicalMemory", "Tag", id, "Manufacturer, Model, PartNumber, Capacity, Speed");
 				for (Map.Entry<String, String> entry : memory.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
@@ -368,7 +364,7 @@ public class DetailedReportGeneration {
 			for (String id : cpuID) {
 				cacheID = Win32_AssociatedProcessorMemory.getCacheID(id);
 				for (String currentCacheID : cacheID) {
-					cache = Win32_CacheMemory.getCPUCache(currentCacheID);
+					cache = CIM_ML.getWhere("Win32_CacheMemory", "DeviceID", currentCacheID, "Purpose, InstalledSize");
 					for (Map.Entry<String, String> currentCache : cache.entrySet())
 						report.println(currentCache.getKey() + ": " + currentCache.getValue());
 					report.println();
@@ -392,7 +388,7 @@ public class DetailedReportGeneration {
 		try {
 			oslist = Win32_OperatingSystem.getOSList();
 			for (String currentOS : oslist) {
-				osinfo = Win32_OperatingSystem.getOSInfo(currentOS);
+				osinfo = CIM_ML.getWhere("Win32_OperatingSystem", "Name", currentOS, "Caption, InstallDate, CSName, BuildNumber, OSArchitecture, WindowsDirectory");
 				for (Map.Entry<String, String> entry : osinfo.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 			}
@@ -414,7 +410,7 @@ public class DetailedReportGeneration {
 		try {
 			deviceIDs = Win32_Processor.getProcessorList();
 			for (String currentID : deviceIDs) {
-				currentCPU = Win32_Processor.getCurrentProcessor(currentID);
+				currentCPU = CIM_ML.getWhere("Win32_Processor", "DeviceID", currentID, "Name, NumberOfCores, ThreadCount, NumberOfLogicalProcessors, Manufacturer");
 				for (Map.Entry<String, String> entry : currentCPU.entrySet())
 					report.println(entry.getKey() + ": " + entry.getValue());
 				report.println();
