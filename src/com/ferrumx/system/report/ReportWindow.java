@@ -89,11 +89,11 @@ public class ReportWindow extends JFrame {
 		progressBar.setVisible(false);
 		contentPane.add(progressBar);
 		
-		JProgressBar progressBar_1 = new JProgressBar();
-		progressBar_1.setIndeterminate(true);
-		progressBar_1.setBounds(10, 72, 414, 14);
-		progressBar_1.setVisible(true);
-		contentPane.add(progressBar_1);
+		JProgressBar progressBar1 = new JProgressBar();
+		progressBar1.setIndeterminate(true);
+		progressBar1.setBounds(10, 72, 414, 14);
+		progressBar1.setVisible(true);
+		contentPane.add(progressBar1);
 		
 		JLabel currentOperation = new JLabel("READY");
 		currentOperation.setHorizontalAlignment(SwingConstants.CENTER);
@@ -154,7 +154,7 @@ public class ReportWindow extends JFrame {
 		
 		JButton detailedReport = new JButton("Generate");
 		detailedReport.addActionListener(e-> {
-				progressBar_1.setVisible(false);
+				progressBar1.setVisible(false);
 				progressBar.setVisible(true);
 				errorDisplay.setText("");
 				
