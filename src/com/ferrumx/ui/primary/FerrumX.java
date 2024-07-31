@@ -7,6 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -21,6 +26,9 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
+
+import com.ferrumx.ui.secondary.ExceptionUI;
+
 
 public class FerrumX {
 
@@ -107,6 +115,7 @@ public class FerrumX {
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 600, 450);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
@@ -889,6 +898,17 @@ public class FerrumX {
 
 
 	private void initializeSystemInfo() {
-		HardwareId.initializeHardwareId(hwidTf);
+		
+		try(ExecutorService exec = Executors.newCachedThreadPool()){
+			Future<Boolean> initializeHardwareId = exec.submit(()->(HardwareId.initializeHardwareId(hwidTf)));
+			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL1Tf, cpuL1AsTf, cpuL2Tf, cpuL2AsTf, cpuL3Tf, cpuL3AsTf));
+			
+			initializeHardwareId.get();
+			initializeCpu.get();
+		}
+		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
+			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
+			Thread.currentThread().interrupt();
+		}
 	}
 }
