@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
@@ -51,6 +52,20 @@ public class FerrumX {
 	private JTextField cpuL2AsTf;
 	private JTextField cpuL3Tf;
 	private JTextField cpuL3AsTf;
+	//Memory
+	private JTextField memoryNameTf;
+	private JTextField memoryManufacturerTf;
+	private JTextField memoryModelTf;
+	private JTextField memoryOtherInfoTf;
+	private JTextField memoryPartNumberTf;
+	private JTextField memoryFormFactorTf;
+	private JTextField memoryBankLabelTf;
+	private JTextField memoryCapacityTf;
+	private JTextField memoryWidthTf;
+	private JTextField memorySpeedTf;
+	private JTextField memoryConfigClockSpeedTf;
+	private JTextField memoryLocatorTf;
+	private JTextField memorySerialNumberTf;
 
 	/**
 	 * Launch the application.
@@ -87,24 +102,25 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v30072024 Alpha]");
 		mainFrame.setResizable(false);
+		mainFrame.setTitle("FerrumX [Build v31072024 Alpha]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 600, 450);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		mainFrame.getContentPane().add(tabbedPane);
 		
+		//Initialize the CPU Panel
 		JPanel hwidCpuPanel = new JPanel();
-		tabbedPane.addTab("CPU", null, hwidCpuPanel, null);
 		initializeCpuPanel(tabbedPane, hwidCpuPanel);
 		
+		//Initialize the Memory Panel
 		JPanel memoryPanel = new JPanel();
-		tabbedPane.addTab("Memory", null, memoryPanel, null);
+		initializeMemoryPanel(tabbedPane, memoryPanel);
 		
 		JPanel mainBoardPanel = new JPanel();
 		tabbedPane.addTab("Mainboard", null, mainBoardPanel, null);
@@ -125,6 +141,8 @@ public class FerrumX {
 	}
 	
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
+		
+		tabbedPane.addTab("CPU", null, hwidCpuPanel, "Displays CPU Information");
 		tabbedPane.setEnabledAt(0, true);
 		GridBagLayout gbl_hwidCpuPanel = new GridBagLayout();
 		gbl_hwidCpuPanel.columnWidths = new int[]{0, 0};
@@ -608,6 +626,267 @@ public class FerrumX {
 		cpuPanel.add(cpuL3AsTf, gbc_cpuL3AsTf);
 		cpuL3AsTf.setColumns(10);
 	}
+	
+	private void initializeMemoryPanel(JTabbedPane tabbedPane, JPanel memoryPanel) {
+		memoryPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Memory", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		tabbedPane.addTab("Memory", null, memoryPanel, "Displays Memory Information");
+		GridBagLayout gbl_memoryPanel = new GridBagLayout();
+		gbl_memoryPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_memoryPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_memoryPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_memoryPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		memoryPanel.setLayout(gbl_memoryPanel);
+		
+		JLabel memorySlot = new JLabel("Slot#");
+		GridBagConstraints gbc_memorySlot = new GridBagConstraints();
+		gbc_memorySlot.insets = new Insets(0, 0, 5, 5);
+		gbc_memorySlot.anchor = GridBagConstraints.EAST;
+		gbc_memorySlot.gridx = 0;
+		gbc_memorySlot.gridy = 0;
+		memoryPanel.add(memorySlot, gbc_memorySlot);
+		
+		JComboBox<String> memorySlotChoice = new JComboBox<>();
+		GridBagConstraints gbc_memorySlotChoice = new GridBagConstraints();
+		gbc_memorySlotChoice.insets = new Insets(0, 0, 5, 0);
+		gbc_memorySlotChoice.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memorySlotChoice.gridx = 1;
+		gbc_memorySlotChoice.gridy = 0;
+		memoryPanel.add(memorySlotChoice, gbc_memorySlotChoice);
+		
+		JLabel memoryName = new JLabel("Name");
+		GridBagConstraints gbc_memoryName = new GridBagConstraints();
+		gbc_memoryName.anchor = GridBagConstraints.EAST;
+		gbc_memoryName.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryName.gridx = 0;
+		gbc_memoryName.gridy = 1;
+		memoryPanel.add(memoryName, gbc_memoryName);
+		
+		memoryNameTf = new JTextField();
+		memoryNameTf.setEditable(false);
+		GridBagConstraints gbc_memoryNameTf = new GridBagConstraints();
+		gbc_memoryNameTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryNameTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryNameTf.gridx = 1;
+		gbc_memoryNameTf.gridy = 1;
+		memoryPanel.add(memoryNameTf, gbc_memoryNameTf);
+		memoryNameTf.setColumns(10);
+		
+		JLabel memoryManufacturer = new JLabel("Manufacturer");
+		GridBagConstraints gbc_memoryManufacturer = new GridBagConstraints();
+		gbc_memoryManufacturer.anchor = GridBagConstraints.EAST;
+		gbc_memoryManufacturer.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryManufacturer.gridx = 0;
+		gbc_memoryManufacturer.gridy = 2;
+		memoryPanel.add(memoryManufacturer, gbc_memoryManufacturer);
+		
+		memoryManufacturerTf = new JTextField();
+		memoryManufacturerTf.setEditable(false);
+		GridBagConstraints gbc_memoryManufacturerTf = new GridBagConstraints();
+		gbc_memoryManufacturerTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryManufacturerTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryManufacturerTf.gridx = 1;
+		gbc_memoryManufacturerTf.gridy = 2;
+		memoryPanel.add(memoryManufacturerTf, gbc_memoryManufacturerTf);
+		memoryManufacturerTf.setColumns(10);
+		
+		JLabel memoryModel = new JLabel("Model");
+		GridBagConstraints gbc_memoryModel = new GridBagConstraints();
+		gbc_memoryModel.anchor = GridBagConstraints.EAST;
+		gbc_memoryModel.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryModel.gridx = 0;
+		gbc_memoryModel.gridy = 3;
+		memoryPanel.add(memoryModel, gbc_memoryModel);
+		
+		memoryModelTf = new JTextField();
+		memoryModelTf.setEditable(false);
+		GridBagConstraints gbc_memoryModelTf = new GridBagConstraints();
+		gbc_memoryModelTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryModelTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryModelTf.gridx = 1;
+		gbc_memoryModelTf.gridy = 3;
+		memoryPanel.add(memoryModelTf, gbc_memoryModelTf);
+		memoryModelTf.setColumns(10);
+		
+		JLabel memoryOtherInfo = new JLabel("Other Identifying Info");
+		GridBagConstraints gbc_memoryOtherInfo = new GridBagConstraints();
+		gbc_memoryOtherInfo.anchor = GridBagConstraints.EAST;
+		gbc_memoryOtherInfo.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryOtherInfo.gridx = 0;
+		gbc_memoryOtherInfo.gridy = 4;
+		memoryPanel.add(memoryOtherInfo, gbc_memoryOtherInfo);
+		
+		memoryOtherInfoTf = new JTextField();
+		memoryOtherInfoTf.setEditable(false);
+		GridBagConstraints gbc_memoryOtherInfoTf = new GridBagConstraints();
+		gbc_memoryOtherInfoTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryOtherInfoTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryOtherInfoTf.gridx = 1;
+		gbc_memoryOtherInfoTf.gridy = 4;
+		memoryPanel.add(memoryOtherInfoTf, gbc_memoryOtherInfoTf);
+		memoryOtherInfoTf.setColumns(10);
+		
+		JLabel memoryPartNumber = new JLabel("Part Number");
+		GridBagConstraints gbc_memoryPartNumber = new GridBagConstraints();
+		gbc_memoryPartNumber.anchor = GridBagConstraints.EAST;
+		gbc_memoryPartNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryPartNumber.gridx = 0;
+		gbc_memoryPartNumber.gridy = 5;
+		memoryPanel.add(memoryPartNumber, gbc_memoryPartNumber);
+		
+		memoryPartNumberTf = new JTextField();
+		memoryPartNumberTf.setEditable(false);
+		GridBagConstraints gbc_memoryPartNumberTf = new GridBagConstraints();
+		gbc_memoryPartNumberTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryPartNumberTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryPartNumberTf.gridx = 1;
+		gbc_memoryPartNumberTf.gridy = 5;
+		memoryPanel.add(memoryPartNumberTf, gbc_memoryPartNumberTf);
+		memoryPartNumberTf.setColumns(10);
+		
+		JLabel memorySerialNumber = new JLabel("Serial Number");
+		GridBagConstraints gbc_memorySerialNumber = new GridBagConstraints();
+		gbc_memorySerialNumber.anchor = GridBagConstraints.EAST;
+		gbc_memorySerialNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_memorySerialNumber.gridx = 0;
+		gbc_memorySerialNumber.gridy = 6;
+		memoryPanel.add(memorySerialNumber, gbc_memorySerialNumber);
+		
+		memorySerialNumberTf = new JTextField();
+		memorySerialNumberTf.setEditable(false);
+		GridBagConstraints gbc_memorySerialNumberTf = new GridBagConstraints();
+		gbc_memorySerialNumberTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memorySerialNumberTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memorySerialNumberTf.gridx = 1;
+		gbc_memorySerialNumberTf.gridy = 6;
+		memoryPanel.add(memorySerialNumberTf, gbc_memorySerialNumberTf);
+		memorySerialNumberTf.setColumns(10);
+		
+		JLabel memoryFormFactor = new JLabel("Form Factor");
+		GridBagConstraints gbc_memoryFormFactor = new GridBagConstraints();
+		gbc_memoryFormFactor.anchor = GridBagConstraints.EAST;
+		gbc_memoryFormFactor.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryFormFactor.gridx = 0;
+		gbc_memoryFormFactor.gridy = 7;
+		memoryPanel.add(memoryFormFactor, gbc_memoryFormFactor);
+		
+		memoryFormFactorTf = new JTextField();
+		memoryFormFactorTf.setEditable(false);
+		GridBagConstraints gbc_memoryFormFactorTf = new GridBagConstraints();
+		gbc_memoryFormFactorTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryFormFactorTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryFormFactorTf.gridx = 1;
+		gbc_memoryFormFactorTf.gridy = 7;
+		memoryPanel.add(memoryFormFactorTf, gbc_memoryFormFactorTf);
+		memoryFormFactorTf.setColumns(10);
+		
+		JLabel memoryBankLabel = new JLabel("Bank Label");
+		GridBagConstraints gbc_memoryBankLabel = new GridBagConstraints();
+		gbc_memoryBankLabel.anchor = GridBagConstraints.EAST;
+		gbc_memoryBankLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryBankLabel.gridx = 0;
+		gbc_memoryBankLabel.gridy = 8;
+		memoryPanel.add(memoryBankLabel, gbc_memoryBankLabel);
+		
+		memoryBankLabelTf = new JTextField();
+		memoryBankLabelTf.setEditable(false);
+		GridBagConstraints gbc_memoryBankLabelTf = new GridBagConstraints();
+		gbc_memoryBankLabelTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryBankLabelTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryBankLabelTf.gridx = 1;
+		gbc_memoryBankLabelTf.gridy = 8;
+		memoryPanel.add(memoryBankLabelTf, gbc_memoryBankLabelTf);
+		memoryBankLabelTf.setColumns(10);
+		
+		JLabel memoryCapacity = new JLabel("Capacity");
+		GridBagConstraints gbc_memoryCapacity = new GridBagConstraints();
+		gbc_memoryCapacity.anchor = GridBagConstraints.EAST;
+		gbc_memoryCapacity.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryCapacity.gridx = 0;
+		gbc_memoryCapacity.gridy = 9;
+		memoryPanel.add(memoryCapacity, gbc_memoryCapacity);
+		
+		memoryCapacityTf = new JTextField();
+		memoryCapacityTf.setEditable(false);
+		GridBagConstraints gbc_memoryCapacityTf = new GridBagConstraints();
+		gbc_memoryCapacityTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryCapacityTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryCapacityTf.gridx = 1;
+		gbc_memoryCapacityTf.gridy = 9;
+		memoryPanel.add(memoryCapacityTf, gbc_memoryCapacityTf);
+		memoryCapacityTf.setColumns(10);
+		
+		JLabel memoryWidth = new JLabel("Data Width");
+		GridBagConstraints gbc_memoryWidth = new GridBagConstraints();
+		gbc_memoryWidth.anchor = GridBagConstraints.EAST;
+		gbc_memoryWidth.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryWidth.gridx = 0;
+		gbc_memoryWidth.gridy = 10;
+		memoryPanel.add(memoryWidth, gbc_memoryWidth);
+		
+		memoryWidthTf = new JTextField();
+		memoryWidthTf.setEditable(false);
+		GridBagConstraints gbc_memoryWidthTf = new GridBagConstraints();
+		gbc_memoryWidthTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryWidthTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryWidthTf.gridx = 1;
+		gbc_memoryWidthTf.gridy = 10;
+		memoryPanel.add(memoryWidthTf, gbc_memoryWidthTf);
+		memoryWidthTf.setColumns(10);
+		
+		JLabel memorySpeed = new JLabel("Speed");
+		GridBagConstraints gbc_memorySpeed = new GridBagConstraints();
+		gbc_memorySpeed.anchor = GridBagConstraints.EAST;
+		gbc_memorySpeed.insets = new Insets(0, 0, 5, 5);
+		gbc_memorySpeed.gridx = 0;
+		gbc_memorySpeed.gridy = 11;
+		memoryPanel.add(memorySpeed, gbc_memorySpeed);
+		
+		memorySpeedTf = new JTextField();
+		memorySpeedTf.setEditable(false);
+		GridBagConstraints gbc_memorySpeedTf = new GridBagConstraints();
+		gbc_memorySpeedTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memorySpeedTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memorySpeedTf.gridx = 1;
+		gbc_memorySpeedTf.gridy = 11;
+		memoryPanel.add(memorySpeedTf, gbc_memorySpeedTf);
+		memorySpeedTf.setColumns(10);
+		
+		JLabel memoryConfigClockSpeed = new JLabel("Configured Clock Speed");
+		GridBagConstraints gbc_memoryConfigClockSpeed = new GridBagConstraints();
+		gbc_memoryConfigClockSpeed.anchor = GridBagConstraints.EAST;
+		gbc_memoryConfigClockSpeed.insets = new Insets(0, 0, 5, 5);
+		gbc_memoryConfigClockSpeed.gridx = 0;
+		gbc_memoryConfigClockSpeed.gridy = 12;
+		memoryPanel.add(memoryConfigClockSpeed, gbc_memoryConfigClockSpeed);
+		
+		memoryConfigClockSpeedTf = new JTextField();
+		memoryConfigClockSpeedTf.setEditable(false);
+		GridBagConstraints gbc_memoryConfigClockSpeedTf = new GridBagConstraints();
+		gbc_memoryConfigClockSpeedTf.insets = new Insets(0, 0, 5, 0);
+		gbc_memoryConfigClockSpeedTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryConfigClockSpeedTf.gridx = 1;
+		gbc_memoryConfigClockSpeedTf.gridy = 12;
+		memoryPanel.add(memoryConfigClockSpeedTf, gbc_memoryConfigClockSpeedTf);
+		memoryConfigClockSpeedTf.setColumns(10);
+		
+		JLabel memoryLocator = new JLabel("Device Locator");
+		GridBagConstraints gbc_memoryLocator = new GridBagConstraints();
+		gbc_memoryLocator.anchor = GridBagConstraints.EAST;
+		gbc_memoryLocator.insets = new Insets(0, 0, 0, 5);
+		gbc_memoryLocator.gridx = 0;
+		gbc_memoryLocator.gridy = 13;
+		memoryPanel.add(memoryLocator, gbc_memoryLocator);
+		
+		memoryLocatorTf = new JTextField();
+		memoryLocatorTf.setEditable(false);
+		GridBagConstraints gbc_memoryLocatorTf = new GridBagConstraints();
+		gbc_memoryLocatorTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_memoryLocatorTf.gridx = 1;
+		gbc_memoryLocatorTf.gridy = 13;
+		memoryPanel.add(memoryLocatorTf, gbc_memoryLocatorTf);
+		memoryLocatorTf.setColumns(10);
+	}
+
 
 	private void initializeSystemInfo() {
 		HardwareId.initializeHardwareId(hwidTf);
