@@ -28,6 +28,7 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
 
 import com.ferrumx.ui.secondary.ExceptionUI;
+import javax.swing.ImageIcon;
 
 
 public class FerrumX {
@@ -145,7 +146,7 @@ public class FerrumX {
 	private void initializeComponents() {
 		mainFrame = new JFrame();
 		mainFrame.setResizable(false);
-		mainFrame.setTitle("FerrumX [Build v01082024 Alpha]");
+		mainFrame.setTitle("FerrumX [Build v02082024 Alpha]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 600, 450);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -177,20 +178,20 @@ public class FerrumX {
 		
 		
 		JPanel networkPanel = new JPanel();
-		tabbedPane.addTab("Network", null, networkPanel, null);
+		tabbedPane.addTab("Network", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Network_16x16.png")), networkPanel, null);
 		
 		JPanel storagePanel = new JPanel();
-		tabbedPane.addTab("Storage", null, storagePanel, null);
+		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")), storagePanel, null);
 		
 		JPanel osPanel = new JPanel();
-		tabbedPane.addTab("OS", null, osPanel, null);
+		tabbedPane.addTab("OS", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/OS_16x16.png")), osPanel, null);
 		//Keyboard Pane Tab Traversal
 		//mainFrame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{mainFrame.getContentPane(), tabbedPane, hwidCpuPanel, memoryPanel, mainBoardPanel, gpuPanel, networkPanel, storagePanel, osPanel, hwidPanel, cpuPanel, hwidlabel, hwidTf, cpuCount, cpuChoice, cpuCores, cpuCoreTf, cpuThreads, cpuThreadTf, cpuLogicalProcessors, cpuLogicProcessorTf, cpuName, cpuNameTf, addressWidth, addressWidthTf, cpuSocket, cpuSocketTf, cpuManufacturer, cpuManufacturerTf, cpuExtClock, cpuMultiplier, cpuEffectiveClock, cpuBaseClockTf, multiplierTf, effectiveClockTf, separator, separator_1, cpuVersion, cpuFamily, cpuVirtStatus, cpuCaption, cpuStepping, cpuId, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, separator_2, cpuLevelOneCache, cpuL1Tf, cpuL1Associativity, cpuL1AsTf, cpuLevelTwoCache, cpuL2Tf, cpuL2Associativity, cpuL2AsTf, cpuLevelThreeCache, cpuL3Tf, cpuL3Associativity, cpuL3AsTf}));
 	}
 	
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
 		
-		tabbedPane.addTab("CPU", null, hwidCpuPanel, "Displays CPU Information");
+		tabbedPane.addTab("CPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/CPU_32x32.png")), hwidCpuPanel, "Displays CPU Information");
 		tabbedPane.setEnabledAt(0, true);
 		GridBagLayout gbl_hwidCpuPanel = new GridBagLayout();
 		gbl_hwidCpuPanel.columnWidths = new int[]{0, 0};
@@ -677,7 +678,7 @@ public class FerrumX {
 	
 	private void initializeMemoryPanel(JTabbedPane tabbedPane, JPanel memoryPanel) {
 		memoryPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Memory", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tabbedPane.addTab("Memory", null, memoryPanel, "Displays Memory Information");
+		tabbedPane.addTab("Memory", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/RAM_16x16.png")), memoryPanel, "Displays Memory Information");
 		GridBagLayout gbl_memoryPanel = new GridBagLayout();
 		gbl_memoryPanel.columnWidths = new int[]{0, 0, 0};
 		gbl_memoryPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -936,7 +937,7 @@ public class FerrumX {
 	}
 
 	private void initializeMainboardPanel(JTabbedPane tabbedPane, JPanel mainBoardPanel) {
-		tabbedPane.addTab("Mainboard", null, mainBoardPanel, null);
+		tabbedPane.addTab("Mainboard", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Mainboard_16x16.png")), mainBoardPanel, null);
 		tabbedPane.setEnabledAt(2, true);
 		GridBagLayout gbl_mainBoardPanel = new GridBagLayout();
 		gbl_mainBoardPanel.columnWidths = new int[]{0, 0};
@@ -1245,7 +1246,7 @@ public class FerrumX {
 	
 	private void initializeGpuPanel(JTabbedPane tabbedPane, JPanel gpuPanel) {
 		gpuPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Video Controller", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tabbedPane.addTab("GPU", null, gpuPanel, null);
+		tabbedPane.addTab("GPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/GPU_32x32.png")), gpuPanel, null);
 		GridBagLayout gbl_gpuPanel = new GridBagLayout();
 		gbl_gpuPanel.columnWidths = new int[]{0, 0, 0};
 		gbl_gpuPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
