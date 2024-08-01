@@ -61,6 +61,7 @@ public class FerrumX {
 	private JTextField cpuL3Tf;
 	private JTextField cpuL3AsTf;
 	//Memory
+	private JComboBox<String> memorySlotChoice;
 	private JTextField memoryNameTf;
 	private JTextField memoryManufacturerTf;
 	private JTextField memoryModelTf;
@@ -74,6 +75,23 @@ public class FerrumX {
 	private JTextField memoryConfigClockSpeedTf;
 	private JTextField memoryLocatorTf;
 	private JTextField memorySerialNumberTf;
+	//Mainboard
+	private JTextField mbManufacturerTf;
+	private JTextField mbModelTf;
+	private JTextField mbProductTf;
+	private JTextField mbSerialNumberTf;
+	private JTextField mbVersionTf;
+	private JTextField mbPnpTf;
+	private JTextField biosNameTf;
+	private JTextField biosCaptionTf;
+	private JTextField biosManufacturerTf;
+	private JTextField biosReleaseDateTf;
+	private JTextField biosVersionTf;
+	private JTextField biosStatusTf;
+	private JTextField smbiosPresenceTf;
+	private JTextField smbiosVersionTf;
+	private JTextField biosLanguageTf;
+
 
 	/**
 	 * Launch the application.
@@ -111,7 +129,7 @@ public class FerrumX {
 	private void initializeComponents() {
 		mainFrame = new JFrame();
 		mainFrame.setResizable(false);
-		mainFrame.setTitle("FerrumX [Build v31072024 Alpha]");
+		mainFrame.setTitle("FerrumX [Build v01082024 Alpha]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 600, 450);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -131,8 +149,10 @@ public class FerrumX {
 		JPanel memoryPanel = new JPanel();
 		initializeMemoryPanel(tabbedPane, memoryPanel);
 		
+		//Initialize the mainboard and the bios panels
 		JPanel mainBoardPanel = new JPanel();
-		tabbedPane.addTab("Mainboard", null, mainBoardPanel, null);
+		initializeMainboardPanel(tabbedPane, mainBoardPanel);
+		
 		
 		JPanel gpuPanel = new JPanel();
 		tabbedPane.addTab("GPU", null, gpuPanel, null);
@@ -387,7 +407,7 @@ public class FerrumX {
 		cpuPanel.add(multiplierTf, gbc_multiplierTf);
 		multiplierTf.setColumns(10);
 		
-		JLabel cpuEffectiveClock = new JLabel("Effective Clock");
+		JLabel cpuEffectiveClock = new JLabel("Effective Base Clock");
 		GridBagConstraints gbc_cpuEffectiveClock = new GridBagConstraints();
 		gbc_cpuEffectiveClock.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuEffectiveClock.gridx = 4;
@@ -654,7 +674,7 @@ public class FerrumX {
 		gbc_memorySlot.gridy = 0;
 		memoryPanel.add(memorySlot, gbc_memorySlot);
 		
-		JComboBox<String> memorySlotChoice = new JComboBox<>();
+		memorySlotChoice = new JComboBox<>();
 		GridBagConstraints gbc_memorySlotChoice = new GridBagConstraints();
 		gbc_memorySlotChoice.insets = new Insets(0, 0, 5, 0);
 		gbc_memorySlotChoice.fill = GridBagConstraints.HORIZONTAL;
@@ -896,15 +916,325 @@ public class FerrumX {
 		memoryLocatorTf.setColumns(10);
 	}
 
-
+	private void initializeMainboardPanel(JTabbedPane tabbedPane, JPanel mainBoardPanel) {
+		tabbedPane.addTab("Mainboard", null, mainBoardPanel, null);
+		GridBagLayout gbl_mainBoardPanel = new GridBagLayout();
+		gbl_mainBoardPanel.columnWidths = new int[]{0, 0};
+		gbl_mainBoardPanel.rowHeights = new int[]{0, 0, 0};
+		gbl_mainBoardPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_mainBoardPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		mainBoardPanel.setLayout(gbl_mainBoardPanel);
+		
+		JPanel mainboardPanel = new JPanel();
+		mainboardPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Mainboard", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_mainboardPanel = new GridBagConstraints();
+		gbc_mainboardPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_mainboardPanel.fill = GridBagConstraints.BOTH;
+		gbc_mainboardPanel.gridx = 0;
+		gbc_mainboardPanel.gridy = 0;
+		mainBoardPanel.add(mainboardPanel, gbc_mainboardPanel);
+		GridBagLayout gbl_mainboardPanel = new GridBagLayout();
+		gbl_mainboardPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_mainboardPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_mainboardPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_mainboardPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		mainboardPanel.setLayout(gbl_mainboardPanel);
+		
+		JLabel mbManufacturer = new JLabel("Manufacturer");
+		GridBagConstraints gbc_mbManufacturer = new GridBagConstraints();
+		gbc_mbManufacturer.insets = new Insets(0, 0, 5, 5);
+		gbc_mbManufacturer.anchor = GridBagConstraints.EAST;
+		gbc_mbManufacturer.gridx = 0;
+		gbc_mbManufacturer.gridy = 0;
+		mainboardPanel.add(mbManufacturer, gbc_mbManufacturer);
+		
+		mbManufacturerTf = new JTextField();
+		mbManufacturerTf.setEditable(false);
+		GridBagConstraints gbc_mbManufacturerTf = new GridBagConstraints();
+		gbc_mbManufacturerTf.insets = new Insets(0, 0, 5, 0);
+		gbc_mbManufacturerTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mbManufacturerTf.gridx = 1;
+		gbc_mbManufacturerTf.gridy = 0;
+		mainboardPanel.add(mbManufacturerTf, gbc_mbManufacturerTf);
+		mbManufacturerTf.setColumns(10);
+		
+		JLabel mbModel = new JLabel("Model");
+		GridBagConstraints gbc_mbModel = new GridBagConstraints();
+		gbc_mbModel.anchor = GridBagConstraints.EAST;
+		gbc_mbModel.insets = new Insets(0, 0, 5, 5);
+		gbc_mbModel.gridx = 0;
+		gbc_mbModel.gridy = 1;
+		mainboardPanel.add(mbModel, gbc_mbModel);
+		
+		mbModelTf = new JTextField();
+		mbModelTf.setEditable(false);
+		GridBagConstraints gbc_mbModelTf = new GridBagConstraints();
+		gbc_mbModelTf.insets = new Insets(0, 0, 5, 0);
+		gbc_mbModelTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mbModelTf.gridx = 1;
+		gbc_mbModelTf.gridy = 1;
+		mainboardPanel.add(mbModelTf, gbc_mbModelTf);
+		mbModelTf.setColumns(10);
+		
+		JLabel mbProduct = new JLabel("Product");
+		GridBagConstraints gbc_mbProduct = new GridBagConstraints();
+		gbc_mbProduct.insets = new Insets(0, 0, 5, 5);
+		gbc_mbProduct.anchor = GridBagConstraints.EAST;
+		gbc_mbProduct.gridx = 0;
+		gbc_mbProduct.gridy = 2;
+		mainboardPanel.add(mbProduct, gbc_mbProduct);
+		
+		mbProductTf = new JTextField();
+		mbProductTf.setEditable(false);
+		GridBagConstraints gbc_mbProductTf = new GridBagConstraints();
+		gbc_mbProductTf.insets = new Insets(0, 0, 5, 0);
+		gbc_mbProductTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mbProductTf.gridx = 1;
+		gbc_mbProductTf.gridy = 2;
+		mainboardPanel.add(mbProductTf, gbc_mbProductTf);
+		mbProductTf.setColumns(10);
+		
+		JLabel mbSerialNumber = new JLabel("Serial Number");
+		GridBagConstraints gbc_mbSerialNumber = new GridBagConstraints();
+		gbc_mbSerialNumber.anchor = GridBagConstraints.EAST;
+		gbc_mbSerialNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_mbSerialNumber.gridx = 0;
+		gbc_mbSerialNumber.gridy = 3;
+		mainboardPanel.add(mbSerialNumber, gbc_mbSerialNumber);
+		
+		mbSerialNumberTf = new JTextField();
+		mbSerialNumberTf.setEditable(false);
+		GridBagConstraints gbc_mbSerialNumberTf = new GridBagConstraints();
+		gbc_mbSerialNumberTf.insets = new Insets(0, 0, 5, 0);
+		gbc_mbSerialNumberTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mbSerialNumberTf.gridx = 1;
+		gbc_mbSerialNumberTf.gridy = 3;
+		mainboardPanel.add(mbSerialNumberTf, gbc_mbSerialNumberTf);
+		mbSerialNumberTf.setColumns(10);
+		
+		JLabel mbVersion = new JLabel("Version");
+		GridBagConstraints gbc_mbVersion = new GridBagConstraints();
+		gbc_mbVersion.anchor = GridBagConstraints.EAST;
+		gbc_mbVersion.insets = new Insets(0, 0, 5, 5);
+		gbc_mbVersion.gridx = 0;
+		gbc_mbVersion.gridy = 4;
+		mainboardPanel.add(mbVersion, gbc_mbVersion);
+		
+		mbVersionTf = new JTextField();
+		mbVersionTf.setEditable(false);
+		GridBagConstraints gbc_mbVersionTf = new GridBagConstraints();
+		gbc_mbVersionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_mbVersionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mbVersionTf.gridx = 1;
+		gbc_mbVersionTf.gridy = 4;
+		mainboardPanel.add(mbVersionTf, gbc_mbVersionTf);
+		mbVersionTf.setColumns(10);
+		
+		JLabel mbPnp = new JLabel("PNP Device ID");
+		GridBagConstraints gbc_mbPnp = new GridBagConstraints();
+		gbc_mbPnp.anchor = GridBagConstraints.EAST;
+		gbc_mbPnp.insets = new Insets(0, 0, 0, 5);
+		gbc_mbPnp.gridx = 0;
+		gbc_mbPnp.gridy = 5;
+		mainboardPanel.add(mbPnp, gbc_mbPnp);
+		
+		mbPnpTf = new JTextField();
+		mbPnpTf.setEditable(false);
+		GridBagConstraints gbc_mbPnpTf = new GridBagConstraints();
+		gbc_mbPnpTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mbPnpTf.gridx = 1;
+		gbc_mbPnpTf.gridy = 5;
+		mainboardPanel.add(mbPnpTf, gbc_mbPnpTf);
+		mbPnpTf.setColumns(10);
+		
+		JPanel biosPanel = new JPanel();
+		biosPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Mainboard BIOS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_biosPanel = new GridBagConstraints();
+		gbc_biosPanel.fill = GridBagConstraints.BOTH;
+		gbc_biosPanel.gridx = 0;
+		gbc_biosPanel.gridy = 1;
+		mainBoardPanel.add(biosPanel, gbc_biosPanel);
+		GridBagLayout gbl_biosPanel = new GridBagLayout();
+		gbl_biosPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_biosPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_biosPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_biosPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		biosPanel.setLayout(gbl_biosPanel);
+		
+		JLabel biosName = new JLabel("Name");
+		GridBagConstraints gbc_biosName = new GridBagConstraints();
+		gbc_biosName.anchor = GridBagConstraints.EAST;
+		gbc_biosName.insets = new Insets(0, 0, 5, 5);
+		gbc_biosName.gridx = 0;
+		gbc_biosName.gridy = 0;
+		biosPanel.add(biosName, gbc_biosName);
+		
+		biosNameTf = new JTextField();
+		biosNameTf.setEditable(false);
+		GridBagConstraints gbc_biosNameTf = new GridBagConstraints();
+		gbc_biosNameTf.insets = new Insets(0, 0, 5, 0);
+		gbc_biosNameTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_biosNameTf.gridx = 1;
+		gbc_biosNameTf.gridy = 0;
+		biosPanel.add(biosNameTf, gbc_biosNameTf);
+		biosNameTf.setColumns(10);
+		
+		JLabel biosCaption = new JLabel("Caption");
+		GridBagConstraints gbc_biosCaption = new GridBagConstraints();
+		gbc_biosCaption.anchor = GridBagConstraints.EAST;
+		gbc_biosCaption.insets = new Insets(0, 0, 5, 5);
+		gbc_biosCaption.gridx = 0;
+		gbc_biosCaption.gridy = 1;
+		biosPanel.add(biosCaption, gbc_biosCaption);
+		
+		biosCaptionTf = new JTextField();
+		biosCaptionTf.setEditable(false);
+		GridBagConstraints gbc_biosCaptionTf = new GridBagConstraints();
+		gbc_biosCaptionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_biosCaptionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_biosCaptionTf.gridx = 1;
+		gbc_biosCaptionTf.gridy = 1;
+		biosPanel.add(biosCaptionTf, gbc_biosCaptionTf);
+		biosCaptionTf.setColumns(10);
+		
+		JLabel biosManufacturer = new JLabel("Manufacturer");
+		GridBagConstraints gbc_biosManufacturer = new GridBagConstraints();
+		gbc_biosManufacturer.anchor = GridBagConstraints.EAST;
+		gbc_biosManufacturer.insets = new Insets(0, 0, 5, 5);
+		gbc_biosManufacturer.gridx = 0;
+		gbc_biosManufacturer.gridy = 2;
+		biosPanel.add(biosManufacturer, gbc_biosManufacturer);
+		
+		biosManufacturerTf = new JTextField();
+		biosManufacturerTf.setEditable(false);
+		GridBagConstraints gbc_biosManufacturerTf = new GridBagConstraints();
+		gbc_biosManufacturerTf.insets = new Insets(0, 0, 5, 0);
+		gbc_biosManufacturerTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_biosManufacturerTf.gridx = 1;
+		gbc_biosManufacturerTf.gridy = 2;
+		biosPanel.add(biosManufacturerTf, gbc_biosManufacturerTf);
+		biosManufacturerTf.setColumns(10);
+		
+		JLabel biosRelease = new JLabel("Release Date");
+		GridBagConstraints gbc_biosRelease = new GridBagConstraints();
+		gbc_biosRelease.anchor = GridBagConstraints.EAST;
+		gbc_biosRelease.insets = new Insets(0, 0, 5, 5);
+		gbc_biosRelease.gridx = 0;
+		gbc_biosRelease.gridy = 3;
+		biosPanel.add(biosRelease, gbc_biosRelease);
+		
+		biosReleaseDateTf = new JTextField();
+		biosReleaseDateTf.setEditable(false);
+		GridBagConstraints gbc_biosReleaseDateTf = new GridBagConstraints();
+		gbc_biosReleaseDateTf.insets = new Insets(0, 0, 5, 0);
+		gbc_biosReleaseDateTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_biosReleaseDateTf.gridx = 1;
+		gbc_biosReleaseDateTf.gridy = 3;
+		biosPanel.add(biosReleaseDateTf, gbc_biosReleaseDateTf);
+		biosReleaseDateTf.setColumns(10);
+		
+		JLabel biosVersion = new JLabel("Version");
+		GridBagConstraints gbc_biosVersion = new GridBagConstraints();
+		gbc_biosVersion.anchor = GridBagConstraints.EAST;
+		gbc_biosVersion.insets = new Insets(0, 0, 5, 5);
+		gbc_biosVersion.gridx = 0;
+		gbc_biosVersion.gridy = 4;
+		biosPanel.add(biosVersion, gbc_biosVersion);
+		
+		biosVersionTf = new JTextField();
+		biosVersionTf.setEditable(false);
+		GridBagConstraints gbc_biosVersionTf = new GridBagConstraints();
+		gbc_biosVersionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_biosVersionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_biosVersionTf.gridx = 1;
+		gbc_biosVersionTf.gridy = 4;
+		biosPanel.add(biosVersionTf, gbc_biosVersionTf);
+		biosVersionTf.setColumns(10);
+		
+		JLabel biosStatus = new JLabel("Status");
+		GridBagConstraints gbc_biosStatus = new GridBagConstraints();
+		gbc_biosStatus.anchor = GridBagConstraints.EAST;
+		gbc_biosStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_biosStatus.gridx = 0;
+		gbc_biosStatus.gridy = 5;
+		biosPanel.add(biosStatus, gbc_biosStatus);
+		
+		biosStatusTf = new JTextField();
+		biosStatusTf.setEditable(false);
+		GridBagConstraints gbc_biosStatusTf = new GridBagConstraints();
+		gbc_biosStatusTf.insets = new Insets(0, 0, 5, 0);
+		gbc_biosStatusTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_biosStatusTf.gridx = 1;
+		gbc_biosStatusTf.gridy = 5;
+		biosPanel.add(biosStatusTf, gbc_biosStatusTf);
+		biosStatusTf.setColumns(10);
+		
+		JLabel smbiosPresence = new JLabel("SMBIOS Present");
+		GridBagConstraints gbc_smbiosPresence = new GridBagConstraints();
+		gbc_smbiosPresence.anchor = GridBagConstraints.EAST;
+		gbc_smbiosPresence.insets = new Insets(0, 0, 5, 5);
+		gbc_smbiosPresence.gridx = 0;
+		gbc_smbiosPresence.gridy = 6;
+		biosPanel.add(smbiosPresence, gbc_smbiosPresence);
+		
+		smbiosPresenceTf = new JTextField();
+		smbiosPresenceTf.setEditable(false);
+		GridBagConstraints gbc_smbiosPresenceTf = new GridBagConstraints();
+		gbc_smbiosPresenceTf.insets = new Insets(0, 0, 5, 0);
+		gbc_smbiosPresenceTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_smbiosPresenceTf.gridx = 1;
+		gbc_smbiosPresenceTf.gridy = 6;
+		biosPanel.add(smbiosPresenceTf, gbc_smbiosPresenceTf);
+		smbiosPresenceTf.setColumns(10);
+		
+		JLabel smbiosVersion = new JLabel("SMBIOS Version");
+		GridBagConstraints gbc_smbiosVersion = new GridBagConstraints();
+		gbc_smbiosVersion.anchor = GridBagConstraints.EAST;
+		gbc_smbiosVersion.insets = new Insets(0, 0, 5, 5);
+		gbc_smbiosVersion.gridx = 0;
+		gbc_smbiosVersion.gridy = 7;
+		biosPanel.add(smbiosVersion, gbc_smbiosVersion);
+		
+		smbiosVersionTf = new JTextField();
+		smbiosVersionTf.setEditable(false);
+		GridBagConstraints gbc_smbiosVersionTf = new GridBagConstraints();
+		gbc_smbiosVersionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_smbiosVersionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_smbiosVersionTf.gridx = 1;
+		gbc_smbiosVersionTf.gridy = 7;
+		biosPanel.add(smbiosVersionTf, gbc_smbiosVersionTf);
+		smbiosVersionTf.setColumns(10);
+		
+		JLabel biosLanguage = new JLabel("Current Language");
+		GridBagConstraints gbc_biosLanguage = new GridBagConstraints();
+		gbc_biosLanguage.anchor = GridBagConstraints.EAST;
+		gbc_biosLanguage.insets = new Insets(0, 0, 0, 5);
+		gbc_biosLanguage.gridx = 0;
+		gbc_biosLanguage.gridy = 8;
+		biosPanel.add(biosLanguage, gbc_biosLanguage);
+		
+		biosLanguageTf = new JTextField();
+		biosLanguageTf.setEditable(false);
+		GridBagConstraints gbc_biosLanguageTf = new GridBagConstraints();
+		gbc_biosLanguageTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_biosLanguageTf.gridx = 1;
+		gbc_biosLanguageTf.gridy = 8;
+		biosPanel.add(biosLanguageTf, gbc_biosLanguageTf);
+		biosLanguageTf.setColumns(10);
+	}
+	
 	private void initializeSystemInfo() {
 		
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
-			Future<Boolean> initializeHardwareId = exec.submit(()->(HardwareId.initializeHardwareId(hwidTf)));
+			Future<Boolean> initializeHardwareId = exec.submit(()->HardwareId.initializeHardwareId(hwidTf));
 			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL1Tf, cpuL1AsTf, cpuL2Tf, cpuL2AsTf, cpuL3Tf, cpuL3AsTf));
+			Future<Boolean> initializeMemory = exec.submit(()-> Memory.initializeMemory(memorySlotChoice, memoryNameTf, memoryManufacturerTf, memoryModelTf, memoryOtherInfoTf, memoryPartNumberTf, memoryFormFactorTf, memoryBankLabelTf, memoryCapacityTf, memoryWidthTf, memorySpeedTf, memoryConfigClockSpeedTf, memoryLocatorTf, memorySerialNumberTf));
+			Future<Boolean> initializeMainboard = exec.submit(()-> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf, mbVersionTf,mbPnpTf,biosNameTf,biosCaptionTf,biosManufacturerTf, biosReleaseDateTf,biosVersionTf,biosStatusTf,smbiosPresenceTf,smbiosVersionTf,biosLanguageTf));
 			
 			initializeHardwareId.get();
 			initializeCpu.get();
+			initializeMemory.get();
+			initializeMainboard.get();
 		}
 		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
