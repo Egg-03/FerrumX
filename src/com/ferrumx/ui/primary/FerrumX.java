@@ -91,6 +91,22 @@ public class FerrumX {
 	private JTextField smbiosPresenceTf;
 	private JTextField smbiosVersionTf;
 	private JTextField biosLanguageTf;
+	
+	private JTextField gpuNameTf;
+	private JTextField gpuPnpTf;
+	private JTextField gpuHorizontalResTf;
+	private JTextField gpuVerticalResTf;
+	private JTextField gpuBitsTf;
+	private JTextField gpuMinRefTf;
+	private JTextField gpuMaxRefTf;
+	private JTextField gpuCurrentRefTf;
+	private JTextField gpuDACTf;
+	private JTextField gpuVramTf;
+	private JTextField gpuDriverVersionTf;
+	private JTextField gpuDriverDateTf;
+	private JTextField gpuVideoProcessorTf;
+
+	private JComboBox<String> gpuChoiceComboBox;
 
 
 	/**
@@ -151,11 +167,14 @@ public class FerrumX {
 		
 		//Initialize the mainboard and the bios panels
 		JPanel mainBoardPanel = new JPanel();
+		mainBoardPanel.setBorder(null);
 		initializeMainboardPanel(tabbedPane, mainBoardPanel);
 		
-		
+		//Initialize the gpu panel
 		JPanel gpuPanel = new JPanel();
-		tabbedPane.addTab("GPU", null, gpuPanel, null);
+		initializeGpuPanel(tabbedPane, gpuPanel);
+		
+		
 		
 		JPanel networkPanel = new JPanel();
 		tabbedPane.addTab("Network", null, networkPanel, null);
@@ -918,6 +937,7 @@ public class FerrumX {
 
 	private void initializeMainboardPanel(JTabbedPane tabbedPane, JPanel mainBoardPanel) {
 		tabbedPane.addTab("Mainboard", null, mainBoardPanel, null);
+		tabbedPane.setEnabledAt(2, true);
 		GridBagLayout gbl_mainBoardPanel = new GridBagLayout();
 		gbl_mainBoardPanel.columnWidths = new int[]{0, 0};
 		gbl_mainBoardPanel.rowHeights = new int[]{0, 0, 0};
@@ -1223,6 +1243,280 @@ public class FerrumX {
 		biosLanguageTf.setColumns(10);
 	}
 	
+	private void initializeGpuPanel(JTabbedPane tabbedPane, JPanel gpuPanel) {
+		gpuPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Video Controller", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		tabbedPane.addTab("GPU", null, gpuPanel, null);
+		GridBagLayout gbl_gpuPanel = new GridBagLayout();
+		gbl_gpuPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_gpuPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_gpuPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_gpuPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gpuPanel.setLayout(gbl_gpuPanel);
+		
+		JLabel gpuChoice = new JLabel("GPU#");
+		GridBagConstraints gbc_gpuChoice = new GridBagConstraints();
+		gbc_gpuChoice.anchor = GridBagConstraints.EAST;
+		gbc_gpuChoice.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuChoice.gridx = 0;
+		gbc_gpuChoice.gridy = 0;
+		gpuPanel.add(gpuChoice, gbc_gpuChoice);
+		
+		gpuChoiceComboBox = new JComboBox<>();
+		GridBagConstraints gbc_gpuChoiceComboBox = new GridBagConstraints();
+		gbc_gpuChoiceComboBox.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuChoiceComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuChoiceComboBox.gridx = 1;
+		gbc_gpuChoiceComboBox.gridy = 0;
+		gpuPanel.add(gpuChoiceComboBox, gbc_gpuChoiceComboBox);
+		
+		JLabel gpuName = new JLabel("Name");
+		GridBagConstraints gbc_gpuName = new GridBagConstraints();
+		gbc_gpuName.anchor = GridBagConstraints.EAST;
+		gbc_gpuName.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuName.gridx = 0;
+		gbc_gpuName.gridy = 1;
+		gpuPanel.add(gpuName, gbc_gpuName);
+		
+		gpuNameTf = new JTextField();
+		gpuNameTf.setEditable(false);
+		GridBagConstraints gbc_gpuNameTf = new GridBagConstraints();
+		gbc_gpuNameTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuNameTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuNameTf.gridx = 1;
+		gbc_gpuNameTf.gridy = 1;
+		gpuPanel.add(gpuNameTf, gbc_gpuNameTf);
+		gpuNameTf.setColumns(10);
+		
+		JLabel gpuPnpId = new JLabel("PNP Device ID");
+		GridBagConstraints gbc_gpuPnpId = new GridBagConstraints();
+		gbc_gpuPnpId.anchor = GridBagConstraints.EAST;
+		gbc_gpuPnpId.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuPnpId.gridx = 0;
+		gbc_gpuPnpId.gridy = 2;
+		gpuPanel.add(gpuPnpId, gbc_gpuPnpId);
+		
+		gpuPnpTf = new JTextField();
+		gpuPnpTf.setEditable(false);
+		GridBagConstraints gbc_gpuPnpTf = new GridBagConstraints();
+		gbc_gpuPnpTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuPnpTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuPnpTf.gridx = 1;
+		gbc_gpuPnpTf.gridy = 2;
+		gpuPanel.add(gpuPnpTf, gbc_gpuPnpTf);
+		gpuPnpTf.setColumns(10);
+		
+		JSeparator separator = new JSeparator();
+		GridBagConstraints gbc_separator = new GridBagConstraints();
+		gbc_separator.insets = new Insets(0, 0, 5, 5);
+		gbc_separator.gridx = 0;
+		gbc_separator.gridy = 3;
+		gpuPanel.add(separator, gbc_separator);
+		
+		JLabel gpuHorizontal = new JLabel("Horizontal Res");
+		GridBagConstraints gbc_gpuHorizontal = new GridBagConstraints();
+		gbc_gpuHorizontal.anchor = GridBagConstraints.EAST;
+		gbc_gpuHorizontal.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuHorizontal.gridx = 0;
+		gbc_gpuHorizontal.gridy = 4;
+		gpuPanel.add(gpuHorizontal, gbc_gpuHorizontal);
+		
+		gpuHorizontalResTf = new JTextField();
+		gpuHorizontalResTf.setEditable(false);
+		GridBagConstraints gbc_gpuHorizontalResTf = new GridBagConstraints();
+		gbc_gpuHorizontalResTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuHorizontalResTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuHorizontalResTf.gridx = 1;
+		gbc_gpuHorizontalResTf.gridy = 4;
+		gpuPanel.add(gpuHorizontalResTf, gbc_gpuHorizontalResTf);
+		gpuHorizontalResTf.setColumns(10);
+		
+		JLabel gpuVertical = new JLabel("Vertical Res");
+		GridBagConstraints gbc_gpuVertical = new GridBagConstraints();
+		gbc_gpuVertical.anchor = GridBagConstraints.EAST;
+		gbc_gpuVertical.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuVertical.gridx = 0;
+		gbc_gpuVertical.gridy = 5;
+		gpuPanel.add(gpuVertical, gbc_gpuVertical);
+		
+		gpuVerticalResTf = new JTextField();
+		gpuVerticalResTf.setEditable(false);
+		GridBagConstraints gbc_gpuVerticalResTf = new GridBagConstraints();
+		gbc_gpuVerticalResTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuVerticalResTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuVerticalResTf.gridx = 1;
+		gbc_gpuVerticalResTf.gridy = 5;
+		gpuPanel.add(gpuVerticalResTf, gbc_gpuVerticalResTf);
+		gpuVerticalResTf.setColumns(10);
+		
+		JLabel gpuBitsPerPixel = new JLabel("Bits Per Pixel");
+		GridBagConstraints gbc_gpuBitsPerPixel = new GridBagConstraints();
+		gbc_gpuBitsPerPixel.anchor = GridBagConstraints.EAST;
+		gbc_gpuBitsPerPixel.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuBitsPerPixel.gridx = 0;
+		gbc_gpuBitsPerPixel.gridy = 6;
+		gpuPanel.add(gpuBitsPerPixel, gbc_gpuBitsPerPixel);
+		
+		gpuBitsTf = new JTextField();
+		gpuBitsTf.setEditable(false);
+		GridBagConstraints gbc_gpuBitsTf = new GridBagConstraints();
+		gbc_gpuBitsTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuBitsTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuBitsTf.gridx = 1;
+		gbc_gpuBitsTf.gridy = 6;
+		gpuPanel.add(gpuBitsTf, gbc_gpuBitsTf);
+		gpuBitsTf.setColumns(10);
+		
+		JLabel gpuMinRef = new JLabel("Min Refresh Rate");
+		GridBagConstraints gbc_gpuMinRef = new GridBagConstraints();
+		gbc_gpuMinRef.anchor = GridBagConstraints.EAST;
+		gbc_gpuMinRef.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuMinRef.gridx = 0;
+		gbc_gpuMinRef.gridy = 7;
+		gpuPanel.add(gpuMinRef, gbc_gpuMinRef);
+		
+		gpuMinRefTf = new JTextField();
+		gpuMinRefTf.setEditable(false);
+		GridBagConstraints gbc_gpuMinRefTf = new GridBagConstraints();
+		gbc_gpuMinRefTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuMinRefTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuMinRefTf.gridx = 1;
+		gbc_gpuMinRefTf.gridy = 7;
+		gpuPanel.add(gpuMinRefTf, gbc_gpuMinRefTf);
+		gpuMinRefTf.setColumns(10);
+		
+		JLabel gpuMaxRef = new JLabel("Max Refresh Rate");
+		GridBagConstraints gbc_gpuMaxRef = new GridBagConstraints();
+		gbc_gpuMaxRef.anchor = GridBagConstraints.EAST;
+		gbc_gpuMaxRef.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuMaxRef.gridx = 0;
+		gbc_gpuMaxRef.gridy = 8;
+		gpuPanel.add(gpuMaxRef, gbc_gpuMaxRef);
+		
+		gpuMaxRefTf = new JTextField();
+		gpuMaxRefTf.setEditable(false);
+		GridBagConstraints gbc_gpuMaxRefTf = new GridBagConstraints();
+		gbc_gpuMaxRefTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuMaxRefTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuMaxRefTf.gridx = 1;
+		gbc_gpuMaxRefTf.gridy = 8;
+		gpuPanel.add(gpuMaxRefTf, gbc_gpuMaxRefTf);
+		gpuMaxRefTf.setColumns(10);
+		
+		JLabel gpuCurrentRef = new JLabel("Current Refresh Rate");
+		GridBagConstraints gbc_gpuCurrentRef = new GridBagConstraints();
+		gbc_gpuCurrentRef.anchor = GridBagConstraints.EAST;
+		gbc_gpuCurrentRef.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuCurrentRef.gridx = 0;
+		gbc_gpuCurrentRef.gridy = 9;
+		gpuPanel.add(gpuCurrentRef, gbc_gpuCurrentRef);
+		
+		gpuCurrentRefTf = new JTextField();
+		gpuCurrentRefTf.setEditable(false);
+		GridBagConstraints gbc_gpuCurrentRefTf = new GridBagConstraints();
+		gbc_gpuCurrentRefTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuCurrentRefTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuCurrentRefTf.gridx = 1;
+		gbc_gpuCurrentRefTf.gridy = 9;
+		gpuPanel.add(gpuCurrentRefTf, gbc_gpuCurrentRefTf);
+		gpuCurrentRefTf.setColumns(10);
+		
+		JSeparator separator_1 = new JSeparator();
+		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
+		gbc_separator_1.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_1.gridx = 0;
+		gbc_separator_1.gridy = 10;
+		gpuPanel.add(separator_1, gbc_separator_1);
+		
+		JLabel gpuAdapterDACType = new JLabel("Adapter DAC Type");
+		GridBagConstraints gbc_gpuAdapterDACType = new GridBagConstraints();
+		gbc_gpuAdapterDACType.anchor = GridBagConstraints.EAST;
+		gbc_gpuAdapterDACType.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuAdapterDACType.gridx = 0;
+		gbc_gpuAdapterDACType.gridy = 11;
+		gpuPanel.add(gpuAdapterDACType, gbc_gpuAdapterDACType);
+		
+		gpuDACTf = new JTextField();
+		gpuDACTf.setEditable(false);
+		GridBagConstraints gbc_gpuDACTf = new GridBagConstraints();
+		gbc_gpuDACTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuDACTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuDACTf.gridx = 1;
+		gbc_gpuDACTf.gridy = 11;
+		gpuPanel.add(gpuDACTf, gbc_gpuDACTf);
+		gpuDACTf.setColumns(10);
+		
+		JLabel gpuVram = new JLabel("VRAM");
+		GridBagConstraints gbc_gpuVram = new GridBagConstraints();
+		gbc_gpuVram.anchor = GridBagConstraints.EAST;
+		gbc_gpuVram.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuVram.gridx = 0;
+		gbc_gpuVram.gridy = 12;
+		gpuPanel.add(gpuVram, gbc_gpuVram);
+		
+		gpuVramTf = new JTextField();
+		gpuVramTf.setEditable(false);
+		GridBagConstraints gbc_gpuVramTf = new GridBagConstraints();
+		gbc_gpuVramTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuVramTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuVramTf.gridx = 1;
+		gbc_gpuVramTf.gridy = 12;
+		gpuPanel.add(gpuVramTf, gbc_gpuVramTf);
+		gpuVramTf.setColumns(10);
+		
+		JLabel gpuDriverVersion = new JLabel("Driver Version");
+		GridBagConstraints gbc_gpuDriverVersion = new GridBagConstraints();
+		gbc_gpuDriverVersion.anchor = GridBagConstraints.EAST;
+		gbc_gpuDriverVersion.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuDriverVersion.gridx = 0;
+		gbc_gpuDriverVersion.gridy = 13;
+		gpuPanel.add(gpuDriverVersion, gbc_gpuDriverVersion);
+		
+		gpuDriverVersionTf = new JTextField();
+		gpuDriverVersionTf.setEditable(false);
+		GridBagConstraints gbc_gpuDriverVersionTf = new GridBagConstraints();
+		gbc_gpuDriverVersionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuDriverVersionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuDriverVersionTf.gridx = 1;
+		gbc_gpuDriverVersionTf.gridy = 13;
+		gpuPanel.add(gpuDriverVersionTf, gbc_gpuDriverVersionTf);
+		gpuDriverVersionTf.setColumns(10);
+		
+		JLabel gpuDriverDate = new JLabel("Driver Date");
+		GridBagConstraints gbc_gpuDriverDate = new GridBagConstraints();
+		gbc_gpuDriverDate.anchor = GridBagConstraints.EAST;
+		gbc_gpuDriverDate.insets = new Insets(0, 0, 5, 5);
+		gbc_gpuDriverDate.gridx = 0;
+		gbc_gpuDriverDate.gridy = 14;
+		gpuPanel.add(gpuDriverDate, gbc_gpuDriverDate);
+		
+		gpuDriverDateTf = new JTextField();
+		gpuDriverDateTf.setEditable(false);
+		GridBagConstraints gbc_gpuDriverDateTf = new GridBagConstraints();
+		gbc_gpuDriverDateTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuDriverDateTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuDriverDateTf.gridx = 1;
+		gbc_gpuDriverDateTf.gridy = 14;
+		gpuPanel.add(gpuDriverDateTf, gbc_gpuDriverDateTf);
+		gpuDriverDateTf.setColumns(10);
+		
+		JLabel gpuProcessor = new JLabel("Video Processor");
+		GridBagConstraints gbc_gpuProcessor = new GridBagConstraints();
+		gbc_gpuProcessor.anchor = GridBagConstraints.EAST;
+		gbc_gpuProcessor.insets = new Insets(0, 0, 0, 5);
+		gbc_gpuProcessor.gridx = 0;
+		gbc_gpuProcessor.gridy = 15;
+		gpuPanel.add(gpuProcessor, gbc_gpuProcessor);
+		
+		gpuVideoProcessorTf = new JTextField();
+		gpuVideoProcessorTf.setEditable(false);
+		GridBagConstraints gbc_gpuVideoProcessorTf = new GridBagConstraints();
+		gbc_gpuVideoProcessorTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_gpuVideoProcessorTf.gridx = 1;
+		gbc_gpuVideoProcessorTf.gridy = 15;
+		gpuPanel.add(gpuVideoProcessorTf, gbc_gpuVideoProcessorTf);
+		gpuVideoProcessorTf.setColumns(10);
+	}
+	
 	private void initializeSystemInfo() {
 		
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
@@ -1230,11 +1524,13 @@ public class FerrumX {
 			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL1Tf, cpuL1AsTf, cpuL2Tf, cpuL2AsTf, cpuL3Tf, cpuL3AsTf));
 			Future<Boolean> initializeMemory = exec.submit(()-> Memory.initializeMemory(memorySlotChoice, memoryNameTf, memoryManufacturerTf, memoryModelTf, memoryOtherInfoTf, memoryPartNumberTf, memoryFormFactorTf, memoryBankLabelTf, memoryCapacityTf, memoryWidthTf, memorySpeedTf, memoryConfigClockSpeedTf, memoryLocatorTf, memorySerialNumberTf));
 			Future<Boolean> initializeMainboard = exec.submit(()-> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf, mbVersionTf,mbPnpTf,biosNameTf,biosCaptionTf,biosManufacturerTf, biosReleaseDateTf,biosVersionTf,biosStatusTf,smbiosPresenceTf,smbiosVersionTf,biosLanguageTf));
+			Future<Boolean> initializeGpu = exec.submit(()->Gpu.initializeGpu(gpuChoiceComboBox, gpuNameTf, gpuPnpTf, gpuHorizontalResTf, gpuVerticalResTf, gpuBitsTf, gpuMinRefTf, gpuMaxRefTf, gpuCurrentRefTf, gpuDACTf, gpuVramTf, gpuDriverVersionTf, gpuDriverDateTf, gpuVideoProcessorTf));
 			
 			initializeHardwareId.get();
 			initializeCpu.get();
 			initializeMemory.get();
 			initializeMainboard.get();
+			initializeGpu.get();
 		}
 		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);

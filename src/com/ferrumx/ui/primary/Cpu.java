@@ -12,7 +12,7 @@ import com.ferrumx.system.hardware.Win32_CacheMemory;
 import com.ferrumx.system.hardware.Win32_Processor;
 import com.ferrumx.ui.secondary.ExceptionUI;
 
-public class Cpu {
+final class Cpu {
 	
 	private Cpu() {
 		throw new IllegalStateException("Utility Class");

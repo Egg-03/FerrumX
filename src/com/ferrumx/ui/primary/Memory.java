@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import com.ferrumx.system.hardware.Win32_PhysicalMemory;
 import com.ferrumx.ui.secondary.ExceptionUI;
 
-public class Memory {
+final class Memory {
 	
 	private Memory() {
 		throw new IllegalStateException("Utility Class");
