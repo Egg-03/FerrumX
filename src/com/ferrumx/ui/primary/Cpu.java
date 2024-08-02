@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
@@ -18,7 +20,7 @@ final class Cpu {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	protected static boolean initializeCpu(JComboBox<String> cpuChoice, JTextField... cpuFields) {
+	protected static boolean initializeCpu(JLabel cpuLogo, JComboBox<String> cpuChoice, JTextField... cpuFields) {
 		try {
 			List<String> cpuList = Win32_Processor.getProcessorList();
 			for(String cpu: cpuList) {
@@ -27,11 +29,14 @@ final class Cpu {
 			
 			String currentCpu = cpuChoice.getItemAt(cpuChoice.getSelectedIndex());
 			Map<String, String> cpuProperties = Win32_Processor.getCurrentProcessor(currentCpu);
+			String manufacturer = cpuProperties.get("Manufacturer");
+			//will be required in multiple cases
+			
 			cpuFields[0].setText(cpuProperties.get("Name"));
 			cpuFields[1].setText(cpuProperties.get("NumberOfCores"));
 			cpuFields[2].setText(cpuProperties.get("ThreadCount"));
 			cpuFields[3].setText(cpuProperties.get("NumberOfLogicalProcessors"));
-			cpuFields[4].setText(cpuProperties.get("Manufacturer"));
+			cpuFields[4].setText(manufacturer);
 			cpuFields[5].setText(cpuProperties.get("AddressWidth")+" bit");
 			cpuFields[6].setText(cpuProperties.get("SocketDesignation"));
 			cpuFields[7].setText(cpuProperties.get("ExtClock")+ "MHz");
@@ -62,6 +67,13 @@ final class Cpu {
 					cpuFields[21].setText(cpuCacheProperties.get("Associativity"));
 				}
 			}
+			
+			//set cpu logo img based on manufacturer
+			if(manufacturer.equals("AuthenticAMD"))
+				cpuLogo.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.png")));
+			else if(manufacturer.equals("Intel"))
+				cpuLogo.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.png")));
+			
 		} catch (IndexOutOfBoundsException | IOException e) {
 			new ExceptionUI("CPU Error", e.getMessage()).setVisible(true);
 			return false;

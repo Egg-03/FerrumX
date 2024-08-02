@@ -31,15 +31,20 @@ final class Gpu {
 			gpuFields[6].setText(gpuProperties.get("MaxRefreshRate")+" Hz");
 			gpuFields[7].setText(gpuProperties.get("CurrentRefreshRate")+" Hz");
 			gpuFields[8].setText(gpuProperties.get("AdapterDACType"));
-			gpuFields[9].setText(gpuProperties.get("AdapterRAM")+" Bytes");
+			
 			gpuFields[10].setText(gpuProperties.get("DriverVersion"));
 			gpuFields[11].setText(gpuProperties.get("DriverDate"));
 			gpuFields[12].setText(gpuProperties.get("VideoProcessor"));
 			
+			Long adapterRAM = Long.valueOf(gpuProperties.get("AdapterRAM"))/(1024*1024);
+			gpuFields[9].setText(String.valueOf(adapterRAM)+" MB");
 			
 		} catch (IndexOutOfBoundsException | IOException e) {
 			new ExceptionUI("Video Controller Initialization Error", e.getMessage()).setVisible(true);
 			return false;
+		} catch (NumberFormatException e1) {
+			gpuFields[9].setText("N/A"); //sets VRAM field to N/A in case the adapterRAM property cannot be parsed into a Long value
+			return true;
 		}
 		addGpuChoiceActionListener(gpuChoice, gpuFields);
 		return true;
@@ -59,13 +64,18 @@ final class Gpu {
 				gpuFields[6].setText(gpuProperties.get("MaxRefreshRate")+" Hz");
 				gpuFields[7].setText(gpuProperties.get("CurrentRefreshRate")+" Hz");
 				gpuFields[8].setText(gpuProperties.get("AdapterDACType"));
-				gpuFields[9].setText(gpuProperties.get("AdapterRAM")+" Bytes");
+				
 				gpuFields[10].setText(gpuProperties.get("DriverVersion"));
 				gpuFields[11].setText(gpuProperties.get("DriverDate"));
 				gpuFields[12].setText(gpuProperties.get("VideoProcessor"));
+				
+				Long adapterRAM = Long.valueOf(gpuProperties.get("AdapterRAM"))/(1024*1024);
+				gpuFields[9].setText(String.valueOf(adapterRAM)+" MB");
+				
 			} catch (IndexOutOfBoundsException | IOException e1) {
 				new ExceptionUI("Video Controller Initialization Error", e1.getMessage()).setVisible(true);
-				
+			} catch (NumberFormatException e1) {
+				gpuFields[9].setText("N/A"); //sets VRAM field to N/A in case the adapterRAM property cannot be parsed into a Long value
 			}
 			
 		});

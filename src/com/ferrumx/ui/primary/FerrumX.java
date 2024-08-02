@@ -61,6 +61,8 @@ public class FerrumX {
 	private JTextField cpuL2AsTf;
 	private JTextField cpuL3Tf;
 	private JTextField cpuL3AsTf;
+	
+	private JLabel cpuLogo;
 	//Memory
 	private JComboBox<String> memorySlotChoice;
 	private JTextField memoryNameTf;
@@ -191,7 +193,7 @@ public class FerrumX {
 	
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
 		
-		tabbedPane.addTab("CPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/CPU_32x32.png")), hwidCpuPanel, "Displays CPU Information");
+		tabbedPane.addTab("CPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/CPU_16x16.png")), hwidCpuPanel, "Displays CPU Information");
 		tabbedPane.setEnabledAt(0, true);
 		GridBagLayout gbl_hwidCpuPanel = new GridBagLayout();
 		gbl_hwidCpuPanel.columnWidths = new int[]{0, 0};
@@ -243,7 +245,7 @@ public class FerrumX {
 		GridBagLayout gbl_cpuPanel = new GridBagLayout();
 		gbl_cpuPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_cpuPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_cpuPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_cpuPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_cpuPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		cpuPanel.setLayout(gbl_cpuPanel);
 		
@@ -585,6 +587,22 @@ public class FerrumX {
 		gbc_cpuL1Tf.gridy = 9;
 		cpuPanel.add(cpuL1Tf, gbc_cpuL1Tf);
 		cpuL1Tf.setColumns(10);
+		
+		JPanel cpuLogoPanel = new JPanel();
+		cpuLogoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "CPU Manufacturer Logo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_cpuLogoPanel = new GridBagConstraints();
+		gbc_cpuLogoPanel.gridheight = 3;
+		gbc_cpuLogoPanel.gridwidth = 2;
+		gbc_cpuLogoPanel.insets = new Insets(0, 0, 5, 5);
+		gbc_cpuLogoPanel.fill = GridBagConstraints.BOTH;
+		gbc_cpuLogoPanel.gridx = 2;
+		gbc_cpuLogoPanel.gridy = 9;
+		cpuPanel.add(cpuLogoPanel, gbc_cpuLogoPanel);
+		cpuLogoPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		cpuLogo = new JLabel("");
+		cpuLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		cpuLogoPanel.add(cpuLogo);
 		
 		JLabel cpuL1Associativity = new JLabel("L1 Cache Associativity");
 		GridBagConstraints gbc_cpuL1Associativity = new GridBagConstraints();
@@ -1522,7 +1540,7 @@ public class FerrumX {
 		
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
 			Future<Boolean> initializeHardwareId = exec.submit(()->HardwareId.initializeHardwareId(hwidTf));
-			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL1Tf, cpuL1AsTf, cpuL2Tf, cpuL2AsTf, cpuL3Tf, cpuL3AsTf));
+			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuLogo, cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL1Tf, cpuL1AsTf, cpuL2Tf, cpuL2AsTf, cpuL3Tf, cpuL3AsTf));
 			Future<Boolean> initializeMemory = exec.submit(()-> Memory.initializeMemory(memorySlotChoice, memoryNameTf, memoryManufacturerTf, memoryModelTf, memoryOtherInfoTf, memoryPartNumberTf, memoryFormFactorTf, memoryBankLabelTf, memoryCapacityTf, memoryWidthTf, memorySpeedTf, memoryConfigClockSpeedTf, memoryLocatorTf, memorySerialNumberTf));
 			Future<Boolean> initializeMainboard = exec.submit(()-> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf, mbVersionTf,mbPnpTf,biosNameTf,biosCaptionTf,biosManufacturerTf, biosReleaseDateTf,biosVersionTf,biosStatusTf,smbiosPresenceTf,smbiosVersionTf,biosLanguageTf));
 			Future<Boolean> initializeGpu = exec.submit(()->Gpu.initializeGpu(gpuChoiceComboBox, gpuNameTf, gpuPnpTf, gpuHorizontalResTf, gpuVerticalResTf, gpuBitsTf, gpuMinRefTf, gpuMaxRefTf, gpuCurrentRefTf, gpuDACTf, gpuVramTf, gpuDriverVersionTf, gpuDriverDateTf, gpuVideoProcessorTf));

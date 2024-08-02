@@ -30,16 +30,21 @@ final class Memory {
 			memoryFields[4].setText(memoryProperties.get("PartNumber"));
 			memoryFields[5].setText(memoryProperties.get("FormFactor"));
 			memoryFields[6].setText(memoryProperties.get("BankLabel"));
-			memoryFields[7].setText(memoryProperties.get("Capacity")+" Bytes");
+			
 			memoryFields[8].setText(memoryProperties.get("DataWidth")+ " Bit");
 			memoryFields[9].setText(memoryProperties.get("Speed")+" MT/s");
 			memoryFields[10].setText(memoryProperties.get("ConfiguredClockSpeed")+" MT/s");
 			memoryFields[11].setText(memoryProperties.get("DeviceLocator"));
 			memoryFields[12].setText(memoryProperties.get("SerialNumber"));
 			
+			Long memoryCapacity = Long.valueOf(memoryProperties.get("Capacity"))/(1024*1024);
+			memoryFields[7].setText((String.valueOf(memoryCapacity)+" MB"));
+			
 		} catch (IndexOutOfBoundsException | IOException e) {
 			new ExceptionUI("Memory Error", e.getMessage()).setVisible(true);
 			return false;
+		} catch (NumberFormatException e1) {
+			memoryFields[7].setText("N/A"); //sets RAM capacity field to N/A in case the adapterRAM property cannot be parsed into a Long value
 		}
 		addMemoryChoiceActionListner(memoryChoice, memoryFields);
 		return true;
@@ -56,15 +61,20 @@ final class Memory {
 				memoryFields[4].setText(memoryProperties.get("PartNumber"));
 				memoryFields[5].setText(memoryProperties.get("FormFactor"));
 				memoryFields[6].setText(memoryProperties.get("BankLabel"));
-				memoryFields[7].setText(memoryProperties.get("Capacity")+" Bytes");
+				
 				memoryFields[8].setText(memoryProperties.get("DataWidth")+ " Bit");
 				memoryFields[9].setText(memoryProperties.get("Speed")+" MT/s");
 				memoryFields[10].setText(memoryProperties.get("ConfiguredClockSpeed")+" MT/s");
 				memoryFields[11].setText(memoryProperties.get("DeviceLocator"));
 				memoryFields[12].setText(memoryProperties.get("SerialNumber"));
 				
+				Long memoryCapacity = Long.valueOf(memoryProperties.get("Capacity"))/(1024*1024);
+				memoryFields[7].setText((String.valueOf(memoryCapacity)+" MB"));
+				
 			} catch (IndexOutOfBoundsException | IOException e2) {
 				new ExceptionUI("Memory Error", e2.getMessage()).setVisible(true);
+			}catch (NumberFormatException e1) {
+				memoryFields[7].setText("N/A"); //sets RAM capacity field to N/A in case the adapterRAM property cannot be parsed into a Long value
 			}
 		});
 	}
