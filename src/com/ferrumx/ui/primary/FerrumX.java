@@ -94,7 +94,8 @@ public class FerrumX {
 	private JTextField smbiosPresenceTf;
 	private JTextField smbiosVersionTf;
 	private JTextField biosLanguageTf;
-	
+	//GPU
+	private JComboBox<String> gpuChoiceComboBox;
 	private JTextField gpuNameTf;
 	private JTextField gpuPnpTf;
 	private JTextField gpuHorizontalResTf;
@@ -108,8 +109,21 @@ public class FerrumX {
 	private JTextField gpuDriverVersionTf;
 	private JTextField gpuDriverDateTf;
 	private JTextField gpuVideoProcessorTf;
-
-	private JComboBox<String> gpuChoiceComboBox;
+	//Network
+	private JComboBox<String> netConnectionChoiceBox;
+	private JTextField netNameTf;
+	private JTextField netPnpTf;
+	private JTextField netMacTf;
+	private JTextField netConnectIdTf;
+	private JTextField netIpStatusTf;
+	private JTextField netIPAddressTf;
+	private JTextField netIPSubnetTf;
+	private JTextField netGatewayTf;
+	private JTextField netDHCPStatusTf;
+	private JTextField netDHCPServerTf;
+	private JTextField netDNSHostTf;
+	private JTextField netDNSServerTf;
+	
 
 
 	/**
@@ -177,10 +191,9 @@ public class FerrumX {
 		JPanel gpuPanel = new JPanel();
 		initializeGpuPanel(tabbedPane, gpuPanel);
 		
-		
-		
+		//Initialize the network panel
 		JPanel networkPanel = new JPanel();
-		tabbedPane.addTab("Network", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Network_16x16.png")), networkPanel, null);
+		initializeNetworkPanel(tabbedPane, networkPanel);
 		
 		JPanel storagePanel = new JPanel();
 		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")), storagePanel, null);
@@ -1536,6 +1549,289 @@ public class FerrumX {
 		gpuVideoProcessorTf.setColumns(10);
 	}
 	
+	private void initializeNetworkPanel(JTabbedPane tabbedPane, JPanel networkPanel) {
+		tabbedPane.addTab("Network", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Network_16x16.png")), networkPanel, null);
+		GridBagLayout gbl_networkPanel = new GridBagLayout();
+		gbl_networkPanel.columnWidths = new int[]{0, 0};
+		gbl_networkPanel.rowHeights = new int[]{0, 0, 0};
+		gbl_networkPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_networkPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		networkPanel.setLayout(gbl_networkPanel);
+		
+		JPanel adapterPanel = new JPanel();
+		adapterPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Adapter Properties", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_adapterPanel = new GridBagConstraints();
+		gbc_adapterPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_adapterPanel.fill = GridBagConstraints.BOTH;
+		gbc_adapterPanel.gridx = 0;
+		gbc_adapterPanel.gridy = 0;
+		networkPanel.add(adapterPanel, gbc_adapterPanel);
+		GridBagLayout gbl_adapterPanel = new GridBagLayout();
+		gbl_adapterPanel.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_adapterPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_adapterPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_adapterPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		adapterPanel.setLayout(gbl_adapterPanel);
+		
+		JLabel netConnectionChoice = new JLabel("Connection ID");
+		GridBagConstraints gbc_netConnectionChoice = new GridBagConstraints();
+		gbc_netConnectionChoice.anchor = GridBagConstraints.EAST;
+		gbc_netConnectionChoice.insets = new Insets(0, 0, 5, 5);
+		gbc_netConnectionChoice.gridx = 0;
+		gbc_netConnectionChoice.gridy = 0;
+		adapterPanel.add(netConnectionChoice, gbc_netConnectionChoice);
+		
+		netConnectionChoiceBox = new JComboBox<>();
+		GridBagConstraints gbc_netConnectionChoiceBox = new GridBagConstraints();
+		gbc_netConnectionChoiceBox.gridwidth = 2;
+		gbc_netConnectionChoiceBox.insets = new Insets(0, 0, 5, 0);
+		gbc_netConnectionChoiceBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netConnectionChoiceBox.gridx = 1;
+		gbc_netConnectionChoiceBox.gridy = 0;
+		adapterPanel.add(netConnectionChoiceBox, gbc_netConnectionChoiceBox);
+		
+		JLabel netName = new JLabel("Name");
+		GridBagConstraints gbc_netName = new GridBagConstraints();
+		gbc_netName.anchor = GridBagConstraints.EAST;
+		gbc_netName.insets = new Insets(0, 0, 5, 5);
+		gbc_netName.gridx = 0;
+		gbc_netName.gridy = 1;
+		adapterPanel.add(netName, gbc_netName);
+		
+		netNameTf = new JTextField();
+		netNameTf.setEditable(false);
+		GridBagConstraints gbc_netNameTf = new GridBagConstraints();
+		gbc_netNameTf.gridwidth = 2;
+		gbc_netNameTf.insets = new Insets(0, 0, 5, 0);
+		gbc_netNameTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netNameTf.gridx = 1;
+		gbc_netNameTf.gridy = 1;
+		adapterPanel.add(netNameTf, gbc_netNameTf);
+		netNameTf.setColumns(10);
+		
+		JLabel netPnp = new JLabel("PNP Device ID");
+		GridBagConstraints gbc_netPnp = new GridBagConstraints();
+		gbc_netPnp.anchor = GridBagConstraints.EAST;
+		gbc_netPnp.insets = new Insets(0, 0, 5, 5);
+		gbc_netPnp.gridx = 0;
+		gbc_netPnp.gridy = 2;
+		adapterPanel.add(netPnp, gbc_netPnp);
+		
+		netPnpTf = new JTextField();
+		netPnpTf.setEditable(false);
+		GridBagConstraints gbc_netPnpTf = new GridBagConstraints();
+		gbc_netPnpTf.gridwidth = 2;
+		gbc_netPnpTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netPnpTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netPnpTf.gridx = 1;
+		gbc_netPnpTf.gridy = 2;
+		adapterPanel.add(netPnpTf, gbc_netPnpTf);
+		netPnpTf.setColumns(10);
+		
+		JLabel netMac = new JLabel("MAC Address");
+		GridBagConstraints gbc_netMac = new GridBagConstraints();
+		gbc_netMac.anchor = GridBagConstraints.EAST;
+		gbc_netMac.insets = new Insets(0, 0, 5, 5);
+		gbc_netMac.gridx = 0;
+		gbc_netMac.gridy = 3;
+		adapterPanel.add(netMac, gbc_netMac);
+		
+		netMacTf = new JTextField();
+		netMacTf.setEditable(false);
+		GridBagConstraints gbc_netMacTf = new GridBagConstraints();
+		gbc_netMacTf.gridwidth = 2;
+		gbc_netMacTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netMacTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netMacTf.gridx = 1;
+		gbc_netMacTf.gridy = 3;
+		adapterPanel.add(netMacTf, gbc_netMacTf);
+		netMacTf.setColumns(10);
+		
+		JLabel netConnectionId = new JLabel("Net Connection ID");
+		GridBagConstraints gbc_netConnectionId = new GridBagConstraints();
+		gbc_netConnectionId.anchor = GridBagConstraints.EAST;
+		gbc_netConnectionId.insets = new Insets(0, 0, 5, 5);
+		gbc_netConnectionId.gridx = 0;
+		gbc_netConnectionId.gridy = 4;
+		adapterPanel.add(netConnectionId, gbc_netConnectionId);
+		
+		netConnectIdTf = new JTextField();
+		netConnectIdTf.setEditable(false);
+		GridBagConstraints gbc_netConnectIdTf = new GridBagConstraints();
+		gbc_netConnectIdTf.gridwidth = 2;
+		gbc_netConnectIdTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netConnectIdTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netConnectIdTf.gridx = 1;
+		gbc_netConnectIdTf.gridy = 4;
+		adapterPanel.add(netConnectIdTf, gbc_netConnectIdTf);
+		netConnectIdTf.setColumns(10);
+		
+		JPanel connectionPanel = new JPanel();
+		connectionPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Connection Properties", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_connectionPanel = new GridBagConstraints();
+		gbc_connectionPanel.fill = GridBagConstraints.BOTH;
+		gbc_connectionPanel.gridx = 0;
+		gbc_connectionPanel.gridy = 1;
+		networkPanel.add(connectionPanel, gbc_connectionPanel);
+		GridBagLayout gbl_connectionPanel = new GridBagLayout();
+		gbl_connectionPanel.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_connectionPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_connectionPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_connectionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		connectionPanel.setLayout(gbl_connectionPanel);
+		
+		JLabel netIPStatus = new JLabel("IP Enabled");
+		GridBagConstraints gbc_netIPStatus = new GridBagConstraints();
+		gbc_netIPStatus.anchor = GridBagConstraints.EAST;
+		gbc_netIPStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_netIPStatus.gridx = 0;
+		gbc_netIPStatus.gridy = 0;
+		connectionPanel.add(netIPStatus, gbc_netIPStatus);
+		
+		netIpStatusTf = new JTextField();
+		netIpStatusTf.setEditable(false);
+		GridBagConstraints gbc_netIpStatusTf = new GridBagConstraints();
+		gbc_netIpStatusTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netIpStatusTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netIpStatusTf.gridx = 1;
+		gbc_netIpStatusTf.gridy = 0;
+		connectionPanel.add(netIpStatusTf, gbc_netIpStatusTf);
+		netIpStatusTf.setColumns(10);
+		
+		JLabel netIPAddress = new JLabel("IP Address");
+		GridBagConstraints gbc_netIPAddress = new GridBagConstraints();
+		gbc_netIPAddress.anchor = GridBagConstraints.EAST;
+		gbc_netIPAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_netIPAddress.gridx = 0;
+		gbc_netIPAddress.gridy = 1;
+		connectionPanel.add(netIPAddress, gbc_netIPAddress);
+		
+		netIPAddressTf = new JTextField();
+		netIPAddressTf.setEditable(false);
+		GridBagConstraints gbc_netIPAddressTf = new GridBagConstraints();
+		gbc_netIPAddressTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netIPAddressTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netIPAddressTf.gridx = 1;
+		gbc_netIPAddressTf.gridy = 1;
+		connectionPanel.add(netIPAddressTf, gbc_netIPAddressTf);
+		netIPAddressTf.setColumns(10);
+		
+		JLabel netIPSubnet = new JLabel("IP Subnet");
+		GridBagConstraints gbc_netIPSubnet = new GridBagConstraints();
+		gbc_netIPSubnet.anchor = GridBagConstraints.EAST;
+		gbc_netIPSubnet.insets = new Insets(0, 0, 5, 5);
+		gbc_netIPSubnet.gridx = 0;
+		gbc_netIPSubnet.gridy = 2;
+		connectionPanel.add(netIPSubnet, gbc_netIPSubnet);
+		
+		netIPSubnetTf = new JTextField();
+		netIPSubnetTf.setEditable(false);
+		GridBagConstraints gbc_netIPSubnetTf = new GridBagConstraints();
+		gbc_netIPSubnetTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netIPSubnetTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netIPSubnetTf.gridx = 1;
+		gbc_netIPSubnetTf.gridy = 2;
+		connectionPanel.add(netIPSubnetTf, gbc_netIPSubnetTf);
+		netIPSubnetTf.setColumns(10);
+		
+		JLabel netGateway = new JLabel("Default Gateway");
+		GridBagConstraints gbc_netGateway = new GridBagConstraints();
+		gbc_netGateway.anchor = GridBagConstraints.EAST;
+		gbc_netGateway.insets = new Insets(0, 0, 5, 5);
+		gbc_netGateway.gridx = 0;
+		gbc_netGateway.gridy = 3;
+		connectionPanel.add(netGateway, gbc_netGateway);
+		
+		netGatewayTf = new JTextField();
+		netGatewayTf.setEditable(false);
+		GridBagConstraints gbc_netGatewayTf = new GridBagConstraints();
+		gbc_netGatewayTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netGatewayTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netGatewayTf.gridx = 1;
+		gbc_netGatewayTf.gridy = 3;
+		connectionPanel.add(netGatewayTf, gbc_netGatewayTf);
+		netGatewayTf.setColumns(10);
+		
+		JLabel netDHCPStatus = new JLabel("DHCP Enabled");
+		GridBagConstraints gbc_netDHCPStatus = new GridBagConstraints();
+		gbc_netDHCPStatus.anchor = GridBagConstraints.EAST;
+		gbc_netDHCPStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_netDHCPStatus.gridx = 0;
+		gbc_netDHCPStatus.gridy = 4;
+		connectionPanel.add(netDHCPStatus, gbc_netDHCPStatus);
+		
+		netDHCPStatusTf = new JTextField();
+		netDHCPStatusTf.setEditable(false);
+		GridBagConstraints gbc_netDHCPStatusTf = new GridBagConstraints();
+		gbc_netDHCPStatusTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netDHCPStatusTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netDHCPStatusTf.gridx = 1;
+		gbc_netDHCPStatusTf.gridy = 4;
+		connectionPanel.add(netDHCPStatusTf, gbc_netDHCPStatusTf);
+		netDHCPStatusTf.setColumns(10);
+		
+		JLabel networkLogo = new JLabel("");
+		GridBagConstraints gbc_networkLogo = new GridBagConstraints();
+		gbc_networkLogo.insets = new Insets(0, 0, 5, 0);
+		gbc_networkLogo.gridx = 2;
+		gbc_networkLogo.gridy = 4;
+		connectionPanel.add(networkLogo, gbc_networkLogo);
+		
+		JLabel netDHCPServer = new JLabel("DHCP Server");
+		GridBagConstraints gbc_netDHCPServer = new GridBagConstraints();
+		gbc_netDHCPServer.anchor = GridBagConstraints.EAST;
+		gbc_netDHCPServer.insets = new Insets(0, 0, 5, 5);
+		gbc_netDHCPServer.gridx = 0;
+		gbc_netDHCPServer.gridy = 5;
+		connectionPanel.add(netDHCPServer, gbc_netDHCPServer);
+		
+		netDHCPServerTf = new JTextField();
+		netDHCPServerTf.setEditable(false);
+		GridBagConstraints gbc_netDHCPServerTf = new GridBagConstraints();
+		gbc_netDHCPServerTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netDHCPServerTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netDHCPServerTf.gridx = 1;
+		gbc_netDHCPServerTf.gridy = 5;
+		connectionPanel.add(netDHCPServerTf, gbc_netDHCPServerTf);
+		netDHCPServerTf.setColumns(10);
+		
+		JLabel netDNSHost = new JLabel("DNS Host");
+		GridBagConstraints gbc_netDNSHost = new GridBagConstraints();
+		gbc_netDNSHost.anchor = GridBagConstraints.EAST;
+		gbc_netDNSHost.insets = new Insets(0, 0, 5, 5);
+		gbc_netDNSHost.gridx = 0;
+		gbc_netDNSHost.gridy = 6;
+		connectionPanel.add(netDNSHost, gbc_netDNSHost);
+		
+		netDNSHostTf = new JTextField();
+		netDNSHostTf.setEditable(false);
+		GridBagConstraints gbc_netDNSHostTf = new GridBagConstraints();
+		gbc_netDNSHostTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netDNSHostTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netDNSHostTf.gridx = 1;
+		gbc_netDNSHostTf.gridy = 6;
+		connectionPanel.add(netDNSHostTf, gbc_netDNSHostTf);
+		netDNSHostTf.setColumns(10);
+		
+		JLabel netDNSServer = new JLabel("DNS Server");
+		GridBagConstraints gbc_netDNSServer = new GridBagConstraints();
+		gbc_netDNSServer.anchor = GridBagConstraints.EAST;
+		gbc_netDNSServer.insets = new Insets(0, 0, 5, 5);
+		gbc_netDNSServer.gridx = 0;
+		gbc_netDNSServer.gridy = 7;
+		connectionPanel.add(netDNSServer, gbc_netDNSServer);
+		
+		netDNSServerTf = new JTextField();
+		netDNSServerTf.setEditable(false);
+		GridBagConstraints gbc_netDNSServerTf = new GridBagConstraints();
+		gbc_netDNSServerTf.insets = new Insets(0, 0, 5, 5);
+		gbc_netDNSServerTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_netDNSServerTf.gridx = 1;
+		gbc_netDNSServerTf.gridy = 7;
+		connectionPanel.add(netDNSServerTf, gbc_netDNSServerTf);
+		netDNSServerTf.setColumns(10);
+	}
+	
 	private void initializeSystemInfo() {
 		
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
@@ -1544,12 +1840,14 @@ public class FerrumX {
 			Future<Boolean> initializeMemory = exec.submit(()-> Memory.initializeMemory(memorySlotChoice, memoryNameTf, memoryManufacturerTf, memoryModelTf, memoryOtherInfoTf, memoryPartNumberTf, memoryFormFactorTf, memoryBankLabelTf, memoryCapacityTf, memoryWidthTf, memorySpeedTf, memoryConfigClockSpeedTf, memoryLocatorTf, memorySerialNumberTf));
 			Future<Boolean> initializeMainboard = exec.submit(()-> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf, mbVersionTf,mbPnpTf,biosNameTf,biosCaptionTf,biosManufacturerTf, biosReleaseDateTf,biosVersionTf,biosStatusTf,smbiosPresenceTf,smbiosVersionTf,biosLanguageTf));
 			Future<Boolean> initializeGpu = exec.submit(()->Gpu.initializeGpu(gpuChoiceComboBox, gpuNameTf, gpuPnpTf, gpuHorizontalResTf, gpuVerticalResTf, gpuBitsTf, gpuMinRefTf, gpuMaxRefTf, gpuCurrentRefTf, gpuDACTf, gpuVramTf, gpuDriverVersionTf, gpuDriverDateTf, gpuVideoProcessorTf));
+			Future<Boolean> initializeNetwork = exec.submit(()->Network.initializeNetwork(netConnectionChoiceBox, netNameTf, netPnpTf, netMacTf, netConnectIdTf, netIpStatusTf, netIPAddressTf, netIPSubnetTf, netGatewayTf, netDHCPStatusTf, netDHCPServerTf, netDNSHostTf, netDNSServerTf));
 			
 			initializeHardwareId.get();
 			initializeCpu.get();
 			initializeMemory.get();
 			initializeMainboard.get();
 			initializeGpu.get();
+			initializeNetwork.get();
 		}
 		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);

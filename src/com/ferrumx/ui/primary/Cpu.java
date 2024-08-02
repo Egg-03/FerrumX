@@ -71,7 +71,7 @@ final class Cpu {
 			//set cpu logo img based on manufacturer
 			if(manufacturer.equals("AuthenticAMD"))
 				cpuLogo.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.png")));
-			else if(manufacturer.equals("Intel"))
+			else if(manufacturer.equals("GenuineIntel"))
 				cpuLogo.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.png")));
 			
 		} catch (IndexOutOfBoundsException | IOException e) {
