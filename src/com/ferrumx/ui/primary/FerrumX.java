@@ -13,13 +13,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -28,7 +32,6 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
 
 import com.ferrumx.ui.secondary.ExceptionUI;
-import javax.swing.ImageIcon;
 
 
 public class FerrumX {
@@ -123,6 +126,17 @@ public class FerrumX {
 	private JTextField netDHCPServerTf;
 	private JTextField netDNSHostTf;
 	private JTextField netDNSServerTf;
+	//Disk
+	private JComboBox<String> diskIndexChoiceBox;
+	private JTextField diskCaptionTf;
+	private JTextField diskModelTf;
+	private JTextField diskSizeTf;
+	private JTextField firmwareRevisionTf;
+	private JTextField diskSerialNumberTf;
+	private JTextField diskPartitionsTf;
+	private JTextField diskStatusTf;
+	private JTextField diskInterfaceTf;
+	private JTextArea diskPartTa;
 	
 
 
@@ -142,6 +156,7 @@ public class FerrumX {
 					window.mainFrame.pack();
 					window.mainFrame.setVisible(true);
 				} catch (Exception e) {
+					//TODO Implement Later
 					e.printStackTrace();
 				}
 			}
@@ -195,13 +210,12 @@ public class FerrumX {
 		JPanel networkPanel = new JPanel();
 		initializeNetworkPanel(tabbedPane, networkPanel);
 		
+		//Initialize the storage panel
 		JPanel storagePanel = new JPanel();
-		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")), storagePanel, null);
+		initializeStoragePanel(tabbedPane, storagePanel);
 		
 		JPanel osPanel = new JPanel();
 		tabbedPane.addTab("OS", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/OS_16x16.png")), osPanel, null);
-		//Keyboard Pane Tab Traversal
-		//mainFrame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{mainFrame.getContentPane(), tabbedPane, hwidCpuPanel, memoryPanel, mainBoardPanel, gpuPanel, networkPanel, storagePanel, osPanel, hwidPanel, cpuPanel, hwidlabel, hwidTf, cpuCount, cpuChoice, cpuCores, cpuCoreTf, cpuThreads, cpuThreadTf, cpuLogicalProcessors, cpuLogicProcessorTf, cpuName, cpuNameTf, addressWidth, addressWidthTf, cpuSocket, cpuSocketTf, cpuManufacturer, cpuManufacturerTf, cpuExtClock, cpuMultiplier, cpuEffectiveClock, cpuBaseClockTf, multiplierTf, effectiveClockTf, separator, separator_1, cpuVersion, cpuFamily, cpuVirtStatus, cpuCaption, cpuStepping, cpuId, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, separator_2, cpuLevelOneCache, cpuL1Tf, cpuL1Associativity, cpuL1AsTf, cpuLevelTwoCache, cpuL2Tf, cpuL2Associativity, cpuL2AsTf, cpuLevelThreeCache, cpuL3Tf, cpuL3Associativity, cpuL3AsTf}));
 	}
 	
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
@@ -239,7 +253,7 @@ public class FerrumX {
 		hwidPanel.add(hwidlabel, gbc_hwidlabel);
 		
 		hwidTf = new JTextField();
-		hwidTf.setForeground(Color.MAGENTA);
+		hwidTf.setForeground(new Color(13, 186, 223));
 		hwidTf.setEditable(false);
 		GridBagConstraints gbc_hwidTf = new GridBagConstraints();
 		gbc_hwidTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1832,7 +1846,196 @@ public class FerrumX {
 		netDNSServerTf.setColumns(10);
 	}
 	
-	private void initializeSystemInfo() {
+	private void initializeStoragePanel(JTabbedPane tabbedPane, JPanel storagePanel) {
+		
+		storagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Storage", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")), storagePanel, null);
+		GridBagLayout gbl_storagePanel = new GridBagLayout();
+		gbl_storagePanel.columnWidths = new int[]{0, 0, 0};
+		gbl_storagePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_storagePanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_storagePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		storagePanel.setLayout(gbl_storagePanel);
+		
+		JLabel diskIndex = new JLabel("Index");
+		GridBagConstraints gbc_diskIndex = new GridBagConstraints();
+		gbc_diskIndex.insets = new Insets(0, 0, 5, 5);
+		gbc_diskIndex.anchor = GridBagConstraints.EAST;
+		gbc_diskIndex.gridx = 0;
+		gbc_diskIndex.gridy = 0;
+		storagePanel.add(diskIndex, gbc_diskIndex);
+		
+		diskIndexChoiceBox = new JComboBox<>();
+		GridBagConstraints gbc_diskIndexChoiceBox = new GridBagConstraints();
+		gbc_diskIndexChoiceBox.insets = new Insets(0, 0, 5, 0);
+		gbc_diskIndexChoiceBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskIndexChoiceBox.gridx = 1;
+		gbc_diskIndexChoiceBox.gridy = 0;
+		storagePanel.add(diskIndexChoiceBox, gbc_diskIndexChoiceBox);
+		
+		JLabel diskCaption = new JLabel("Caption");
+		GridBagConstraints gbc_diskCaption = new GridBagConstraints();
+		gbc_diskCaption.anchor = GridBagConstraints.EAST;
+		gbc_diskCaption.insets = new Insets(0, 0, 5, 5);
+		gbc_diskCaption.gridx = 0;
+		gbc_diskCaption.gridy = 1;
+		storagePanel.add(diskCaption, gbc_diskCaption);
+		
+		diskCaptionTf = new JTextField();
+		diskCaptionTf.setEditable(false);
+		GridBagConstraints gbc_diskCaptionTf = new GridBagConstraints();
+		gbc_diskCaptionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_diskCaptionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskCaptionTf.gridx = 1;
+		gbc_diskCaptionTf.gridy = 1;
+		storagePanel.add(diskCaptionTf, gbc_diskCaptionTf);
+		diskCaptionTf.setColumns(10);
+		
+		JLabel diskModel = new JLabel("Model");
+		GridBagConstraints gbc_diskModel = new GridBagConstraints();
+		gbc_diskModel.anchor = GridBagConstraints.EAST;
+		gbc_diskModel.insets = new Insets(0, 0, 5, 5);
+		gbc_diskModel.gridx = 0;
+		gbc_diskModel.gridy = 2;
+		storagePanel.add(diskModel, gbc_diskModel);
+		
+		diskModelTf = new JTextField();
+		diskModelTf.setEditable(false);
+		GridBagConstraints gbc_diskModelTf = new GridBagConstraints();
+		gbc_diskModelTf.insets = new Insets(0, 0, 5, 0);
+		gbc_diskModelTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskModelTf.gridx = 1;
+		gbc_diskModelTf.gridy = 2;
+		storagePanel.add(diskModelTf, gbc_diskModelTf);
+		diskModelTf.setColumns(10);
+		
+		JLabel diskSize = new JLabel("Size");
+		GridBagConstraints gbc_diskSize = new GridBagConstraints();
+		gbc_diskSize.anchor = GridBagConstraints.EAST;
+		gbc_diskSize.insets = new Insets(0, 0, 5, 5);
+		gbc_diskSize.gridx = 0;
+		gbc_diskSize.gridy = 3;
+		storagePanel.add(diskSize, gbc_diskSize);
+		
+		diskSizeTf = new JTextField();
+		diskSizeTf.setEditable(false);
+		GridBagConstraints gbc_diskSizeTf = new GridBagConstraints();
+		gbc_diskSizeTf.insets = new Insets(0, 0, 5, 0);
+		gbc_diskSizeTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskSizeTf.gridx = 1;
+		gbc_diskSizeTf.gridy = 3;
+		storagePanel.add(diskSizeTf, gbc_diskSizeTf);
+		diskSizeTf.setColumns(10);
+		
+		JLabel diskFirmwareRev = new JLabel("Firmware Revision");
+		GridBagConstraints gbc_diskFirmwareRev = new GridBagConstraints();
+		gbc_diskFirmwareRev.anchor = GridBagConstraints.EAST;
+		gbc_diskFirmwareRev.insets = new Insets(0, 0, 5, 5);
+		gbc_diskFirmwareRev.gridx = 0;
+		gbc_diskFirmwareRev.gridy = 4;
+		storagePanel.add(diskFirmwareRev, gbc_diskFirmwareRev);
+		
+		firmwareRevisionTf = new JTextField();
+		firmwareRevisionTf.setEditable(false);
+		GridBagConstraints gbc_firmwareRevisionTf = new GridBagConstraints();
+		gbc_firmwareRevisionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_firmwareRevisionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_firmwareRevisionTf.gridx = 1;
+		gbc_firmwareRevisionTf.gridy = 4;
+		storagePanel.add(firmwareRevisionTf, gbc_firmwareRevisionTf);
+		firmwareRevisionTf.setColumns(10);
+		
+		JLabel diskSerialNumber = new JLabel("Serial Number");
+		GridBagConstraints gbc_diskSerialNumber = new GridBagConstraints();
+		gbc_diskSerialNumber.anchor = GridBagConstraints.EAST;
+		gbc_diskSerialNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_diskSerialNumber.gridx = 0;
+		gbc_diskSerialNumber.gridy = 5;
+		storagePanel.add(diskSerialNumber, gbc_diskSerialNumber);
+		
+		diskSerialNumberTf = new JTextField();
+		diskSerialNumberTf.setEditable(false);
+		GridBagConstraints gbc_diskSerialNumberTf = new GridBagConstraints();
+		gbc_diskSerialNumberTf.insets = new Insets(0, 0, 5, 0);
+		gbc_diskSerialNumberTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskSerialNumberTf.gridx = 1;
+		gbc_diskSerialNumberTf.gridy = 5;
+		storagePanel.add(diskSerialNumberTf, gbc_diskSerialNumberTf);
+		diskSerialNumberTf.setColumns(10);
+		
+		JLabel diskPartitionCount = new JLabel("Partitions");
+		GridBagConstraints gbc_diskPartitionCount = new GridBagConstraints();
+		gbc_diskPartitionCount.anchor = GridBagConstraints.EAST;
+		gbc_diskPartitionCount.insets = new Insets(0, 0, 5, 5);
+		gbc_diskPartitionCount.gridx = 0;
+		gbc_diskPartitionCount.gridy = 6;
+		storagePanel.add(diskPartitionCount, gbc_diskPartitionCount);
+		
+		diskPartitionsTf = new JTextField();
+		diskPartitionsTf.setEditable(false);
+		GridBagConstraints gbc_diskPartitionsTf = new GridBagConstraints();
+		gbc_diskPartitionsTf.insets = new Insets(0, 0, 5, 0);
+		gbc_diskPartitionsTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskPartitionsTf.gridx = 1;
+		gbc_diskPartitionsTf.gridy = 6;
+		storagePanel.add(diskPartitionsTf, gbc_diskPartitionsTf);
+		diskPartitionsTf.setColumns(10);
+		
+		JLabel diskStatus = new JLabel("Status");
+		GridBagConstraints gbc_diskStatus = new GridBagConstraints();
+		gbc_diskStatus.anchor = GridBagConstraints.EAST;
+		gbc_diskStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_diskStatus.gridx = 0;
+		gbc_diskStatus.gridy = 7;
+		storagePanel.add(diskStatus, gbc_diskStatus);
+		
+		diskStatusTf = new JTextField();
+		diskStatusTf.setEditable(false);
+		GridBagConstraints gbc_diskStatusTf = new GridBagConstraints();
+		gbc_diskStatusTf.insets = new Insets(0, 0, 5, 0);
+		gbc_diskStatusTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskStatusTf.gridx = 1;
+		gbc_diskStatusTf.gridy = 7;
+		storagePanel.add(diskStatusTf, gbc_diskStatusTf);
+		diskStatusTf.setColumns(10);
+		
+		JLabel diskInterface = new JLabel("Interface Type");
+		GridBagConstraints gbc_diskInterface = new GridBagConstraints();
+		gbc_diskInterface.anchor = GridBagConstraints.EAST;
+		gbc_diskInterface.insets = new Insets(0, 0, 5, 5);
+		gbc_diskInterface.gridx = 0;
+		gbc_diskInterface.gridy = 8;
+		storagePanel.add(diskInterface, gbc_diskInterface);
+		
+		diskInterfaceTf = new JTextField();
+		diskInterfaceTf.setEditable(false);
+		GridBagConstraints gbc_diskInterfaceTf = new GridBagConstraints();
+		gbc_diskInterfaceTf.insets = new Insets(0, 0, 5, 0);
+		gbc_diskInterfaceTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diskInterfaceTf.gridx = 1;
+		gbc_diskInterfaceTf.gridy = 8;
+		storagePanel.add(diskInterfaceTf, gbc_diskInterfaceTf);
+		diskInterfaceTf.setColumns(10);
+		
+		JPanel diskPartitionPanel = new JPanel();
+		diskPartitionPanel.setBorder(new TitledBorder(null, "Drive Partition Layout", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		GridBagConstraints gbc_diskPartitionPanel = new GridBagConstraints();
+		gbc_diskPartitionPanel.gridwidth = 2;
+		gbc_diskPartitionPanel.fill = GridBagConstraints.BOTH;
+		gbc_diskPartitionPanel.gridx = 0;
+		gbc_diskPartitionPanel.gridy = 9;
+		storagePanel.add(diskPartitionPanel, gbc_diskPartitionPanel);
+		diskPartitionPanel.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		diskPartTa = new JTextArea();
+		diskPartTa.setEditable(false);
+		JScrollPane scroll = new JScrollPane(diskPartTa);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		diskPartitionPanel.add(scroll);
+	}
+	
+ 	private void initializeSystemInfo() {
 		
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
 			Future<Boolean> initializeHardwareId = exec.submit(()->HardwareId.initializeHardwareId(hwidTf));
@@ -1841,6 +2044,7 @@ public class FerrumX {
 			Future<Boolean> initializeMainboard = exec.submit(()-> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf, mbVersionTf,mbPnpTf,biosNameTf,biosCaptionTf,biosManufacturerTf, biosReleaseDateTf,biosVersionTf,biosStatusTf,smbiosPresenceTf,smbiosVersionTf,biosLanguageTf));
 			Future<Boolean> initializeGpu = exec.submit(()->Gpu.initializeGpu(gpuChoiceComboBox, gpuNameTf, gpuPnpTf, gpuHorizontalResTf, gpuVerticalResTf, gpuBitsTf, gpuMinRefTf, gpuMaxRefTf, gpuCurrentRefTf, gpuDACTf, gpuVramTf, gpuDriverVersionTf, gpuDriverDateTf, gpuVideoProcessorTf));
 			Future<Boolean> initializeNetwork = exec.submit(()->Network.initializeNetwork(netConnectionChoiceBox, netNameTf, netPnpTf, netMacTf, netConnectIdTf, netIpStatusTf, netIPAddressTf, netIPSubnetTf, netGatewayTf, netDHCPStatusTf, netDHCPServerTf, netDNSHostTf, netDNSServerTf));
+			Future<Boolean> initializeStorage = exec.submit(()->Storage.initializeStorage(diskIndexChoiceBox, diskPartTa, diskCaptionTf, diskModelTf, diskSizeTf, firmwareRevisionTf, diskSerialNumberTf, diskPartitionsTf, diskStatusTf, diskInterfaceTf));
 			
 			initializeHardwareId.get();
 			initializeCpu.get();
@@ -1848,6 +2052,7 @@ public class FerrumX {
 			initializeMainboard.get();
 			initializeGpu.get();
 			initializeNetwork.get();
+			initializeStorage.get();
 		}
 		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
