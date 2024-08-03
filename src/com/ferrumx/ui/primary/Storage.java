@@ -39,7 +39,7 @@ final class Storage {
 			//get disk partitions for the current id
 			List<String> diskPartitions = Win32_DiskDriveToDiskPartition.getPartitionList(currentDiskId);
 			for(String currentPartition: diskPartitions) {
-				partitionDetails.setText("Partition: "+currentPartition+", Drive Letter: "+Win32_LogicalDiskToPartition.getDriveLetter(currentPartition)+"\n");
+				partitionDetails.append("Partition: "+currentPartition+", Drive Letter: "+Win32_LogicalDiskToPartition.getDriveLetter(currentPartition)+"\n");
 			}
 		} catch (IndexOutOfBoundsException | IOException e) {
 			new ExceptionUI("Storage Initialization Error", e.getMessage()).setVisible(true);
