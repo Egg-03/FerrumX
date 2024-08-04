@@ -34,6 +34,7 @@ import javax.swing.border.TitledBorder;
 
 import com.ferrumx.ui.secondary.ExceptionUI;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 
 public class FerrumX {
@@ -141,28 +142,29 @@ public class FerrumX {
 	private JTextArea diskPartTa;
 	//OS
 	private JComboBox<String> currentOsChoiceBox;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_16;
-	private JTextField textField_17;
-	private JTextField textField_18;
-	private JTextField textField_19;
-	private JTextField textField_20;
-	private JTextField textField_21;
+	private JTextField osCaptionTf;
+	private JTextField osVersionTf;
+	private JTextField osManufacturerTf;
+	private JTextField osArchitectureTf;
+	private JTextField osBuildNumberTf;
+	private JTextField osInstallDateTf;
+	private JTextField osLastBootTf;
+	private JTextField osSerialTf;
+	private JTextField osPrimaryTf;
+	private JTextField osDistributedTf;
+	private JTextField osPortTf;
+	private JTextField osDeviceNameTf;
+	private JTextField osUserCountTf;
+	private JTextField osRegUserTf;
+	private JTextField osLangTf;
+	private JTextField osSysDriveTf;
+	private JTextField osWinDirTf;
+	private JTextField osSysDirTf;
+	//User and Time zone 
+	private JTextField userTf;
+	private JTextField userHomeTf;
+	private JTextField timeZoneNameTf;
+	private JTextField timeZoneCaptionTf;
 
 	/**
 	 * Launch the application.
@@ -177,7 +179,6 @@ public class FerrumX {
 		EventQueue.invokeLater(()->{
 			try {
 				FerrumX window = new FerrumX();
-				window.mainFrame.pack();
 				window.mainFrame.setVisible(true);
 			} catch (Exception e) {
 				new ExceptionUI("FerrumX Application Window Launch Error", e.getMessage()).setVisible(true);
@@ -198,10 +199,9 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setResizable(false);
 		mainFrame.setTitle("FerrumX [Build v04082024 Alpha]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
-		mainFrame.setBounds(100, 100, 600, 450);
+		mainFrame.setBounds(100, 100, 860, 555);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
@@ -236,483 +236,10 @@ public class FerrumX {
 		JPanel storagePanel = new JPanel();
 		initializeStoragePanel(tabbedPane, storagePanel);
 		
+		//Initialize the os and the user panels
 		JPanel osAndUserPanel = new JPanel();
-		osAndUserPanel.setBorder(null);
-		tabbedPane.addTab("OS", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/OS_16x16.png")), osAndUserPanel, null);
-		GridBagLayout gbl_osAndUserPanel = new GridBagLayout();
-		gbl_osAndUserPanel.columnWidths = new int[]{0, 0};
-		gbl_osAndUserPanel.rowHeights = new int[]{0, 0, 0};
-		gbl_osAndUserPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_osAndUserPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		osAndUserPanel.setLayout(gbl_osAndUserPanel);
+		initializeOsAndUserPanel(tabbedPane, osAndUserPanel);
 		
-		JPanel osPanel = new JPanel();
-		osPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Operating System", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_osPanel = new GridBagConstraints();
-		gbc_osPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_osPanel.fill = GridBagConstraints.BOTH;
-		gbc_osPanel.gridx = 0;
-		gbc_osPanel.gridy = 0;
-		osAndUserPanel.add(osPanel, gbc_osPanel);
-		GridBagLayout gbl_osPanel = new GridBagLayout();
-		gbl_osPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_osPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_osPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_osPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		osPanel.setLayout(gbl_osPanel);
-		
-		JLabel lblNewLabel = new JLabel("Current OS");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		osPanel.add(lblNewLabel, gbc_lblNewLabel);
-		
-		currentOsChoiceBox = new JComboBox<>();
-		GridBagConstraints gbc_currentOsChoiceBox = new GridBagConstraints();
-		gbc_currentOsChoiceBox.gridwidth = 5;
-		gbc_currentOsChoiceBox.insets = new Insets(0, 0, 5, 0);
-		gbc_currentOsChoiceBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_currentOsChoiceBox.gridx = 1;
-		gbc_currentOsChoiceBox.gridy = 0;
-		osPanel.add(currentOsChoiceBox, gbc_currentOsChoiceBox);
-		
-		JLabel lblNewLabel_1 = new JLabel("Caption");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 1;
-		osPanel.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 3;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 1;
-		osPanel.add(textField, gbc_textField);
-		textField.setColumns(10);
-		
-		JPanel osCoverImagePanel = new JPanel();
-		osCoverImagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "OS Cover", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
-		GridBagConstraints gbc_osCoverImagePanel = new GridBagConstraints();
-		gbc_osCoverImagePanel.gridwidth = 2;
-		gbc_osCoverImagePanel.insets = new Insets(0, 0, 5, 0);
-		gbc_osCoverImagePanel.fill = GridBagConstraints.BOTH;
-		gbc_osCoverImagePanel.gridheight = 4;
-		gbc_osCoverImagePanel.gridx = 4;
-		gbc_osCoverImagePanel.gridy = 1;
-		osPanel.add(osCoverImagePanel, gbc_osCoverImagePanel);
-		osCoverImagePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel lblNewLabel_5 = new JLabel("");
-		osCoverImagePanel.add(lblNewLabel_5);
-		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_5.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/tab_icons_large/OS.png")));
-		
-		JLabel lblNewLabel_2 = new JLabel("Version");
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 0;
-		gbc_lblNewLabel_2.gridy = 2;
-		osPanel.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 2;
-		osPanel.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		
-		JLabel lblNewLabel_6 = new JLabel("Build Number");
-		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-		gbc_lblNewLabel_6.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_6.gridx = 2;
-		gbc_lblNewLabel_6.gridy = 2;
-		osPanel.add(lblNewLabel_6, gbc_lblNewLabel_6);
-		
-		textField_4 = new JTextField();
-		textField_4.setEditable(false);
-		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
-		gbc_textField_4.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_4.gridx = 3;
-		gbc_textField_4.gridy = 2;
-		osPanel.add(textField_4, gbc_textField_4);
-		textField_4.setColumns(10);
-		
-		JLabel lblNewLabel_3 = new JLabel("Manufacturer");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3.gridx = 0;
-		gbc_lblNewLabel_3.gridy = 3;
-		osPanel.add(lblNewLabel_3, gbc_lblNewLabel_3);
-		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 1;
-		gbc_textField_2.gridy = 3;
-		osPanel.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
-		
-		JLabel lblNewLabel_4 = new JLabel("Architecture");
-		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_4.gridx = 2;
-		gbc_lblNewLabel_4.gridy = 3;
-		osPanel.add(lblNewLabel_4, gbc_lblNewLabel_4);
-		
-		textField_3 = new JTextField();
-		textField_3.setEditable(false);
-		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-		gbc_textField_3.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_3.gridx = 3;
-		gbc_textField_3.gridy = 3;
-		osPanel.add(textField_3, gbc_textField_3);
-		textField_3.setColumns(10);
-		
-		JLabel lblNewLabel_7 = new JLabel("Install Date");
-		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
-		gbc_lblNewLabel_7.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_7.gridx = 0;
-		gbc_lblNewLabel_7.gridy = 4;
-		osPanel.add(lblNewLabel_7, gbc_lblNewLabel_7);
-		
-		textField_5 = new JTextField();
-		textField_5.setEditable(false);
-		GridBagConstraints gbc_textField_5 = new GridBagConstraints();
-		gbc_textField_5.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_5.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_5.gridx = 1;
-		gbc_textField_5.gridy = 4;
-		osPanel.add(textField_5, gbc_textField_5);
-		textField_5.setColumns(10);
-		
-		JLabel lblNewLabel_8 = new JLabel("Last Bootup Time");
-		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
-		gbc_lblNewLabel_8.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_8.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_8.gridx = 2;
-		gbc_lblNewLabel_8.gridy = 4;
-		osPanel.add(lblNewLabel_8, gbc_lblNewLabel_8);
-		
-		textField_6 = new JTextField();
-		textField_6.setEditable(false);
-		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
-		gbc_textField_6.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_6.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_6.gridx = 3;
-		gbc_textField_6.gridy = 4;
-		osPanel.add(textField_6, gbc_textField_6);
-		textField_6.setColumns(10);
-		
-		JLabel lblNewLabel_9 = new JLabel("Serial Number");
-		GridBagConstraints gbc_lblNewLabel_9 = new GridBagConstraints();
-		gbc_lblNewLabel_9.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_9.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_9.gridx = 0;
-		gbc_lblNewLabel_9.gridy = 5;
-		osPanel.add(lblNewLabel_9, gbc_lblNewLabel_9);
-		
-		textField_7 = new JTextField();
-		textField_7.setEditable(false);
-		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
-		gbc_textField_7.gridwidth = 3;
-		gbc_textField_7.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_7.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_7.gridx = 1;
-		gbc_textField_7.gridy = 5;
-		osPanel.add(textField_7, gbc_textField_7);
-		textField_7.setColumns(10);
-		
-		JLabel lblNewLabel_16 = new JLabel("Language(s)");
-		GridBagConstraints gbc_lblNewLabel_16 = new GridBagConstraints();
-		gbc_lblNewLabel_16.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_16.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_16.gridx = 4;
-		gbc_lblNewLabel_16.gridy = 5;
-		osPanel.add(lblNewLabel_16, gbc_lblNewLabel_16);
-		
-		textField_14 = new JTextField();
-		textField_14.setEditable(false);
-		GridBagConstraints gbc_textField_14 = new GridBagConstraints();
-		gbc_textField_14.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_14.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_14.gridx = 5;
-		gbc_textField_14.gridy = 5;
-		osPanel.add(textField_14, gbc_textField_14);
-		textField_14.setColumns(10);
-		
-		JLabel lblNewLabel_10 = new JLabel("Primary");
-		GridBagConstraints gbc_lblNewLabel_10 = new GridBagConstraints();
-		gbc_lblNewLabel_10.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_10.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_10.gridx = 0;
-		gbc_lblNewLabel_10.gridy = 6;
-		osPanel.add(lblNewLabel_10, gbc_lblNewLabel_10);
-		
-		textField_8 = new JTextField();
-		textField_8.setEditable(false);
-		GridBagConstraints gbc_textField_8 = new GridBagConstraints();
-		gbc_textField_8.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_8.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_8.gridx = 1;
-		gbc_textField_8.gridy = 6;
-		osPanel.add(textField_8, gbc_textField_8);
-		textField_8.setColumns(10);
-		
-		JLabel lblNewLabel_11 = new JLabel("Distributed");
-		GridBagConstraints gbc_lblNewLabel_11 = new GridBagConstraints();
-		gbc_lblNewLabel_11.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_11.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_11.gridx = 2;
-		gbc_lblNewLabel_11.gridy = 6;
-		osPanel.add(lblNewLabel_11, gbc_lblNewLabel_11);
-		
-		textField_9 = new JTextField();
-		textField_9.setEditable(false);
-		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
-		gbc_textField_9.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_9.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_9.gridx = 3;
-		gbc_textField_9.gridy = 6;
-		osPanel.add(textField_9, gbc_textField_9);
-		textField_9.setColumns(10);
-		
-		JLabel lblNewLabel_12 = new JLabel("Portable");
-		GridBagConstraints gbc_lblNewLabel_12 = new GridBagConstraints();
-		gbc_lblNewLabel_12.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_12.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_12.gridx = 4;
-		gbc_lblNewLabel_12.gridy = 6;
-		osPanel.add(lblNewLabel_12, gbc_lblNewLabel_12);
-		
-		textField_10 = new JTextField();
-		textField_10.setEditable(false);
-		GridBagConstraints gbc_textField_10 = new GridBagConstraints();
-		gbc_textField_10.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_10.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_10.gridx = 5;
-		gbc_textField_10.gridy = 6;
-		osPanel.add(textField_10, gbc_textField_10);
-		textField_10.setColumns(10);
-		
-		JLabel lblNewLabel_13 = new JLabel("Device Name");
-		GridBagConstraints gbc_lblNewLabel_13 = new GridBagConstraints();
-		gbc_lblNewLabel_13.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_13.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_13.gridx = 0;
-		gbc_lblNewLabel_13.gridy = 7;
-		osPanel.add(lblNewLabel_13, gbc_lblNewLabel_13);
-		
-		textField_11 = new JTextField();
-		textField_11.setEditable(false);
-		GridBagConstraints gbc_textField_11 = new GridBagConstraints();
-		gbc_textField_11.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_11.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_11.gridx = 1;
-		gbc_textField_11.gridy = 7;
-		osPanel.add(textField_11, gbc_textField_11);
-		textField_11.setColumns(10);
-		
-		JLabel lblNewLabel_14 = new JLabel("User Count");
-		GridBagConstraints gbc_lblNewLabel_14 = new GridBagConstraints();
-		gbc_lblNewLabel_14.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_14.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_14.gridx = 2;
-		gbc_lblNewLabel_14.gridy = 7;
-		osPanel.add(lblNewLabel_14, gbc_lblNewLabel_14);
-		
-		textField_12 = new JTextField();
-		textField_12.setEditable(false);
-		GridBagConstraints gbc_textField_12 = new GridBagConstraints();
-		gbc_textField_12.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_12.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_12.gridx = 3;
-		gbc_textField_12.gridy = 7;
-		osPanel.add(textField_12, gbc_textField_12);
-		textField_12.setColumns(10);
-		
-		JLabel lblNewLabel_15 = new JLabel("Registered User");
-		GridBagConstraints gbc_lblNewLabel_15 = new GridBagConstraints();
-		gbc_lblNewLabel_15.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_15.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_15.gridx = 4;
-		gbc_lblNewLabel_15.gridy = 7;
-		osPanel.add(lblNewLabel_15, gbc_lblNewLabel_15);
-		
-		textField_13 = new JTextField();
-		textField_13.setEditable(false);
-		GridBagConstraints gbc_textField_13 = new GridBagConstraints();
-		gbc_textField_13.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_13.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_13.gridx = 5;
-		gbc_textField_13.gridy = 7;
-		osPanel.add(textField_13, gbc_textField_13);
-		textField_13.setColumns(10);
-		
-		JLabel lblNewLabel_17 = new JLabel("System Drive");
-		GridBagConstraints gbc_lblNewLabel_17 = new GridBagConstraints();
-		gbc_lblNewLabel_17.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_17.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_17.gridx = 0;
-		gbc_lblNewLabel_17.gridy = 8;
-		osPanel.add(lblNewLabel_17, gbc_lblNewLabel_17);
-		
-		textField_15 = new JTextField();
-		textField_15.setEditable(false);
-		GridBagConstraints gbc_textField_15 = new GridBagConstraints();
-		gbc_textField_15.insets = new Insets(0, 0, 0, 5);
-		gbc_textField_15.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_15.gridx = 1;
-		gbc_textField_15.gridy = 8;
-		osPanel.add(textField_15, gbc_textField_15);
-		textField_15.setColumns(10);
-		
-		JLabel lblNewLabel_18 = new JLabel("Windows Directory");
-		GridBagConstraints gbc_lblNewLabel_18 = new GridBagConstraints();
-		gbc_lblNewLabel_18.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_18.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_18.gridx = 2;
-		gbc_lblNewLabel_18.gridy = 8;
-		osPanel.add(lblNewLabel_18, gbc_lblNewLabel_18);
-		
-		textField_16 = new JTextField();
-		textField_16.setEditable(false);
-		GridBagConstraints gbc_textField_16 = new GridBagConstraints();
-		gbc_textField_16.insets = new Insets(0, 0, 0, 5);
-		gbc_textField_16.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_16.gridx = 3;
-		gbc_textField_16.gridy = 8;
-		osPanel.add(textField_16, gbc_textField_16);
-		textField_16.setColumns(10);
-		
-		JLabel lblNewLabel_19 = new JLabel("System Directory");
-		GridBagConstraints gbc_lblNewLabel_19 = new GridBagConstraints();
-		gbc_lblNewLabel_19.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_19.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_19.gridx = 4;
-		gbc_lblNewLabel_19.gridy = 8;
-		osPanel.add(lblNewLabel_19, gbc_lblNewLabel_19);
-		
-		textField_17 = new JTextField();
-		textField_17.setEditable(false);
-		GridBagConstraints gbc_textField_17 = new GridBagConstraints();
-		gbc_textField_17.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_17.gridx = 5;
-		gbc_textField_17.gridy = 8;
-		osPanel.add(textField_17, gbc_textField_17);
-		textField_17.setColumns(10);
-		
-		JPanel userPanel = new JPanel();
-		userPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "User and Timezone", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_userPanel = new GridBagConstraints();
-		gbc_userPanel.fill = GridBagConstraints.BOTH;
-		gbc_userPanel.gridx = 0;
-		gbc_userPanel.gridy = 1;
-		osAndUserPanel.add(userPanel, gbc_userPanel);
-		GridBagLayout gbl_userPanel = new GridBagLayout();
-		gbl_userPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_userPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_userPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_userPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		userPanel.setLayout(gbl_userPanel);
-		
-		JLabel lblNewLabel_20 = new JLabel("Current User");
-		GridBagConstraints gbc_lblNewLabel_20 = new GridBagConstraints();
-		gbc_lblNewLabel_20.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_20.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_20.gridx = 0;
-		gbc_lblNewLabel_20.gridy = 0;
-		userPanel.add(lblNewLabel_20, gbc_lblNewLabel_20);
-		
-		textField_18 = new JTextField();
-		textField_18.setEditable(false);
-		GridBagConstraints gbc_textField_18 = new GridBagConstraints();
-		gbc_textField_18.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_18.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_18.gridx = 1;
-		gbc_textField_18.gridy = 0;
-		userPanel.add(textField_18, gbc_textField_18);
-		textField_18.setColumns(10);
-		
-		JLabel lblNewLabel_21 = new JLabel("User Home");
-		GridBagConstraints gbc_lblNewLabel_21 = new GridBagConstraints();
-		gbc_lblNewLabel_21.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_21.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_21.gridx = 0;
-		gbc_lblNewLabel_21.gridy = 1;
-		userPanel.add(lblNewLabel_21, gbc_lblNewLabel_21);
-		
-		textField_19 = new JTextField();
-		textField_19.setEditable(false);
-		GridBagConstraints gbc_textField_19 = new GridBagConstraints();
-		gbc_textField_19.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_19.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_19.gridx = 1;
-		gbc_textField_19.gridy = 1;
-		userPanel.add(textField_19, gbc_textField_19);
-		textField_19.setColumns(10);
-		
-		JSeparator separator = new JSeparator();
-		GridBagConstraints gbc_separator = new GridBagConstraints();
-		gbc_separator.insets = new Insets(0, 0, 5, 0);
-		gbc_separator.gridwidth = 2;
-		gbc_separator.gridx = 0;
-		gbc_separator.gridy = 2;
-		userPanel.add(separator, gbc_separator);
-		
-		JLabel lblNewLabel_22 = new JLabel("Timezone Name");
-		GridBagConstraints gbc_lblNewLabel_22 = new GridBagConstraints();
-		gbc_lblNewLabel_22.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_22.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_22.gridx = 0;
-		gbc_lblNewLabel_22.gridy = 3;
-		userPanel.add(lblNewLabel_22, gbc_lblNewLabel_22);
-		
-		textField_20 = new JTextField();
-		textField_20.setEditable(false);
-		GridBagConstraints gbc_textField_20 = new GridBagConstraints();
-		gbc_textField_20.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_20.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_20.gridx = 1;
-		gbc_textField_20.gridy = 3;
-		userPanel.add(textField_20, gbc_textField_20);
-		textField_20.setColumns(10);
-		
-		JLabel lblNewLabel_23 = new JLabel("Timezone Caption");
-		GridBagConstraints gbc_lblNewLabel_23 = new GridBagConstraints();
-		gbc_lblNewLabel_23.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_23.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_23.gridx = 0;
-		gbc_lblNewLabel_23.gridy = 4;
-		userPanel.add(lblNewLabel_23, gbc_lblNewLabel_23);
-		
-		textField_21 = new JTextField();
-		textField_21.setEditable(false);
-		GridBagConstraints gbc_textField_21 = new GridBagConstraints();
-		gbc_textField_21.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_21.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_21.gridx = 1;
-		gbc_textField_21.gridy = 4;
-		userPanel.add(textField_21, gbc_textField_21);
-		textField_21.setColumns(10);
 	}
 	
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
@@ -1479,7 +1006,7 @@ public class FerrumX {
 	}
 
 	private void initializeMainboardPanel(JTabbedPane tabbedPane, JPanel mainBoardPanel) {
-		tabbedPane.addTab("Mainboard", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Mainboard_16x16.png")), mainBoardPanel, null);
+		tabbedPane.addTab("Mainboard", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Mainboard_16x16.png")), mainBoardPanel, "Displays Motherboard and BIOS Info");
 		tabbedPane.setEnabledAt(2, true);
 		GridBagLayout gbl_mainBoardPanel = new GridBagLayout();
 		gbl_mainBoardPanel.columnWidths = new int[]{0, 0};
@@ -1788,7 +1315,7 @@ public class FerrumX {
 	
 	private void initializeGpuPanel(JTabbedPane tabbedPane, JPanel gpuPanel) {
 		gpuPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Video Controller", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tabbedPane.addTab("GPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/GPU_32x32.png")), gpuPanel, null);
+		tabbedPane.addTab("GPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/GPU_32x32.png")), gpuPanel, "Displays basic information about your GPUs");
 		GridBagLayout gbl_gpuPanel = new GridBagLayout();
 		gbl_gpuPanel.columnWidths = new int[]{0, 0, 0};
 		gbl_gpuPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -2061,7 +1588,7 @@ public class FerrumX {
 	}
 	
 	private void initializeNetworkPanel(JTabbedPane tabbedPane, JPanel networkPanel) {
-		tabbedPane.addTab("Network", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Network_16x16.png")), networkPanel, null);
+		tabbedPane.addTab("Network", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Network_16x16.png")), networkPanel, "Displays network information");
 		GridBagLayout gbl_networkPanel = new GridBagLayout();
 		gbl_networkPanel.columnWidths = new int[]{0, 0};
 		gbl_networkPanel.rowHeights = new int[]{0, 0, 0};
@@ -2346,7 +1873,7 @@ public class FerrumX {
 	private void initializeStoragePanel(JTabbedPane tabbedPane, JPanel storagePanel) {
 		
 		storagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Storage", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")), storagePanel, null);
+		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")), storagePanel, "Displays disk information");
 		GridBagLayout gbl_storagePanel = new GridBagLayout();
 		gbl_storagePanel.columnWidths = new int[]{0, 0, 0};
 		gbl_storagePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -2532,8 +2059,490 @@ public class FerrumX {
 		diskPartitionPanel.add(scroll);
 	}
 	
- 	private void initializeSystemInfo() {
+	private void initializeOsAndUserPanel(JTabbedPane tabbedPane, JPanel osAndUserPanel) {
+		osAndUserPanel.setBorder(null);
+		tabbedPane.addTab("OS", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/OS_16x16.png")), osAndUserPanel, "Displays OS, User and Timezone information");
+		GridBagLayout gbl_osAndUserPanel = new GridBagLayout();
+		gbl_osAndUserPanel.columnWidths = new int[]{0, 0};
+		gbl_osAndUserPanel.rowHeights = new int[]{0, 0, 0};
+		gbl_osAndUserPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_osAndUserPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		osAndUserPanel.setLayout(gbl_osAndUserPanel);
 		
+		JPanel osPanel = new JPanel();
+		osPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Operating System", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_osPanel = new GridBagConstraints();
+		gbc_osPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_osPanel.fill = GridBagConstraints.BOTH;
+		gbc_osPanel.gridx = 0;
+		gbc_osPanel.gridy = 0;
+		osAndUserPanel.add(osPanel, gbc_osPanel);
+		GridBagLayout gbl_osPanel = new GridBagLayout();
+		gbl_osPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_osPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_osPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_osPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		osPanel.setLayout(gbl_osPanel);
+		
+		JLabel currentOs = new JLabel("Current OS");
+		GridBagConstraints gbc_currentOs = new GridBagConstraints();
+		gbc_currentOs.insets = new Insets(0, 0, 5, 5);
+		gbc_currentOs.anchor = GridBagConstraints.EAST;
+		gbc_currentOs.gridx = 0;
+		gbc_currentOs.gridy = 0;
+		osPanel.add(currentOs, gbc_currentOs);
+		
+		currentOsChoiceBox = new JComboBox<>();
+		GridBagConstraints gbc_currentOsChoiceBox = new GridBagConstraints();
+		gbc_currentOsChoiceBox.gridwidth = 5;
+		gbc_currentOsChoiceBox.insets = new Insets(0, 0, 5, 0);
+		gbc_currentOsChoiceBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_currentOsChoiceBox.gridx = 1;
+		gbc_currentOsChoiceBox.gridy = 0;
+		osPanel.add(currentOsChoiceBox, gbc_currentOsChoiceBox);
+		
+		JLabel osCaption = new JLabel("Caption");
+		GridBagConstraints gbc_osCaption = new GridBagConstraints();
+		gbc_osCaption.anchor = GridBagConstraints.EAST;
+		gbc_osCaption.insets = new Insets(0, 0, 5, 5);
+		gbc_osCaption.gridx = 0;
+		gbc_osCaption.gridy = 1;
+		osPanel.add(osCaption, gbc_osCaption);
+		
+		osCaptionTf = new JTextField();
+		osCaptionTf.setEditable(false);
+		GridBagConstraints gbc_osCaptionTf = new GridBagConstraints();
+		gbc_osCaptionTf.gridwidth = 3;
+		gbc_osCaptionTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osCaptionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osCaptionTf.gridx = 1;
+		gbc_osCaptionTf.gridy = 1;
+		osPanel.add(osCaptionTf, gbc_osCaptionTf);
+		osCaptionTf.setColumns(10);
+		
+		JPanel osCoverImagePanel = new JPanel();
+		osCoverImagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "OS Cover", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		GridBagConstraints gbc_osCoverImagePanel = new GridBagConstraints();
+		gbc_osCoverImagePanel.gridwidth = 2;
+		gbc_osCoverImagePanel.insets = new Insets(0, 0, 5, 0);
+		gbc_osCoverImagePanel.fill = GridBagConstraints.BOTH;
+		gbc_osCoverImagePanel.gridheight = 4;
+		gbc_osCoverImagePanel.gridx = 4;
+		gbc_osCoverImagePanel.gridy = 1;
+		osPanel.add(osCoverImagePanel, gbc_osCoverImagePanel);
+		osCoverImagePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel osCoverImg = new JLabel("");
+		osCoverImagePanel.add(osCoverImg);
+		osCoverImg.setHorizontalAlignment(SwingConstants.CENTER);
+		osCoverImg.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/tab_icons_large/OS.png")));
+		
+		JLabel osVersion = new JLabel("Version");
+		GridBagConstraints gbc_osVersion = new GridBagConstraints();
+		gbc_osVersion.anchor = GridBagConstraints.EAST;
+		gbc_osVersion.insets = new Insets(0, 0, 5, 5);
+		gbc_osVersion.gridx = 0;
+		gbc_osVersion.gridy = 2;
+		osPanel.add(osVersion, gbc_osVersion);
+		
+		osVersionTf = new JTextField();
+		osVersionTf.setEditable(false);
+		GridBagConstraints gbc_osVersionTf = new GridBagConstraints();
+		gbc_osVersionTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osVersionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osVersionTf.gridx = 1;
+		gbc_osVersionTf.gridy = 2;
+		osPanel.add(osVersionTf, gbc_osVersionTf);
+		osVersionTf.setColumns(10);
+		
+		JLabel osBuildNumber = new JLabel("Build Number");
+		GridBagConstraints gbc_osBuildNumber = new GridBagConstraints();
+		gbc_osBuildNumber.anchor = GridBagConstraints.EAST;
+		gbc_osBuildNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_osBuildNumber.gridx = 2;
+		gbc_osBuildNumber.gridy = 2;
+		osPanel.add(osBuildNumber, gbc_osBuildNumber);
+		
+		osBuildNumberTf = new JTextField();
+		osBuildNumberTf.setEditable(false);
+		GridBagConstraints gbc_osBuildNumberTf = new GridBagConstraints();
+		gbc_osBuildNumberTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osBuildNumberTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osBuildNumberTf.gridx = 3;
+		gbc_osBuildNumberTf.gridy = 2;
+		osPanel.add(osBuildNumberTf, gbc_osBuildNumberTf);
+		osBuildNumberTf.setColumns(10);
+		
+		JLabel osManufacturer = new JLabel("Manufacturer");
+		GridBagConstraints gbc_osManufacturer = new GridBagConstraints();
+		gbc_osManufacturer.anchor = GridBagConstraints.EAST;
+		gbc_osManufacturer.insets = new Insets(0, 0, 5, 5);
+		gbc_osManufacturer.gridx = 0;
+		gbc_osManufacturer.gridy = 3;
+		osPanel.add(osManufacturer, gbc_osManufacturer);
+		
+		osManufacturerTf = new JTextField();
+		osManufacturerTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		osManufacturerTf.setEditable(false);
+		GridBagConstraints gbc_osManufacturerTf = new GridBagConstraints();
+		gbc_osManufacturerTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osManufacturerTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osManufacturerTf.gridx = 1;
+		gbc_osManufacturerTf.gridy = 3;
+		osPanel.add(osManufacturerTf, gbc_osManufacturerTf);
+		osManufacturerTf.setColumns(10);
+		
+		JLabel osArch = new JLabel("Architecture");
+		GridBagConstraints gbc_osArch = new GridBagConstraints();
+		gbc_osArch.anchor = GridBagConstraints.EAST;
+		gbc_osArch.insets = new Insets(0, 0, 5, 5);
+		gbc_osArch.gridx = 2;
+		gbc_osArch.gridy = 3;
+		osPanel.add(osArch, gbc_osArch);
+		
+		osArchitectureTf = new JTextField();
+		osArchitectureTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		osArchitectureTf.setEditable(false);
+		GridBagConstraints gbc_osArchitectureTf = new GridBagConstraints();
+		gbc_osArchitectureTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osArchitectureTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osArchitectureTf.gridx = 3;
+		gbc_osArchitectureTf.gridy = 3;
+		osPanel.add(osArchitectureTf, gbc_osArchitectureTf);
+		osArchitectureTf.setColumns(10);
+		
+		JLabel osInstallDate = new JLabel("Install Date");
+		GridBagConstraints gbc_osInstallDate = new GridBagConstraints();
+		gbc_osInstallDate.anchor = GridBagConstraints.EAST;
+		gbc_osInstallDate.insets = new Insets(0, 0, 5, 5);
+		gbc_osInstallDate.gridx = 0;
+		gbc_osInstallDate.gridy = 4;
+		osPanel.add(osInstallDate, gbc_osInstallDate);
+		
+		osInstallDateTf = new JTextField();
+		osInstallDateTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		osInstallDateTf.setEditable(false);
+		GridBagConstraints gbc_osInstallDateTf = new GridBagConstraints();
+		gbc_osInstallDateTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osInstallDateTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osInstallDateTf.gridx = 1;
+		gbc_osInstallDateTf.gridy = 4;
+		osPanel.add(osInstallDateTf, gbc_osInstallDateTf);
+		osInstallDateTf.setColumns(10);
+		
+		JLabel osLastBoot = new JLabel("Last Bootup Time");
+		GridBagConstraints gbc_osLastBoot = new GridBagConstraints();
+		gbc_osLastBoot.anchor = GridBagConstraints.EAST;
+		gbc_osLastBoot.insets = new Insets(0, 0, 5, 5);
+		gbc_osLastBoot.gridx = 2;
+		gbc_osLastBoot.gridy = 4;
+		osPanel.add(osLastBoot, gbc_osLastBoot);
+		
+		osLastBootTf = new JTextField();
+		osLastBootTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		osLastBootTf.setEditable(false);
+		GridBagConstraints gbc_osLastBootTf = new GridBagConstraints();
+		gbc_osLastBootTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osLastBootTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osLastBootTf.gridx = 3;
+		gbc_osLastBootTf.gridy = 4;
+		osPanel.add(osLastBootTf, gbc_osLastBootTf);
+		osLastBootTf.setColumns(10);
+		
+		JLabel osSerialNumber = new JLabel("Serial Number");
+		GridBagConstraints gbc_osSerialNumber = new GridBagConstraints();
+		gbc_osSerialNumber.anchor = GridBagConstraints.EAST;
+		gbc_osSerialNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_osSerialNumber.gridx = 0;
+		gbc_osSerialNumber.gridy = 5;
+		osPanel.add(osSerialNumber, gbc_osSerialNumber);
+		
+		osSerialTf = new JTextField();
+		osSerialTf.setEditable(false);
+		GridBagConstraints gbc_osSerialTf = new GridBagConstraints();
+		gbc_osSerialTf.gridwidth = 3;
+		gbc_osSerialTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osSerialTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osSerialTf.gridx = 1;
+		gbc_osSerialTf.gridy = 5;
+		osPanel.add(osSerialTf, gbc_osSerialTf);
+		osSerialTf.setColumns(10);
+		
+		JLabel osLanguage = new JLabel("Language(s)");
+		GridBagConstraints gbc_osLanguage = new GridBagConstraints();
+		gbc_osLanguage.anchor = GridBagConstraints.EAST;
+		gbc_osLanguage.insets = new Insets(0, 0, 5, 5);
+		gbc_osLanguage.gridx = 4;
+		gbc_osLanguage.gridy = 5;
+		osPanel.add(osLanguage, gbc_osLanguage);
+		
+		osLangTf = new JTextField();
+		osLangTf.setEditable(false);
+		GridBagConstraints gbc_osLangTf = new GridBagConstraints();
+		gbc_osLangTf.insets = new Insets(0, 0, 5, 0);
+		gbc_osLangTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osLangTf.gridx = 5;
+		gbc_osLangTf.gridy = 5;
+		osPanel.add(osLangTf, gbc_osLangTf);
+		osLangTf.setColumns(10);
+		
+		JLabel osPrimary = new JLabel("Primary");
+		GridBagConstraints gbc_osPrimary = new GridBagConstraints();
+		gbc_osPrimary.anchor = GridBagConstraints.EAST;
+		gbc_osPrimary.insets = new Insets(0, 0, 5, 5);
+		gbc_osPrimary.gridx = 0;
+		gbc_osPrimary.gridy = 6;
+		osPanel.add(osPrimary, gbc_osPrimary);
+		
+		osPrimaryTf = new JTextField();
+		osPrimaryTf.setEditable(false);
+		GridBagConstraints gbc_osPrimaryTf = new GridBagConstraints();
+		gbc_osPrimaryTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osPrimaryTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osPrimaryTf.gridx = 1;
+		gbc_osPrimaryTf.gridy = 6;
+		osPanel.add(osPrimaryTf, gbc_osPrimaryTf);
+		osPrimaryTf.setColumns(10);
+		
+		JLabel osDist = new JLabel("Distributed");
+		GridBagConstraints gbc_osDist = new GridBagConstraints();
+		gbc_osDist.anchor = GridBagConstraints.EAST;
+		gbc_osDist.insets = new Insets(0, 0, 5, 5);
+		gbc_osDist.gridx = 2;
+		gbc_osDist.gridy = 6;
+		osPanel.add(osDist, gbc_osDist);
+		
+		osDistributedTf = new JTextField();
+		osDistributedTf.setEditable(false);
+		GridBagConstraints gbc_osDistributedTf = new GridBagConstraints();
+		gbc_osDistributedTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osDistributedTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osDistributedTf.gridx = 3;
+		gbc_osDistributedTf.gridy = 6;
+		osPanel.add(osDistributedTf, gbc_osDistributedTf);
+		osDistributedTf.setColumns(10);
+		
+		JLabel osPort = new JLabel("Portable");
+		GridBagConstraints gbc_osPort = new GridBagConstraints();
+		gbc_osPort.insets = new Insets(0, 0, 5, 5);
+		gbc_osPort.anchor = GridBagConstraints.EAST;
+		gbc_osPort.gridx = 4;
+		gbc_osPort.gridy = 6;
+		osPanel.add(osPort, gbc_osPort);
+		
+		osPortTf = new JTextField();
+		osPortTf.setEditable(false);
+		GridBagConstraints gbc_osPortTf = new GridBagConstraints();
+		gbc_osPortTf.insets = new Insets(0, 0, 5, 0);
+		gbc_osPortTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osPortTf.gridx = 5;
+		gbc_osPortTf.gridy = 6;
+		osPanel.add(osPortTf, gbc_osPortTf);
+		osPortTf.setColumns(10);
+		
+		JLabel osDeviceName = new JLabel("Device Name");
+		GridBagConstraints gbc_osDeviceName = new GridBagConstraints();
+		gbc_osDeviceName.anchor = GridBagConstraints.EAST;
+		gbc_osDeviceName.insets = new Insets(0, 0, 5, 5);
+		gbc_osDeviceName.gridx = 0;
+		gbc_osDeviceName.gridy = 7;
+		osPanel.add(osDeviceName, gbc_osDeviceName);
+		
+		osDeviceNameTf = new JTextField();
+		osDeviceNameTf.setEditable(false);
+		GridBagConstraints gbc_osDeviceNameTf = new GridBagConstraints();
+		gbc_osDeviceNameTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osDeviceNameTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osDeviceNameTf.gridx = 1;
+		gbc_osDeviceNameTf.gridy = 7;
+		osPanel.add(osDeviceNameTf, gbc_osDeviceNameTf);
+		osDeviceNameTf.setColumns(10);
+		
+		JLabel osUserCount = new JLabel("User Count");
+		GridBagConstraints gbc_osUserCount = new GridBagConstraints();
+		gbc_osUserCount.anchor = GridBagConstraints.EAST;
+		gbc_osUserCount.insets = new Insets(0, 0, 5, 5);
+		gbc_osUserCount.gridx = 2;
+		gbc_osUserCount.gridy = 7;
+		osPanel.add(osUserCount, gbc_osUserCount);
+		
+		osUserCountTf = new JTextField();
+		osUserCountTf.setEditable(false);
+		GridBagConstraints gbc_osUserCountTf = new GridBagConstraints();
+		gbc_osUserCountTf.insets = new Insets(0, 0, 5, 5);
+		gbc_osUserCountTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osUserCountTf.gridx = 3;
+		gbc_osUserCountTf.gridy = 7;
+		osPanel.add(osUserCountTf, gbc_osUserCountTf);
+		osUserCountTf.setColumns(10);
+		
+		JLabel osRegUser = new JLabel("Registered User");
+		GridBagConstraints gbc_osRegUser = new GridBagConstraints();
+		gbc_osRegUser.anchor = GridBagConstraints.EAST;
+		gbc_osRegUser.insets = new Insets(0, 0, 5, 5);
+		gbc_osRegUser.gridx = 4;
+		gbc_osRegUser.gridy = 7;
+		osPanel.add(osRegUser, gbc_osRegUser);
+		
+		osRegUserTf = new JTextField();
+		osRegUserTf.setEditable(false);
+		GridBagConstraints gbc_osRegUserTf = new GridBagConstraints();
+		gbc_osRegUserTf.insets = new Insets(0, 0, 5, 0);
+		gbc_osRegUserTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osRegUserTf.gridx = 5;
+		gbc_osRegUserTf.gridy = 7;
+		osPanel.add(osRegUserTf, gbc_osRegUserTf);
+		osRegUserTf.setColumns(10);
+		
+		JLabel osDrive = new JLabel("System Drive");
+		GridBagConstraints gbc_osDrive = new GridBagConstraints();
+		gbc_osDrive.anchor = GridBagConstraints.EAST;
+		gbc_osDrive.insets = new Insets(0, 0, 0, 5);
+		gbc_osDrive.gridx = 0;
+		gbc_osDrive.gridy = 8;
+		osPanel.add(osDrive, gbc_osDrive);
+		
+		osSysDriveTf = new JTextField();
+		osSysDriveTf.setEditable(false);
+		GridBagConstraints gbc_osSysDriveTf = new GridBagConstraints();
+		gbc_osSysDriveTf.insets = new Insets(0, 0, 0, 5);
+		gbc_osSysDriveTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osSysDriveTf.gridx = 1;
+		gbc_osSysDriveTf.gridy = 8;
+		osPanel.add(osSysDriveTf, gbc_osSysDriveTf);
+		osSysDriveTf.setColumns(10);
+		
+		JLabel osWinDir = new JLabel("Windows Directory");
+		GridBagConstraints gbc_osWinDir = new GridBagConstraints();
+		gbc_osWinDir.anchor = GridBagConstraints.EAST;
+		gbc_osWinDir.insets = new Insets(0, 0, 0, 5);
+		gbc_osWinDir.gridx = 2;
+		gbc_osWinDir.gridy = 8;
+		osPanel.add(osWinDir, gbc_osWinDir);
+		
+		osWinDirTf = new JTextField();
+		osWinDirTf.setEditable(false);
+		GridBagConstraints gbc_osWinDirTf = new GridBagConstraints();
+		gbc_osWinDirTf.insets = new Insets(0, 0, 0, 5);
+		gbc_osWinDirTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osWinDirTf.gridx = 3;
+		gbc_osWinDirTf.gridy = 8;
+		osPanel.add(osWinDirTf, gbc_osWinDirTf);
+		osWinDirTf.setColumns(10);
+		
+		JLabel osSysDir = new JLabel("System Directory");
+		GridBagConstraints gbc_osSysDir = new GridBagConstraints();
+		gbc_osSysDir.anchor = GridBagConstraints.EAST;
+		gbc_osSysDir.insets = new Insets(0, 0, 0, 5);
+		gbc_osSysDir.gridx = 4;
+		gbc_osSysDir.gridy = 8;
+		osPanel.add(osSysDir, gbc_osSysDir);
+		
+		osSysDirTf = new JTextField();
+		osSysDirTf.setEditable(false);
+		GridBagConstraints gbc_osSysDirTf = new GridBagConstraints();
+		gbc_osSysDirTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_osSysDirTf.gridx = 5;
+		gbc_osSysDirTf.gridy = 8;
+		osPanel.add(osSysDirTf, gbc_osSysDirTf);
+		osSysDirTf.setColumns(10);
+		
+		JPanel userPanel = new JPanel();
+		userPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "User and Timezone", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_userPanel = new GridBagConstraints();
+		gbc_userPanel.fill = GridBagConstraints.BOTH;
+		gbc_userPanel.gridx = 0;
+		gbc_userPanel.gridy = 1;
+		osAndUserPanel.add(userPanel, gbc_userPanel);
+		GridBagLayout gbl_userPanel = new GridBagLayout();
+		gbl_userPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_userPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_userPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_userPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		userPanel.setLayout(gbl_userPanel);
+		
+		JLabel currentUser = new JLabel("Current User");
+		GridBagConstraints gbc_currentUser = new GridBagConstraints();
+		gbc_currentUser.anchor = GridBagConstraints.EAST;
+		gbc_currentUser.insets = new Insets(0, 0, 5, 5);
+		gbc_currentUser.gridx = 0;
+		gbc_currentUser.gridy = 0;
+		userPanel.add(currentUser, gbc_currentUser);
+		
+		userTf = new JTextField();
+		userTf.setEditable(false);
+		GridBagConstraints gbc_userTf = new GridBagConstraints();
+		gbc_userTf.insets = new Insets(0, 0, 5, 0);
+		gbc_userTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_userTf.gridx = 1;
+		gbc_userTf.gridy = 0;
+		userPanel.add(userTf, gbc_userTf);
+		userTf.setColumns(10);
+		
+		JLabel userHomeDir = new JLabel("User Home");
+		GridBagConstraints gbc_userHomeDir = new GridBagConstraints();
+		gbc_userHomeDir.anchor = GridBagConstraints.EAST;
+		gbc_userHomeDir.insets = new Insets(0, 0, 5, 5);
+		gbc_userHomeDir.gridx = 0;
+		gbc_userHomeDir.gridy = 1;
+		userPanel.add(userHomeDir, gbc_userHomeDir);
+		
+		userHomeTf = new JTextField();
+		userHomeTf.setEditable(false);
+		GridBagConstraints gbc_userHomeTf = new GridBagConstraints();
+		gbc_userHomeTf.insets = new Insets(0, 0, 5, 0);
+		gbc_userHomeTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_userHomeTf.gridx = 1;
+		gbc_userHomeTf.gridy = 1;
+		userPanel.add(userHomeTf, gbc_userHomeTf);
+		userHomeTf.setColumns(10);
+		
+		JSeparator separator = new JSeparator();
+		GridBagConstraints gbc_separator = new GridBagConstraints();
+		gbc_separator.insets = new Insets(0, 0, 5, 0);
+		gbc_separator.gridwidth = 2;
+		gbc_separator.gridx = 0;
+		gbc_separator.gridy = 2;
+		userPanel.add(separator, gbc_separator);
+		
+		JLabel timeZoneName = new JLabel("Timezone Name");
+		GridBagConstraints gbc_timeZoneName = new GridBagConstraints();
+		gbc_timeZoneName.anchor = GridBagConstraints.EAST;
+		gbc_timeZoneName.insets = new Insets(0, 0, 5, 5);
+		gbc_timeZoneName.gridx = 0;
+		gbc_timeZoneName.gridy = 3;
+		userPanel.add(timeZoneName, gbc_timeZoneName);
+		
+		timeZoneNameTf = new JTextField();
+		timeZoneNameTf.setEditable(false);
+		GridBagConstraints gbc_timeZoneNameTf = new GridBagConstraints();
+		gbc_timeZoneNameTf.insets = new Insets(0, 0, 5, 0);
+		gbc_timeZoneNameTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_timeZoneNameTf.gridx = 1;
+		gbc_timeZoneNameTf.gridy = 3;
+		userPanel.add(timeZoneNameTf, gbc_timeZoneNameTf);
+		timeZoneNameTf.setColumns(10);
+		
+		JLabel timeZoneCap = new JLabel("Timezone Caption");
+		GridBagConstraints gbc_timeZoneCap = new GridBagConstraints();
+		gbc_timeZoneCap.anchor = GridBagConstraints.EAST;
+		gbc_timeZoneCap.insets = new Insets(0, 0, 5, 5);
+		gbc_timeZoneCap.gridx = 0;
+		gbc_timeZoneCap.gridy = 4;
+		userPanel.add(timeZoneCap, gbc_timeZoneCap);
+		
+		timeZoneCaptionTf = new JTextField();
+		timeZoneCaptionTf.setEditable(false);
+		GridBagConstraints gbc_timeZoneCaptionTf = new GridBagConstraints();
+		gbc_timeZoneCaptionTf.insets = new Insets(0, 0, 5, 0);
+		gbc_timeZoneCaptionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_timeZoneCaptionTf.gridx = 1;
+		gbc_timeZoneCaptionTf.gridy = 4;
+		userPanel.add(timeZoneCaptionTf, gbc_timeZoneCaptionTf);
+		timeZoneCaptionTf.setColumns(10);
+	}
+
+ 	private void initializeSystemInfo() {
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
 			Future<Boolean> initializeHardwareId = exec.submit(()->HardwareId.initializeHardwareId(hwidTf));
 			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuLogo, cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL1Tf, cpuL1AsTf, cpuL2Tf, cpuL2AsTf, cpuL3Tf, cpuL3AsTf));
@@ -2542,6 +2551,8 @@ public class FerrumX {
 			Future<Boolean> initializeGpu = exec.submit(()->Gpu.initializeGpu(gpuChoiceComboBox, gpuNameTf, gpuPnpTf, gpuHorizontalResTf, gpuVerticalResTf, gpuBitsTf, gpuMinRefTf, gpuMaxRefTf, gpuCurrentRefTf, gpuDACTf, gpuVramTf, gpuDriverVersionTf, gpuDriverDateTf, gpuVideoProcessorTf));
 			Future<Boolean> initializeNetwork = exec.submit(()->Network.initializeNetwork(netConnectionChoiceBox, netNameTf, netPnpTf, netMacTf, netConnectIdTf, netIpStatusTf, netIPAddressTf, netIPSubnetTf, netGatewayTf, netDHCPStatusTf, netDHCPServerTf, netDNSHostTf, netDNSServerTf));
 			Future<Boolean> initializeStorage = exec.submit(()->Storage.initializeStorage(diskIndexChoiceBox, diskPartTa, diskCaptionTf, diskModelTf, diskSizeTf, firmwareRevisionTf, diskSerialNumberTf, diskPartitionsTf, diskStatusTf, diskInterfaceTf));
+			Future<Boolean> initializeOs = exec.submit(()->OperatingSystem.getOsProperties(currentOsChoiceBox, osCaptionTf, osVersionTf, osManufacturerTf, osArchitectureTf, osBuildNumberTf, osInstallDateTf, osLastBootTf, osSerialTf, osPrimaryTf, osDistributedTf, osPortTf, osDeviceNameTf, osUserCountTf, osRegUserTf, osLangTf, osSysDriveTf, osWinDirTf, osSysDirTf));
+			Future<Boolean> initializeUserAndTime = exec.submit(()->UserAndTime.initializeUserAndTime(userTf, userHomeTf, timeZoneNameTf, timeZoneCaptionTf));
 			
 			initializeHardwareId.get();
 			initializeCpu.get();
@@ -2550,6 +2561,8 @@ public class FerrumX {
 			initializeGpu.get();
 			initializeNetwork.get();
 			initializeStorage.get();
+			initializeOs.get();
+			initializeUserAndTime.get();
 		}
 		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
