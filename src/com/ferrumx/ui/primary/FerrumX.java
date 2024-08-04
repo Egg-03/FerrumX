@@ -254,7 +254,7 @@ public class FerrumX {
 		hwidCpuPanel.setLayout(gbl_hwidCpuPanel);
 		
 		JPanel hwidPanel = new JPanel();
-		hwidPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "HardwareID", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		hwidPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "HardwareID", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbchwidPanel = new GridBagConstraints();
 		gbchwidPanel.insets = new Insets(0, 0, 5, 0);
 		gbchwidPanel.fill = GridBagConstraints.BOTH;
@@ -2121,7 +2121,7 @@ public class FerrumX {
 		osCaptionTf.setColumns(10);
 		
 		JPanel osCoverImagePanel = new JPanel();
-		osCoverImagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "OS Cover", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		osCoverImagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "OS Cover", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_osCoverImagePanel = new GridBagConstraints();
 		gbc_osCoverImagePanel.gridwidth = 2;
 		gbc_osCoverImagePanel.insets = new Insets(0, 0, 5, 0);
