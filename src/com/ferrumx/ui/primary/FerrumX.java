@@ -1,7 +1,10 @@
 package com.ferrumx.ui.primary;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -13,11 +16,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
@@ -25,6 +32,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -33,8 +41,7 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
 
 import com.ferrumx.ui.secondary.ExceptionUI;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import javax.swing.JMenuItem;
 
 
 public class FerrumX {
@@ -193,18 +200,27 @@ public class FerrumX {
 		initializeComponents();
 		initializeSystemInfo();
 	}
-
+	
+	//changes theme on the fly with application open
+	private void changeTheme(String lnfName, JFrame mainframe) {
+		try {
+			UIManager.setLookAndFeel(lnfName);
+			SwingUtilities.updateComponentTreeUI(mainframe);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
+			new ExceptionUI("Theme Change Error", e.getMessage()).setVisible(true);
+		}
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v04082024 Alpha]");
+		mainFrame.setTitle("FerrumX [Build v05082024 Alpha]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 555);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
-		mainFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		mainFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -239,6 +255,50 @@ public class FerrumX {
 		//Initialize the os and the user panels
 		JPanel osAndUserPanel = new JPanel();
 		initializeOsAndUserPanel(tabbedPane, osAndUserPanel);
+		
+		//Menus
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBorderPainted(false);
+		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
+		
+		//theme
+		JMenu themeMenu = new JMenu("Theme");
+		menuBar.add(themeMenu);
+		
+		JRadioButtonMenuItem darkThemeChoice = new JRadioButtonMenuItem("Dark Theme");
+		darkThemeChoice.addActionListener(e-> {
+			if(darkThemeChoice.isSelected())
+				changeTheme("com.formdev.flatlaf.themes.FlatMacDarkLaf", mainFrame);
+				
+		});
+		darkThemeChoice.setSelected(true);
+		themeMenu.add(darkThemeChoice);
+		
+		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Light Theme");
+		lightThemeChoice.addActionListener(e-> {
+			if(lightThemeChoice.isSelected())
+				changeTheme("com.formdev.flatlaf.FlatLightLaf", mainFrame);
+		});
+		themeMenu.add(lightThemeChoice);
+		
+		JRadioButtonMenuItem greyThemeChoice = new JRadioButtonMenuItem("Grey Theme");
+		greyThemeChoice.addActionListener(e-> {
+			if(greyThemeChoice.isSelected())
+				changeTheme("com.formdev.flatlaf.FlatDarculaLaf", mainFrame);
+		});
+		themeMenu.add(greyThemeChoice);
+		
+		ButtonGroup themeButtonGroup = new ButtonGroup();
+		themeButtonGroup.add(lightThemeChoice);
+		themeButtonGroup.add(greyThemeChoice);
+		themeButtonGroup.add(darkThemeChoice);
+		
+		//about
+		JMenu helpMenu = new JMenu("Help");
+		menuBar.add(helpMenu);
+		
+		JMenuItem about = new JMenuItem("About");
+		helpMenu.add(about);
 		
 	}
 	
