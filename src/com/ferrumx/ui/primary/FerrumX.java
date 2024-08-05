@@ -300,6 +300,9 @@ public class FerrumX {
 		JMenuItem about = new JMenuItem("About");
 		helpMenu.add(about);
 		
+		JMenuItem updateCheck = new JMenuItem("Check For Updates");
+		helpMenu.add(updateCheck);
+		
 	}
 	
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
