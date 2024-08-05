@@ -31,6 +31,7 @@ public class AboutUI extends JFrame {
 	private static String appLink = "https://github.com/Egg-03/FerrumX";
 	private static String devLink = "https://github.com/Egg-03";
 	private static String iconLink = "https://github.com/Soumil-Biswas";
+	private static String themeLink = "https://github.com/JFormDesigner/FlatLaf";
 	
 	public AboutUI() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AboutUI.class.getResource("/resources/icon_main.png")));
@@ -122,9 +123,9 @@ public class AboutUI extends JFrame {
 		mainPanel.add(contributionPanel, gbc_contributionPanel);
 		GridBagLayout gbl_contributionPanel = new GridBagLayout();
 		gbl_contributionPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_contributionPanel.rowHeights = new int[]{0, 0, 0};
+		gbl_contributionPanel.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_contributionPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contributionPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_contributionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contributionPanel.setLayout(gbl_contributionPanel);
 		
 		JLabel developer = new JLabel("Developed By");
@@ -148,7 +149,7 @@ public class AboutUI extends JFrame {
                 }
 			}
 		});
-		developerLink.setText("https://github.com/Egg-03");
+		developerLink.setText(devLink);
 		developerLink.setEditable(false);
 		GridBagConstraints gbc_developerLink = new GridBagConstraints();
 		gbc_developerLink.insets = new Insets(0, 0, 5, 0);
@@ -161,7 +162,7 @@ public class AboutUI extends JFrame {
 		JLabel iconMaker = new JLabel("Logo and Icons By");
 		GridBagConstraints gbc_iconMaker = new GridBagConstraints();
 		gbc_iconMaker.anchor = GridBagConstraints.EAST;
-		gbc_iconMaker.insets = new Insets(0, 0, 0, 5);
+		gbc_iconMaker.insets = new Insets(0, 0, 5, 5);
 		gbc_iconMaker.gridx = 0;
 		gbc_iconMaker.gridy = 1;
 		contributionPanel.add(iconMaker, gbc_iconMaker);
@@ -179,14 +180,45 @@ public class AboutUI extends JFrame {
                 }
 			}
 		});
-		iconMakerLink.setText("https://github.com/Soumil-Biswas");
+		iconMakerLink.setText(iconLink);
 		iconMakerLink.setEditable(false);
 		GridBagConstraints gbc_iconMakerLink = new GridBagConstraints();
+		gbc_iconMakerLink.insets = new Insets(0, 0, 5, 0);
 		gbc_iconMakerLink.fill = GridBagConstraints.HORIZONTAL;
 		gbc_iconMakerLink.gridx = 1;
 		gbc_iconMakerLink.gridy = 1;
 		contributionPanel.add(iconMakerLink, gbc_iconMakerLink);
 		iconMakerLink.setColumns(10);
+		
+		JLabel themeSupport = new JLabel("Theme Support");
+		GridBagConstraints gbc_themeSupport = new GridBagConstraints();
+		gbc_themeSupport.anchor = GridBagConstraints.EAST;
+		gbc_themeSupport.insets = new Insets(0, 0, 0, 5);
+		gbc_themeSupport.gridx = 0;
+		gbc_themeSupport.gridy = 2;
+		contributionPanel.add(themeSupport, gbc_themeSupport);
+		
+		JTextField themeSupportLink = new JTextField();
+		themeSupportLink.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+                    Desktop.getDesktop().browse(new URI(themeLink));
+                } catch (URISyntaxException | IOException ex) {
+                	new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+                }
+			}
+		});
+		themeSupportLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		themeSupportLink.setForeground(Color.MAGENTA);
+		themeSupportLink.setText(themeLink);
+		themeSupportLink.setEditable(false);
+		GridBagConstraints gbc_themeSupportLink = new GridBagConstraints();
+		gbc_themeSupportLink.fill = GridBagConstraints.HORIZONTAL;
+		gbc_themeSupportLink.gridx = 1;
+		gbc_themeSupportLink.gridy = 2;
+		contributionPanel.add(themeSupportLink, gbc_themeSupportLink);
+		themeSupportLink.setColumns(10);
 	}
 	
 	public static void main(String[] args) {

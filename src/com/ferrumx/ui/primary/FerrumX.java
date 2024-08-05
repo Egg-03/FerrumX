@@ -268,9 +268,6 @@ public class FerrumX {
 		JMenuBar menuBar = new JMenuBar();
 		initializeMenu(mainFrame, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
-		
-		
-		
 	}
 	
 	private void initializeMenu(JFrame mainFrame, JMenuBar menuBar) {
@@ -278,7 +275,7 @@ public class FerrumX {
 		JMenu themeMenu = new JMenu("Theme");
 		menuBar.add(themeMenu);
 				
-		JRadioButtonMenuItem darkThemeChoice = new JRadioButtonMenuItem("Dark Theme");
+		JRadioButtonMenuItem darkThemeChoice = new JRadioButtonMenuItem("Mac Dark");
 		darkThemeChoice.addActionListener(e-> {
 			if(darkThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.themes.FlatMacDarkLaf", mainFrame);		
@@ -286,24 +283,40 @@ public class FerrumX {
 		darkThemeChoice.setSelected(true);
 		themeMenu.add(darkThemeChoice);
 				
-		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Light Theme");
+		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Cyan Light");
 		lightThemeChoice.addActionListener(e-> {
 			if(lightThemeChoice.isSelected())
-				changeTheme("com.formdev.flatlaf.FlatLightLaf", mainFrame);
+				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme", mainFrame);
 		});
 		themeMenu.add(lightThemeChoice);
 				
-		JRadioButtonMenuItem greyThemeChoice = new JRadioButtonMenuItem("Grey Theme");
+		JRadioButtonMenuItem greyThemeChoice = new JRadioButtonMenuItem("Darcula Grey");
 		greyThemeChoice.addActionListener(e-> {
 			if(greyThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.FlatDarculaLaf", mainFrame);
 		});
 		themeMenu.add(greyThemeChoice);
+		
+		JRadioButtonMenuItem monokaiproThemeChoice = new JRadioButtonMenuItem("Monokai Pro");
+		monokaiproThemeChoice.addActionListener(e-> {
+			if(monokaiproThemeChoice.isSelected())
+				changeTheme("com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme", mainFrame);
+		});
+		themeMenu.add(monokaiproThemeChoice);
+		
+		JRadioButtonMenuItem purpleThemeChoice = new JRadioButtonMenuItem("Dark Purple");
+		purpleThemeChoice.addActionListener(e-> {
+			if(purpleThemeChoice.isSelected())
+				changeTheme("com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme", mainFrame);
+		});
+		themeMenu.add(purpleThemeChoice);
 				
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(lightThemeChoice);
 		themeButtonGroup.add(greyThemeChoice);
 		themeButtonGroup.add(darkThemeChoice);
+		themeButtonGroup.add(monokaiproThemeChoice);
+		themeButtonGroup.add(purpleThemeChoice);
 				
 		//about
 		JMenu helpMenu = new JMenu("Help");
