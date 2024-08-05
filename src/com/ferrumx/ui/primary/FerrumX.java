@@ -2,6 +2,7 @@ package com.ferrumx.ui.primary;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -10,6 +11,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
@@ -40,8 +45,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
 
+import com.ferrumx.ui.secondary.AboutUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
-import javax.swing.JMenuItem;
 
 
 public class FerrumX {
@@ -172,6 +177,9 @@ public class FerrumX {
 	private JTextField userHomeTf;
 	private JTextField timeZoneNameTf;
 	private JTextField timeZoneCaptionTf;
+	
+	//Links
+	private String appLatestReleasePage = "https://github.com/Egg-03/FerrumX/releases/latest";
 
 	/**
 	 * Launch the application.
@@ -256,55 +264,66 @@ public class FerrumX {
 		JPanel osAndUserPanel = new JPanel();
 		initializeOsAndUserPanel(tabbedPane, osAndUserPanel);
 		
-		//Menus
+		//Initialize the Menu Bar
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBorderPainted(false);
+		initializeMenu(mainFrame, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
 		
+		
+		
+	}
+	
+	private void initializeMenu(JFrame mainFrame, JMenuBar menuBar) {
 		//theme
 		JMenu themeMenu = new JMenu("Theme");
 		menuBar.add(themeMenu);
-		
+				
 		JRadioButtonMenuItem darkThemeChoice = new JRadioButtonMenuItem("Dark Theme");
 		darkThemeChoice.addActionListener(e-> {
 			if(darkThemeChoice.isSelected())
-				changeTheme("com.formdev.flatlaf.themes.FlatMacDarkLaf", mainFrame);
-				
+				changeTheme("com.formdev.flatlaf.themes.FlatMacDarkLaf", mainFrame);		
 		});
 		darkThemeChoice.setSelected(true);
 		themeMenu.add(darkThemeChoice);
-		
+				
 		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Light Theme");
 		lightThemeChoice.addActionListener(e-> {
 			if(lightThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.FlatLightLaf", mainFrame);
 		});
 		themeMenu.add(lightThemeChoice);
-		
+				
 		JRadioButtonMenuItem greyThemeChoice = new JRadioButtonMenuItem("Grey Theme");
 		greyThemeChoice.addActionListener(e-> {
 			if(greyThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.FlatDarculaLaf", mainFrame);
 		});
 		themeMenu.add(greyThemeChoice);
-		
+				
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(lightThemeChoice);
 		themeButtonGroup.add(greyThemeChoice);
 		themeButtonGroup.add(darkThemeChoice);
-		
+				
 		//about
 		JMenu helpMenu = new JMenu("Help");
 		menuBar.add(helpMenu);
-		
+				
 		JMenuItem about = new JMenuItem("About");
+		about.addActionListener(e->new AboutUI().setVisible(true));
 		helpMenu.add(about);
-		
-		JMenuItem updateCheck = new JMenuItem("Check For Updates");
+				
+		JMenuItem updateCheck = new JMenuItem("Check For New Releases");
+		updateCheck.addActionListener(e-> {
+			try {
+                Desktop.getDesktop().browse(new URI(appLatestReleasePage));
+            } catch (URISyntaxException | IOException ex) {
+            	new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+            }
+		});
 		helpMenu.add(updateCheck);
-		
 	}
-	
+
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
 		
 		tabbedPane.addTab("CPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/CPU_16x16.png")), hwidCpuPanel, "Displays CPU Information");

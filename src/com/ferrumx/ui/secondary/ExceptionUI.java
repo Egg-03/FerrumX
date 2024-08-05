@@ -10,14 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-
-import com.ferrumx.system.logger.ErrorLog;
 
 public class ExceptionUI extends JFrame{
 	private static final long serialVersionUID = 5951705399700376822L;
@@ -25,7 +20,6 @@ public class ExceptionUI extends JFrame{
 
 	public ExceptionUI(String errorName, String errorMessage) {
 		super("Crash Report Engine");
-		setTheme();
 		initialize(errorName, errorMessage);
 	}
 	
@@ -37,7 +31,7 @@ public class ExceptionUI extends JFrame{
 		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), errorName, TitledBorder.LEADING, TitledBorder.TOP, null, Color.WHITE));
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), errorName, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(10, 11, 454, 130);
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -65,14 +59,5 @@ public class ExceptionUI extends JFrame{
 		});
 		copyButton.setBounds(10, 98, 97, 22);
 		panel.add(copyButton);
-	}
-	
-	private void setTheme() {
-		try {
-			UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
-			SwingUtilities.updateComponentTreeUI(this);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-			new ErrorLog().log(" ExceptionUI Theme Load Error: "+e.getMessage());
-		}
 	}
 }
