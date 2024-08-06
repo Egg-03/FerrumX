@@ -3,7 +3,6 @@ package com.ferrumx.ui.primary;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -19,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -47,6 +47,7 @@ import javax.swing.border.TitledBorder;
 
 import com.ferrumx.ui.secondary.AboutUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
+import com.ferrumx.ui.secondary.StatusUI;
 
 
 public class FerrumX {
@@ -191,14 +192,12 @@ public class FerrumX {
 				new ExceptionUI("Theme Error", e.getMessage()).setVisible(true);
 			}
 		
-		EventQueue.invokeLater(()->{
 			try {
 				FerrumX window = new FerrumX();
 				window.mainFrame.setVisible(true);
 			} catch (Exception e) {
 				new ExceptionUI("FerrumX Application Window Launch Error", e.getMessage()).setVisible(true);
 			}
-		});
 	}
 
 	/**
@@ -206,7 +205,7 @@ public class FerrumX {
 	 */
 	public FerrumX() {
 		initializeComponents();
-		initializeSystemInfo();
+		initializeSystemInfo(new StatusUI("Booting Up", "Please wait till FerrumX gathers information about your system"));
 	}
 	
 	//changes theme on the fly with application open
@@ -223,7 +222,7 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v05082024 Alpha]");
+		mainFrame.setTitle("FerrumX [Build v06082024 Beta]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 555);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -2637,7 +2636,7 @@ public class FerrumX {
 		timeZoneCaptionTf.setColumns(10);
 	}
 
- 	private void initializeSystemInfo() {
+ 	private void initializeSystemInfo(StatusUI startScreen) {
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
 			Future<Boolean> initializeHardwareId = exec.submit(()->HardwareId.initializeHardwareId(hwidTf));
 			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuLogo, cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL1Tf, cpuL1AsTf, cpuL2Tf, cpuL2AsTf, cpuL3Tf, cpuL3AsTf));
@@ -2649,19 +2648,22 @@ public class FerrumX {
 			Future<Boolean> initializeOs = exec.submit(()->OperatingSystem.getOsProperties(currentOsChoiceBox, osCaptionTf, osVersionTf, osManufacturerTf, osArchitectureTf, osBuildNumberTf, osInstallDateTf, osLastBootTf, osSerialTf, osPrimaryTf, osDistributedTf, osPortTf, osDeviceNameTf, osUserCountTf, osRegUserTf, osLangTf, osSysDriveTf, osWinDirTf, osSysDirTf));
 			Future<Boolean> initializeUserAndTime = exec.submit(()->UserAndTime.initializeUserAndTime(userTf, userHomeTf, timeZoneNameTf, timeZoneCaptionTf));
 			
-			initializeHardwareId.get();
-			initializeCpu.get();
-			initializeMemory.get();
-			initializeMainboard.get();
-			initializeGpu.get();
-			initializeNetwork.get();
-			initializeStorage.get();
-			initializeOs.get();
-			initializeUserAndTime.get();
+			startScreen.setHardwareLabel(initializeHardwareId.get());
+			startScreen.setCpuLabel(initializeCpu.get());
+			startScreen.setMemoryLabel(initializeMemory.get());
+			startScreen.setMainboardLabel(initializeMainboard.get());
+			startScreen.setGpuLabel(initializeGpu.get());
+			startScreen.setNetworkLabel(initializeNetwork.get());
+			startScreen.setStorageLabel(initializeStorage.get());
+			startScreen.setOsLabel(initializeOs.get() && initializeUserAndTime.get());
+			
+			TimeUnit.MILLISECONDS.sleep(250);
+	        startScreen.dispose();
 		}
 		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
 			Thread.currentThread().interrupt();
+			e.printStackTrace();
 		}
 	}
 }

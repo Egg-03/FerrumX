@@ -107,7 +107,7 @@ public class AboutUI extends JFrame {
 		mainPanel.add(guiVersionPanel, gbc_guiVersionPanel);
 		guiVersionPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JLabel guiVersion = new JLabel("v05082024 Alpha");
+		JLabel guiVersion = new JLabel("v06082024 Beta");
 		guiVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		guiVersionPanel.add(guiVersion);
 		guiVersion.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
@@ -137,7 +137,7 @@ public class AboutUI extends JFrame {
 		contributionPanel.add(developer, gbc_developer);
 		
 		JTextField developerLink = new JTextField();
-		developerLink.setForeground(Color.MAGENTA);
+		developerLink.setForeground(new Color(0, 191, 255));
 		developerLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		developerLink.addMouseListener(new MouseAdapter() {
 			@Override
@@ -168,7 +168,7 @@ public class AboutUI extends JFrame {
 		contributionPanel.add(iconMaker, gbc_iconMaker);
 		
 		JTextField iconMakerLink = new JTextField();
-		iconMakerLink.setForeground(Color.MAGENTA);
+		iconMakerLink.setForeground(new Color(0, 191, 255));
 		iconMakerLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		iconMakerLink.addMouseListener(new MouseAdapter() {
 			@Override
@@ -210,7 +210,7 @@ public class AboutUI extends JFrame {
 			}
 		});
 		themeSupportLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		themeSupportLink.setForeground(Color.MAGENTA);
+		themeSupportLink.setForeground(new Color(0, 191, 255));
 		themeSupportLink.setText(themeLink);
 		themeSupportLink.setEditable(false);
 		GridBagConstraints gbc_themeSupportLink = new GridBagConstraints();
@@ -220,10 +220,4 @@ public class AboutUI extends JFrame {
 		contributionPanel.add(themeSupportLink, gbc_themeSupportLink);
 		themeSupportLink.setColumns(10);
 	}
-	
-	public static void main(String[] args) {
-		AboutUI a = new AboutUI();
-		a.setVisible(true);
-	}
-
 }
