@@ -74,7 +74,6 @@ public class FerrumX {
 	private JTextField cpuSteppingTf;
 	private JTextField cpuVirtStatusTf;
 	private JTextField cpuIdTf;
-	private JTextField cpuL1AsTf;
 	private JTextField cpuL2Tf;
 	private JTextField cpuL3Tf;
 	private JLabel cpuLogo;
