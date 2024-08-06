@@ -305,6 +305,13 @@ public class FerrumX {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme", mainFrame);
 		});
 		themeMenu.add(purpleThemeChoice);
+		
+		JRadioButtonMenuItem carbonThemeChoice = new JRadioButtonMenuItem("Carbon");
+		carbonThemeChoice.addActionListener(e-> {
+			if(carbonThemeChoice.isSelected())
+				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme", mainFrame);
+		});
+		themeMenu.add(carbonThemeChoice);
 				
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(lightThemeChoice);
@@ -312,6 +319,7 @@ public class FerrumX {
 		themeButtonGroup.add(darkThemeChoice);
 		themeButtonGroup.add(monokaiproThemeChoice);
 		themeButtonGroup.add(purpleThemeChoice);
+		themeButtonGroup.add(carbonThemeChoice);
 				
 		//about
 		JMenu helpMenu = new JMenu("Help");
