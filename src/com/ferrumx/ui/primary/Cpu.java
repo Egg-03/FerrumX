@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
@@ -20,7 +21,7 @@ final class Cpu {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	protected static boolean initializeCpu(JLabel cpuLogo, JComboBox<String> cpuChoice, JTextField... cpuFields) {
+	protected static boolean initializeCpu(JLabel cpuLogo, JTextArea cacheTa, JComboBox<String> cpuChoice, JTextField... cpuFields) {
 		try {
 			List<String> cpuList = Win32_Processor.getProcessorList();
 			for(String cpu: cpuList) {
@@ -47,25 +48,14 @@ final class Cpu {
 			cpuFields[13].setText(cpuProperties.get("Stepping"));
 			cpuFields[14].setText(cpuProperties.get("VirtualizationFirmwareEnabled"));
 			cpuFields[15].setText(cpuProperties.get("ProcessorID"));
+			cpuFields[16].setText(cpuProperties.get("L2CacheSize")+" KB");
+			cpuFields[17].setText(cpuProperties.get("L3CacheSize")+" KB");
 			
 			cpuFields[8].setText(String.valueOf((Float.valueOf(cpuProperties.get("MaxClockSpeed"))/Float.valueOf(cpuProperties.get("ExtClock")))));
 			List<String> cpuCacheList = Win32_AssociatedProcessorMemory.getCacheID(currentCpu);
 			for(String currentCacheId: cpuCacheList) {
 				Map<String, String> cpuCacheProperties = Win32_CacheMemory.getCPUCache(currentCacheId);
-				if(cpuCacheProperties.get("Purpose").equals("L1 - Cache")) {
-					cpuFields[16].setText(cpuCacheProperties.get("InstalledSize")+" KB");
-					cpuFields[17].setText(cpuCacheProperties.get("Associativity"));
-				}
-				
-				if(cpuCacheProperties.get("Purpose").equals("L2 - Cache")) {
-					cpuFields[18].setText(cpuCacheProperties.get("InstalledSize")+" KB");
-					cpuFields[19].setText(cpuCacheProperties.get("Associativity"));
-				}
-				
-				if(cpuCacheProperties.get("Purpose").equals("L3 - Cache")) {
-					cpuFields[20].setText(cpuCacheProperties.get("InstalledSize")+" KB");
-					cpuFields[21].setText(cpuCacheProperties.get("Associativity"));
-				}
+				cacheTa.append(cpuCacheProperties.get("Purpose")+": "+cpuCacheProperties.get("InstalledSize")+" KB - "+cpuCacheProperties.get("Associativity")+" way\n");
 			}
 			
 			//set cpu logo img based on manufacturer
@@ -82,11 +72,11 @@ final class Cpu {
 			return true;
 		}
 		
-		addCpuChoiceActionEvent(cpuChoice, cpuFields);
+		addCpuChoiceActionEvent(cpuChoice, cacheTa, cpuFields);
 		return true;
 	}
 	
-	private static void addCpuChoiceActionEvent(JComboBox<String> cpuChoice, JTextField...cpuFields) {
+	private static void addCpuChoiceActionEvent(JComboBox<String> cpuChoice, JTextArea cacheTa, JTextField...cpuFields) {
 		cpuChoice.addActionListener(e->{
 			try {
 					String currentCpu = cpuChoice.getItemAt(cpuChoice.getSelectedIndex());
@@ -106,25 +96,17 @@ final class Cpu {
 					cpuFields[13].setText(cpuProperties.get("Stepping"));
 					cpuFields[14].setText(cpuProperties.get("VirtualizationFirmwareEnabled"));
 					cpuFields[15].setText(cpuProperties.get("ProcessorID"));
+					cpuFields[16].setText(cpuProperties.get("L2CacheSize")+" KB");
+					cpuFields[17].setText(cpuProperties.get("L3CacheSize")+" KB");
 				
 					cpuFields[8].setText(String.valueOf((Float.valueOf(cpuProperties.get("MaxClockSpeed"))/Float.valueOf(cpuProperties.get("ExtClock")))));
+					
+					cacheTa.selectAll();
+					cacheTa.replaceSelection("");
 					List<String> cpuCacheList = Win32_AssociatedProcessorMemory.getCacheID(currentCpu);
 					for(String currentCacheId: cpuCacheList) {
 						Map<String, String> cpuCacheProperties = Win32_CacheMemory.getCPUCache(currentCacheId);
-						if(cpuCacheProperties.get("Purpose").equals("L1 - Cache")) {
-							cpuFields[16].setText(cpuCacheProperties.get("InstalledSize")+" KB");
-							cpuFields[17].setText(cpuCacheProperties.get("Associativity"));
-						}
-					
-						if(cpuCacheProperties.get("Purpose").equals("L2 - Cache")) {
-							cpuFields[18].setText(cpuCacheProperties.get("InstalledSize")+" KB");
-							cpuFields[19].setText(cpuCacheProperties.get("Associativity"));
-						}
-					
-						if(cpuCacheProperties.get("Purpose").equals("L3 - Cache")) {
-							cpuFields[20].setText(cpuCacheProperties.get("InstalledSize")+" KB");
-							cpuFields[21].setText(cpuCacheProperties.get("Associativity"));
-						}
+						cacheTa.append(cpuCacheProperties.get("Purpose")+": "+cpuCacheProperties.get("InstalledSize")+" KB - "+cpuCacheProperties.get("Associativity")+" way\n");
 					}
 				} catch (IndexOutOfBoundsException | IOException e2) {
 				new ExceptionUI("CPU Error", e2.getMessage()).setVisible(true);

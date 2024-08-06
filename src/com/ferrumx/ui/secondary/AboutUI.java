@@ -34,6 +34,7 @@ public class AboutUI extends JFrame {
 	private static String themeLink = "https://github.com/JFormDesigner/FlatLaf";
 	
 	public AboutUI() {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AboutUI.class.getResource("/resources/icon_main.png")));
 		setBounds(100,100,540,230);
 		setTitle("About FerrumX");
