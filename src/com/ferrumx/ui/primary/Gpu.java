@@ -18,6 +18,12 @@ final class Gpu {
 	protected static boolean initializeGpu(JComboBox<String> gpuChoice, JTextField...gpuFields) {
 		try {
 			List<String> gpuList = Win32_VideoController.getGPUID();
+			
+			if(gpuList.isEmpty()) {
+				new ExceptionUI("GPU Initialization Error", "FATAL ERROR: No GPU devices found").setVisible(true);
+				return false; 
+			}
+			
 			for(String gpu: gpuList)
 				gpuChoice.addItem(gpu);
 			

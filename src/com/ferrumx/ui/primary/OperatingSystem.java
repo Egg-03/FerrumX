@@ -19,6 +19,11 @@ final class OperatingSystem {
 	protected static boolean getOsProperties(JComboBox<String> osChoice, JTextField...osFields) {
 		try {
 			List<String> osList = Win32_OperatingSystem.getOSList();
+			
+			if(osList.isEmpty()) {
+				new ExceptionUI("OS Initialization Error", "FATAL ERROR: No valid Operating System found").setVisible(true);
+				return false;
+			}
 			for(String os: osList)
 				osChoice.addItem(os);
 			

@@ -21,6 +21,12 @@ final class Network {
 	protected static boolean initializeNetwork(JComboBox<String> networkChoice, JTextField...networkFields) {
 		try {
 			List<String> networkAdapters = Win32_NetworkAdapter.getDeviceIDList();
+			
+			if(networkAdapters.isEmpty()) {
+				new ExceptionUI("Network Initialization Error", "FATAL ERROR: No Network Adapter detected.\nPlease make sure you are connected to the internet").setVisible(true);
+				return false;
+			}
+			
 			for(String adapter: networkAdapters)
 				networkChoice.addItem(adapter);
 			

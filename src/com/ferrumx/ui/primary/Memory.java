@@ -19,6 +19,12 @@ final class Memory {
 	protected static boolean initializeMemory(JComboBox<String> memoryChoice, JTextField... memoryFields) {
 		try {
 			List<String> memorySlots = Win32_PhysicalMemory.getTag();
+			
+			if(memorySlots.isEmpty()) {
+				new ExceptionUI("Memory Initialization Error", "FATAL ERROR: No Memory hardware found").setVisible(true);
+				return false;
+			}
+			
 			for(String currentSlot: memorySlots)
 				memoryChoice.addItem(currentSlot);
 			

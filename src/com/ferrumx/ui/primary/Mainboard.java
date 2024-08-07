@@ -19,6 +19,16 @@ final class Mainboard {
 			Map<String, String> bios = Win32_BIOS.getPrimaryBIOS();
 			Map<String, String> mainboard = Win32_Baseboard.getMotherboard();
 			
+			if(mainboard.isEmpty()) {
+				new ExceptionUI("Mainboard Initialization Error", "FATAL ERROR: No Mainboard device found").setVisible(true);
+				return false;
+			}
+			
+			if(bios.isEmpty()) {
+				new ExceptionUI("BIOS Error", "FATAL ERROR: No Primary BIOS found").setVisible(true);
+				return false;
+			}
+			
 			//mainboard property fill
 			mainboardFields[0].setText(mainboard.get("Manufacturer"));
 			mainboardFields[1].setText(mainboard.get("Model"));

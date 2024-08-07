@@ -24,6 +24,12 @@ final class Cpu {
 	protected static boolean initializeCpu(JLabel cpuLogo, JTextArea cacheTa, JComboBox<String> cpuChoice, JTextField... cpuFields) {
 		try {
 			List<String> cpuList = Win32_Processor.getProcessorList();
+			
+			if(cpuList.isEmpty()) {
+				new ExceptionUI("CPU Initialization Error", "FATAL ERROR: No CPU devices found").setVisible(true);
+				return false;
+			}
+			
 			for(String cpu: cpuList) {
 				cpuChoice.addItem(cpu);
 			}

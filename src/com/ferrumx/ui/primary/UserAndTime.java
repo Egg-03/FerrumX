@@ -20,6 +20,10 @@ final class UserAndTime {
 		
 		try {
 			Map<String, String> timeZone = Win32_TimeZone.getOSTimeZone();
+			if(timeZone.isEmpty()) {
+				new ExceptionUI("Timezone Initialization Error", "FATAL ERROR: No valid Time zone found").setVisible(true);
+				return false;
+			}
 			userTimeFields[2].setText(timeZone.get("StandardName"));
 			userTimeFields[3].setText(timeZone.get("Caption"));
 		} catch (IndexOutOfBoundsException | IOException e) {

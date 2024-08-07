@@ -22,6 +22,10 @@ final class Storage {
 	protected static boolean initializeStorage(JComboBox<String> diskChoice, JTextArea partitionDetails, JTextField...storageFields) {
 		try {
 			List<String> diskId = Win32_DiskDrive.getDriveID();
+			if(diskId.isEmpty()) {
+				new ExceptionUI("Storage Initialization Error", "FATAL ERROR: No valid storage devices found").setVisible(true);
+				return false;
+			}
 			for(String id: diskId)
 				diskChoice.addItem(id);
 			
