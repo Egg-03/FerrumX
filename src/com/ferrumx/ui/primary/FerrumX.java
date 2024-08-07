@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -360,29 +361,34 @@ public class FerrumX {
 		gbchwidPanel.gridy = 0;
 		hwidCpuPanel.add(hwidPanel, gbchwidPanel);
 		GridBagLayout gbl_hwidPanel = new GridBagLayout();
-		gbl_hwidPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_hwidPanel.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_hwidPanel.rowHeights = new int[]{0, 0};
-		gbl_hwidPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_hwidPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_hwidPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		hwidPanel.setLayout(gbl_hwidPanel);
-		
-		JLabel hwidlabel = new JLabel("HWID");
-		GridBagConstraints gbc_hwidlabel = new GridBagConstraints();
-		gbc_hwidlabel.insets = new Insets(0, 0, 0, 5);
-		gbc_hwidlabel.anchor = GridBagConstraints.EAST;
-		gbc_hwidlabel.gridx = 0;
-		gbc_hwidlabel.gridy = 0;
-		hwidPanel.add(hwidlabel, gbc_hwidlabel);
 		
 		hwidTf = new JTextField();
 		hwidTf.setForeground(new Color(13, 186, 223));
 		hwidTf.setEditable(false);
 		GridBagConstraints gbc_hwidTf = new GridBagConstraints();
+		gbc_hwidTf.gridwidth = 2;
+		gbc_hwidTf.insets = new Insets(0, 0, 0, 5);
 		gbc_hwidTf.fill = GridBagConstraints.HORIZONTAL;
-		gbc_hwidTf.gridx = 1;
+		gbc_hwidTf.gridx = 0;
 		gbc_hwidTf.gridy = 0;
 		hwidPanel.add(hwidTf, gbc_hwidTf);
 		hwidTf.setColumns(10);
+		
+		JButton copyHwidButton = new JButton("Copy");
+		copyHwidButton.addActionListener(e-> {
+			hwidTf.selectAll();
+			hwidTf.copy();
+		});
+		GridBagConstraints gbc_copyHwidButton = new GridBagConstraints();
+		gbc_copyHwidButton.anchor = GridBagConstraints.EAST;
+		gbc_copyHwidButton.gridx = 2;
+		gbc_copyHwidButton.gridy = 0;
+		hwidPanel.add(copyHwidButton, gbc_copyHwidButton);
 		
 		JPanel cpuPanel = new JPanel();
 		cpuPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "CPU", TitledBorder.LEADING, TitledBorder.TOP, null, null));
