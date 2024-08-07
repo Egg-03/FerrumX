@@ -30,12 +30,15 @@ final class Storage {
 			Map<String, String> diskProperties = Win32_DiskDrive.getDrive(currentDiskId);
 			storageFields[0].setText(diskProperties.get("Caption"));
 			storageFields[1].setText(diskProperties.get("Model"));
-			storageFields[2].setText(diskProperties.get("Size"));
+			
 			storageFields[3].setText(diskProperties.get("FirmwareRevision"));
 			storageFields[4].setText(diskProperties.get("SerialNumber"));
 			storageFields[5].setText(diskProperties.get("Partitions"));
 			storageFields[6].setText(diskProperties.get("Status"));
 			storageFields[7].setText(diskProperties.get("InterfaceType"));
+			
+			Long storageCap = Long.valueOf(diskProperties.get("Size"))/(1024*1024*1024);
+			storageFields[2].setText((String.valueOf(storageCap)+" GB"));
 			//get disk partitions for the current id
 			List<String> diskPartitions = Win32_DiskDriveToDiskPartition.getPartitionList(currentDiskId);
 			for(String currentPartition: diskPartitions) {
@@ -44,6 +47,8 @@ final class Storage {
 		} catch (IndexOutOfBoundsException | IOException e) {
 			new ExceptionUI("Storage Initialization Error", e.getMessage()).setVisible(true);
 			return false;
+		} catch (NumberFormatException e) {
+			storageFields[2].setText("N/A");
 		}
 		addStorageChoiceActionListener(diskChoice, partitionDetails, storageFields);
 		return true;
@@ -57,12 +62,16 @@ final class Storage {
 				Map<String, String> diskProperties = Win32_DiskDrive.getDrive(currentDiskId);
 				storageFields[0].setText(diskProperties.get("Caption"));
 				storageFields[1].setText(diskProperties.get("Model"));
-				storageFields[2].setText(diskProperties.get("Size"));
+				
 				storageFields[3].setText(diskProperties.get("FirmwareRevision"));
 				storageFields[4].setText(diskProperties.get("SerialNumber"));
 				storageFields[5].setText(diskProperties.get("Partitions"));
 				storageFields[6].setText(diskProperties.get("Status"));
 				storageFields[7].setText(diskProperties.get("InterfaceType"));
+				
+				Long storageCap = Long.valueOf(diskProperties.get("Size"))/(1024*1024*1024);
+				storageFields[2].setText((String.valueOf(storageCap)+" GB"));
+				
 				//get disk partitions for the current id
 				List<String> diskPartitions = Win32_DiskDriveToDiskPartition.getPartitionList(currentDiskId);
 				//remove the contents in the text area before updating with new data
@@ -73,6 +82,8 @@ final class Storage {
 				}
 			} catch (IndexOutOfBoundsException | IOException e1) {
 				new ExceptionUI("Storage Initialization Error", e1.getMessage()).setVisible(true);
+			} catch (NumberFormatException e1) {
+				storageFields[2].setText("N/A");
 			}
 		});
 	}
