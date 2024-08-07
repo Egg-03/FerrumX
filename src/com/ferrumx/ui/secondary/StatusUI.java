@@ -63,6 +63,7 @@ private static final long serialVersionUID = 1L;
 		statusPanel.add(infoLabel);
 		
 		hardwareLabel = new JLabel("HWID");
+		hardwareLabel.setIcon(new ImageIcon(StatusUI.class.getResource("/resources/tab_icons/HWID_16x16.png")));
 		hardwareLabel.setBounds(20, 47, 85, 20);
 		statusPanel.add(hardwareLabel);
 		
