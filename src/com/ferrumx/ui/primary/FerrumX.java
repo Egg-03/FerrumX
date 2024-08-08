@@ -52,6 +52,7 @@ import com.ferrumx.ui.report.DetailedReportGeneration;
 import com.ferrumx.ui.secondary.AboutUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
+import javax.swing.JProgressBar;
 
 public class FerrumX {
 
@@ -2812,8 +2813,15 @@ public class FerrumX {
 		sl_reportControlSubPanel.putConstraint(SpringLayout.EAST, summarizedReport, -10, SpringLayout.EAST, reportControlSubPanel);
 		reportControlSubPanel.add(summarizedReport);
 		
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		sl_reportControlSubPanel.putConstraint(SpringLayout.WEST, progressBar, 10, SpringLayout.WEST, reportControlSubPanel);
+		sl_reportControlSubPanel.putConstraint(SpringLayout.SOUTH, progressBar, -10, SpringLayout.SOUTH, reportControlSubPanel);
+		sl_reportControlSubPanel.putConstraint(SpringLayout.EAST, progressBar, 0, SpringLayout.EAST, summarizedReport);
+		reportControlSubPanel.add(progressBar);
+		
 		//add report button action listeners
-		detailedReport.addActionListener(e-> DetailedReportGeneration.generate(reportTextArea, logTextArea, detailedReport, summarizedReport));
+		detailedReport.addActionListener(e-> DetailedReportGeneration.generate(reportTextArea, logTextArea, detailedReport, summarizedReport, progressBar));
 		
 		JPanel reportLogControlPanel = new JPanel();
 		reportLogControlPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Report Log Controls", TitledBorder.LEADING, TitledBorder.TOP, null, null));

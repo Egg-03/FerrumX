@@ -7,7 +7,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+
 import com.ferrumx.system.currentuser.User;
 import com.ferrumx.system.hardware.HardwareID;
 import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
@@ -35,7 +38,9 @@ public class DetailedReportGeneration {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	public static void generate(JTextArea reportDisplay, JTextArea errorDisplay, JButton detailedReportButton, JButton summarizedReportButton) {
+	public static void generate(JTextArea reportDisplay, JTextArea errorDisplay, JButton detailedReportButton, JButton summarizedReportButton, JProgressBar progress) {
+		//set progress bar value to 0
+		progress.setValue(0);
 		//disable button once computation starts
 		detailedReportButton.setEnabled(false);
 		summarizedReportButton.setEnabled(false);
@@ -52,20 +57,49 @@ public class DetailedReportGeneration {
 		//regardless of when this thread starts
 		new Thread(()->{
 			reportDisplayHardwareID(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(2));
+			
 			reportDisplayCPU(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(6));
+			
 			reportDisplayCPUCache(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(13));
+			
 			reportDisplayGPU(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(20));
+			
 			reportDisplayRAM(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(28));
+			
 			reportDisplayMotherboard(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(35));
+			
 			reportDisplayBIOS(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(42));
+			
 			reportDisplayNetwork(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(50));
+			
 			reportDisplayDisk(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(57));
+			
 			reportDisplayOS(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(64));
+			
 			reportDisplayUser(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(70));
+			
 			reportDisplayPrinter(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(77));
+			
 			reportDisplaySound(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(85));
+			
 			reportDisplayTimeZone(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(90));
+			
 			reportDisplayIO(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(100));
 			
 			//re-enable report buttons
 			detailedReportButton.setEnabled(true);
