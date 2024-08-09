@@ -49,6 +49,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
 
 import com.ferrumx.ui.report.DetailedReportGeneration;
+import com.ferrumx.ui.report.SummarizedReportGeneration;
 import com.ferrumx.ui.secondary.AboutUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
@@ -57,7 +58,6 @@ import javax.swing.JProgressBar;
 public class FerrumX {
 
 	private JFrame mainFrame;
-	
 	//HWID
 	private JTextField hwidTf;
 	//CPU
@@ -178,7 +178,7 @@ public class FerrumX {
 	private JTextField userHomeTf;
 	private JTextField timeZoneNameTf;
 	private JTextField timeZoneCaptionTf;
-	
+
 	//Links
 	private String appLatestReleasePage = "https://github.com/Egg-03/FerrumX/releases/latest";
 
@@ -186,18 +186,18 @@ public class FerrumX {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-			try {
-				UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
-				new ExceptionUI("Theme Error", e.getMessage()).setVisible(true);
-			}
-		
-			try {
-				FerrumX window = new FerrumX();
-				window.mainFrame.setVisible(true);
-			} catch (Exception e) {
-				new ExceptionUI("FerrumX Application Window Launch Error", e.getMessage()).setVisible(true);
-			}
+		try {
+			UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
+			new ExceptionUI("Theme Error", e.getMessage()).setVisible(true);
+		}
+
+		try {
+			FerrumX window = new FerrumX();
+			window.mainFrame.setVisible(true);
+		} catch (Exception e) {
+			new ExceptionUI("FerrumX Application Window Launch Error", e.getMessage()).setVisible(true);
+		}
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class FerrumX {
 		initializeComponents();
 		initializeSystemInfo(new StatusUI("Booting Up", "Please wait till FerrumX gathers information about your system"));
 	}
-	
+
 	//changes theme on the fly with application open
 	private void changeTheme(String lnfName, JFrame mainframe) {
 		try {
@@ -222,62 +222,62 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v08082024 Beta]");
+		mainFrame.setTitle("FerrumX [Build v09082024 Beta]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 600);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		mainFrame.getContentPane().add(tabbedPane);
-		
+
 		//Initialize the CPU Panel
 		JPanel hwidCpuPanel = new JPanel();
 		initializeCpuPanel(tabbedPane, hwidCpuPanel);
-		
+
 		//Initialize the Memory Panel
 		JPanel memoryPanel = new JPanel();
 		initializeMemoryPanel(tabbedPane, memoryPanel);
-		
+
 		//Initialize the mainboard and the bios panels
 		JPanel mainBoardPanel = new JPanel();
 		mainBoardPanel.setBorder(null);
 		initializeMainboardPanel(tabbedPane, mainBoardPanel);
-		
+
 		//Initialize the gpu panel
 		JPanel gpuPanel = new JPanel();
 		initializeGpuPanel(tabbedPane, gpuPanel);
-		
+
 		//Initialize the network panel
 		JPanel networkPanel = new JPanel();
 		initializeNetworkPanel(tabbedPane, networkPanel);
-		
+
 		//Initialize the storage panel
 		JPanel storagePanel = new JPanel();
 		initializeStoragePanel(tabbedPane, storagePanel);
-		
+
 		//Initialize the os and the user panels
 		JPanel osAndUserPanel = new JPanel();
 		initializeOsAndUserPanel(tabbedPane, osAndUserPanel);
-		
+
 		//Initialize the report panel
 		initializeReportPanel(tabbedPane);
-		
+
 		//Initialize the Menu Bar
 		JMenuBar menuBar = new JMenuBar();
 		initializeMenu(mainFrame, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
 	}
-	
+
 
 	private void initializeMenu(JFrame mainFrame, JMenuBar menuBar) {
 		//theme
 		JMenu themeMenu = new JMenu("Theme");
 		menuBar.add(themeMenu);
-				
+
 		JRadioButtonMenuItem darkThemeChoice = new JRadioButtonMenuItem("Mac Dark");
 		darkThemeChoice.addActionListener(e-> {
 			if(darkThemeChoice.isSelected())
@@ -285,42 +285,42 @@ public class FerrumX {
 		});
 		darkThemeChoice.setSelected(true);
 		themeMenu.add(darkThemeChoice);
-				
+
 		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Cyan Light");
 		lightThemeChoice.addActionListener(e-> {
 			if(lightThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme", mainFrame);
 		});
 		themeMenu.add(lightThemeChoice);
-				
+
 		JRadioButtonMenuItem greyThemeChoice = new JRadioButtonMenuItem("Darcula Grey");
 		greyThemeChoice.addActionListener(e-> {
 			if(greyThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.FlatDarculaLaf", mainFrame);
 		});
 		themeMenu.add(greyThemeChoice);
-		
+
 		JRadioButtonMenuItem monokaiproThemeChoice = new JRadioButtonMenuItem("Monokai Pro");
 		monokaiproThemeChoice.addActionListener(e-> {
 			if(monokaiproThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme", mainFrame);
 		});
 		themeMenu.add(monokaiproThemeChoice);
-		
+
 		JRadioButtonMenuItem purpleThemeChoice = new JRadioButtonMenuItem("Dark Purple");
 		purpleThemeChoice.addActionListener(e-> {
 			if(purpleThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme", mainFrame);
 		});
 		themeMenu.add(purpleThemeChoice);
-		
+
 		JRadioButtonMenuItem carbonThemeChoice = new JRadioButtonMenuItem("Carbon");
 		carbonThemeChoice.addActionListener(e-> {
 			if(carbonThemeChoice.isSelected())
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme", mainFrame);
 		});
 		themeMenu.add(carbonThemeChoice);
-				
+
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(lightThemeChoice);
 		themeButtonGroup.add(greyThemeChoice);
@@ -328,28 +328,28 @@ public class FerrumX {
 		themeButtonGroup.add(monokaiproThemeChoice);
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
-				
+
 		//about
 		JMenu helpMenu = new JMenu("Help");
 		menuBar.add(helpMenu);
-				
+
 		JMenuItem about = new JMenuItem("About");
 		about.addActionListener(e->new AboutUI().setVisible(true));
 		helpMenu.add(about);
-				
+
 		JMenuItem updateCheck = new JMenuItem("Check For New Releases");
 		updateCheck.addActionListener(e-> {
 			try {
-                Desktop.getDesktop().browse(new URI(appLatestReleasePage));
-            } catch (URISyntaxException | IOException ex) {
-            	new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
-            }
+				Desktop.getDesktop().browse(new URI(appLatestReleasePage));
+			} catch (URISyntaxException | IOException ex) {
+				new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+			}
 		});
 		helpMenu.add(updateCheck);
 	}
 
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
-		
+
 		tabbedPane.addTab("CPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/CPU_16x16.png")), hwidCpuPanel, "Displays CPU Information");
 		tabbedPane.setEnabledAt(0, true);
 		GridBagLayout gbl_hwidCpuPanel = new GridBagLayout();
@@ -358,7 +358,7 @@ public class FerrumX {
 		gbl_hwidCpuPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_hwidCpuPanel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		hwidCpuPanel.setLayout(gbl_hwidCpuPanel);
-		
+
 		JPanel hwidPanel = new JPanel();
 		hwidPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "HardwareID", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbchwidPanel = new GridBagConstraints();
@@ -373,7 +373,7 @@ public class FerrumX {
 		gbl_hwidPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_hwidPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		hwidPanel.setLayout(gbl_hwidPanel);
-		
+
 		hwidTf = new JTextField();
 		hwidTf.setForeground(new Color(13, 186, 223));
 		hwidTf.setEditable(false);
@@ -385,7 +385,7 @@ public class FerrumX {
 		gbc_hwidTf.gridy = 0;
 		hwidPanel.add(hwidTf, gbc_hwidTf);
 		hwidTf.setColumns(10);
-		
+
 		JButton copyHwidButton = new JButton("Copy");
 		copyHwidButton.addActionListener(e-> {
 			hwidTf.selectAll();
@@ -396,7 +396,7 @@ public class FerrumX {
 		gbc_copyHwidButton.gridx = 2;
 		gbc_copyHwidButton.gridy = 0;
 		hwidPanel.add(copyHwidButton, gbc_copyHwidButton);
-		
+
 		JPanel cpuPanel = new JPanel();
 		cpuPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "CPU", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbccpuPanel = new GridBagConstraints();
@@ -410,7 +410,7 @@ public class FerrumX {
 		gbl_cpuPanel.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_cpuPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		cpuPanel.setLayout(gbl_cpuPanel);
-		
+
 		JPanel essentialInfoPanel = new JPanel();
 		essentialInfoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Primary Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_essentialInfoPanel = new GridBagConstraints();
@@ -426,14 +426,14 @@ public class FerrumX {
 		gbl_essentialInfoPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_essentialInfoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		essentialInfoPanel.setLayout(gbl_essentialInfoPanel);
-		
+
 		JLabel cpuCount = new JLabel("CPU#");
 		GridBagConstraints gbc_cpuCount = new GridBagConstraints();
 		gbc_cpuCount.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuCount.gridx = 0;
 		gbc_cpuCount.gridy = 0;
 		essentialInfoPanel.add(cpuCount, gbc_cpuCount);
-		
+
 		cpuChoice = new JComboBox<>();
 		GridBagConstraints gbc_cpuChoice = new GridBagConstraints();
 		gbc_cpuChoice.fill = GridBagConstraints.HORIZONTAL;
@@ -442,14 +442,14 @@ public class FerrumX {
 		gbc_cpuChoice.gridy = 0;
 		essentialInfoPanel.add(cpuChoice, gbc_cpuChoice);
 		cpuChoice.setEditable(false);
-		
+
 		JLabel cpuName = new JLabel("Name");
 		GridBagConstraints gbc_cpuName = new GridBagConstraints();
 		gbc_cpuName.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuName.gridx = 2;
 		gbc_cpuName.gridy = 0;
 		essentialInfoPanel.add(cpuName, gbc_cpuName);
-		
+
 		cpuNameTf = new JTextField();
 		GridBagConstraints gbc_cpuNameTf = new GridBagConstraints();
 		gbc_cpuNameTf.fill = GridBagConstraints.HORIZONTAL;
@@ -460,14 +460,14 @@ public class FerrumX {
 		essentialInfoPanel.add(cpuNameTf, gbc_cpuNameTf);
 		cpuNameTf.setEditable(false);
 		cpuNameTf.setColumns(10);
-		
+
 		JLabel cpuCores = new JLabel("Cores");
 		GridBagConstraints gbc_cpuCores = new GridBagConstraints();
 		gbc_cpuCores.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuCores.gridx = 0;
 		gbc_cpuCores.gridy = 1;
 		essentialInfoPanel.add(cpuCores, gbc_cpuCores);
-		
+
 		cpuCoreTf = new JTextField();
 		GridBagConstraints gbc_cpuCoreTf = new GridBagConstraints();
 		gbc_cpuCoreTf.fill = GridBagConstraints.HORIZONTAL;
@@ -477,14 +477,14 @@ public class FerrumX {
 		essentialInfoPanel.add(cpuCoreTf, gbc_cpuCoreTf);
 		cpuCoreTf.setEditable(false);
 		cpuCoreTf.setColumns(10);
-		
+
 		JLabel cpuThreads = new JLabel("Threads");
 		GridBagConstraints gbc_cpuThreads = new GridBagConstraints();
 		gbc_cpuThreads.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuThreads.gridx = 2;
 		gbc_cpuThreads.gridy = 1;
 		essentialInfoPanel.add(cpuThreads, gbc_cpuThreads);
-		
+
 		cpuThreadTf = new JTextField();
 		GridBagConstraints gbc_cpuThreadTf = new GridBagConstraints();
 		gbc_cpuThreadTf.fill = GridBagConstraints.HORIZONTAL;
@@ -494,14 +494,14 @@ public class FerrumX {
 		essentialInfoPanel.add(cpuThreadTf, gbc_cpuThreadTf);
 		cpuThreadTf.setEditable(false);
 		cpuThreadTf.setColumns(10);
-		
+
 		JLabel cpuLogicalProcessors = new JLabel("Logical Processors");
 		GridBagConstraints gbc_cpuLogicalProcessors = new GridBagConstraints();
 		gbc_cpuLogicalProcessors.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuLogicalProcessors.gridx = 4;
 		gbc_cpuLogicalProcessors.gridy = 1;
 		essentialInfoPanel.add(cpuLogicalProcessors, gbc_cpuLogicalProcessors);
-		
+
 		cpuLogicProcessorTf = new JTextField();
 		GridBagConstraints gbc_cpuLogicProcessorTf = new GridBagConstraints();
 		gbc_cpuLogicProcessorTf.fill = GridBagConstraints.HORIZONTAL;
@@ -511,14 +511,14 @@ public class FerrumX {
 		essentialInfoPanel.add(cpuLogicProcessorTf, gbc_cpuLogicProcessorTf);
 		cpuLogicProcessorTf.setEditable(false);
 		cpuLogicProcessorTf.setColumns(10);
-		
+
 		JLabel addressWidth = new JLabel("Address Width");
 		GridBagConstraints gbc_addressWidth = new GridBagConstraints();
 		gbc_addressWidth.insets = new Insets(0, 0, 0, 5);
 		gbc_addressWidth.gridx = 0;
 		gbc_addressWidth.gridy = 2;
 		essentialInfoPanel.add(addressWidth, gbc_addressWidth);
-		
+
 		addressWidthTf = new JTextField();
 		GridBagConstraints gbc_addressWidthTf = new GridBagConstraints();
 		gbc_addressWidthTf.fill = GridBagConstraints.HORIZONTAL;
@@ -528,14 +528,14 @@ public class FerrumX {
 		essentialInfoPanel.add(addressWidthTf, gbc_addressWidthTf);
 		addressWidthTf.setEditable(false);
 		addressWidthTf.setColumns(10);
-		
+
 		JLabel cpuSocket = new JLabel("Socket");
 		GridBagConstraints gbc_cpuSocket = new GridBagConstraints();
 		gbc_cpuSocket.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuSocket.gridx = 2;
 		gbc_cpuSocket.gridy = 2;
 		essentialInfoPanel.add(cpuSocket, gbc_cpuSocket);
-		
+
 		cpuSocketTf = new JTextField();
 		GridBagConstraints gbc_cpuSocketTf = new GridBagConstraints();
 		gbc_cpuSocketTf.fill = GridBagConstraints.HORIZONTAL;
@@ -545,14 +545,14 @@ public class FerrumX {
 		essentialInfoPanel.add(cpuSocketTf, gbc_cpuSocketTf);
 		cpuSocketTf.setEditable(false);
 		cpuSocketTf.setColumns(10);
-		
+
 		JLabel cpuManufacturer = new JLabel("Manufacturer");
 		GridBagConstraints gbc_cpuManufacturer = new GridBagConstraints();
 		gbc_cpuManufacturer.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuManufacturer.gridx = 4;
 		gbc_cpuManufacturer.gridy = 2;
 		essentialInfoPanel.add(cpuManufacturer, gbc_cpuManufacturer);
-		
+
 		cpuManufacturerTf = new JTextField();
 		GridBagConstraints gbc_cpuManufacturerTf = new GridBagConstraints();
 		gbc_cpuManufacturerTf.fill = GridBagConstraints.HORIZONTAL;
@@ -561,7 +561,7 @@ public class FerrumX {
 		essentialInfoPanel.add(cpuManufacturerTf, gbc_cpuManufacturerTf);
 		cpuManufacturerTf.setEditable(false);
 		cpuManufacturerTf.setColumns(10);
-		
+
 		JSeparator separator = new JSeparator();
 		GridBagConstraints gbc_separator = new GridBagConstraints();
 		gbc_separator.gridwidth = 3;
@@ -569,7 +569,7 @@ public class FerrumX {
 		gbc_separator.gridx = 0;
 		gbc_separator.gridy = 1;
 		cpuPanel.add(separator, gbc_separator);
-		
+
 		JPanel clockPanel = new JPanel();
 		clockPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Clock Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_clockPanel = new GridBagConstraints();
@@ -585,14 +585,14 @@ public class FerrumX {
 		gbl_clockPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_clockPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		clockPanel.setLayout(gbl_clockPanel);
-		
+
 		JLabel cpuExtClock = new JLabel("BCLK");
 		GridBagConstraints gbc_cpuExtClock = new GridBagConstraints();
 		gbc_cpuExtClock.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuExtClock.gridx = 0;
 		gbc_cpuExtClock.gridy = 0;
 		clockPanel.add(cpuExtClock, gbc_cpuExtClock);
-		
+
 		cpuBaseClockTf = new JTextField();
 		GridBagConstraints gbc_cpuBaseClockTf = new GridBagConstraints();
 		gbc_cpuBaseClockTf.fill = GridBagConstraints.HORIZONTAL;
@@ -602,14 +602,14 @@ public class FerrumX {
 		clockPanel.add(cpuBaseClockTf, gbc_cpuBaseClockTf);
 		cpuBaseClockTf.setEditable(false);
 		cpuBaseClockTf.setColumns(10);
-		
+
 		JLabel cpuMultiplier = new JLabel("Multiplier");
 		GridBagConstraints gbc_cpuMultiplier = new GridBagConstraints();
 		gbc_cpuMultiplier.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuMultiplier.gridx = 2;
 		gbc_cpuMultiplier.gridy = 0;
 		clockPanel.add(cpuMultiplier, gbc_cpuMultiplier);
-		
+
 		multiplierTf = new JTextField();
 		GridBagConstraints gbc_multiplierTf = new GridBagConstraints();
 		gbc_multiplierTf.fill = GridBagConstraints.HORIZONTAL;
@@ -619,14 +619,14 @@ public class FerrumX {
 		clockPanel.add(multiplierTf, gbc_multiplierTf);
 		multiplierTf.setEditable(false);
 		multiplierTf.setColumns(10);
-		
+
 		JLabel cpuEffectiveClock = new JLabel("Effective Base Clock");
 		GridBagConstraints gbc_cpuEffectiveClock = new GridBagConstraints();
 		gbc_cpuEffectiveClock.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuEffectiveClock.gridx = 4;
 		gbc_cpuEffectiveClock.gridy = 0;
 		clockPanel.add(cpuEffectiveClock, gbc_cpuEffectiveClock);
-		
+
 		effectiveClockTf = new JTextField();
 		GridBagConstraints gbc_effectiveClockTf = new GridBagConstraints();
 		gbc_effectiveClockTf.fill = GridBagConstraints.HORIZONTAL;
@@ -635,7 +635,7 @@ public class FerrumX {
 		clockPanel.add(effectiveClockTf, gbc_effectiveClockTf);
 		effectiveClockTf.setEditable(false);
 		effectiveClockTf.setColumns(10);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
 		gbc_separator_1.gridwidth = 3;
@@ -643,7 +643,7 @@ public class FerrumX {
 		gbc_separator_1.gridx = 0;
 		gbc_separator_1.gridy = 3;
 		cpuPanel.add(separator_1, gbc_separator_1);
-		
+
 		JPanel familyPanel = new JPanel();
 		familyPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Family Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_familyPanel = new GridBagConstraints();
@@ -659,7 +659,7 @@ public class FerrumX {
 		gbl_familyPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_familyPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		familyPanel.setLayout(gbl_familyPanel);
-		
+
 		JLabel cpuVersion = new JLabel("Version");
 		GridBagConstraints gbc_cpuVersion = new GridBagConstraints();
 		gbc_cpuVersion.anchor = GridBagConstraints.EAST;
@@ -667,7 +667,7 @@ public class FerrumX {
 		gbc_cpuVersion.gridx = 0;
 		gbc_cpuVersion.gridy = 0;
 		familyPanel.add(cpuVersion, gbc_cpuVersion);
-		
+
 		cpuVersionTf = new JTextField();
 		GridBagConstraints gbc_cpuVersionTf = new GridBagConstraints();
 		gbc_cpuVersionTf.fill = GridBagConstraints.HORIZONTAL;
@@ -677,7 +677,7 @@ public class FerrumX {
 		familyPanel.add(cpuVersionTf, gbc_cpuVersionTf);
 		cpuVersionTf.setEditable(false);
 		cpuVersionTf.setColumns(10);
-		
+
 		JLabel cpuFamily = new JLabel("Family");
 		GridBagConstraints gbc_cpuFamily = new GridBagConstraints();
 		gbc_cpuFamily.anchor = GridBagConstraints.EAST;
@@ -685,7 +685,7 @@ public class FerrumX {
 		gbc_cpuFamily.gridx = 2;
 		gbc_cpuFamily.gridy = 0;
 		familyPanel.add(cpuFamily, gbc_cpuFamily);
-		
+
 		cpuFamilyTf = new JTextField();
 		GridBagConstraints gbc_cpuFamilyTf = new GridBagConstraints();
 		gbc_cpuFamilyTf.fill = GridBagConstraints.HORIZONTAL;
@@ -695,7 +695,7 @@ public class FerrumX {
 		familyPanel.add(cpuFamilyTf, gbc_cpuFamilyTf);
 		cpuFamilyTf.setEditable(false);
 		cpuFamilyTf.setColumns(10);
-		
+
 		JLabel cpuVirtStatus = new JLabel("Virtualization");
 		GridBagConstraints gbc_cpuVirtStatus = new GridBagConstraints();
 		gbc_cpuVirtStatus.anchor = GridBagConstraints.EAST;
@@ -703,7 +703,7 @@ public class FerrumX {
 		gbc_cpuVirtStatus.gridx = 4;
 		gbc_cpuVirtStatus.gridy = 0;
 		familyPanel.add(cpuVirtStatus, gbc_cpuVirtStatus);
-		
+
 		cpuVirtStatusTf = new JTextField();
 		GridBagConstraints gbc_cpuVirtStatusTf = new GridBagConstraints();
 		gbc_cpuVirtStatusTf.fill = GridBagConstraints.HORIZONTAL;
@@ -713,7 +713,7 @@ public class FerrumX {
 		familyPanel.add(cpuVirtStatusTf, gbc_cpuVirtStatusTf);
 		cpuVirtStatusTf.setEditable(false);
 		cpuVirtStatusTf.setColumns(10);
-		
+
 		JLabel cpuCaption = new JLabel("Caption");
 		GridBagConstraints gbc_cpuCaption = new GridBagConstraints();
 		gbc_cpuCaption.anchor = GridBagConstraints.EAST;
@@ -721,7 +721,7 @@ public class FerrumX {
 		gbc_cpuCaption.gridx = 0;
 		gbc_cpuCaption.gridy = 1;
 		familyPanel.add(cpuCaption, gbc_cpuCaption);
-		
+
 		cpuCaptionTf = new JTextField();
 		GridBagConstraints gbc_cpuCaptionTf = new GridBagConstraints();
 		gbc_cpuCaptionTf.fill = GridBagConstraints.HORIZONTAL;
@@ -731,7 +731,7 @@ public class FerrumX {
 		familyPanel.add(cpuCaptionTf, gbc_cpuCaptionTf);
 		cpuCaptionTf.setEditable(false);
 		cpuCaptionTf.setColumns(10);
-		
+
 		JLabel cpuStepping = new JLabel("Stepping");
 		GridBagConstraints gbc_cpuStepping = new GridBagConstraints();
 		gbc_cpuStepping.anchor = GridBagConstraints.EAST;
@@ -739,7 +739,7 @@ public class FerrumX {
 		gbc_cpuStepping.gridx = 2;
 		gbc_cpuStepping.gridy = 1;
 		familyPanel.add(cpuStepping, gbc_cpuStepping);
-		
+
 		cpuSteppingTf = new JTextField();
 		GridBagConstraints gbc_cpuSteppingTf = new GridBagConstraints();
 		gbc_cpuSteppingTf.fill = GridBagConstraints.HORIZONTAL;
@@ -749,7 +749,7 @@ public class FerrumX {
 		familyPanel.add(cpuSteppingTf, gbc_cpuSteppingTf);
 		cpuSteppingTf.setEditable(false);
 		cpuSteppingTf.setColumns(10);
-		
+
 		JLabel cpuId = new JLabel("ProcessorID");
 		GridBagConstraints gbc_cpuId = new GridBagConstraints();
 		gbc_cpuId.anchor = GridBagConstraints.EAST;
@@ -757,7 +757,7 @@ public class FerrumX {
 		gbc_cpuId.gridx = 4;
 		gbc_cpuId.gridy = 1;
 		familyPanel.add(cpuId, gbc_cpuId);
-		
+
 		cpuIdTf = new JTextField();
 		GridBagConstraints gbc_cpuIdTf = new GridBagConstraints();
 		gbc_cpuIdTf.fill = GridBagConstraints.HORIZONTAL;
@@ -766,7 +766,7 @@ public class FerrumX {
 		familyPanel.add(cpuIdTf, gbc_cpuIdTf);
 		cpuIdTf.setEditable(false);
 		cpuIdTf.setColumns(10);
-		
+
 		JSeparator separator_2 = new JSeparator();
 		GridBagConstraints gbc_separator_2 = new GridBagConstraints();
 		gbc_separator_2.insets = new Insets(0, 0, 5, 0);
@@ -774,7 +774,7 @@ public class FerrumX {
 		gbc_separator_2.gridx = 0;
 		gbc_separator_2.gridy = 5;
 		cpuPanel.add(separator_2, gbc_separator_2);
-		
+
 		JPanel miniCachePanel = new JPanel();
 		miniCachePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Cache", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_miniCachePanel = new GridBagConstraints();
@@ -789,7 +789,7 @@ public class FerrumX {
 		gbl_miniCachePanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_miniCachePanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		miniCachePanel.setLayout(gbl_miniCachePanel);
-		
+
 		JLabel cpuLevelTwoCache = new JLabel("L2 Cache");
 		GridBagConstraints gbc_cpuLevelTwoCache = new GridBagConstraints();
 		gbc_cpuLevelTwoCache.anchor = GridBagConstraints.EAST;
@@ -797,7 +797,7 @@ public class FerrumX {
 		gbc_cpuLevelTwoCache.gridx = 0;
 		gbc_cpuLevelTwoCache.gridy = 0;
 		miniCachePanel.add(cpuLevelTwoCache, gbc_cpuLevelTwoCache);
-		
+
 		cpuL2Tf = new JTextField();
 		GridBagConstraints gbc_cpuL2Tf = new GridBagConstraints();
 		gbc_cpuL2Tf.anchor = GridBagConstraints.SOUTH;
@@ -808,7 +808,7 @@ public class FerrumX {
 		miniCachePanel.add(cpuL2Tf, gbc_cpuL2Tf);
 		cpuL2Tf.setEditable(false);
 		cpuL2Tf.setColumns(10);
-		
+
 		JLabel cpuLevelThreeCache = new JLabel("L3 Cache");
 		GridBagConstraints gbc_cpuLevelThreeCache = new GridBagConstraints();
 		gbc_cpuLevelThreeCache.anchor = GridBagConstraints.EAST;
@@ -818,7 +818,7 @@ public class FerrumX {
 		gbc_cpuLevelThreeCache.gridy = 2;
 		miniCachePanel.add(cpuLevelThreeCache, gbc_cpuLevelThreeCache);
 		cpuLevelThreeCache.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		cpuL3Tf = new JTextField();
 		GridBagConstraints gbc_cpuL3Tf = new GridBagConstraints();
 		gbc_cpuL3Tf.fill = GridBagConstraints.HORIZONTAL;
@@ -828,7 +828,7 @@ public class FerrumX {
 		miniCachePanel.add(cpuL3Tf, gbc_cpuL3Tf);
 		cpuL3Tf.setEditable(false);
 		cpuL3Tf.setColumns(10);
-		
+
 		JPanel cpuLogoPanel = new JPanel();
 		cpuLogoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "CPU Manufacturer Logo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_cpuLogoPanel = new GridBagConstraints();
@@ -838,11 +838,11 @@ public class FerrumX {
 		gbc_cpuLogoPanel.gridy = 6;
 		cpuPanel.add(cpuLogoPanel, gbc_cpuLogoPanel);
 		cpuLogoPanel.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		cpuLogo = new JLabel("");
 		cpuLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		cpuLogoPanel.add(cpuLogo);
-		
+
 		JPanel detailedCachePanel = new JPanel();
 		detailedCachePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Extra Cache Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_detailedCachePanel = new GridBagConstraints();
@@ -851,15 +851,15 @@ public class FerrumX {
 		gbc_detailedCachePanel.gridy = 6;
 		cpuPanel.add(detailedCachePanel, gbc_detailedCachePanel);
 		detailedCachePanel.setLayout(new GridLayout(1, 0, 0, 0));
-		
+
 		JScrollPane cacheScrollPane = new JScrollPane();
 		detailedCachePanel.add(cacheScrollPane);
-		
+
 		cacheTa = new JTextArea();
 		cacheScrollPane.setViewportView(cacheTa);
 		cacheTa.setEditable(false);
 	}
-	
+
 	private void initializeMemoryPanel(JTabbedPane tabbedPane, JPanel memoryPanel) {
 		memoryPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Memory", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tabbedPane.addTab("Memory", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/RAM_16x16.png")), memoryPanel, "Displays Memory Information");
@@ -869,7 +869,7 @@ public class FerrumX {
 		gbl_memoryPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_memoryPanel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		memoryPanel.setLayout(gbl_memoryPanel);
-		
+
 		JPanel memoryIdentifierPanel = new JPanel();
 		memoryIdentifierPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Identifier", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_memoryIdentifierPanel = new GridBagConstraints();
@@ -884,7 +884,7 @@ public class FerrumX {
 		gbl_memoryIdentifierPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_memoryIdentifierPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		memoryIdentifierPanel.setLayout(gbl_memoryIdentifierPanel);
-		
+
 		JLabel memorySlot = new JLabel("Slot#");
 		GridBagConstraints gbc_memorySlot = new GridBagConstraints();
 		gbc_memorySlot.anchor = GridBagConstraints.EAST;
@@ -892,7 +892,7 @@ public class FerrumX {
 		gbc_memorySlot.gridx = 0;
 		gbc_memorySlot.gridy = 0;
 		memoryIdentifierPanel.add(memorySlot, gbc_memorySlot);
-		
+
 		memorySlotChoice = new JComboBox<>();
 		GridBagConstraints gbc_memorySlotChoice = new GridBagConstraints();
 		gbc_memorySlotChoice.fill = GridBagConstraints.HORIZONTAL;
@@ -900,7 +900,7 @@ public class FerrumX {
 		gbc_memorySlotChoice.gridx = 1;
 		gbc_memorySlotChoice.gridy = 0;
 		memoryIdentifierPanel.add(memorySlotChoice, gbc_memorySlotChoice);
-		
+
 		JLabel memoryName = new JLabel("Name");
 		GridBagConstraints gbc_memoryName = new GridBagConstraints();
 		gbc_memoryName.anchor = GridBagConstraints.EAST;
@@ -908,7 +908,7 @@ public class FerrumX {
 		gbc_memoryName.gridx = 0;
 		gbc_memoryName.gridy = 1;
 		memoryIdentifierPanel.add(memoryName, gbc_memoryName);
-		
+
 		memoryNameTf = new JTextField();
 		GridBagConstraints gbc_memoryNameTf = new GridBagConstraints();
 		gbc_memoryNameTf.fill = GridBagConstraints.HORIZONTAL;
@@ -918,7 +918,7 @@ public class FerrumX {
 		memoryIdentifierPanel.add(memoryNameTf, gbc_memoryNameTf);
 		memoryNameTf.setEditable(false);
 		memoryNameTf.setColumns(10);
-		
+
 		JLabel memoryManufacturer = new JLabel("Manufacturer");
 		GridBagConstraints gbc_memoryManufacturer = new GridBagConstraints();
 		gbc_memoryManufacturer.anchor = GridBagConstraints.EAST;
@@ -926,7 +926,7 @@ public class FerrumX {
 		gbc_memoryManufacturer.gridx = 0;
 		gbc_memoryManufacturer.gridy = 2;
 		memoryIdentifierPanel.add(memoryManufacturer, gbc_memoryManufacturer);
-		
+
 		memoryManufacturerTf = new JTextField();
 		GridBagConstraints gbc_memoryManufacturerTf = new GridBagConstraints();
 		gbc_memoryManufacturerTf.fill = GridBagConstraints.HORIZONTAL;
@@ -936,7 +936,7 @@ public class FerrumX {
 		memoryIdentifierPanel.add(memoryManufacturerTf, gbc_memoryManufacturerTf);
 		memoryManufacturerTf.setEditable(false);
 		memoryManufacturerTf.setColumns(10);
-		
+
 		JLabel memoryModel = new JLabel("Model");
 		GridBagConstraints gbc_memoryModel = new GridBagConstraints();
 		gbc_memoryModel.anchor = GridBagConstraints.EAST;
@@ -944,7 +944,7 @@ public class FerrumX {
 		gbc_memoryModel.gridx = 0;
 		gbc_memoryModel.gridy = 3;
 		memoryIdentifierPanel.add(memoryModel, gbc_memoryModel);
-		
+
 		memoryModelTf = new JTextField();
 		GridBagConstraints gbc_memoryModelTf = new GridBagConstraints();
 		gbc_memoryModelTf.fill = GridBagConstraints.HORIZONTAL;
@@ -954,7 +954,7 @@ public class FerrumX {
 		memoryIdentifierPanel.add(memoryModelTf, gbc_memoryModelTf);
 		memoryModelTf.setEditable(false);
 		memoryModelTf.setColumns(10);
-		
+
 		JLabel memoryOtherInfo = new JLabel("Other Identifying Info");
 		GridBagConstraints gbc_memoryOtherInfo = new GridBagConstraints();
 		gbc_memoryOtherInfo.anchor = GridBagConstraints.EAST;
@@ -962,7 +962,7 @@ public class FerrumX {
 		gbc_memoryOtherInfo.gridx = 0;
 		gbc_memoryOtherInfo.gridy = 4;
 		memoryIdentifierPanel.add(memoryOtherInfo, gbc_memoryOtherInfo);
-		
+
 		memoryOtherInfoTf = new JTextField();
 		GridBagConstraints gbc_memoryOtherInfoTf = new GridBagConstraints();
 		gbc_memoryOtherInfoTf.fill = GridBagConstraints.HORIZONTAL;
@@ -972,7 +972,7 @@ public class FerrumX {
 		memoryIdentifierPanel.add(memoryOtherInfoTf, gbc_memoryOtherInfoTf);
 		memoryOtherInfoTf.setEditable(false);
 		memoryOtherInfoTf.setColumns(10);
-		
+
 		JLabel memoryPartNumber = new JLabel("Part Number");
 		GridBagConstraints gbc_memoryPartNumber = new GridBagConstraints();
 		gbc_memoryPartNumber.anchor = GridBagConstraints.EAST;
@@ -980,7 +980,7 @@ public class FerrumX {
 		gbc_memoryPartNumber.gridx = 0;
 		gbc_memoryPartNumber.gridy = 5;
 		memoryIdentifierPanel.add(memoryPartNumber, gbc_memoryPartNumber);
-		
+
 		memoryPartNumberTf = new JTextField();
 		GridBagConstraints gbc_memoryPartNumberTf = new GridBagConstraints();
 		gbc_memoryPartNumberTf.fill = GridBagConstraints.HORIZONTAL;
@@ -990,7 +990,7 @@ public class FerrumX {
 		memoryIdentifierPanel.add(memoryPartNumberTf, gbc_memoryPartNumberTf);
 		memoryPartNumberTf.setEditable(false);
 		memoryPartNumberTf.setColumns(10);
-		
+
 		JLabel memorySerialNumber = new JLabel("Serial Number");
 		GridBagConstraints gbc_memorySerialNumber = new GridBagConstraints();
 		gbc_memorySerialNumber.anchor = GridBagConstraints.EAST;
@@ -998,7 +998,7 @@ public class FerrumX {
 		gbc_memorySerialNumber.gridx = 0;
 		gbc_memorySerialNumber.gridy = 6;
 		memoryIdentifierPanel.add(memorySerialNumber, gbc_memorySerialNumber);
-		
+
 		memorySerialNumberTf = new JTextField();
 		GridBagConstraints gbc_memorySerialNumberTf = new GridBagConstraints();
 		gbc_memorySerialNumberTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1008,7 +1008,7 @@ public class FerrumX {
 		memoryIdentifierPanel.add(memorySerialNumberTf, gbc_memorySerialNumberTf);
 		memorySerialNumberTf.setEditable(false);
 		memorySerialNumberTf.setColumns(10);
-		
+
 		JLabel memoryFormFactor = new JLabel("Form Factor");
 		GridBagConstraints gbc_memoryFormFactor = new GridBagConstraints();
 		gbc_memoryFormFactor.anchor = GridBagConstraints.EAST;
@@ -1016,7 +1016,7 @@ public class FerrumX {
 		gbc_memoryFormFactor.gridx = 0;
 		gbc_memoryFormFactor.gridy = 7;
 		memoryIdentifierPanel.add(memoryFormFactor, gbc_memoryFormFactor);
-		
+
 		memoryFormFactorTf = new JTextField();
 		GridBagConstraints gbc_memoryFormFactorTf = new GridBagConstraints();
 		gbc_memoryFormFactorTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1025,7 +1025,7 @@ public class FerrumX {
 		memoryIdentifierPanel.add(memoryFormFactorTf, gbc_memoryFormFactorTf);
 		memoryFormFactorTf.setEditable(false);
 		memoryFormFactorTf.setColumns(10);
-		
+
 		JPanel memoryPropertyPanel = new JPanel();
 		memoryPropertyPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Location, Capacity and Speed", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_memoryPropertyPanel = new GridBagConstraints();
@@ -1039,7 +1039,7 @@ public class FerrumX {
 		gbl_memoryPropertyPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_memoryPropertyPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		memoryPropertyPanel.setLayout(gbl_memoryPropertyPanel);
-		
+
 		JLabel memoryBankLabel = new JLabel("Bank Label");
 		GridBagConstraints gbc_memoryBankLabel = new GridBagConstraints();
 		gbc_memoryBankLabel.anchor = GridBagConstraints.EAST;
@@ -1047,7 +1047,7 @@ public class FerrumX {
 		gbc_memoryBankLabel.gridx = 0;
 		gbc_memoryBankLabel.gridy = 0;
 		memoryPropertyPanel.add(memoryBankLabel, gbc_memoryBankLabel);
-		
+
 		memoryBankLabelTf = new JTextField();
 		GridBagConstraints gbc_memoryBankLabelTf = new GridBagConstraints();
 		gbc_memoryBankLabelTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1057,7 +1057,7 @@ public class FerrumX {
 		memoryPropertyPanel.add(memoryBankLabelTf, gbc_memoryBankLabelTf);
 		memoryBankLabelTf.setEditable(false);
 		memoryBankLabelTf.setColumns(10);
-		
+
 		JLabel memoryCapacity = new JLabel("Capacity");
 		GridBagConstraints gbc_memoryCapacity = new GridBagConstraints();
 		gbc_memoryCapacity.anchor = GridBagConstraints.EAST;
@@ -1065,7 +1065,7 @@ public class FerrumX {
 		gbc_memoryCapacity.gridx = 0;
 		gbc_memoryCapacity.gridy = 1;
 		memoryPropertyPanel.add(memoryCapacity, gbc_memoryCapacity);
-		
+
 		memoryCapacityTf = new JTextField();
 		GridBagConstraints gbc_memoryCapacityTf = new GridBagConstraints();
 		gbc_memoryCapacityTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1075,7 +1075,7 @@ public class FerrumX {
 		memoryPropertyPanel.add(memoryCapacityTf, gbc_memoryCapacityTf);
 		memoryCapacityTf.setEditable(false);
 		memoryCapacityTf.setColumns(10);
-		
+
 		JLabel memoryWidth = new JLabel("Data Width");
 		GridBagConstraints gbc_memoryWidth = new GridBagConstraints();
 		gbc_memoryWidth.anchor = GridBagConstraints.EAST;
@@ -1083,7 +1083,7 @@ public class FerrumX {
 		gbc_memoryWidth.gridx = 0;
 		gbc_memoryWidth.gridy = 2;
 		memoryPropertyPanel.add(memoryWidth, gbc_memoryWidth);
-		
+
 		memoryWidthTf = new JTextField();
 		GridBagConstraints gbc_memoryWidthTf = new GridBagConstraints();
 		gbc_memoryWidthTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1093,7 +1093,7 @@ public class FerrumX {
 		memoryPropertyPanel.add(memoryWidthTf, gbc_memoryWidthTf);
 		memoryWidthTf.setEditable(false);
 		memoryWidthTf.setColumns(10);
-		
+
 		JLabel memorySpeed = new JLabel("Speed");
 		GridBagConstraints gbc_memorySpeed = new GridBagConstraints();
 		gbc_memorySpeed.anchor = GridBagConstraints.EAST;
@@ -1101,7 +1101,7 @@ public class FerrumX {
 		gbc_memorySpeed.gridx = 0;
 		gbc_memorySpeed.gridy = 3;
 		memoryPropertyPanel.add(memorySpeed, gbc_memorySpeed);
-		
+
 		memorySpeedTf = new JTextField();
 		GridBagConstraints gbc_memorySpeedTf = new GridBagConstraints();
 		gbc_memorySpeedTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1111,7 +1111,7 @@ public class FerrumX {
 		memoryPropertyPanel.add(memorySpeedTf, gbc_memorySpeedTf);
 		memorySpeedTf.setEditable(false);
 		memorySpeedTf.setColumns(10);
-		
+
 		JLabel memoryConfigClockSpeed = new JLabel("Configured Clock Speed");
 		GridBagConstraints gbc_memoryConfigClockSpeed = new GridBagConstraints();
 		gbc_memoryConfigClockSpeed.anchor = GridBagConstraints.EAST;
@@ -1119,7 +1119,7 @@ public class FerrumX {
 		gbc_memoryConfigClockSpeed.gridx = 0;
 		gbc_memoryConfigClockSpeed.gridy = 4;
 		memoryPropertyPanel.add(memoryConfigClockSpeed, gbc_memoryConfigClockSpeed);
-		
+
 		memoryConfigClockSpeedTf = new JTextField();
 		GridBagConstraints gbc_memoryConfigClockSpeedTf = new GridBagConstraints();
 		gbc_memoryConfigClockSpeedTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1129,7 +1129,7 @@ public class FerrumX {
 		memoryPropertyPanel.add(memoryConfigClockSpeedTf, gbc_memoryConfigClockSpeedTf);
 		memoryConfigClockSpeedTf.setEditable(false);
 		memoryConfigClockSpeedTf.setColumns(10);
-		
+
 		JLabel memoryLocator = new JLabel("Device Locator");
 		GridBagConstraints gbc_memoryLocator = new GridBagConstraints();
 		gbc_memoryLocator.anchor = GridBagConstraints.EAST;
@@ -1137,7 +1137,7 @@ public class FerrumX {
 		gbc_memoryLocator.gridx = 0;
 		gbc_memoryLocator.gridy = 5;
 		memoryPropertyPanel.add(memoryLocator, gbc_memoryLocator);
-		
+
 		memoryLocatorTf = new JTextField();
 		GridBagConstraints gbc_memoryLocatorTf = new GridBagConstraints();
 		gbc_memoryLocatorTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1157,7 +1157,7 @@ public class FerrumX {
 		gbl_mainBoardPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_mainBoardPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		mainBoardPanel.setLayout(gbl_mainBoardPanel);
-		
+
 		JPanel mainboardPanel = new JPanel();
 		mainboardPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Mainboard", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_mainboardPanel = new GridBagConstraints();
@@ -1172,7 +1172,7 @@ public class FerrumX {
 		gbl_mainboardPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_mainboardPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		mainboardPanel.setLayout(gbl_mainboardPanel);
-		
+
 		JLabel mbManufacturer = new JLabel("Manufacturer");
 		GridBagConstraints gbc_mbManufacturer = new GridBagConstraints();
 		gbc_mbManufacturer.insets = new Insets(0, 0, 5, 5);
@@ -1180,7 +1180,7 @@ public class FerrumX {
 		gbc_mbManufacturer.gridx = 0;
 		gbc_mbManufacturer.gridy = 0;
 		mainboardPanel.add(mbManufacturer, gbc_mbManufacturer);
-		
+
 		mbManufacturerTf = new JTextField();
 		mbManufacturerTf.setEditable(false);
 		GridBagConstraints gbc_mbManufacturerTf = new GridBagConstraints();
@@ -1190,7 +1190,7 @@ public class FerrumX {
 		gbc_mbManufacturerTf.gridy = 0;
 		mainboardPanel.add(mbManufacturerTf, gbc_mbManufacturerTf);
 		mbManufacturerTf.setColumns(10);
-		
+
 		JLabel mbModel = new JLabel("Model");
 		GridBagConstraints gbc_mbModel = new GridBagConstraints();
 		gbc_mbModel.anchor = GridBagConstraints.EAST;
@@ -1198,7 +1198,7 @@ public class FerrumX {
 		gbc_mbModel.gridx = 0;
 		gbc_mbModel.gridy = 1;
 		mainboardPanel.add(mbModel, gbc_mbModel);
-		
+
 		mbModelTf = new JTextField();
 		mbModelTf.setEditable(false);
 		GridBagConstraints gbc_mbModelTf = new GridBagConstraints();
@@ -1208,7 +1208,7 @@ public class FerrumX {
 		gbc_mbModelTf.gridy = 1;
 		mainboardPanel.add(mbModelTf, gbc_mbModelTf);
 		mbModelTf.setColumns(10);
-		
+
 		JLabel mbProduct = new JLabel("Product");
 		GridBagConstraints gbc_mbProduct = new GridBagConstraints();
 		gbc_mbProduct.insets = new Insets(0, 0, 5, 5);
@@ -1216,7 +1216,7 @@ public class FerrumX {
 		gbc_mbProduct.gridx = 0;
 		gbc_mbProduct.gridy = 2;
 		mainboardPanel.add(mbProduct, gbc_mbProduct);
-		
+
 		mbProductTf = new JTextField();
 		mbProductTf.setEditable(false);
 		GridBagConstraints gbc_mbProductTf = new GridBagConstraints();
@@ -1226,7 +1226,7 @@ public class FerrumX {
 		gbc_mbProductTf.gridy = 2;
 		mainboardPanel.add(mbProductTf, gbc_mbProductTf);
 		mbProductTf.setColumns(10);
-		
+
 		JLabel mbSerialNumber = new JLabel("Serial Number");
 		GridBagConstraints gbc_mbSerialNumber = new GridBagConstraints();
 		gbc_mbSerialNumber.anchor = GridBagConstraints.EAST;
@@ -1234,7 +1234,7 @@ public class FerrumX {
 		gbc_mbSerialNumber.gridx = 0;
 		gbc_mbSerialNumber.gridy = 3;
 		mainboardPanel.add(mbSerialNumber, gbc_mbSerialNumber);
-		
+
 		mbSerialNumberTf = new JTextField();
 		mbSerialNumberTf.setEditable(false);
 		GridBagConstraints gbc_mbSerialNumberTf = new GridBagConstraints();
@@ -1244,7 +1244,7 @@ public class FerrumX {
 		gbc_mbSerialNumberTf.gridy = 3;
 		mainboardPanel.add(mbSerialNumberTf, gbc_mbSerialNumberTf);
 		mbSerialNumberTf.setColumns(10);
-		
+
 		JLabel mbVersion = new JLabel("Version");
 		GridBagConstraints gbc_mbVersion = new GridBagConstraints();
 		gbc_mbVersion.anchor = GridBagConstraints.EAST;
@@ -1252,7 +1252,7 @@ public class FerrumX {
 		gbc_mbVersion.gridx = 0;
 		gbc_mbVersion.gridy = 4;
 		mainboardPanel.add(mbVersion, gbc_mbVersion);
-		
+
 		mbVersionTf = new JTextField();
 		mbVersionTf.setEditable(false);
 		GridBagConstraints gbc_mbVersionTf = new GridBagConstraints();
@@ -1262,7 +1262,7 @@ public class FerrumX {
 		gbc_mbVersionTf.gridy = 4;
 		mainboardPanel.add(mbVersionTf, gbc_mbVersionTf);
 		mbVersionTf.setColumns(10);
-		
+
 		JLabel mbPnp = new JLabel("PNP Device ID");
 		GridBagConstraints gbc_mbPnp = new GridBagConstraints();
 		gbc_mbPnp.anchor = GridBagConstraints.EAST;
@@ -1270,7 +1270,7 @@ public class FerrumX {
 		gbc_mbPnp.gridx = 0;
 		gbc_mbPnp.gridy = 5;
 		mainboardPanel.add(mbPnp, gbc_mbPnp);
-		
+
 		mbPnpTf = new JTextField();
 		mbPnpTf.setEditable(false);
 		GridBagConstraints gbc_mbPnpTf = new GridBagConstraints();
@@ -1279,7 +1279,7 @@ public class FerrumX {
 		gbc_mbPnpTf.gridy = 5;
 		mainboardPanel.add(mbPnpTf, gbc_mbPnpTf);
 		mbPnpTf.setColumns(10);
-		
+
 		JPanel biosPanel = new JPanel();
 		biosPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Mainboard BIOS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_biosPanel = new GridBagConstraints();
@@ -1293,7 +1293,7 @@ public class FerrumX {
 		gbl_biosPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_biosPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		biosPanel.setLayout(gbl_biosPanel);
-		
+
 		JLabel biosName = new JLabel("Name");
 		GridBagConstraints gbc_biosName = new GridBagConstraints();
 		gbc_biosName.anchor = GridBagConstraints.EAST;
@@ -1301,7 +1301,7 @@ public class FerrumX {
 		gbc_biosName.gridx = 0;
 		gbc_biosName.gridy = 0;
 		biosPanel.add(biosName, gbc_biosName);
-		
+
 		biosNameTf = new JTextField();
 		biosNameTf.setEditable(false);
 		GridBagConstraints gbc_biosNameTf = new GridBagConstraints();
@@ -1311,7 +1311,7 @@ public class FerrumX {
 		gbc_biosNameTf.gridy = 0;
 		biosPanel.add(biosNameTf, gbc_biosNameTf);
 		biosNameTf.setColumns(10);
-		
+
 		JLabel biosCaption = new JLabel("Caption");
 		GridBagConstraints gbc_biosCaption = new GridBagConstraints();
 		gbc_biosCaption.anchor = GridBagConstraints.EAST;
@@ -1319,7 +1319,7 @@ public class FerrumX {
 		gbc_biosCaption.gridx = 0;
 		gbc_biosCaption.gridy = 1;
 		biosPanel.add(biosCaption, gbc_biosCaption);
-		
+
 		biosCaptionTf = new JTextField();
 		biosCaptionTf.setEditable(false);
 		GridBagConstraints gbc_biosCaptionTf = new GridBagConstraints();
@@ -1329,7 +1329,7 @@ public class FerrumX {
 		gbc_biosCaptionTf.gridy = 1;
 		biosPanel.add(biosCaptionTf, gbc_biosCaptionTf);
 		biosCaptionTf.setColumns(10);
-		
+
 		JLabel biosManufacturer = new JLabel("Manufacturer");
 		GridBagConstraints gbc_biosManufacturer = new GridBagConstraints();
 		gbc_biosManufacturer.anchor = GridBagConstraints.EAST;
@@ -1337,7 +1337,7 @@ public class FerrumX {
 		gbc_biosManufacturer.gridx = 0;
 		gbc_biosManufacturer.gridy = 2;
 		biosPanel.add(biosManufacturer, gbc_biosManufacturer);
-		
+
 		biosManufacturerTf = new JTextField();
 		biosManufacturerTf.setEditable(false);
 		GridBagConstraints gbc_biosManufacturerTf = new GridBagConstraints();
@@ -1347,7 +1347,7 @@ public class FerrumX {
 		gbc_biosManufacturerTf.gridy = 2;
 		biosPanel.add(biosManufacturerTf, gbc_biosManufacturerTf);
 		biosManufacturerTf.setColumns(10);
-		
+
 		JLabel biosRelease = new JLabel("Release Date");
 		GridBagConstraints gbc_biosRelease = new GridBagConstraints();
 		gbc_biosRelease.anchor = GridBagConstraints.EAST;
@@ -1355,7 +1355,7 @@ public class FerrumX {
 		gbc_biosRelease.gridx = 0;
 		gbc_biosRelease.gridy = 3;
 		biosPanel.add(biosRelease, gbc_biosRelease);
-		
+
 		biosReleaseDateTf = new JTextField();
 		biosReleaseDateTf.setEditable(false);
 		GridBagConstraints gbc_biosReleaseDateTf = new GridBagConstraints();
@@ -1365,7 +1365,7 @@ public class FerrumX {
 		gbc_biosReleaseDateTf.gridy = 3;
 		biosPanel.add(biosReleaseDateTf, gbc_biosReleaseDateTf);
 		biosReleaseDateTf.setColumns(10);
-		
+
 		JLabel biosVersion = new JLabel("Version");
 		GridBagConstraints gbc_biosVersion = new GridBagConstraints();
 		gbc_biosVersion.anchor = GridBagConstraints.EAST;
@@ -1373,7 +1373,7 @@ public class FerrumX {
 		gbc_biosVersion.gridx = 0;
 		gbc_biosVersion.gridy = 4;
 		biosPanel.add(biosVersion, gbc_biosVersion);
-		
+
 		biosVersionTf = new JTextField();
 		biosVersionTf.setEditable(false);
 		GridBagConstraints gbc_biosVersionTf = new GridBagConstraints();
@@ -1383,7 +1383,7 @@ public class FerrumX {
 		gbc_biosVersionTf.gridy = 4;
 		biosPanel.add(biosVersionTf, gbc_biosVersionTf);
 		biosVersionTf.setColumns(10);
-		
+
 		JLabel biosStatus = new JLabel("Status");
 		GridBagConstraints gbc_biosStatus = new GridBagConstraints();
 		gbc_biosStatus.anchor = GridBagConstraints.EAST;
@@ -1391,7 +1391,7 @@ public class FerrumX {
 		gbc_biosStatus.gridx = 0;
 		gbc_biosStatus.gridy = 5;
 		biosPanel.add(biosStatus, gbc_biosStatus);
-		
+
 		biosStatusTf = new JTextField();
 		biosStatusTf.setEditable(false);
 		GridBagConstraints gbc_biosStatusTf = new GridBagConstraints();
@@ -1401,7 +1401,7 @@ public class FerrumX {
 		gbc_biosStatusTf.gridy = 5;
 		biosPanel.add(biosStatusTf, gbc_biosStatusTf);
 		biosStatusTf.setColumns(10);
-		
+
 		JLabel smbiosPresence = new JLabel("SMBIOS Present");
 		GridBagConstraints gbc_smbiosPresence = new GridBagConstraints();
 		gbc_smbiosPresence.anchor = GridBagConstraints.EAST;
@@ -1409,7 +1409,7 @@ public class FerrumX {
 		gbc_smbiosPresence.gridx = 0;
 		gbc_smbiosPresence.gridy = 6;
 		biosPanel.add(smbiosPresence, gbc_smbiosPresence);
-		
+
 		smbiosPresenceTf = new JTextField();
 		smbiosPresenceTf.setEditable(false);
 		GridBagConstraints gbc_smbiosPresenceTf = new GridBagConstraints();
@@ -1419,7 +1419,7 @@ public class FerrumX {
 		gbc_smbiosPresenceTf.gridy = 6;
 		biosPanel.add(smbiosPresenceTf, gbc_smbiosPresenceTf);
 		smbiosPresenceTf.setColumns(10);
-		
+
 		JLabel smbiosVersion = new JLabel("SMBIOS Version");
 		GridBagConstraints gbc_smbiosVersion = new GridBagConstraints();
 		gbc_smbiosVersion.anchor = GridBagConstraints.EAST;
@@ -1427,7 +1427,7 @@ public class FerrumX {
 		gbc_smbiosVersion.gridx = 0;
 		gbc_smbiosVersion.gridy = 7;
 		biosPanel.add(smbiosVersion, gbc_smbiosVersion);
-		
+
 		smbiosVersionTf = new JTextField();
 		smbiosVersionTf.setEditable(false);
 		GridBagConstraints gbc_smbiosVersionTf = new GridBagConstraints();
@@ -1437,7 +1437,7 @@ public class FerrumX {
 		gbc_smbiosVersionTf.gridy = 7;
 		biosPanel.add(smbiosVersionTf, gbc_smbiosVersionTf);
 		smbiosVersionTf.setColumns(10);
-		
+
 		JLabel biosLanguage = new JLabel("Current Language");
 		GridBagConstraints gbc_biosLanguage = new GridBagConstraints();
 		gbc_biosLanguage.anchor = GridBagConstraints.EAST;
@@ -1445,7 +1445,7 @@ public class FerrumX {
 		gbc_biosLanguage.gridx = 0;
 		gbc_biosLanguage.gridy = 8;
 		biosPanel.add(biosLanguage, gbc_biosLanguage);
-		
+
 		biosLanguageTf = new JTextField();
 		biosLanguageTf.setEditable(false);
 		GridBagConstraints gbc_biosLanguageTf = new GridBagConstraints();
@@ -1455,7 +1455,7 @@ public class FerrumX {
 		biosPanel.add(biosLanguageTf, gbc_biosLanguageTf);
 		biosLanguageTf.setColumns(10);
 	}
-	
+
 	private void initializeGpuPanel(JTabbedPane tabbedPane, JPanel gpuPanel) {
 		gpuPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Video Controller", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tabbedPane.addTab("GPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/GPU_32x32.png")), gpuPanel, "Displays basic information about your GPUs");
@@ -1465,7 +1465,7 @@ public class FerrumX {
 		gbl_gpuPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_gpuPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gpuPanel.setLayout(gbl_gpuPanel);
-		
+
 		JPanel gpuIdentifierPanel = new JPanel();
 		gpuIdentifierPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Identifier", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
 		GridBagConstraints gbc_gpuIdentifierPanel = new GridBagConstraints();
@@ -1480,7 +1480,7 @@ public class FerrumX {
 		gbl_gpuIdentifierPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_gpuIdentifierPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gpuIdentifierPanel.setLayout(gbl_gpuIdentifierPanel);
-		
+
 		JLabel gpuChoice = new JLabel("GPU#");
 		GridBagConstraints gbc_gpuChoice = new GridBagConstraints();
 		gbc_gpuChoice.anchor = GridBagConstraints.EAST;
@@ -1488,7 +1488,7 @@ public class FerrumX {
 		gbc_gpuChoice.gridx = 0;
 		gbc_gpuChoice.gridy = 0;
 		gpuIdentifierPanel.add(gpuChoice, gbc_gpuChoice);
-		
+
 		gpuChoiceComboBox = new JComboBox<>();
 		GridBagConstraints gbc_gpuChoiceComboBox = new GridBagConstraints();
 		gbc_gpuChoiceComboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -1496,7 +1496,7 @@ public class FerrumX {
 		gbc_gpuChoiceComboBox.gridx = 1;
 		gbc_gpuChoiceComboBox.gridy = 0;
 		gpuIdentifierPanel.add(gpuChoiceComboBox, gbc_gpuChoiceComboBox);
-		
+
 		JLabel gpuName = new JLabel("Name");
 		GridBagConstraints gbc_gpuName = new GridBagConstraints();
 		gbc_gpuName.anchor = GridBagConstraints.EAST;
@@ -1504,7 +1504,7 @@ public class FerrumX {
 		gbc_gpuName.gridx = 0;
 		gbc_gpuName.gridy = 1;
 		gpuIdentifierPanel.add(gpuName, gbc_gpuName);
-		
+
 		gpuNameTf = new JTextField();
 		GridBagConstraints gbc_gpuNameTf = new GridBagConstraints();
 		gbc_gpuNameTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1514,7 +1514,7 @@ public class FerrumX {
 		gpuIdentifierPanel.add(gpuNameTf, gbc_gpuNameTf);
 		gpuNameTf.setEditable(false);
 		gpuNameTf.setColumns(10);
-		
+
 		JLabel gpuPnpId = new JLabel("PNP Device ID");
 		GridBagConstraints gbc_gpuPnpId = new GridBagConstraints();
 		gbc_gpuPnpId.anchor = GridBagConstraints.EAST;
@@ -1522,7 +1522,7 @@ public class FerrumX {
 		gbc_gpuPnpId.gridx = 0;
 		gbc_gpuPnpId.gridy = 2;
 		gpuIdentifierPanel.add(gpuPnpId, gbc_gpuPnpId);
-		
+
 		gpuPnpTf = new JTextField();
 		GridBagConstraints gbc_gpuPnpTf = new GridBagConstraints();
 		gbc_gpuPnpTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1531,14 +1531,14 @@ public class FerrumX {
 		gpuIdentifierPanel.add(gpuPnpTf, gbc_gpuPnpTf);
 		gpuPnpTf.setEditable(false);
 		gpuPnpTf.setColumns(10);
-		
+
 		JSeparator separator = new JSeparator();
 		GridBagConstraints gbc_separator = new GridBagConstraints();
 		gbc_separator.insets = new Insets(0, 0, 5, 0);
 		gbc_separator.gridx = 0;
 		gbc_separator.gridy = 1;
 		gpuPanel.add(separator, gbc_separator);
-		
+
 		JPanel displayInfoPanel = new JPanel();
 		displayInfoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Display Information", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
 		GridBagConstraints gbc_displayInfoPanel = new GridBagConstraints();
@@ -1553,7 +1553,7 @@ public class FerrumX {
 		gbl_displayInfoPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_displayInfoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		displayInfoPanel.setLayout(gbl_displayInfoPanel);
-		
+
 		JLabel gpuHorizontal = new JLabel("Horizontal Res");
 		GridBagConstraints gbc_gpuHorizontal = new GridBagConstraints();
 		gbc_gpuHorizontal.anchor = GridBagConstraints.EAST;
@@ -1561,7 +1561,7 @@ public class FerrumX {
 		gbc_gpuHorizontal.gridx = 0;
 		gbc_gpuHorizontal.gridy = 0;
 		displayInfoPanel.add(gpuHorizontal, gbc_gpuHorizontal);
-		
+
 		gpuHorizontalResTf = new JTextField();
 		GridBagConstraints gbc_gpuHorizontalResTf = new GridBagConstraints();
 		gbc_gpuHorizontalResTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1571,7 +1571,7 @@ public class FerrumX {
 		displayInfoPanel.add(gpuHorizontalResTf, gbc_gpuHorizontalResTf);
 		gpuHorizontalResTf.setEditable(false);
 		gpuHorizontalResTf.setColumns(10);
-		
+
 		JLabel gpuVertical = new JLabel("Vertical Res");
 		GridBagConstraints gbc_gpuVertical = new GridBagConstraints();
 		gbc_gpuVertical.anchor = GridBagConstraints.EAST;
@@ -1579,7 +1579,7 @@ public class FerrumX {
 		gbc_gpuVertical.gridx = 0;
 		gbc_gpuVertical.gridy = 1;
 		displayInfoPanel.add(gpuVertical, gbc_gpuVertical);
-		
+
 		gpuVerticalResTf = new JTextField();
 		GridBagConstraints gbc_gpuVerticalResTf = new GridBagConstraints();
 		gbc_gpuVerticalResTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1589,7 +1589,7 @@ public class FerrumX {
 		displayInfoPanel.add(gpuVerticalResTf, gbc_gpuVerticalResTf);
 		gpuVerticalResTf.setEditable(false);
 		gpuVerticalResTf.setColumns(10);
-		
+
 		JLabel gpuBitsPerPixel = new JLabel("Bits Per Pixel");
 		GridBagConstraints gbc_gpuBitsPerPixel = new GridBagConstraints();
 		gbc_gpuBitsPerPixel.anchor = GridBagConstraints.EAST;
@@ -1597,7 +1597,7 @@ public class FerrumX {
 		gbc_gpuBitsPerPixel.gridx = 0;
 		gbc_gpuBitsPerPixel.gridy = 2;
 		displayInfoPanel.add(gpuBitsPerPixel, gbc_gpuBitsPerPixel);
-		
+
 		gpuBitsTf = new JTextField();
 		GridBagConstraints gbc_gpuBitsTf = new GridBagConstraints();
 		gbc_gpuBitsTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1607,7 +1607,7 @@ public class FerrumX {
 		displayInfoPanel.add(gpuBitsTf, gbc_gpuBitsTf);
 		gpuBitsTf.setEditable(false);
 		gpuBitsTf.setColumns(10);
-		
+
 		JLabel gpuMinRef = new JLabel("Min Refresh Rate");
 		GridBagConstraints gbc_gpuMinRef = new GridBagConstraints();
 		gbc_gpuMinRef.anchor = GridBagConstraints.EAST;
@@ -1615,7 +1615,7 @@ public class FerrumX {
 		gbc_gpuMinRef.gridx = 0;
 		gbc_gpuMinRef.gridy = 3;
 		displayInfoPanel.add(gpuMinRef, gbc_gpuMinRef);
-		
+
 		gpuMinRefTf = new JTextField();
 		GridBagConstraints gbc_gpuMinRefTf = new GridBagConstraints();
 		gbc_gpuMinRefTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1625,7 +1625,7 @@ public class FerrumX {
 		displayInfoPanel.add(gpuMinRefTf, gbc_gpuMinRefTf);
 		gpuMinRefTf.setEditable(false);
 		gpuMinRefTf.setColumns(10);
-		
+
 		JLabel gpuMaxRef = new JLabel("Max Refresh Rate");
 		GridBagConstraints gbc_gpuMaxRef = new GridBagConstraints();
 		gbc_gpuMaxRef.anchor = GridBagConstraints.EAST;
@@ -1633,7 +1633,7 @@ public class FerrumX {
 		gbc_gpuMaxRef.gridx = 0;
 		gbc_gpuMaxRef.gridy = 4;
 		displayInfoPanel.add(gpuMaxRef, gbc_gpuMaxRef);
-		
+
 		gpuMaxRefTf = new JTextField();
 		GridBagConstraints gbc_gpuMaxRefTf = new GridBagConstraints();
 		gbc_gpuMaxRefTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1643,7 +1643,7 @@ public class FerrumX {
 		displayInfoPanel.add(gpuMaxRefTf, gbc_gpuMaxRefTf);
 		gpuMaxRefTf.setEditable(false);
 		gpuMaxRefTf.setColumns(10);
-		
+
 		JLabel gpuCurrentRef = new JLabel("Current Refresh Rate");
 		GridBagConstraints gbc_gpuCurrentRef = new GridBagConstraints();
 		gbc_gpuCurrentRef.anchor = GridBagConstraints.EAST;
@@ -1651,7 +1651,7 @@ public class FerrumX {
 		gbc_gpuCurrentRef.gridx = 0;
 		gbc_gpuCurrentRef.gridy = 5;
 		displayInfoPanel.add(gpuCurrentRef, gbc_gpuCurrentRef);
-		
+
 		gpuCurrentRefTf = new JTextField();
 		GridBagConstraints gbc_gpuCurrentRefTf = new GridBagConstraints();
 		gbc_gpuCurrentRefTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1660,14 +1660,14 @@ public class FerrumX {
 		displayInfoPanel.add(gpuCurrentRefTf, gbc_gpuCurrentRefTf);
 		gpuCurrentRefTf.setEditable(false);
 		gpuCurrentRefTf.setColumns(10);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
 		gbc_separator_1.insets = new Insets(0, 0, 5, 0);
 		gbc_separator_1.gridx = 0;
 		gbc_separator_1.gridy = 3;
 		gpuPanel.add(separator_1, gbc_separator_1);
-		
+
 		JPanel gpuVramAndDriverPanel = new JPanel();
 		gpuVramAndDriverPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "VRAM and Driver Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_gpuVramAndDriverPanel = new GridBagConstraints();
@@ -1681,7 +1681,7 @@ public class FerrumX {
 		gbl_gpuVramAndDriverPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_gpuVramAndDriverPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gpuVramAndDriverPanel.setLayout(gbl_gpuVramAndDriverPanel);
-		
+
 		JLabel gpuAdapterDACType = new JLabel("Adapter DAC Type");
 		GridBagConstraints gbc_gpuAdapterDACType = new GridBagConstraints();
 		gbc_gpuAdapterDACType.anchor = GridBagConstraints.EAST;
@@ -1689,7 +1689,7 @@ public class FerrumX {
 		gbc_gpuAdapterDACType.gridx = 0;
 		gbc_gpuAdapterDACType.gridy = 0;
 		gpuVramAndDriverPanel.add(gpuAdapterDACType, gbc_gpuAdapterDACType);
-		
+
 		gpuDACTf = new JTextField();
 		GridBagConstraints gbc_gpuDACTf = new GridBagConstraints();
 		gbc_gpuDACTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1699,7 +1699,7 @@ public class FerrumX {
 		gpuVramAndDriverPanel.add(gpuDACTf, gbc_gpuDACTf);
 		gpuDACTf.setEditable(false);
 		gpuDACTf.setColumns(10);
-		
+
 		JLabel gpuVram = new JLabel("VRAM");
 		GridBagConstraints gbc_gpuVram = new GridBagConstraints();
 		gbc_gpuVram.anchor = GridBagConstraints.EAST;
@@ -1707,7 +1707,7 @@ public class FerrumX {
 		gbc_gpuVram.gridx = 0;
 		gbc_gpuVram.gridy = 1;
 		gpuVramAndDriverPanel.add(gpuVram, gbc_gpuVram);
-		
+
 		gpuVramTf = new JTextField();
 		GridBagConstraints gbc_gpuVramTf = new GridBagConstraints();
 		gbc_gpuVramTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1717,7 +1717,7 @@ public class FerrumX {
 		gpuVramAndDriverPanel.add(gpuVramTf, gbc_gpuVramTf);
 		gpuVramTf.setEditable(false);
 		gpuVramTf.setColumns(10);
-		
+
 		JLabel gpuDriverVersion = new JLabel("Driver Version");
 		GridBagConstraints gbc_gpuDriverVersion = new GridBagConstraints();
 		gbc_gpuDriverVersion.anchor = GridBagConstraints.EAST;
@@ -1725,7 +1725,7 @@ public class FerrumX {
 		gbc_gpuDriverVersion.gridx = 0;
 		gbc_gpuDriverVersion.gridy = 2;
 		gpuVramAndDriverPanel.add(gpuDriverVersion, gbc_gpuDriverVersion);
-		
+
 		gpuDriverVersionTf = new JTextField();
 		GridBagConstraints gbc_gpuDriverVersionTf = new GridBagConstraints();
 		gbc_gpuDriverVersionTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1735,7 +1735,7 @@ public class FerrumX {
 		gpuVramAndDriverPanel.add(gpuDriverVersionTf, gbc_gpuDriverVersionTf);
 		gpuDriverVersionTf.setEditable(false);
 		gpuDriverVersionTf.setColumns(10);
-		
+
 		JLabel gpuDriverDate = new JLabel("Driver Date");
 		GridBagConstraints gbc_gpuDriverDate = new GridBagConstraints();
 		gbc_gpuDriverDate.anchor = GridBagConstraints.EAST;
@@ -1743,7 +1743,7 @@ public class FerrumX {
 		gbc_gpuDriverDate.gridx = 0;
 		gbc_gpuDriverDate.gridy = 3;
 		gpuVramAndDriverPanel.add(gpuDriverDate, gbc_gpuDriverDate);
-		
+
 		gpuDriverDateTf = new JTextField();
 		GridBagConstraints gbc_gpuDriverDateTf = new GridBagConstraints();
 		gbc_gpuDriverDateTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1753,7 +1753,7 @@ public class FerrumX {
 		gpuVramAndDriverPanel.add(gpuDriverDateTf, gbc_gpuDriverDateTf);
 		gpuDriverDateTf.setEditable(false);
 		gpuDriverDateTf.setColumns(10);
-		
+
 		JLabel gpuProcessor = new JLabel("Video Processor");
 		GridBagConstraints gbc_gpuProcessor = new GridBagConstraints();
 		gbc_gpuProcessor.anchor = GridBagConstraints.EAST;
@@ -1761,7 +1761,7 @@ public class FerrumX {
 		gbc_gpuProcessor.gridx = 0;
 		gbc_gpuProcessor.gridy = 4;
 		gpuVramAndDriverPanel.add(gpuProcessor, gbc_gpuProcessor);
-		
+
 		gpuVideoProcessorTf = new JTextField();
 		GridBagConstraints gbc_gpuVideoProcessorTf = new GridBagConstraints();
 		gbc_gpuVideoProcessorTf.fill = GridBagConstraints.HORIZONTAL;
@@ -1771,7 +1771,7 @@ public class FerrumX {
 		gpuVideoProcessorTf.setEditable(false);
 		gpuVideoProcessorTf.setColumns(10);
 	}
-	
+
 	private void initializeNetworkPanel(JTabbedPane tabbedPane, JPanel networkPanel) {
 		tabbedPane.addTab("Network", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Network_16x16.png")), networkPanel, "Displays network information");
 		GridBagLayout gbl_networkPanel = new GridBagLayout();
@@ -1780,7 +1780,7 @@ public class FerrumX {
 		gbl_networkPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_networkPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		networkPanel.setLayout(gbl_networkPanel);
-		
+
 		JPanel adapterPanel = new JPanel();
 		adapterPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Adapter Properties", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_adapterPanel = new GridBagConstraints();
@@ -1795,7 +1795,7 @@ public class FerrumX {
 		gbl_adapterPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_adapterPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		adapterPanel.setLayout(gbl_adapterPanel);
-		
+
 		JLabel netConnectionChoice = new JLabel("Connection ID");
 		GridBagConstraints gbc_netConnectionChoice = new GridBagConstraints();
 		gbc_netConnectionChoice.anchor = GridBagConstraints.EAST;
@@ -1803,7 +1803,7 @@ public class FerrumX {
 		gbc_netConnectionChoice.gridx = 0;
 		gbc_netConnectionChoice.gridy = 0;
 		adapterPanel.add(netConnectionChoice, gbc_netConnectionChoice);
-		
+
 		netConnectionChoiceBox = new JComboBox<>();
 		GridBagConstraints gbc_netConnectionChoiceBox = new GridBagConstraints();
 		gbc_netConnectionChoiceBox.gridwidth = 2;
@@ -1812,7 +1812,7 @@ public class FerrumX {
 		gbc_netConnectionChoiceBox.gridx = 1;
 		gbc_netConnectionChoiceBox.gridy = 0;
 		adapterPanel.add(netConnectionChoiceBox, gbc_netConnectionChoiceBox);
-		
+
 		JLabel netName = new JLabel("Name");
 		GridBagConstraints gbc_netName = new GridBagConstraints();
 		gbc_netName.anchor = GridBagConstraints.EAST;
@@ -1820,7 +1820,7 @@ public class FerrumX {
 		gbc_netName.gridx = 0;
 		gbc_netName.gridy = 1;
 		adapterPanel.add(netName, gbc_netName);
-		
+
 		netNameTf = new JTextField();
 		netNameTf.setEditable(false);
 		GridBagConstraints gbc_netNameTf = new GridBagConstraints();
@@ -1831,7 +1831,7 @@ public class FerrumX {
 		gbc_netNameTf.gridy = 1;
 		adapterPanel.add(netNameTf, gbc_netNameTf);
 		netNameTf.setColumns(10);
-		
+
 		JLabel netPnp = new JLabel("PNP Device ID");
 		GridBagConstraints gbc_netPnp = new GridBagConstraints();
 		gbc_netPnp.anchor = GridBagConstraints.EAST;
@@ -1839,7 +1839,7 @@ public class FerrumX {
 		gbc_netPnp.gridx = 0;
 		gbc_netPnp.gridy = 2;
 		adapterPanel.add(netPnp, gbc_netPnp);
-		
+
 		netPnpTf = new JTextField();
 		netPnpTf.setEditable(false);
 		GridBagConstraints gbc_netPnpTf = new GridBagConstraints();
@@ -1850,7 +1850,7 @@ public class FerrumX {
 		gbc_netPnpTf.gridy = 2;
 		adapterPanel.add(netPnpTf, gbc_netPnpTf);
 		netPnpTf.setColumns(10);
-		
+
 		JLabel netMac = new JLabel("MAC Address");
 		GridBagConstraints gbc_netMac = new GridBagConstraints();
 		gbc_netMac.anchor = GridBagConstraints.EAST;
@@ -1858,7 +1858,7 @@ public class FerrumX {
 		gbc_netMac.gridx = 0;
 		gbc_netMac.gridy = 3;
 		adapterPanel.add(netMac, gbc_netMac);
-		
+
 		netMacTf = new JTextField();
 		netMacTf.setEditable(false);
 		GridBagConstraints gbc_netMacTf = new GridBagConstraints();
@@ -1869,7 +1869,7 @@ public class FerrumX {
 		gbc_netMacTf.gridy = 3;
 		adapterPanel.add(netMacTf, gbc_netMacTf);
 		netMacTf.setColumns(10);
-		
+
 		JLabel netConnectionId = new JLabel("Net Connection ID");
 		GridBagConstraints gbc_netConnectionId = new GridBagConstraints();
 		gbc_netConnectionId.anchor = GridBagConstraints.EAST;
@@ -1877,7 +1877,7 @@ public class FerrumX {
 		gbc_netConnectionId.gridx = 0;
 		gbc_netConnectionId.gridy = 4;
 		adapterPanel.add(netConnectionId, gbc_netConnectionId);
-		
+
 		netConnectIdTf = new JTextField();
 		netConnectIdTf.setEditable(false);
 		GridBagConstraints gbc_netConnectIdTf = new GridBagConstraints();
@@ -1888,7 +1888,7 @@ public class FerrumX {
 		gbc_netConnectIdTf.gridy = 4;
 		adapterPanel.add(netConnectIdTf, gbc_netConnectIdTf);
 		netConnectIdTf.setColumns(10);
-		
+
 		JPanel connectionPanel = new JPanel();
 		connectionPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Connection Properties", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_connectionPanel = new GridBagConstraints();
@@ -1902,7 +1902,7 @@ public class FerrumX {
 		gbl_connectionPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_connectionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		connectionPanel.setLayout(gbl_connectionPanel);
-		
+
 		JLabel netIPStatus = new JLabel("IP Enabled");
 		GridBagConstraints gbc_netIPStatus = new GridBagConstraints();
 		gbc_netIPStatus.anchor = GridBagConstraints.EAST;
@@ -1910,7 +1910,7 @@ public class FerrumX {
 		gbc_netIPStatus.gridx = 0;
 		gbc_netIPStatus.gridy = 0;
 		connectionPanel.add(netIPStatus, gbc_netIPStatus);
-		
+
 		netIpStatusTf = new JTextField();
 		netIpStatusTf.setEditable(false);
 		GridBagConstraints gbc_netIpStatusTf = new GridBagConstraints();
@@ -1920,7 +1920,7 @@ public class FerrumX {
 		gbc_netIpStatusTf.gridy = 0;
 		connectionPanel.add(netIpStatusTf, gbc_netIpStatusTf);
 		netIpStatusTf.setColumns(10);
-		
+
 		JLabel netIPAddress = new JLabel("IP Address");
 		GridBagConstraints gbc_netIPAddress = new GridBagConstraints();
 		gbc_netIPAddress.anchor = GridBagConstraints.EAST;
@@ -1928,7 +1928,7 @@ public class FerrumX {
 		gbc_netIPAddress.gridx = 0;
 		gbc_netIPAddress.gridy = 1;
 		connectionPanel.add(netIPAddress, gbc_netIPAddress);
-		
+
 		netIPAddressTf = new JTextField();
 		netIPAddressTf.setEditable(false);
 		GridBagConstraints gbc_netIPAddressTf = new GridBagConstraints();
@@ -1938,7 +1938,7 @@ public class FerrumX {
 		gbc_netIPAddressTf.gridy = 1;
 		connectionPanel.add(netIPAddressTf, gbc_netIPAddressTf);
 		netIPAddressTf.setColumns(10);
-		
+
 		JLabel netIPSubnet = new JLabel("IP Subnet");
 		GridBagConstraints gbc_netIPSubnet = new GridBagConstraints();
 		gbc_netIPSubnet.anchor = GridBagConstraints.EAST;
@@ -1946,7 +1946,7 @@ public class FerrumX {
 		gbc_netIPSubnet.gridx = 0;
 		gbc_netIPSubnet.gridy = 2;
 		connectionPanel.add(netIPSubnet, gbc_netIPSubnet);
-		
+
 		netIPSubnetTf = new JTextField();
 		netIPSubnetTf.setEditable(false);
 		GridBagConstraints gbc_netIPSubnetTf = new GridBagConstraints();
@@ -1956,7 +1956,7 @@ public class FerrumX {
 		gbc_netIPSubnetTf.gridy = 2;
 		connectionPanel.add(netIPSubnetTf, gbc_netIPSubnetTf);
 		netIPSubnetTf.setColumns(10);
-		
+
 		JLabel netGateway = new JLabel("Default Gateway");
 		GridBagConstraints gbc_netGateway = new GridBagConstraints();
 		gbc_netGateway.anchor = GridBagConstraints.EAST;
@@ -1964,7 +1964,7 @@ public class FerrumX {
 		gbc_netGateway.gridx = 0;
 		gbc_netGateway.gridy = 3;
 		connectionPanel.add(netGateway, gbc_netGateway);
-		
+
 		netGatewayTf = new JTextField();
 		netGatewayTf.setEditable(false);
 		GridBagConstraints gbc_netGatewayTf = new GridBagConstraints();
@@ -1974,7 +1974,7 @@ public class FerrumX {
 		gbc_netGatewayTf.gridy = 3;
 		connectionPanel.add(netGatewayTf, gbc_netGatewayTf);
 		netGatewayTf.setColumns(10);
-		
+
 		JLabel netDHCPStatus = new JLabel("DHCP Enabled");
 		GridBagConstraints gbc_netDHCPStatus = new GridBagConstraints();
 		gbc_netDHCPStatus.anchor = GridBagConstraints.EAST;
@@ -1982,7 +1982,7 @@ public class FerrumX {
 		gbc_netDHCPStatus.gridx = 0;
 		gbc_netDHCPStatus.gridy = 4;
 		connectionPanel.add(netDHCPStatus, gbc_netDHCPStatus);
-		
+
 		netDHCPStatusTf = new JTextField();
 		netDHCPStatusTf.setEditable(false);
 		GridBagConstraints gbc_netDHCPStatusTf = new GridBagConstraints();
@@ -1992,14 +1992,14 @@ public class FerrumX {
 		gbc_netDHCPStatusTf.gridy = 4;
 		connectionPanel.add(netDHCPStatusTf, gbc_netDHCPStatusTf);
 		netDHCPStatusTf.setColumns(10);
-		
+
 		JLabel networkLogo = new JLabel("");
 		GridBagConstraints gbc_networkLogo = new GridBagConstraints();
 		gbc_networkLogo.insets = new Insets(0, 0, 5, 0);
 		gbc_networkLogo.gridx = 2;
 		gbc_networkLogo.gridy = 4;
 		connectionPanel.add(networkLogo, gbc_networkLogo);
-		
+
 		JLabel netDHCPServer = new JLabel("DHCP Server");
 		GridBagConstraints gbc_netDHCPServer = new GridBagConstraints();
 		gbc_netDHCPServer.anchor = GridBagConstraints.EAST;
@@ -2007,7 +2007,7 @@ public class FerrumX {
 		gbc_netDHCPServer.gridx = 0;
 		gbc_netDHCPServer.gridy = 5;
 		connectionPanel.add(netDHCPServer, gbc_netDHCPServer);
-		
+
 		netDHCPServerTf = new JTextField();
 		netDHCPServerTf.setEditable(false);
 		GridBagConstraints gbc_netDHCPServerTf = new GridBagConstraints();
@@ -2017,7 +2017,7 @@ public class FerrumX {
 		gbc_netDHCPServerTf.gridy = 5;
 		connectionPanel.add(netDHCPServerTf, gbc_netDHCPServerTf);
 		netDHCPServerTf.setColumns(10);
-		
+
 		JLabel netDNSHost = new JLabel("DNS Host");
 		GridBagConstraints gbc_netDNSHost = new GridBagConstraints();
 		gbc_netDNSHost.anchor = GridBagConstraints.EAST;
@@ -2025,7 +2025,7 @@ public class FerrumX {
 		gbc_netDNSHost.gridx = 0;
 		gbc_netDNSHost.gridy = 6;
 		connectionPanel.add(netDNSHost, gbc_netDNSHost);
-		
+
 		netDNSHostTf = new JTextField();
 		netDNSHostTf.setEditable(false);
 		GridBagConstraints gbc_netDNSHostTf = new GridBagConstraints();
@@ -2035,7 +2035,7 @@ public class FerrumX {
 		gbc_netDNSHostTf.gridy = 6;
 		connectionPanel.add(netDNSHostTf, gbc_netDNSHostTf);
 		netDNSHostTf.setColumns(10);
-		
+
 		JLabel netDNSServer = new JLabel("DNS Server");
 		GridBagConstraints gbc_netDNSServer = new GridBagConstraints();
 		gbc_netDNSServer.anchor = GridBagConstraints.EAST;
@@ -2043,7 +2043,7 @@ public class FerrumX {
 		gbc_netDNSServer.gridx = 0;
 		gbc_netDNSServer.gridy = 7;
 		connectionPanel.add(netDNSServer, gbc_netDNSServer);
-		
+
 		netDNSServerTf = new JTextField();
 		netDNSServerTf.setEditable(false);
 		GridBagConstraints gbc_netDNSServerTf = new GridBagConstraints();
@@ -2054,9 +2054,9 @@ public class FerrumX {
 		connectionPanel.add(netDNSServerTf, gbc_netDNSServerTf);
 		netDNSServerTf.setColumns(10);
 	}
-	
+
 	private void initializeStoragePanel(JTabbedPane tabbedPane, JPanel storagePanel) {
-		
+
 		storagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Storage", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")), storagePanel, "Displays disk information");
 		GridBagLayout gbl_storagePanel = new GridBagLayout();
@@ -2065,7 +2065,7 @@ public class FerrumX {
 		gbl_storagePanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_storagePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		storagePanel.setLayout(gbl_storagePanel);
-		
+
 		JLabel diskIndex = new JLabel("Index");
 		GridBagConstraints gbc_diskIndex = new GridBagConstraints();
 		gbc_diskIndex.insets = new Insets(0, 0, 5, 5);
@@ -2073,7 +2073,7 @@ public class FerrumX {
 		gbc_diskIndex.gridx = 0;
 		gbc_diskIndex.gridy = 0;
 		storagePanel.add(diskIndex, gbc_diskIndex);
-		
+
 		diskIndexChoiceBox = new JComboBox<>();
 		GridBagConstraints gbc_diskIndexChoiceBox = new GridBagConstraints();
 		gbc_diskIndexChoiceBox.insets = new Insets(0, 0, 5, 0);
@@ -2081,7 +2081,7 @@ public class FerrumX {
 		gbc_diskIndexChoiceBox.gridx = 1;
 		gbc_diskIndexChoiceBox.gridy = 0;
 		storagePanel.add(diskIndexChoiceBox, gbc_diskIndexChoiceBox);
-		
+
 		JLabel diskCaption = new JLabel("Caption");
 		GridBagConstraints gbc_diskCaption = new GridBagConstraints();
 		gbc_diskCaption.anchor = GridBagConstraints.EAST;
@@ -2089,7 +2089,7 @@ public class FerrumX {
 		gbc_diskCaption.gridx = 0;
 		gbc_diskCaption.gridy = 1;
 		storagePanel.add(diskCaption, gbc_diskCaption);
-		
+
 		diskCaptionTf = new JTextField();
 		diskCaptionTf.setEditable(false);
 		GridBagConstraints gbc_diskCaptionTf = new GridBagConstraints();
@@ -2099,7 +2099,7 @@ public class FerrumX {
 		gbc_diskCaptionTf.gridy = 1;
 		storagePanel.add(diskCaptionTf, gbc_diskCaptionTf);
 		diskCaptionTf.setColumns(10);
-		
+
 		JLabel diskModel = new JLabel("Model");
 		GridBagConstraints gbc_diskModel = new GridBagConstraints();
 		gbc_diskModel.anchor = GridBagConstraints.EAST;
@@ -2107,7 +2107,7 @@ public class FerrumX {
 		gbc_diskModel.gridx = 0;
 		gbc_diskModel.gridy = 2;
 		storagePanel.add(diskModel, gbc_diskModel);
-		
+
 		diskModelTf = new JTextField();
 		diskModelTf.setEditable(false);
 		GridBagConstraints gbc_diskModelTf = new GridBagConstraints();
@@ -2117,7 +2117,7 @@ public class FerrumX {
 		gbc_diskModelTf.gridy = 2;
 		storagePanel.add(diskModelTf, gbc_diskModelTf);
 		diskModelTf.setColumns(10);
-		
+
 		JLabel diskSize = new JLabel("Size");
 		GridBagConstraints gbc_diskSize = new GridBagConstraints();
 		gbc_diskSize.anchor = GridBagConstraints.EAST;
@@ -2125,7 +2125,7 @@ public class FerrumX {
 		gbc_diskSize.gridx = 0;
 		gbc_diskSize.gridy = 3;
 		storagePanel.add(diskSize, gbc_diskSize);
-		
+
 		diskSizeTf = new JTextField();
 		diskSizeTf.setEditable(false);
 		GridBagConstraints gbc_diskSizeTf = new GridBagConstraints();
@@ -2135,7 +2135,7 @@ public class FerrumX {
 		gbc_diskSizeTf.gridy = 3;
 		storagePanel.add(diskSizeTf, gbc_diskSizeTf);
 		diskSizeTf.setColumns(10);
-		
+
 		JLabel diskFirmwareRev = new JLabel("Firmware Revision");
 		GridBagConstraints gbc_diskFirmwareRev = new GridBagConstraints();
 		gbc_diskFirmwareRev.anchor = GridBagConstraints.EAST;
@@ -2143,7 +2143,7 @@ public class FerrumX {
 		gbc_diskFirmwareRev.gridx = 0;
 		gbc_diskFirmwareRev.gridy = 4;
 		storagePanel.add(diskFirmwareRev, gbc_diskFirmwareRev);
-		
+
 		firmwareRevisionTf = new JTextField();
 		firmwareRevisionTf.setEditable(false);
 		GridBagConstraints gbc_firmwareRevisionTf = new GridBagConstraints();
@@ -2153,7 +2153,7 @@ public class FerrumX {
 		gbc_firmwareRevisionTf.gridy = 4;
 		storagePanel.add(firmwareRevisionTf, gbc_firmwareRevisionTf);
 		firmwareRevisionTf.setColumns(10);
-		
+
 		JLabel diskSerialNumber = new JLabel("Serial Number");
 		GridBagConstraints gbc_diskSerialNumber = new GridBagConstraints();
 		gbc_diskSerialNumber.anchor = GridBagConstraints.EAST;
@@ -2161,7 +2161,7 @@ public class FerrumX {
 		gbc_diskSerialNumber.gridx = 0;
 		gbc_diskSerialNumber.gridy = 5;
 		storagePanel.add(diskSerialNumber, gbc_diskSerialNumber);
-		
+
 		diskSerialNumberTf = new JTextField();
 		diskSerialNumberTf.setEditable(false);
 		GridBagConstraints gbc_diskSerialNumberTf = new GridBagConstraints();
@@ -2171,7 +2171,7 @@ public class FerrumX {
 		gbc_diskSerialNumberTf.gridy = 5;
 		storagePanel.add(diskSerialNumberTf, gbc_diskSerialNumberTf);
 		diskSerialNumberTf.setColumns(10);
-		
+
 		JLabel diskPartitionCount = new JLabel("Partitions");
 		GridBagConstraints gbc_diskPartitionCount = new GridBagConstraints();
 		gbc_diskPartitionCount.anchor = GridBagConstraints.EAST;
@@ -2179,7 +2179,7 @@ public class FerrumX {
 		gbc_diskPartitionCount.gridx = 0;
 		gbc_diskPartitionCount.gridy = 6;
 		storagePanel.add(diskPartitionCount, gbc_diskPartitionCount);
-		
+
 		diskPartitionsTf = new JTextField();
 		diskPartitionsTf.setEditable(false);
 		GridBagConstraints gbc_diskPartitionsTf = new GridBagConstraints();
@@ -2189,7 +2189,7 @@ public class FerrumX {
 		gbc_diskPartitionsTf.gridy = 6;
 		storagePanel.add(diskPartitionsTf, gbc_diskPartitionsTf);
 		diskPartitionsTf.setColumns(10);
-		
+
 		JLabel diskStatus = new JLabel("Status");
 		GridBagConstraints gbc_diskStatus = new GridBagConstraints();
 		gbc_diskStatus.anchor = GridBagConstraints.EAST;
@@ -2197,7 +2197,7 @@ public class FerrumX {
 		gbc_diskStatus.gridx = 0;
 		gbc_diskStatus.gridy = 7;
 		storagePanel.add(diskStatus, gbc_diskStatus);
-		
+
 		diskStatusTf = new JTextField();
 		diskStatusTf.setEditable(false);
 		GridBagConstraints gbc_diskStatusTf = new GridBagConstraints();
@@ -2207,7 +2207,7 @@ public class FerrumX {
 		gbc_diskStatusTf.gridy = 7;
 		storagePanel.add(diskStatusTf, gbc_diskStatusTf);
 		diskStatusTf.setColumns(10);
-		
+
 		JLabel diskInterface = new JLabel("Interface Type");
 		GridBagConstraints gbc_diskInterface = new GridBagConstraints();
 		gbc_diskInterface.anchor = GridBagConstraints.EAST;
@@ -2215,7 +2215,7 @@ public class FerrumX {
 		gbc_diskInterface.gridx = 0;
 		gbc_diskInterface.gridy = 8;
 		storagePanel.add(diskInterface, gbc_diskInterface);
-		
+
 		diskInterfaceTf = new JTextField();
 		diskInterfaceTf.setEditable(false);
 		GridBagConstraints gbc_diskInterfaceTf = new GridBagConstraints();
@@ -2225,7 +2225,7 @@ public class FerrumX {
 		gbc_diskInterfaceTf.gridy = 8;
 		storagePanel.add(diskInterfaceTf, gbc_diskInterfaceTf);
 		diskInterfaceTf.setColumns(10);
-		
+
 		JPanel diskPartitionPanel = new JPanel();
 		diskPartitionPanel.setBorder(new TitledBorder(null, "Drive Partition Layout", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(221, 221, 221)));
 		GridBagConstraints gbc_diskPartitionPanel = new GridBagConstraints();
@@ -2235,7 +2235,7 @@ public class FerrumX {
 		gbc_diskPartitionPanel.gridy = 9;
 		storagePanel.add(diskPartitionPanel, gbc_diskPartitionPanel);
 		diskPartitionPanel.setLayout(new GridLayout(1, 0, 0, 0));
-		
+
 		diskPartTa = new JTextArea();
 		diskPartTa.setEditable(false);
 		JScrollPane scroll = new JScrollPane(diskPartTa);
@@ -2243,7 +2243,7 @@ public class FerrumX {
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		diskPartitionPanel.add(scroll);
 	}
-	
+
 	private void initializeOsAndUserPanel(JTabbedPane tabbedPane, JPanel osAndUserPanel) {
 		osAndUserPanel.setBorder(null);
 		tabbedPane.addTab("OS", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/OS_16x16.png")), osAndUserPanel, "Displays OS, User and Timezone information");
@@ -2253,7 +2253,7 @@ public class FerrumX {
 		gbl_osAndUserPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_osAndUserPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		osAndUserPanel.setLayout(gbl_osAndUserPanel);
-		
+
 		JPanel osPanel = new JPanel();
 		osPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Operating System", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_osPanel = new GridBagConstraints();
@@ -2268,7 +2268,7 @@ public class FerrumX {
 		gbl_osPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_osPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		osPanel.setLayout(gbl_osPanel);
-		
+
 		JLabel currentOs = new JLabel("Current OS");
 		GridBagConstraints gbc_currentOs = new GridBagConstraints();
 		gbc_currentOs.insets = new Insets(0, 0, 5, 5);
@@ -2276,7 +2276,7 @@ public class FerrumX {
 		gbc_currentOs.gridx = 0;
 		gbc_currentOs.gridy = 0;
 		osPanel.add(currentOs, gbc_currentOs);
-		
+
 		currentOsChoiceBox = new JComboBox<>();
 		GridBagConstraints gbc_currentOsChoiceBox = new GridBagConstraints();
 		gbc_currentOsChoiceBox.gridwidth = 5;
@@ -2285,7 +2285,7 @@ public class FerrumX {
 		gbc_currentOsChoiceBox.gridx = 1;
 		gbc_currentOsChoiceBox.gridy = 0;
 		osPanel.add(currentOsChoiceBox, gbc_currentOsChoiceBox);
-		
+
 		JLabel osCaption = new JLabel("Caption");
 		GridBagConstraints gbc_osCaption = new GridBagConstraints();
 		gbc_osCaption.anchor = GridBagConstraints.EAST;
@@ -2293,7 +2293,7 @@ public class FerrumX {
 		gbc_osCaption.gridx = 0;
 		gbc_osCaption.gridy = 1;
 		osPanel.add(osCaption, gbc_osCaption);
-		
+
 		osCaptionTf = new JTextField();
 		osCaptionTf.setEditable(false);
 		GridBagConstraints gbc_osCaptionTf = new GridBagConstraints();
@@ -2304,7 +2304,7 @@ public class FerrumX {
 		gbc_osCaptionTf.gridy = 1;
 		osPanel.add(osCaptionTf, gbc_osCaptionTf);
 		osCaptionTf.setColumns(10);
-		
+
 		JPanel osCoverImagePanel = new JPanel();
 		osCoverImagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "OS Cover", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_osCoverImagePanel = new GridBagConstraints();
@@ -2316,12 +2316,12 @@ public class FerrumX {
 		gbc_osCoverImagePanel.gridy = 1;
 		osPanel.add(osCoverImagePanel, gbc_osCoverImagePanel);
 		osCoverImagePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		JLabel osCoverImg = new JLabel("");
 		osCoverImagePanel.add(osCoverImg);
 		osCoverImg.setHorizontalAlignment(SwingConstants.CENTER);
 		osCoverImg.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/tab_icons_large/OS.png")));
-		
+
 		JLabel osVersion = new JLabel("Version");
 		GridBagConstraints gbc_osVersion = new GridBagConstraints();
 		gbc_osVersion.anchor = GridBagConstraints.EAST;
@@ -2329,7 +2329,7 @@ public class FerrumX {
 		gbc_osVersion.gridx = 0;
 		gbc_osVersion.gridy = 2;
 		osPanel.add(osVersion, gbc_osVersion);
-		
+
 		osVersionTf = new JTextField();
 		osVersionTf.setEditable(false);
 		GridBagConstraints gbc_osVersionTf = new GridBagConstraints();
@@ -2339,7 +2339,7 @@ public class FerrumX {
 		gbc_osVersionTf.gridy = 2;
 		osPanel.add(osVersionTf, gbc_osVersionTf);
 		osVersionTf.setColumns(10);
-		
+
 		JLabel osBuildNumber = new JLabel("Build Number");
 		GridBagConstraints gbc_osBuildNumber = new GridBagConstraints();
 		gbc_osBuildNumber.anchor = GridBagConstraints.EAST;
@@ -2347,7 +2347,7 @@ public class FerrumX {
 		gbc_osBuildNumber.gridx = 2;
 		gbc_osBuildNumber.gridy = 2;
 		osPanel.add(osBuildNumber, gbc_osBuildNumber);
-		
+
 		osBuildNumberTf = new JTextField();
 		osBuildNumberTf.setEditable(false);
 		GridBagConstraints gbc_osBuildNumberTf = new GridBagConstraints();
@@ -2357,7 +2357,7 @@ public class FerrumX {
 		gbc_osBuildNumberTf.gridy = 2;
 		osPanel.add(osBuildNumberTf, gbc_osBuildNumberTf);
 		osBuildNumberTf.setColumns(10);
-		
+
 		JLabel osManufacturer = new JLabel("Manufacturer");
 		GridBagConstraints gbc_osManufacturer = new GridBagConstraints();
 		gbc_osManufacturer.anchor = GridBagConstraints.EAST;
@@ -2365,7 +2365,7 @@ public class FerrumX {
 		gbc_osManufacturer.gridx = 0;
 		gbc_osManufacturer.gridy = 3;
 		osPanel.add(osManufacturer, gbc_osManufacturer);
-		
+
 		osManufacturerTf = new JTextField();
 		osManufacturerTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		osManufacturerTf.setEditable(false);
@@ -2376,7 +2376,7 @@ public class FerrumX {
 		gbc_osManufacturerTf.gridy = 3;
 		osPanel.add(osManufacturerTf, gbc_osManufacturerTf);
 		osManufacturerTf.setColumns(10);
-		
+
 		JLabel osArch = new JLabel("Architecture");
 		GridBagConstraints gbc_osArch = new GridBagConstraints();
 		gbc_osArch.anchor = GridBagConstraints.EAST;
@@ -2384,7 +2384,7 @@ public class FerrumX {
 		gbc_osArch.gridx = 2;
 		gbc_osArch.gridy = 3;
 		osPanel.add(osArch, gbc_osArch);
-		
+
 		osArchitectureTf = new JTextField();
 		osArchitectureTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		osArchitectureTf.setEditable(false);
@@ -2395,7 +2395,7 @@ public class FerrumX {
 		gbc_osArchitectureTf.gridy = 3;
 		osPanel.add(osArchitectureTf, gbc_osArchitectureTf);
 		osArchitectureTf.setColumns(10);
-		
+
 		JLabel osInstallDate = new JLabel("Install Date");
 		GridBagConstraints gbc_osInstallDate = new GridBagConstraints();
 		gbc_osInstallDate.anchor = GridBagConstraints.EAST;
@@ -2403,7 +2403,7 @@ public class FerrumX {
 		gbc_osInstallDate.gridx = 0;
 		gbc_osInstallDate.gridy = 4;
 		osPanel.add(osInstallDate, gbc_osInstallDate);
-		
+
 		osInstallDateTf = new JTextField();
 		osInstallDateTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		osInstallDateTf.setEditable(false);
@@ -2414,7 +2414,7 @@ public class FerrumX {
 		gbc_osInstallDateTf.gridy = 4;
 		osPanel.add(osInstallDateTf, gbc_osInstallDateTf);
 		osInstallDateTf.setColumns(10);
-		
+
 		JLabel osLastBoot = new JLabel("Last Bootup Time");
 		GridBagConstraints gbc_osLastBoot = new GridBagConstraints();
 		gbc_osLastBoot.anchor = GridBagConstraints.EAST;
@@ -2422,7 +2422,7 @@ public class FerrumX {
 		gbc_osLastBoot.gridx = 2;
 		gbc_osLastBoot.gridy = 4;
 		osPanel.add(osLastBoot, gbc_osLastBoot);
-		
+
 		osLastBootTf = new JTextField();
 		osLastBootTf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		osLastBootTf.setEditable(false);
@@ -2433,7 +2433,7 @@ public class FerrumX {
 		gbc_osLastBootTf.gridy = 4;
 		osPanel.add(osLastBootTf, gbc_osLastBootTf);
 		osLastBootTf.setColumns(10);
-		
+
 		JLabel osSerialNumber = new JLabel("Serial Number");
 		GridBagConstraints gbc_osSerialNumber = new GridBagConstraints();
 		gbc_osSerialNumber.anchor = GridBagConstraints.EAST;
@@ -2441,7 +2441,7 @@ public class FerrumX {
 		gbc_osSerialNumber.gridx = 0;
 		gbc_osSerialNumber.gridy = 5;
 		osPanel.add(osSerialNumber, gbc_osSerialNumber);
-		
+
 		osSerialTf = new JTextField();
 		osSerialTf.setEditable(false);
 		GridBagConstraints gbc_osSerialTf = new GridBagConstraints();
@@ -2452,7 +2452,7 @@ public class FerrumX {
 		gbc_osSerialTf.gridy = 5;
 		osPanel.add(osSerialTf, gbc_osSerialTf);
 		osSerialTf.setColumns(10);
-		
+
 		JLabel osLanguage = new JLabel("Language(s)");
 		GridBagConstraints gbc_osLanguage = new GridBagConstraints();
 		gbc_osLanguage.anchor = GridBagConstraints.EAST;
@@ -2460,7 +2460,7 @@ public class FerrumX {
 		gbc_osLanguage.gridx = 4;
 		gbc_osLanguage.gridy = 5;
 		osPanel.add(osLanguage, gbc_osLanguage);
-		
+
 		osLangTf = new JTextField();
 		osLangTf.setEditable(false);
 		GridBagConstraints gbc_osLangTf = new GridBagConstraints();
@@ -2470,7 +2470,7 @@ public class FerrumX {
 		gbc_osLangTf.gridy = 5;
 		osPanel.add(osLangTf, gbc_osLangTf);
 		osLangTf.setColumns(10);
-		
+
 		JLabel osPrimary = new JLabel("Primary");
 		GridBagConstraints gbc_osPrimary = new GridBagConstraints();
 		gbc_osPrimary.anchor = GridBagConstraints.EAST;
@@ -2478,7 +2478,7 @@ public class FerrumX {
 		gbc_osPrimary.gridx = 0;
 		gbc_osPrimary.gridy = 6;
 		osPanel.add(osPrimary, gbc_osPrimary);
-		
+
 		osPrimaryTf = new JTextField();
 		osPrimaryTf.setEditable(false);
 		GridBagConstraints gbc_osPrimaryTf = new GridBagConstraints();
@@ -2488,7 +2488,7 @@ public class FerrumX {
 		gbc_osPrimaryTf.gridy = 6;
 		osPanel.add(osPrimaryTf, gbc_osPrimaryTf);
 		osPrimaryTf.setColumns(10);
-		
+
 		JLabel osDist = new JLabel("Distributed");
 		GridBagConstraints gbc_osDist = new GridBagConstraints();
 		gbc_osDist.anchor = GridBagConstraints.EAST;
@@ -2496,7 +2496,7 @@ public class FerrumX {
 		gbc_osDist.gridx = 2;
 		gbc_osDist.gridy = 6;
 		osPanel.add(osDist, gbc_osDist);
-		
+
 		osDistributedTf = new JTextField();
 		osDistributedTf.setEditable(false);
 		GridBagConstraints gbc_osDistributedTf = new GridBagConstraints();
@@ -2506,7 +2506,7 @@ public class FerrumX {
 		gbc_osDistributedTf.gridy = 6;
 		osPanel.add(osDistributedTf, gbc_osDistributedTf);
 		osDistributedTf.setColumns(10);
-		
+
 		JLabel osPort = new JLabel("Portable");
 		GridBagConstraints gbc_osPort = new GridBagConstraints();
 		gbc_osPort.insets = new Insets(0, 0, 5, 5);
@@ -2514,7 +2514,7 @@ public class FerrumX {
 		gbc_osPort.gridx = 4;
 		gbc_osPort.gridy = 6;
 		osPanel.add(osPort, gbc_osPort);
-		
+
 		osPortTf = new JTextField();
 		osPortTf.setEditable(false);
 		GridBagConstraints gbc_osPortTf = new GridBagConstraints();
@@ -2524,7 +2524,7 @@ public class FerrumX {
 		gbc_osPortTf.gridy = 6;
 		osPanel.add(osPortTf, gbc_osPortTf);
 		osPortTf.setColumns(10);
-		
+
 		JLabel osDeviceName = new JLabel("Device Name");
 		GridBagConstraints gbc_osDeviceName = new GridBagConstraints();
 		gbc_osDeviceName.anchor = GridBagConstraints.EAST;
@@ -2532,7 +2532,7 @@ public class FerrumX {
 		gbc_osDeviceName.gridx = 0;
 		gbc_osDeviceName.gridy = 7;
 		osPanel.add(osDeviceName, gbc_osDeviceName);
-		
+
 		osDeviceNameTf = new JTextField();
 		osDeviceNameTf.setEditable(false);
 		GridBagConstraints gbc_osDeviceNameTf = new GridBagConstraints();
@@ -2542,7 +2542,7 @@ public class FerrumX {
 		gbc_osDeviceNameTf.gridy = 7;
 		osPanel.add(osDeviceNameTf, gbc_osDeviceNameTf);
 		osDeviceNameTf.setColumns(10);
-		
+
 		JLabel osUserCount = new JLabel("User Count");
 		GridBagConstraints gbc_osUserCount = new GridBagConstraints();
 		gbc_osUserCount.anchor = GridBagConstraints.EAST;
@@ -2550,7 +2550,7 @@ public class FerrumX {
 		gbc_osUserCount.gridx = 2;
 		gbc_osUserCount.gridy = 7;
 		osPanel.add(osUserCount, gbc_osUserCount);
-		
+
 		osUserCountTf = new JTextField();
 		osUserCountTf.setEditable(false);
 		GridBagConstraints gbc_osUserCountTf = new GridBagConstraints();
@@ -2560,7 +2560,7 @@ public class FerrumX {
 		gbc_osUserCountTf.gridy = 7;
 		osPanel.add(osUserCountTf, gbc_osUserCountTf);
 		osUserCountTf.setColumns(10);
-		
+
 		JLabel osRegUser = new JLabel("Registered User");
 		GridBagConstraints gbc_osRegUser = new GridBagConstraints();
 		gbc_osRegUser.anchor = GridBagConstraints.EAST;
@@ -2568,7 +2568,7 @@ public class FerrumX {
 		gbc_osRegUser.gridx = 4;
 		gbc_osRegUser.gridy = 7;
 		osPanel.add(osRegUser, gbc_osRegUser);
-		
+
 		osRegUserTf = new JTextField();
 		osRegUserTf.setEditable(false);
 		GridBagConstraints gbc_osRegUserTf = new GridBagConstraints();
@@ -2578,7 +2578,7 @@ public class FerrumX {
 		gbc_osRegUserTf.gridy = 7;
 		osPanel.add(osRegUserTf, gbc_osRegUserTf);
 		osRegUserTf.setColumns(10);
-		
+
 		JLabel osDrive = new JLabel("System Drive");
 		GridBagConstraints gbc_osDrive = new GridBagConstraints();
 		gbc_osDrive.anchor = GridBagConstraints.EAST;
@@ -2586,7 +2586,7 @@ public class FerrumX {
 		gbc_osDrive.gridx = 0;
 		gbc_osDrive.gridy = 8;
 		osPanel.add(osDrive, gbc_osDrive);
-		
+
 		osSysDriveTf = new JTextField();
 		osSysDriveTf.setEditable(false);
 		GridBagConstraints gbc_osSysDriveTf = new GridBagConstraints();
@@ -2596,7 +2596,7 @@ public class FerrumX {
 		gbc_osSysDriveTf.gridy = 8;
 		osPanel.add(osSysDriveTf, gbc_osSysDriveTf);
 		osSysDriveTf.setColumns(10);
-		
+
 		JLabel osWinDir = new JLabel("Windows Directory");
 		GridBagConstraints gbc_osWinDir = new GridBagConstraints();
 		gbc_osWinDir.anchor = GridBagConstraints.EAST;
@@ -2604,7 +2604,7 @@ public class FerrumX {
 		gbc_osWinDir.gridx = 2;
 		gbc_osWinDir.gridy = 8;
 		osPanel.add(osWinDir, gbc_osWinDir);
-		
+
 		osWinDirTf = new JTextField();
 		osWinDirTf.setEditable(false);
 		GridBagConstraints gbc_osWinDirTf = new GridBagConstraints();
@@ -2614,7 +2614,7 @@ public class FerrumX {
 		gbc_osWinDirTf.gridy = 8;
 		osPanel.add(osWinDirTf, gbc_osWinDirTf);
 		osWinDirTf.setColumns(10);
-		
+
 		JLabel osSysDir = new JLabel("System Directory");
 		GridBagConstraints gbc_osSysDir = new GridBagConstraints();
 		gbc_osSysDir.anchor = GridBagConstraints.EAST;
@@ -2622,7 +2622,7 @@ public class FerrumX {
 		gbc_osSysDir.gridx = 4;
 		gbc_osSysDir.gridy = 8;
 		osPanel.add(osSysDir, gbc_osSysDir);
-		
+
 		osSysDirTf = new JTextField();
 		osSysDirTf.setEditable(false);
 		GridBagConstraints gbc_osSysDirTf = new GridBagConstraints();
@@ -2631,7 +2631,7 @@ public class FerrumX {
 		gbc_osSysDirTf.gridy = 8;
 		osPanel.add(osSysDirTf, gbc_osSysDirTf);
 		osSysDirTf.setColumns(10);
-		
+
 		JPanel userPanel = new JPanel();
 		userPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "User and Timezone", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_userPanel = new GridBagConstraints();
@@ -2645,7 +2645,7 @@ public class FerrumX {
 		gbl_userPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_userPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		userPanel.setLayout(gbl_userPanel);
-		
+
 		JLabel currentUser = new JLabel("Current User");
 		GridBagConstraints gbc_currentUser = new GridBagConstraints();
 		gbc_currentUser.anchor = GridBagConstraints.EAST;
@@ -2653,7 +2653,7 @@ public class FerrumX {
 		gbc_currentUser.gridx = 0;
 		gbc_currentUser.gridy = 0;
 		userPanel.add(currentUser, gbc_currentUser);
-		
+
 		userTf = new JTextField();
 		userTf.setEditable(false);
 		GridBagConstraints gbc_userTf = new GridBagConstraints();
@@ -2663,7 +2663,7 @@ public class FerrumX {
 		gbc_userTf.gridy = 0;
 		userPanel.add(userTf, gbc_userTf);
 		userTf.setColumns(10);
-		
+
 		JLabel userHomeDir = new JLabel("User Home");
 		GridBagConstraints gbc_userHomeDir = new GridBagConstraints();
 		gbc_userHomeDir.anchor = GridBagConstraints.EAST;
@@ -2671,7 +2671,7 @@ public class FerrumX {
 		gbc_userHomeDir.gridx = 0;
 		gbc_userHomeDir.gridy = 1;
 		userPanel.add(userHomeDir, gbc_userHomeDir);
-		
+
 		userHomeTf = new JTextField();
 		userHomeTf.setEditable(false);
 		GridBagConstraints gbc_userHomeTf = new GridBagConstraints();
@@ -2681,7 +2681,7 @@ public class FerrumX {
 		gbc_userHomeTf.gridy = 1;
 		userPanel.add(userHomeTf, gbc_userHomeTf);
 		userHomeTf.setColumns(10);
-		
+
 		JSeparator separator = new JSeparator();
 		GridBagConstraints gbc_separator = new GridBagConstraints();
 		gbc_separator.insets = new Insets(0, 0, 5, 0);
@@ -2689,7 +2689,7 @@ public class FerrumX {
 		gbc_separator.gridx = 0;
 		gbc_separator.gridy = 2;
 		userPanel.add(separator, gbc_separator);
-		
+
 		JLabel timeZoneName = new JLabel("Timezone Name");
 		GridBagConstraints gbc_timeZoneName = new GridBagConstraints();
 		gbc_timeZoneName.anchor = GridBagConstraints.EAST;
@@ -2697,7 +2697,7 @@ public class FerrumX {
 		gbc_timeZoneName.gridx = 0;
 		gbc_timeZoneName.gridy = 3;
 		userPanel.add(timeZoneName, gbc_timeZoneName);
-		
+
 		timeZoneNameTf = new JTextField();
 		timeZoneNameTf.setEditable(false);
 		GridBagConstraints gbc_timeZoneNameTf = new GridBagConstraints();
@@ -2707,7 +2707,7 @@ public class FerrumX {
 		gbc_timeZoneNameTf.gridy = 3;
 		userPanel.add(timeZoneNameTf, gbc_timeZoneNameTf);
 		timeZoneNameTf.setColumns(10);
-		
+
 		JLabel timeZoneCap = new JLabel("Timezone Caption");
 		GridBagConstraints gbc_timeZoneCap = new GridBagConstraints();
 		gbc_timeZoneCap.anchor = GridBagConstraints.EAST;
@@ -2715,7 +2715,7 @@ public class FerrumX {
 		gbc_timeZoneCap.gridx = 0;
 		gbc_timeZoneCap.gridy = 4;
 		userPanel.add(timeZoneCap, gbc_timeZoneCap);
-		
+
 		timeZoneCaptionTf = new JTextField();
 		timeZoneCaptionTf.setEditable(false);
 		GridBagConstraints gbc_timeZoneCaptionTf = new GridBagConstraints();
@@ -2726,7 +2726,7 @@ public class FerrumX {
 		userPanel.add(timeZoneCaptionTf, gbc_timeZoneCaptionTf);
 		timeZoneCaptionTf.setColumns(10);
 	}
-	
+
 	private void initializeReportPanel(JTabbedPane tabbedPane) {
 		JPanel reportPanel = new JPanel();
 		reportPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -2737,7 +2737,7 @@ public class FerrumX {
 		gbl_reportPanel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gbl_reportPanel.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
 		reportPanel.setLayout(gbl_reportPanel);
-		
+
 		JPanel reportAreaPanel = new JPanel();
 		reportAreaPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Report Area", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_reportAreaPanel = new GridBagConstraints();
@@ -2748,18 +2748,18 @@ public class FerrumX {
 		gbc_reportAreaPanel.gridy = 0;
 		reportPanel.add(reportAreaPanel, gbc_reportAreaPanel);
 		reportAreaPanel.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		JScrollPane reportScrollPane = new JScrollPane();
 		reportAreaPanel.add(reportScrollPane);
-		
+
 		JTextArea reportTextArea = new JTextArea();
 		reportTextArea.setFont(new Font("Consolas", Font.BOLD, 12));
 		reportScrollPane.setViewportView(reportTextArea);
 		reportTextArea.setEditable(false);
-		
+
 		DefaultCaret reportScrollCaret = (DefaultCaret)reportTextArea.getCaret();
 		reportScrollCaret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE); 
-		
+
 		JPanel reportLogPanel = new JPanel();
 		reportLogPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Report Log", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_reportLogPanel = new GridBagConstraints();
@@ -2769,15 +2769,15 @@ public class FerrumX {
 		gbc_reportLogPanel.gridy = 2;
 		reportPanel.add(reportLogPanel, gbc_reportLogPanel);
 		reportLogPanel.setLayout(new GridLayout(1, 0, 0, 0));
-		
+
 		JScrollPane logScrollPane = new JScrollPane();
 		reportLogPanel.add(logScrollPane);
-		
+
 		JTextArea logTextArea = new JTextArea();
 		logTextArea.setFont(new Font("Consolas", Font.BOLD, 12));
 		logScrollPane.setViewportView(logTextArea);
 		logTextArea.setEditable(false);
-		
+
 		JPanel reportControlPanel = new JPanel();
 		reportControlPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Controls", TitledBorder.TRAILING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_reportControlPanel = new GridBagConstraints();
@@ -2791,7 +2791,7 @@ public class FerrumX {
 		gbl_reportControlPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_reportControlPanel.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		reportControlPanel.setLayout(gbl_reportControlPanel);
-		
+
 		JPanel reportControlSubPanel = new JPanel();
 		reportControlSubPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Report Controls", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_reportControlSubPanel = new GridBagConstraints();
@@ -2802,27 +2802,28 @@ public class FerrumX {
 		reportControlPanel.add(reportControlSubPanel, gbc_reportControlSubPanel);
 		SpringLayout sl_reportControlSubPanel = new SpringLayout();
 		reportControlSubPanel.setLayout(sl_reportControlSubPanel);
-		
+
 		JButton detailedReport = new JButton("Detailed Report");
 		sl_reportControlSubPanel.putConstraint(SpringLayout.NORTH, detailedReport, 10, SpringLayout.NORTH, reportControlSubPanel);
 		sl_reportControlSubPanel.putConstraint(SpringLayout.WEST, detailedReport, 10, SpringLayout.WEST, reportControlSubPanel);
 		reportControlSubPanel.add(detailedReport);
-		
+
 		JButton summarizedReport = new JButton("Summarized Report");
 		sl_reportControlSubPanel.putConstraint(SpringLayout.NORTH, summarizedReport, 0, SpringLayout.NORTH, detailedReport);
 		sl_reportControlSubPanel.putConstraint(SpringLayout.EAST, summarizedReport, -10, SpringLayout.EAST, reportControlSubPanel);
 		reportControlSubPanel.add(summarizedReport);
-		
+
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		sl_reportControlSubPanel.putConstraint(SpringLayout.WEST, progressBar, 10, SpringLayout.WEST, reportControlSubPanel);
 		sl_reportControlSubPanel.putConstraint(SpringLayout.SOUTH, progressBar, -10, SpringLayout.SOUTH, reportControlSubPanel);
 		sl_reportControlSubPanel.putConstraint(SpringLayout.EAST, progressBar, 0, SpringLayout.EAST, summarizedReport);
 		reportControlSubPanel.add(progressBar);
-		
+
 		//add report button action listeners
 		detailedReport.addActionListener(e-> DetailedReportGeneration.generate(reportTextArea, logTextArea, detailedReport, summarizedReport, progressBar));
-		
+		summarizedReport.addActionListener(e-> SummarizedReportGeneration.generate(reportTextArea, logTextArea, detailedReport, summarizedReport, progressBar))
+		;
 		JPanel reportLogControlPanel = new JPanel();
 		reportLogControlPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Report Log Controls", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_reportLogControlPanel = new GridBagConstraints();
@@ -2832,17 +2833,17 @@ public class FerrumX {
 		reportControlPanel.add(reportLogControlPanel, gbc_reportLogControlPanel);
 		SpringLayout sl_reportLogControlPanel = new SpringLayout();
 		reportLogControlPanel.setLayout(sl_reportLogControlPanel);
-		
+
 		JButton reportCopy = new JButton("Copy Report");
 		sl_reportLogControlPanel.putConstraint(SpringLayout.NORTH, reportCopy, 10, SpringLayout.NORTH, reportLogControlPanel);
 		sl_reportLogControlPanel.putConstraint(SpringLayout.WEST, reportCopy, 10, SpringLayout.WEST, reportLogControlPanel);
 		reportLogControlPanel.add(reportCopy);
-		
+
 		JButton logCopy = new JButton("Copy Logs");
 		sl_reportLogControlPanel.putConstraint(SpringLayout.NORTH, logCopy, 0, SpringLayout.NORTH, reportCopy);
 		sl_reportLogControlPanel.putConstraint(SpringLayout.EAST, logCopy, -10, SpringLayout.EAST, reportLogControlPanel);
 		reportLogControlPanel.add(logCopy);
-		
+
 		JTextField copyStatusTf = new JTextField();
 		copyStatusTf.setFont(new Font("Consolas", Font.PLAIN, 10));
 		copyStatusTf.setEditable(false);
@@ -2851,14 +2852,14 @@ public class FerrumX {
 		sl_reportLogControlPanel.putConstraint(SpringLayout.EAST, copyStatusTf, 0, SpringLayout.EAST, logCopy);
 		reportLogControlPanel.add(copyStatusTf);
 		copyStatusTf.setColumns(10);
-		
+
 		//add copy button action listeners
 		reportCopy.addActionListener(e-> {
 			reportTextArea.selectAll();
 			reportTextArea.copy();
 			copyStatusTf.setText("Successfully copied the Report to clipboard");
 		});
-		
+
 		logCopy.addActionListener(e-> {
 			logTextArea.selectAll();
 			logTextArea.copy();
@@ -2866,7 +2867,7 @@ public class FerrumX {
 		});
 	}
 
- 	private void initializeSystemInfo(StatusUI startScreen) {
+	private void initializeSystemInfo(StatusUI startScreen) {
 		try(ExecutorService exec = Executors.newCachedThreadPool()){
 			Future<Boolean> initializeHardwareId = exec.submit(()->HardwareId.initializeHardwareId(hwidTf));
 			Future<Boolean> initializeCpu = exec.submit(()-> Cpu.initializeCpu(cpuLogo, cacheTa, cpuChoice, cpuNameTf, cpuCoreTf, cpuThreadTf, cpuLogicProcessorTf, cpuManufacturerTf, addressWidthTf, cpuSocketTf, cpuBaseClockTf, multiplierTf, effectiveClockTf, cpuVersionTf, cpuCaptionTf, cpuFamilyTf, cpuSteppingTf, cpuVirtStatusTf, cpuIdTf, cpuL2Tf, cpuL3Tf));
@@ -2877,7 +2878,7 @@ public class FerrumX {
 			Future<Boolean> initializeStorage = exec.submit(()->Storage.initializeStorage(diskIndexChoiceBox, diskPartTa, diskCaptionTf, diskModelTf, diskSizeTf, firmwareRevisionTf, diskSerialNumberTf, diskPartitionsTf, diskStatusTf, diskInterfaceTf));
 			Future<Boolean> initializeOs = exec.submit(()->OperatingSystem.getOsProperties(currentOsChoiceBox, osCaptionTf, osVersionTf, osManufacturerTf, osArchitectureTf, osBuildNumberTf, osInstallDateTf, osLastBootTf, osSerialTf, osPrimaryTf, osDistributedTf, osPortTf, osDeviceNameTf, osUserCountTf, osRegUserTf, osLangTf, osSysDriveTf, osWinDirTf, osSysDirTf));
 			Future<Boolean> initializeUserAndTime = exec.submit(()->UserAndTime.initializeUserAndTime(userTf, userHomeTf, timeZoneNameTf, timeZoneCaptionTf));
-			
+
 			startScreen.setHardwareLabel(initializeHardwareId.get());
 			startScreen.setCpuLabel(initializeCpu.get());
 			startScreen.setMemoryLabel(initializeMemory.get());
@@ -2886,9 +2887,9 @@ public class FerrumX {
 			startScreen.setNetworkLabel(initializeNetwork.get());
 			startScreen.setStorageLabel(initializeStorage.get());
 			startScreen.setOsLabel(initializeOs.get() && initializeUserAndTime.get());
-			
+
 			TimeUnit.MILLISECONDS.sleep(250);
-	        startScreen.dispose();
+			startScreen.dispose();
 		}
 		catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
