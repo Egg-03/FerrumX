@@ -13,30 +13,31 @@ final class Mainboard {
 	private Mainboard() {
 		throw new IllegalStateException("Utility Class");
 	}
-	
+
 	protected static boolean initializeMainboard(JTextField... mainboardFields) {
 		try {
 			Map<String, String> bios = Win32_BIOS.getPrimaryBIOS();
 			Map<String, String> mainboard = Win32_Baseboard.getMotherboard();
-			
-			if(mainboard.isEmpty()) {
-				new ExceptionUI("Mainboard Initialization Error", "FATAL ERROR: No Mainboard device found").setVisible(true);
+
+			if (mainboard.isEmpty()) {
+				new ExceptionUI("Mainboard Initialization Error", "FATAL ERROR: No Mainboard device found")
+						.setVisible(true);
 				return false;
 			}
-			
-			if(bios.isEmpty()) {
+
+			if (bios.isEmpty()) {
 				new ExceptionUI("BIOS Error", "FATAL ERROR: No Primary BIOS found").setVisible(true);
 				return false;
 			}
-			
-			//mainboard property fill
+
+			// mainboard property fill
 			mainboardFields[0].setText(mainboard.get("Manufacturer"));
 			mainboardFields[1].setText(mainboard.get("Model"));
 			mainboardFields[2].setText(mainboard.get("Product"));
 			mainboardFields[3].setText(mainboard.get("SerialNumber"));
 			mainboardFields[4].setText(mainboard.get("Version"));
 			mainboardFields[5].setText(mainboard.get("PNPDeviceID"));
-			//bios property fill
+			// bios property fill
 			mainboardFields[6].setText(bios.get("Name"));
 			mainboardFields[7].setText(bios.get("Caption"));
 			mainboardFields[8].setText(bios.get("Manufacturer"));

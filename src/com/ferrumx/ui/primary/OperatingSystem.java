@@ -11,23 +11,26 @@ import com.ferrumx.system.operating_system.Win32_OperatingSystem;
 import com.ferrumx.ui.secondary.ExceptionUI;
 
 final class OperatingSystem {
-	
+
 	private OperatingSystem() {
 		throw new IllegalStateException("Utility Class");
 	}
-	
-	protected static boolean getOsProperties(JComboBox<String> osChoice, JTextField...osFields) {
+
+	protected static boolean getOsProperties(JComboBox<String> osChoice, JTextField... osFields) {
 		try {
 			List<String> osList = Win32_OperatingSystem.getOSList();
-			
-			if(osList.isEmpty()) {
-				new ExceptionUI("OS Initialization Error", "FATAL ERROR: No valid Operating System found").setVisible(true);
+
+			if (osList.isEmpty()) {
+				new ExceptionUI("OS Initialization Error", "FATAL ERROR: No valid Operating System found")
+						.setVisible(true);
 				return false;
 			}
-			for(String os: osList)
+			for (String os : osList) {
 				osChoice.addItem(os);
-			
-			Map<String, String> osProperties = Win32_OperatingSystem.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
+			}
+
+			Map<String, String> osProperties = Win32_OperatingSystem
+					.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
 			osFields[0].setText(osProperties.get("Caption"));
 			osFields[1].setText(osProperties.get("Version"));
 			osFields[2].setText(osProperties.get("Manufacturer"));
@@ -46,7 +49,7 @@ final class OperatingSystem {
 			osFields[15].setText(osProperties.get("SystemDrive"));
 			osFields[16].setText(osProperties.get("WindowsDirectory"));
 			osFields[17].setText(osProperties.get("SystemDirectory"));
-			
+
 		} catch (IndexOutOfBoundsException | IOException e) {
 			new ExceptionUI("OS Error", e.getMessage()).setVisible(true);
 			return false;
@@ -56,9 +59,10 @@ final class OperatingSystem {
 	}
 
 	private static void addOsChoiceActionListener(JComboBox<String> osChoice, JTextField[] osFields) {
-		osChoice.addActionListener(e->{
+		osChoice.addActionListener(e -> {
 			try {
-				Map<String, String> osProperties = Win32_OperatingSystem.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
+				Map<String, String> osProperties = Win32_OperatingSystem
+						.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
 				osFields[0].setText(osProperties.get("Caption"));
 				osFields[1].setText(osProperties.get("Version"));
 				osFields[2].setText(osProperties.get("Manufacturer"));
@@ -80,7 +84,7 @@ final class OperatingSystem {
 			} catch (IndexOutOfBoundsException | IOException e1) {
 				new ExceptionUI("OS Error", e1.getMessage()).setVisible(true);
 			}
-			
+
 		});
 	}
 }

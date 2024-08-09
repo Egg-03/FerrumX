@@ -13,15 +13,16 @@ final class UserAndTime {
 	private UserAndTime() {
 		throw new IllegalStateException("Utility Class");
 	}
-	
-	protected static boolean initializeUserAndTime(JTextField...userTimeFields) {
+
+	protected static boolean initializeUserAndTime(JTextField... userTimeFields) {
 		userTimeFields[0].setText(User.getUsername());
 		userTimeFields[1].setText(User.getHome());
-		
+
 		try {
 			Map<String, String> timeZone = Win32_TimeZone.getOSTimeZone();
-			if(timeZone.isEmpty()) {
-				new ExceptionUI("Timezone Initialization Error", "FATAL ERROR: No valid Time zone found").setVisible(true);
+			if (timeZone.isEmpty()) {
+				new ExceptionUI("Timezone Initialization Error", "FATAL ERROR: No valid Time zone found")
+						.setVisible(true);
 				return false;
 			}
 			userTimeFields[2].setText(timeZone.get("StandardName"));

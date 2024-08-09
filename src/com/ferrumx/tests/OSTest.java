@@ -11,13 +11,14 @@ public class OSTest {
 	public static void main(String[] args) throws IndexOutOfBoundsException, IOException {
 		List<String> oslist;
 		Map<String, String> osinfo;
-		
-		oslist = Win32_OperatingSystem.getOSList();	
-		for(String currentOS : oslist) {
+
+		oslist = Win32_OperatingSystem.getOSList();
+		for (String currentOS : oslist) {
 			osinfo = Win32_OperatingSystem.getOSInfo(currentOS);
-			
-			for(Map.Entry<String, String> entry: osinfo.entrySet())
-				System.out.println(entry.getKey()+": "+entry.getValue());
+
+			for (Map.Entry<String, String> entry : osinfo.entrySet()) {
+				System.out.println(entry.getKey() + ": " + entry.getValue());
+			}
 		}
 	}
 }

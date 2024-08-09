@@ -11,15 +11,16 @@ public class SoundDeviceTest {
 	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
 		List<String> deviceIDs = Win32_SoundDevice.getSoundDeviceID();
 		Map<String, String> currentAudio;
-		
+
 		System.out.println(deviceIDs);
-		
-		for(String currentID : deviceIDs) {
+
+		for (String currentID : deviceIDs) {
 			currentAudio = Win32_SoundDevice.getCurrentAudioDevice(currentID);
-			for(Map.Entry<String, String> entry: currentAudio.entrySet())
-				System.out.println(entry.getKey()+": "+entry.getValue());
+			for (Map.Entry<String, String> entry : currentAudio.entrySet()) {
+				System.out.println(entry.getKey() + ": " + entry.getValue());
+			}
 			System.out.println();
-	    }
+		}
 	}
 
 }

@@ -33,96 +33,99 @@ import com.ferrumx.system.operating_system.Win32_OperatingSystem;
 import com.ferrumx.system.operating_system.Win32_TimeZone;
 
 public class DetailedReportGeneration {
-	
+
 	private DetailedReportGeneration() {
 		throw new IllegalStateException("Utility Class");
 	}
-	
-	public static void generate(JTextArea reportDisplay, JTextArea errorDisplay, JButton detailedReportButton, JButton summarizedReportButton, JProgressBar progress) {
-		//set progress bar value to 0
+
+	public static void generate(JTextArea reportDisplay, JTextArea errorDisplay, JButton detailedReportButton,
+			JButton summarizedReportButton, JProgressBar progress) {
+		// set progress bar value to 0
 		progress.setValue(0);
-		//disable button once computation starts
+		// disable button once computation starts
 		detailedReportButton.setEnabled(false);
 		summarizedReportButton.setEnabled(false);
-		//clear the displays first
+		// clear the displays first
 		reportDisplay.selectAll();
 		reportDisplay.replaceSelection("");
-		
+
 		errorDisplay.selectAll();
 		errorDisplay.replaceSelection("");
-		
-		//Start the computation in a separate thread to prevent blocking the main thread and allow live update of the results
-		//Since this class' methods are invoked only after the GUI is drawn in the main thread, the two text areas
-		//passed as parameters wont suffer from NullPointerExceptions
-		//regardless of when this thread starts
-		new Thread(()->{
+
+		// Start the computation in a separate thread to prevent blocking the main
+		// thread and allow live update of the results
+		// Since this class' methods are invoked only after the GUI is drawn in the main
+		// thread, the two text areas
+		// passed as parameters wont suffer from NullPointerExceptions
+		// regardless of when this thread starts
+		new Thread(() -> {
 			reportDisplayHardwareID(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(2));
-			
+
 			reportDisplayCPU(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(6));
-			
+
 			reportDisplayCPUCache(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(13));
-			
+
 			reportDisplayGPU(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(20));
-			
+
 			reportDisplayRAM(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(28));
-			
+
 			reportDisplayMotherboard(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(35));
-			
+
 			reportDisplayBIOS(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(42));
-			
+
 			reportDisplayNetwork(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(50));
-			
+
 			reportDisplayDisk(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(57));
-			
+
 			reportDisplayOS(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(64));
-			
+
 			reportDisplayUser(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(70));
-			
+
 			reportDisplayPrinter(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(77));
-			
+
 			reportDisplaySound(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(85));
-			
+
 			reportDisplayTimeZone(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(90));
-			
+
 			reportDisplayIO(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(100));
-			
-			//re-enable report buttons
+
+			// re-enable report buttons
 			detailedReportButton.setEnabled(true);
 			summarizedReportButton.setEnabled(true);
 		}).start();
 	}
-	
-	private static void reportDisplayHardwareID(JTextArea reportDisplay, JTextArea errorDisplay){
+
+	private static void reportDisplayHardwareID(JTextArea reportDisplay, JTextArea errorDisplay) {
 		reportDisplay.append("-------------------HARDWARE ID----------------------\n");
 		try {
 			String hwid = HardwareID.getHardwareID();
-			reportDisplay.append(hwid+"\n");
-			if(hwid.isBlank() || hwid.isEmpty())
+			reportDisplay.append(hwid + "\n");
+			if (hwid.isBlank() || hwid.isEmpty()) {
 				errorDisplay.append("HWID Generation: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("HWID Generation: Success\n");
+			}
 		} catch (InterruptedException | ExecutionException e) {
 			Throwable cause = e.getCause();
-			if(cause instanceof IOException || cause instanceof IndexOutOfBoundsException) {
-				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n"+cause.getMessage()+"\n");
-			}
-			else {
-				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n"+e.getMessage()+"\n");
+			if (cause instanceof IOException || cause instanceof IndexOutOfBoundsException) {
+				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + cause.getMessage() + "\n");
+			} else {
+				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getMessage() + "\n");
 				Thread.currentThread().interrupt();
 			}
 		}
@@ -130,73 +133,80 @@ public class DetailedReportGeneration {
 
 	private static void reportDisplaySound(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> currentAudio = Collections.emptyMap(); //this prevents null pointer exception
-		
+		Map<String, String> currentAudio = Collections.emptyMap(); // this prevents null pointer exception
+
 		reportDisplay.append("----------------------AUDIO INFO------------------------\n");
 		try {
-			deviceIDs = Win32_SoundDevice.getSoundDeviceID();	
-			for(String currentID : deviceIDs) {
+			deviceIDs = Win32_SoundDevice.getSoundDeviceID();
+			for (String currentID : deviceIDs) {
 				currentAudio = Win32_SoundDevice.getCurrentAudioDevice(currentID);
-				for(Map.Entry<String, String> entry: currentAudio.entrySet())
-					reportDisplay.append(entry.getKey()+": "+entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : currentAudio.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 				reportDisplay.append("\n");
 			}
-			if(currentAudio.isEmpty())
+			if (currentAudio.isEmpty()) {
 				errorDisplay.append("Audio Info: Unavailable");
-			else
+			} else {
 				errorDisplay.append("Audio Info: Success\n");
-		}catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n"+e);
+			}
+		} catch (IOException | IndexOutOfBoundsException e) {
+			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n" + e);
 		}
 	}
 
 	private static void reportDisplayPrinter(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> deviceIDs;
 		Map<String, String> currentPrinter = Collections.emptyMap();
-		
+
 		reportDisplay.append("----------------------PRINTER INFO------------------------\n");
 		try {
-		deviceIDs = Win32_Printer.getDeviceIDList();
-		for(String currentID : deviceIDs) {
-			currentPrinter = Win32_Printer.getCurrentPrinter(currentID);
-			for(Map.Entry<String, String> entry: currentPrinter.entrySet())
-				reportDisplay.append(entry.getKey()+": "+entry.getValue()+"\n");
-			reportDisplay.append("\n");
-	    }
-		if(currentPrinter.isEmpty())
-			errorDisplay.append("Printer Info: Unavailable\n");
-		else
-			errorDisplay.append("Printer Info: Success\n");
-	  }catch (IOException | IndexOutOfBoundsException e) {
-		  errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n"+e+"\n");
-	  }
+			deviceIDs = Win32_Printer.getDeviceIDList();
+			for (String currentID : deviceIDs) {
+				currentPrinter = Win32_Printer.getCurrentPrinter(currentID);
+				for (Map.Entry<String, String> entry : currentPrinter.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
+				reportDisplay.append("\n");
+			}
+			if (currentPrinter.isEmpty()) {
+				errorDisplay.append("Printer Info: Unavailable\n");
+			} else {
+				errorDisplay.append("Printer Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException e) {
+			errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n" + e + "\n");
+		}
 	}
 
 	private static void reportDisplayDisk(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> diskID;
 		List<String> diskPartition;
 		Map<String, String> disk = Collections.emptyMap();
-		
+
 		reportDisplay.append("----------------------STORAGE INFO------------------------\n");
 		try {
 			diskID = Win32_DiskDrive.getDriveID();
 			for (String id : diskID) {
 				disk = Win32_DiskDrive.getDrive(id);
 				diskPartition = Win32_DiskDriveToDiskPartition.getPartitionList(id);
-				for (Map.Entry<String, String> entry : disk.entrySet())
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : disk.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 
 				for (String currentPartition : diskPartition) {
-					reportDisplay.append("Partition: " + currentPartition + ", Drive Letter: "+ Win32_LogicalDiskToPartition.getDriveLetter(currentPartition)+"\n");
+					reportDisplay.append("Partition: " + currentPartition + ", Drive Letter: "
+							+ Win32_LogicalDiskToPartition.getDriveLetter(currentPartition) + "\n");
 				}
 				reportDisplay.append("\n");
 			}
-			if(disk.isEmpty())
+			if (disk.isEmpty()) {
 				errorDisplay.append("Storage Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("Storage Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("STORAGE ERROR: Unable to fetch Storage Info\n"+e+"\n");
+			errorDisplay.append("STORAGE ERROR: Unable to fetch Storage Info\n" + e + "\n");
 		}
 	}
 
@@ -205,7 +215,7 @@ public class DetailedReportGeneration {
 		Map<String, String> networkAdapter = Collections.emptyMap();
 		Map<String, String> networkAdapterConfiguration = Collections.emptyMap();
 		String index = "";
-		
+
 		reportDisplay.append("----------------------NETWORK INFO------------------------\n");
 		try {
 			deviceIDs = Win32_NetworkAdapter.getDeviceIDList();
@@ -213,56 +223,63 @@ public class DetailedReportGeneration {
 				networkAdapter = Win32_NetworkAdapter.getNetworkAdapters(currentID);
 				index = Win32_NetworkAdapterSetting.getIndex(currentID);
 				networkAdapterConfiguration = Win32_NetworkAdapterConfiguration.getAdapterConfiguration(index);
-				for (Map.Entry<String, String> entry : networkAdapter.entrySet())
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : networkAdapter.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 				reportDisplay.append("\n");
-				for (Map.Entry<String, String> entry : networkAdapterConfiguration.entrySet())
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : networkAdapterConfiguration.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 				reportDisplay.append("\n");
 			}
-			if(networkAdapter.isEmpty() || networkAdapterConfiguration.isEmpty())
+			if (networkAdapter.isEmpty() || networkAdapterConfiguration.isEmpty()) {
 				errorDisplay.append("Network Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("Network Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("NETWORK ERROR: Unable to fetch Network Info\n"+e+"\n");
+			errorDisplay.append("NETWORK ERROR: Unable to fetch Network Info\n" + e + "\n");
 		}
 	}
 
 	private static void reportDisplayIO(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> portID;
-		Map<String, String> ports= Collections.emptyMap();
-		
+		Map<String, String> ports = Collections.emptyMap();
+
 		reportDisplay.append("----------------------MAINBOARD I/O INFO------------------------\n");
 		try {
 			portID = Win32_PortConnector.getBaseboardPortID();
 			for (String id : portID) {
 				ports = Win32_PortConnector.getBaseboardPorts(id);
-				for (Map.Entry<String, String> port : ports.entrySet())
-					reportDisplay.append(port.getKey() + ": " + port.getValue()+"\n");
+				for (Map.Entry<String, String> port : ports.entrySet()) {
+					reportDisplay.append(port.getKey() + ": " + port.getValue() + "\n");
+				}
 				reportDisplay.append("\n");
 			}
-			if(ports.isEmpty())
+			if (ports.isEmpty()) {
 				errorDisplay.append("I/O Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("I/O Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n"+e+"\n");
-		}	
+			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+		}
 	}
 
 	private static void reportDisplayBIOS(JTextArea reportDisplay, JTextArea errorDisplay) {
 		reportDisplay.append("----------------------BIOS INFO------------------------\n");
 		try {
 			Map<String, String> BIOS = Win32_BIOS.getPrimaryBIOS();
-			for (Map.Entry<String, String> entry : BIOS.entrySet())
-				reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
-			if(BIOS.isEmpty())
+			for (Map.Entry<String, String> entry : BIOS.entrySet()) {
+				reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+			}
+			if (BIOS.isEmpty()) {
 				errorDisplay.append("BIOS Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("BIOS Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n"+e+"\n");
+			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n" + e + "\n");
 		}
 	}
 
@@ -270,65 +287,71 @@ public class DetailedReportGeneration {
 		reportDisplay.append("----------------------MAINBOARD------------------------\n");
 		try {
 			Map<String, String> motherboard = Win32_Baseboard.getMotherboard();
-			for (Map.Entry<String, String> entry : motherboard.entrySet())
-				reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
-			
-			if(motherboard.isEmpty())
+			for (Map.Entry<String, String> entry : motherboard.entrySet()) {
+				reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+			}
+
+			if (motherboard.isEmpty()) {
 				errorDisplay.append("Mainboard Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("Mainboard Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n"+e+"\n");
+			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
 		}
 	}
 
 	private static void reportDisplayGPU(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> gpuIDs;
 		Map<String, String> currentGPU = Collections.emptyMap();
-		
+
 		reportDisplay.append("----------------------VIDEO CONTROLLER------------------------\n");
 		try {
 			gpuIDs = Win32_VideoController.getGPUID();
 			for (String currentID : gpuIDs) {
 				currentGPU = Win32_VideoController.getGPU(currentID);
-				for (Map.Entry<String, String> entry : currentGPU.entrySet())
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : currentGPU.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 			}
-			if(currentGPU.isEmpty())
+			if (currentGPU.isEmpty()) {
 				errorDisplay.append("GPU Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("GPU Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n"+e+"\n");
+			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n" + e + "\n");
 		}
 	}
 
 	private static void reportDisplayRAM(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> memoryID;
 		Map<String, String> memory = Collections.emptyMap();
-		
+
 		reportDisplay.append("----------------------SPD------------------------\n");
 		try {
-			memoryID=Win32_PhysicalMemory.getTag();
+			memoryID = Win32_PhysicalMemory.getTag();
 			for (String id : memoryID) {
 				memory = Win32_PhysicalMemory.getMemory(id);
-				for (Map.Entry<String, String> entry : memory.entrySet())
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : memory.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 				reportDisplay.append("\n");
 			}
-			if(memory.isEmpty())
+			if (memory.isEmpty()) {
 				errorDisplay.append("Memory Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("Memory Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("MEMORY ERROR: Unable to fetch Memory Info\n"+e+"\n");
+			errorDisplay.append("MEMORY ERROR: Unable to fetch Memory Info\n" + e + "\n");
 		}
 	}
 
 	private static void reportDisplayCPUCache(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> cpuID;
 		List<String> cacheID;
-		
+
 		Map<String, String> cache = Collections.emptyMap();
 		reportDisplay.append("----------------------CPU CACHE------------------------\n");
 		try {
@@ -337,85 +360,93 @@ public class DetailedReportGeneration {
 				cacheID = Win32_AssociatedProcessorMemory.getCacheID(id);
 				for (String currentCacheID : cacheID) {
 					cache = Win32_CacheMemory.getCPUCache(currentCacheID);
-					for (Map.Entry<String, String> currentCache : cache.entrySet())
-						reportDisplay.append(currentCache.getKey() + ": " + currentCache.getValue()+"\n");
+					for (Map.Entry<String, String> currentCache : cache.entrySet()) {
+						reportDisplay.append(currentCache.getKey() + ": " + currentCache.getValue() + "\n");
+					}
 					reportDisplay.append("\n");
 				}
 			}
-			if(cache.isEmpty())
+			if (cache.isEmpty()) {
 				errorDisplay.append("CPU Cache Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("CPU Cache Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n"+e+"\n");
+			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n" + e + "\n");
 		}
 	}
 
 	private static void reportDisplayOS(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> oslist;
 		Map<String, String> osinfo = Collections.emptyMap();
-		
+
 		reportDisplay.append("----------------------OS INFO------------------------\n");
 		try {
 			oslist = Win32_OperatingSystem.getOSList();
 			for (String currentOS : oslist) {
 				osinfo = Win32_OperatingSystem.getOSInfo(currentOS);
-				for (Map.Entry<String, String> entry : osinfo.entrySet())
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : osinfo.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 			}
-			if(osinfo.isEmpty())
+			if (osinfo.isEmpty()) {
 				errorDisplay.append("OS Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("OS Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n"+e+"\n");
+			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n" + e + "\n");
 		}
 	}
-	
+
 	private static void reportDisplayCPU(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> deviceIDs;
 		Map<String, String> currentCPU = Collections.emptyMap();
-		
+
 		reportDisplay.append("----------------------CPU INFO------------------------\n");
 		try {
 			deviceIDs = Win32_Processor.getProcessorList();
 			for (String currentID : deviceIDs) {
 				currentCPU = Win32_Processor.getCurrentProcessor(currentID);
-				for (Map.Entry<String, String> entry : currentCPU.entrySet())
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
+				for (Map.Entry<String, String> entry : currentCPU.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
 				reportDisplay.append("\n");
 			}
-			if(currentCPU.isEmpty())
+			if (currentCPU.isEmpty()) {
 				errorDisplay.append("CPU Info: Unavailable\n");
-			else
+			} else {
 				errorDisplay.append("CPU Info: Success\n");
+			}
 		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n"+e+"\n");
+			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n" + e + "\n");
 		}
 	}
-	
+
 	private static void reportDisplayTimeZone(JTextArea reportDisplay, JTextArea errorDisplay) {
-		Map<String, String> currentTimeZone= Collections.emptyMap();
-		
+		Map<String, String> currentTimeZone = Collections.emptyMap();
+
 		reportDisplay.append("----------------------TIMEZONE------------------------\n");
 		try {
-			currentTimeZone= Win32_TimeZone.getOSTimeZone();
-			for (Map.Entry<String, String> entry : currentTimeZone.entrySet())
-				reportDisplay.append(entry.getKey() + ": " + entry.getValue()+"\n");
-			
-			if(currentTimeZone.isEmpty())
-				errorDisplay.append("Time-zone Info: Unavailable\n");
-			else
-				errorDisplay.append("Time-zone Info: Success\n");
-		} catch (IOException | IndexOutOfBoundsException e) {
-			errorDisplay.append("TIMEZONE ERROR: Unable to fetch TimeZone Info\n"+e+"\n");
-		}
-    }
+			currentTimeZone = Win32_TimeZone.getOSTimeZone();
+			for (Map.Entry<String, String> entry : currentTimeZone.entrySet()) {
+				reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+			}
 
-	private static void reportDisplayUser(JTextArea reportDisplay, JTextArea errorDisplay){
+			if (currentTimeZone.isEmpty()) {
+				errorDisplay.append("Time-zone Info: Unavailable\n");
+			} else {
+				errorDisplay.append("Time-zone Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException e) {
+			errorDisplay.append("TIMEZONE ERROR: Unable to fetch TimeZone Info\n" + e + "\n");
+		}
+	}
+
+	private static void reportDisplayUser(JTextArea reportDisplay, JTextArea errorDisplay) {
 		reportDisplay.append("----------------------USER INFO------------------------\n");
-		reportDisplay.append("Current Username: "+User.getUsername()+"\n");
-		reportDisplay.append("User Home Directory: "+User.getHome()+"\n");
+		reportDisplay.append("Current Username: " + User.getUsername() + "\n");
+		reportDisplay.append("User Home Directory: " + User.getHome() + "\n");
 		errorDisplay.append("User Info: Success\n");
 	}
 }

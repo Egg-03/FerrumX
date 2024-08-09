@@ -13,33 +13,37 @@ import com.ferrumx.system.networking.Win32_NetworkAdapterSetting;
 import com.ferrumx.ui.secondary.ExceptionUI;
 
 final class Network {
-	
+
 	private Network() {
 		throw new IllegalStateException("Utility Class");
 	}
-	
-	protected static boolean initializeNetwork(JComboBox<String> networkChoice, JTextField...networkFields) {
+
+	protected static boolean initializeNetwork(JComboBox<String> networkChoice, JTextField... networkFields) {
 		try {
 			List<String> networkAdapters = Win32_NetworkAdapter.getDeviceIDList();
-			
-			if(networkAdapters.isEmpty()) {
-				new ExceptionUI("Network Initialization Error", "FATAL ERROR: No Network Adapter detected.\nPlease make sure you are connected to the internet").setVisible(true);
+
+			if (networkAdapters.isEmpty()) {
+				new ExceptionUI("Network Initialization Error",
+						"FATAL ERROR: No Network Adapter detected.\nPlease make sure you are connected to the internet")
+						.setVisible(true);
 				return false;
 			}
-			
-			for(String adapter: networkAdapters)
+
+			for (String adapter : networkAdapters) {
 				networkChoice.addItem(adapter);
-			
+			}
+
 			String currentID = networkChoice.getItemAt(networkChoice.getSelectedIndex());
-			Map<String, String>networkAdapter = Win32_NetworkAdapter.getNetworkAdapters(currentID);
+			Map<String, String> networkAdapter = Win32_NetworkAdapter.getNetworkAdapters(currentID);
 			String index = Win32_NetworkAdapterSetting.getIndex(currentID);
-			Map<String, String>networkAdapterConfiguration = Win32_NetworkAdapterConfiguration.getAdapterConfiguration(index);
-			
+			Map<String, String> networkAdapterConfiguration = Win32_NetworkAdapterConfiguration
+					.getAdapterConfiguration(index);
+
 			networkFields[0].setText(networkAdapter.get("Name"));
 			networkFields[1].setText(networkAdapter.get("PNPDeviceID"));
 			networkFields[2].setText(networkAdapter.get("MACAddress"));
 			networkFields[3].setText(networkAdapter.get("NetConnectionID"));
-			
+
 			networkFields[4].setText(networkAdapterConfiguration.get("IPEnabled"));
 			networkFields[5].setText(networkAdapterConfiguration.get("IPAddress"));
 			networkFields[6].setText(networkAdapterConfiguration.get("IPSubnet"));
@@ -55,21 +59,22 @@ final class Network {
 		addNetworkChoiceActionListener(networkChoice, networkFields);
 		return true;
 	}
-	
-	private static void addNetworkChoiceActionListener(JComboBox<String> networkChoice, JTextField...networkFields) {
-		networkChoice.addActionListener(e->{
+
+	private static void addNetworkChoiceActionListener(JComboBox<String> networkChoice, JTextField... networkFields) {
+		networkChoice.addActionListener(e -> {
 			String currentID = networkChoice.getItemAt(networkChoice.getSelectedIndex());
 			Map<String, String> networkAdapter;
 			try {
 				networkAdapter = Win32_NetworkAdapter.getNetworkAdapters(currentID);
 				String index = Win32_NetworkAdapterSetting.getIndex(currentID);
-				Map<String, String>networkAdapterConfiguration = Win32_NetworkAdapterConfiguration.getAdapterConfiguration(index);
-				
+				Map<String, String> networkAdapterConfiguration = Win32_NetworkAdapterConfiguration
+						.getAdapterConfiguration(index);
+
 				networkFields[0].setText(networkAdapter.get("Name"));
 				networkFields[1].setText(networkAdapter.get("PNPDeviceID"));
 				networkFields[2].setText(networkAdapter.get("MACAddress"));
 				networkFields[3].setText(networkAdapter.get("NetConnectionID"));
-				
+
 				networkFields[4].setText(networkAdapterConfiguration.get("IPEnabled"));
 				networkFields[5].setText(networkAdapterConfiguration.get("IPAddress"));
 				networkFields[6].setText(networkAdapterConfiguration.get("IPSubnet"));
@@ -81,7 +86,7 @@ final class Network {
 			} catch (IndexOutOfBoundsException | IOException e1) {
 				new ExceptionUI("Network Initialization Error", e1.getMessage()).setVisible(true);
 			}
-			
+
 		});
 	}
 }
