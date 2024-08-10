@@ -111,7 +111,7 @@ public class AboutUI extends JFrame {
 		mainPanel.add(guiVersionPanel, gbc_guiVersionPanel);
 		guiVersionPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel guiVersion = new JLabel("v09082024 Beta");
+		JLabel guiVersion = new JLabel("v10082024 Beta");
 		guiVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		guiVersionPanel.add(guiVersion);
 		guiVersion.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
@@ -147,11 +147,18 @@ public class AboutUI extends JFrame {
 		developerLink.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					Desktop.getDesktop().browse(new URI(devLink));
-				} catch (URISyntaxException | IOException ex) {
-					new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
-				}
+				ConfirmationUI confirm = new ConfirmationUI("Developer Profile","This will open a new browser window. Continue ?");
+				confirm.getBtnYes().addActionListener(e1-> {
+					try {
+						Desktop.getDesktop().browse(new URI(devLink));
+						confirm.dispose();
+					} catch (URISyntaxException | IOException ex) {
+						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						confirm.dispose();
+					}
+				});
+
+				confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 			}
 		});
 		developerLink.setText(devLink);
@@ -178,11 +185,18 @@ public class AboutUI extends JFrame {
 		iconMakerLink.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					Desktop.getDesktop().browse(new URI(iconLink));
-				} catch (URISyntaxException | IOException ex) {
-					new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
-				}
+				ConfirmationUI confirm = new ConfirmationUI("Contributor Profile","This will open a new browser window. Continue ?");
+				confirm.getBtnYes().addActionListener(e1-> {
+					try {
+						Desktop.getDesktop().browse(new URI(iconLink));
+						confirm.dispose();
+					} catch (URISyntaxException | IOException ex) {
+						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						confirm.dispose();
+					}
+				});
+
+				confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 			}
 		});
 		iconMakerLink.setText(iconLink);
@@ -207,11 +221,18 @@ public class AboutUI extends JFrame {
 		themeSupportLink.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					Desktop.getDesktop().browse(new URI(themeLink));
-				} catch (URISyntaxException | IOException ex) {
-					new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
-				}
+				ConfirmationUI confirm = new ConfirmationUI("Contributor Profile","This will open a new browser window. Continue ?");
+				confirm.getBtnYes().addActionListener(e1-> {
+					try {
+						Desktop.getDesktop().browse(new URI(themeLink));
+						confirm.dispose();
+					} catch (URISyntaxException | IOException ex) {
+						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						confirm.dispose();
+					}
+				});
+
+				confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 			}
 		});
 		themeSupportLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

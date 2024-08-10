@@ -52,6 +52,7 @@ import javax.swing.text.DefaultCaret;
 import com.ferrumx.ui.report.DetailedReportGeneration;
 import com.ferrumx.ui.report.SummarizedReportGeneration;
 import com.ferrumx.ui.secondary.AboutUI;
+import com.ferrumx.ui.secondary.ConfirmationUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
 
@@ -226,18 +227,19 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v09082024 Beta]");
+		mainFrame.setTitle("FerrumX [Build v10082024 Beta]");
 		mainFrame.setIconImage(
 				Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
-		mainFrame.setBounds(100, 100, 860, 600);
+		mainFrame.setBounds(100, 100, 860, 640);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 
-		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
+		tabbedPane.setFont(new Font("Trebuchet MS", Font.BOLD | Font.ITALIC, 11));
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		mainFrame.getContentPane().add(tabbedPane);
+		mainFrame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		// Initialize the CPU Panel
 		JPanel hwidCpuPanel = new JPanel();
@@ -349,11 +351,18 @@ public class FerrumX {
 
 		JMenuItem updateCheck = new JMenuItem("Check For New Releases");
 		updateCheck.addActionListener(e -> {
-			try {
-				Desktop.getDesktop().browse(new URI(appLatestReleasePage));
-			} catch (URISyntaxException | IOException ex) {
-				new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
-			}
+			ConfirmationUI confirm = new ConfirmationUI("Github Releases","This will open a new browser window. Continue ?");
+			confirm.getBtnYes().addActionListener(e1->{
+				try {
+					Desktop.getDesktop().browse(new URI(appLatestReleasePage));
+					confirm.dispose();
+				} catch (URISyntaxException | IOException ex) {
+					new ExceptionUI("Github Release Page Visit Error", ex.getMessage()).setVisible(true);
+					confirm.dispose();
+				}
+			});
+			
+			confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 		});
 		helpMenu.add(updateCheck);
 	}
@@ -420,7 +429,7 @@ public class FerrumX {
 		GridBagLayout gbl_cpuPanel = new GridBagLayout();
 		gbl_cpuPanel.columnWidths = new int[] { 0, 0, 0, 0 };
 		gbl_cpuPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_cpuPanel.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_cpuPanel.columnWeights = new double[] { 1.0, 1.0, 1.0, Double.MIN_VALUE };
 		gbl_cpuPanel.rowWeights = new double[] { 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		cpuPanel.setLayout(gbl_cpuPanel);
 
@@ -2939,8 +2948,7 @@ public class FerrumX {
 					memoryManufacturerTf, memoryModelTf, memoryOtherInfoTf, memoryPartNumberTf, memoryFormFactorTf,
 					memoryBankLabelTf, memoryCapacityTf, memoryWidthTf, memorySpeedTf, memoryConfigClockSpeedTf,
 					memoryLocatorTf, memorySerialNumberTf));
-			Future<Boolean> initializeMainboard = exec.submit(
-					() -> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf,
+			Future<Boolean> initializeMainboard = exec.submit(() -> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf,
 							mbVersionTf, mbPnpTf, biosNameTf, biosCaptionTf, biosManufacturerTf, biosReleaseDateTf,
 							biosVersionTf, biosStatusTf, smbiosPresenceTf, smbiosVersionTf, biosLanguageTf));
 			Future<Boolean> initializeGpu = exec.submit(() -> Gpu.initializeGpu(gpuChoiceComboBox, gpuNameTf, gpuPnpTf,
@@ -2956,8 +2964,7 @@ public class FerrumX {
 					osCaptionTf, osVersionTf, osManufacturerTf, osArchitectureTf, osBuildNumberTf, osInstallDateTf,
 					osLastBootTf, osSerialTf, osPrimaryTf, osDistributedTf, osPortTf, osDeviceNameTf, osUserCountTf,
 					osRegUserTf, osLangTf, osSysDriveTf, osWinDirTf, osSysDirTf));
-			Future<Boolean> initializeUserAndTime = exec.submit(
-					() -> UserAndTime.initializeUserAndTime(userTf, userHomeTf, timeZoneNameTf, timeZoneCaptionTf));
+			Future<Boolean> initializeUserAndTime = exec.submit(() -> UserAndTime.initializeUserAndTime(userTf, userHomeTf, timeZoneNameTf, timeZoneCaptionTf));
 
 			startScreen.setHardwareLabel(initializeHardwareId.get());
 			startScreen.setCpuLabel(initializeCpu.get());
