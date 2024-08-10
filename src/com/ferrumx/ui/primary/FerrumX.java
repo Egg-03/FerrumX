@@ -21,7 +21,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -55,6 +54,7 @@ import com.ferrumx.ui.secondary.AboutUI;
 import com.ferrumx.ui.secondary.ConfirmationUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class FerrumX {
 
@@ -198,6 +198,7 @@ public class FerrumX {
 			FerrumX window = new FerrumX();
 			window.mainFrame.setVisible(true);
 		} catch (Exception e) {
+			e.printStackTrace();
 			new ExceptionUI("FerrumX Application Window Launch Error", e.getMessage()).setVisible(true);
 		}
 	}
@@ -369,7 +370,7 @@ public class FerrumX {
 
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
 
-		tabbedPane.addTab("CPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/CPU_16x16.png")),
+		tabbedPane.addTab("CPU", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/CPU.svg")),
 				hwidCpuPanel, "Displays CPU Information");
 		tabbedPane.setEnabledAt(0, true);
 		GridBagLayout gbl_hwidCpuPanel = new GridBagLayout();
@@ -891,7 +892,7 @@ public class FerrumX {
 	private void initializeMemoryPanel(JTabbedPane tabbedPane, JPanel memoryPanel) {
 		memoryPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Memory",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tabbedPane.addTab("Memory", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/RAM_16x16.png")),
+		tabbedPane.addTab("Memory", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/RAM.svg")),
 				memoryPanel, "Displays Memory Information");
 		GridBagLayout gbl_memoryPanel = new GridBagLayout();
 		gbl_memoryPanel.columnWidths = new int[] { 0, 0 };
@@ -1183,7 +1184,7 @@ public class FerrumX {
 
 	private void initializeMainboardPanel(JTabbedPane tabbedPane, JPanel mainBoardPanel) {
 		tabbedPane.addTab("Mainboard",
-				new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Mainboard_16x16.png")), mainBoardPanel,
+				new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/MainBoard.svg")), mainBoardPanel,
 				"Displays Motherboard and BIOS Info");
 		tabbedPane.setEnabledAt(2, true);
 		GridBagLayout gbl_mainBoardPanel = new GridBagLayout();
@@ -1496,7 +1497,7 @@ public class FerrumX {
 	private void initializeGpuPanel(JTabbedPane tabbedPane, JPanel gpuPanel) {
 		gpuPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
 				"Video Controller", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tabbedPane.addTab("GPU", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/GPU_32x32.png")),
+		tabbedPane.addTab("GPU", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_medium/GPU.svg")),
 				gpuPanel, "Displays basic information about your GPUs");
 		GridBagLayout gbl_gpuPanel = new GridBagLayout();
 		gbl_gpuPanel.columnWidths = new int[] { 0, 0 };
@@ -1815,7 +1816,7 @@ public class FerrumX {
 	}
 
 	private void initializeNetworkPanel(JTabbedPane tabbedPane, JPanel networkPanel) {
-		tabbedPane.addTab("Network", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Network_16x16.png")),
+		tabbedPane.addTab("Network", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/Network.svg")),
 				networkPanel, "Displays network information");
 		GridBagLayout gbl_networkPanel = new GridBagLayout();
 		gbl_networkPanel.columnWidths = new int[] { 0, 0 };
@@ -2105,7 +2106,7 @@ public class FerrumX {
 
 		storagePanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Storage",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		tabbedPane.addTab("Storage", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Storage_16x16.png")),
+		tabbedPane.addTab("Storage", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/Storage.svg")),
 				storagePanel, "Displays disk information");
 		GridBagLayout gbl_storagePanel = new GridBagLayout();
 		gbl_storagePanel.columnWidths = new int[] { 0, 0, 0 };
@@ -2296,7 +2297,7 @@ public class FerrumX {
 
 	private void initializeOsAndUserPanel(JTabbedPane tabbedPane, JPanel osAndUserPanel) {
 		osAndUserPanel.setBorder(null);
-		tabbedPane.addTab("OS", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/OS_16x16.png")),
+		tabbedPane.addTab("OS", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/OS.svg")),
 				osAndUserPanel, "Displays OS, User and Timezone information");
 		GridBagLayout gbl_osAndUserPanel = new GridBagLayout();
 		gbl_osAndUserPanel.columnWidths = new int[] { 0, 0 };
@@ -2373,7 +2374,7 @@ public class FerrumX {
 		JLabel osCoverImg = new JLabel("");
 		osCoverImagePanel.add(osCoverImg);
 		osCoverImg.setHorizontalAlignment(SwingConstants.CENTER);
-		osCoverImg.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/tab_icons_large/OS.png")));
+		osCoverImg.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_large/OS.svg")));
 
 		JLabel osVersion = new JLabel("Version");
 		GridBagConstraints gbc_osVersion = new GridBagConstraints();
@@ -2784,7 +2785,7 @@ public class FerrumX {
 	private void initializeReportPanel(JTabbedPane tabbedPane) {
 		JPanel reportPanel = new JPanel();
 		reportPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		tabbedPane.addTab("Report", new ImageIcon(FerrumX.class.getResource("/resources/tab_icons/Report_Tool _16x16.png")), reportPanel, "Generate comprehensive reports");
+		tabbedPane.addTab("Report", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/Report_Tool.svg")), reportPanel, "Generate comprehensive reports");
 		GridBagLayout gbl_reportPanel = new GridBagLayout();
 		gbl_reportPanel.columnWidths = new int[] { 0, 0, 0 };
 		gbl_reportPanel.rowHeights = new int[] { 0, 0, 0, 0 };

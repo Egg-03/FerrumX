@@ -83,6 +83,7 @@ public class AboutUI extends JFrame {
 		logoPanel.setLayout(gbl_logoPanel);
 
 		JLabel logo = new JLabel("");
+		logo.setIcon(new ImageIcon(AboutUI.class.getResource("/resources/logo_main_broad.png")));
 		logo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		logo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -98,7 +99,6 @@ public class AboutUI extends JFrame {
 		gbc_logo.gridx = 0;
 		gbc_logo.gridy = 0;
 		logoPanel.add(logo, gbc_logo);
-		logo.setIcon(new ImageIcon(AboutUI.class.getResource("/resources/logo_main_broad.png")));
 
 		JPanel guiVersionPanel = new JPanel();
 		guiVersionPanel

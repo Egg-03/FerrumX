@@ -8,5 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/flatlaf-3.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/flatlaf-intellij-themes-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/flatlaf-extras-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/jsvg-1.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

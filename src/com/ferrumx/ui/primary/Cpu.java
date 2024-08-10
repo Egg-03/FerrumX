@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -14,6 +13,7 @@ import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
 import com.ferrumx.system.hardware.Win32_CacheMemory;
 import com.ferrumx.system.hardware.Win32_Processor;
 import com.ferrumx.ui.secondary.ExceptionUI;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 final class Cpu {
 
@@ -69,9 +69,9 @@ final class Cpu {
 
 			// set cpu logo img based on manufacturer
 			if (manufacturer.equals("AuthenticAMD")) {
-				cpuLogo.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.png")));
+				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.svg")));
 			} else if (manufacturer.equals("GenuineIntel")) {
-				cpuLogo.setIcon(new ImageIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.png")));
+				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.svg")));
 			}
 
 		} catch (IndexOutOfBoundsException | IOException e) {
