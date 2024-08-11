@@ -37,14 +37,12 @@ final class Cpu {
 
 			String currentCpu = cpuChoice.getItemAt(cpuChoice.getSelectedIndex());
 			Map<String, String> cpuProperties = Win32_Processor.getCurrentProcessor(currentCpu);
-			String manufacturer = cpuProperties.get("Manufacturer");
-			// will be required in multiple cases
 
 			cpuFields[0].setText(cpuProperties.get("Name"));
 			cpuFields[1].setText(cpuProperties.get("NumberOfCores"));
 			cpuFields[2].setText(cpuProperties.get("ThreadCount"));
 			cpuFields[3].setText(cpuProperties.get("NumberOfLogicalProcessors"));
-			cpuFields[4].setText(manufacturer);
+			
 			cpuFields[5].setText(cpuProperties.get("AddressWidth") + " bit");
 			cpuFields[6].setText(cpuProperties.get("SocketDesignation"));
 			cpuFields[7].setText(cpuProperties.get("ExtClock") + "MHz");
@@ -60,6 +58,16 @@ final class Cpu {
 
 			cpuFields[8].setText(String.valueOf((Float.valueOf(cpuProperties.get("MaxClockSpeed"))
 					/ Float.valueOf(cpuProperties.get("ExtClock")))));
+			
+			// set cpu logo img based on manufacturer
+			String manufacturer = cpuProperties.get("Manufacturer");
+			cpuFields[4].setText(manufacturer);
+			if (manufacturer.equals("AuthenticAMD")) {
+				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.svg")));
+			} else if (manufacturer.equals("GenuineIntel")) {
+				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.svg")));
+			}
+			
 			List<String> cpuCacheList = Win32_AssociatedProcessorMemory.getCacheID(currentCpu);
 			for (String currentCacheId : cpuCacheList) {
 				Map<String, String> cpuCacheProperties = Win32_CacheMemory.getCPUCache(currentCacheId);
@@ -67,12 +75,6 @@ final class Cpu {
 						+ " KB - " + cpuCacheProperties.get("Associativity") + " way\n");
 			}
 
-			// set cpu logo img based on manufacturer
-			if (manufacturer.equals("AuthenticAMD")) {
-				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.svg")));
-			} else if (manufacturer.equals("GenuineIntel")) {
-				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.svg")));
-			}
 
 		} catch (IndexOutOfBoundsException | IOException e) {
 			new ExceptionUI("CPU Error", e.getMessage()).setVisible(true);
@@ -82,11 +84,11 @@ final class Cpu {
 			return true;
 		}
 
-		addCpuChoiceActionEvent(cpuChoice, cacheTa, cpuFields);
+		addCpuChoiceActionEvent(cpuLogo, cpuChoice, cacheTa, cpuFields);
 		return true;
 	}
 
-	private static void addCpuChoiceActionEvent(JComboBox<String> cpuChoice, JTextArea cacheTa,
+	private static void addCpuChoiceActionEvent(JLabel cpuLogo, JComboBox<String> cpuChoice, JTextArea cacheTa,
 			JTextField... cpuFields) {
 		cpuChoice.addActionListener(e -> {
 			try {
@@ -96,7 +98,7 @@ final class Cpu {
 				cpuFields[1].setText(cpuProperties.get("NumberOfCores"));
 				cpuFields[2].setText(cpuProperties.get("ThreadCount"));
 				cpuFields[3].setText(cpuProperties.get("NumberOfLogicalProcessors"));
-				cpuFields[4].setText(cpuProperties.get("Manufacturer"));
+				
 				cpuFields[5].setText(cpuProperties.get("AddressWidth") + " bit");
 				cpuFields[6].setText(cpuProperties.get("SocketDesignation"));
 				cpuFields[7].setText(cpuProperties.get("ExtClock") + "MHz");
@@ -112,7 +114,16 @@ final class Cpu {
 
 				cpuFields[8].setText(String.valueOf((Float.valueOf(cpuProperties.get("MaxClockSpeed"))
 						/ Float.valueOf(cpuProperties.get("ExtClock")))));
-
+				
+				// set cpu logo img based on manufacturer
+				String manufacturer = cpuProperties.get("Manufacturer");
+				cpuFields[4].setText(manufacturer);
+				if (manufacturer.equals("AuthenticAMD")) {
+					cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.svg")));
+				} else if (manufacturer.equals("GenuineIntel")) {
+					cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.svg")));
+				}
+				
 				cacheTa.selectAll();
 				cacheTa.replaceSelection("");
 				List<String> cpuCacheList = Win32_AssociatedProcessorMemory.getCacheID(currentCpu);

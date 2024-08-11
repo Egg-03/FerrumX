@@ -228,7 +228,7 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v10082024 Beta]");
+		mainFrame.setTitle("FerrumX [Build v11082024 Beta]");
 		mainFrame.setIconImage(
 				Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 640);
