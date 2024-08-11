@@ -54,6 +54,8 @@ import com.ferrumx.ui.secondary.AboutUI;
 import com.ferrumx.ui.secondary.ConfirmationUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
+import com.ferrumx.ui.utilities.ComponentImageCapture;
+
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class FerrumX {
@@ -189,8 +191,7 @@ public class FerrumX {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
 			new ExceptionUI("Theme Error", e.getMessage()).setVisible(true);
 		}
 
@@ -208,8 +209,7 @@ public class FerrumX {
 	 */
 	public FerrumX() {
 		initializeComponents();
-		initializeSystemInfo(
-				new StatusUI("Booting Up", "Please wait till FerrumX gathers information about your system"));
+		initializeSystemInfo(new StatusUI("Booting Up", "Please wait till FerrumX gathers information about your system"));
 	}
 
 	// changes theme on the fly with application open
@@ -217,8 +217,7 @@ public class FerrumX {
 		try {
 			UIManager.setLookAndFeel(lnfName);
 			SwingUtilities.updateComponentTreeUI(mainframe);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			new ExceptionUI("Theme Change Error", e.getMessage()).setVisible(true);
 		}
 	}
@@ -229,8 +228,7 @@ public class FerrumX {
 	private void initializeComponents() {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("FerrumX [Build v11082024 Beta]");
-		mainFrame.setIconImage(
-				Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 640);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
@@ -276,12 +274,13 @@ public class FerrumX {
 
 		// Initialize the Menu Bar
 		JMenuBar menuBar = new JMenuBar();
-		initializeMenu(mainFrame, menuBar);
+		initializeMenu(mainFrame, tabbedPane, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
+		
 	}
 
-	private void initializeMenu(JFrame mainFrame, JMenuBar menuBar) {
-		// theme
+	private void initializeMenu(JFrame mainFrame, JTabbedPane tabbedPane, JMenuBar menuBar) {
+		//theme menu
 		JMenu themeMenu = new JMenu("Theme");
 		menuBar.add(themeMenu);
 
@@ -342,7 +341,7 @@ public class FerrumX {
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
 
-		// about
+		//help menu
 		JMenu helpMenu = new JMenu("Help");
 		menuBar.add(helpMenu);
 
@@ -366,10 +365,18 @@ public class FerrumX {
 			confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 		});
 		helpMenu.add(updateCheck);
+		
+		//options menu
+		JMenu optionsMenu = new JMenu("Options");
+		menuBar.add(optionsMenu);
+		
+		JMenuItem Screenshot = new JMenuItem("Screenshot");
+		Screenshot.addActionListener(e->ComponentImageCapture.getScreenshot(mainFrame, tabbedPane.getTitleAt(tabbedPane.getSelectedIndex())));
+		optionsMenu.add(Screenshot);
 	}
 
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
-
+		
 		tabbedPane.addTab("CPU", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/CPU.svg")),
 				hwidCpuPanel, "Displays CPU Information");
 		tabbedPane.setEnabledAt(0, true);
