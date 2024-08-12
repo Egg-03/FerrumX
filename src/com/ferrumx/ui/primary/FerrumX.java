@@ -3,7 +3,6 @@ package com.ferrumx.ui.primary;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -346,10 +345,12 @@ public class FerrumX {
 		menuBar.add(helpMenu);
 
 		JMenuItem about = new JMenuItem("About");
+		about.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/menu_icons/about.svg")));
 		about.addActionListener(e -> new AboutUI().setVisible(true));
 		helpMenu.add(about);
 
 		JMenuItem updateCheck = new JMenuItem("Check For New Releases");
+		updateCheck.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/menu_icons/release.svg")));
 		updateCheck.addActionListener(e -> {
 			ConfirmationUI confirm = new ConfirmationUI("Github Releases","This will open a new browser window. Continue ?");
 			confirm.getBtnYes().addActionListener(e1->{
@@ -371,6 +372,7 @@ public class FerrumX {
 		menuBar.add(optionsMenu);
 		
 		JMenuItem Screenshot = new JMenuItem("Screenshot");
+		Screenshot.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/menu_icons/screenshot.svg")));
 		Screenshot.addActionListener(e->ComponentImageCapture.getScreenshot(mainFrame, tabbedPane.getTitleAt(tabbedPane.getSelectedIndex())));
 		optionsMenu.add(Screenshot);
 	}
@@ -2376,12 +2378,12 @@ public class FerrumX {
 		gbc_osCoverImagePanel.gridx = 4;
 		gbc_osCoverImagePanel.gridy = 1;
 		osPanel.add(osCoverImagePanel, gbc_osCoverImagePanel);
-		osCoverImagePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		osCoverImagePanel.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JLabel osCoverImg = new JLabel("");
 		osCoverImagePanel.add(osCoverImg);
 		osCoverImg.setHorizontalAlignment(SwingConstants.CENTER);
-		osCoverImg.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_large/OS.svg")));
+		osCoverImg.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/windows_logos/windows11.svg")));
 
 		JLabel osVersion = new JLabel("Version");
 		GridBagConstraints gbc_osVersion = new GridBagConstraints();

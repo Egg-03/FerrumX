@@ -1,6 +1,5 @@
 package com.ferrumx.ui.secondary;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
 
@@ -33,7 +32,7 @@ public class ConfirmationUI extends JFrame {
 		setVisible(true);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Select an option", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Select an option", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(10, 11, 264, 79);
 		getContentPane().add(panel);
 		panel.setLayout(null);

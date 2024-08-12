@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +24,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
+
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class AboutUI extends JFrame {
 	private static final long serialVersionUID = 4517185644185035860L;
@@ -83,7 +84,7 @@ public class AboutUI extends JFrame {
 		logoPanel.setLayout(gbl_logoPanel);
 
 		JLabel logo = new JLabel("");
-		logo.setIcon(new ImageIcon(AboutUI.class.getResource("/resources/logo_main_broad.png")));
+		logo.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/logo_main_broad.svg")));
 		logo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		logo.addMouseListener(new MouseAdapter() {
 			@Override
