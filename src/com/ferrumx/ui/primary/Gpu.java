@@ -5,17 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.ferrumx.system.hardware.Win32_VideoController;
 import com.ferrumx.ui.secondary.ExceptionUI;
+import com.ferrumx.ui.utilities.IconImageChooser;
 
 final class Gpu {
 	private Gpu() {
 		throw new IllegalStateException("Utility Class");
 	}
 
-	protected static boolean initializeGpu(JComboBox<String> gpuChoice, JTextField... gpuFields) {
+	protected static boolean initializeGpu(JLabel gpuIcon, JComboBox<String> gpuChoice, JTextField... gpuFields) {
 		try {
 			List<String> gpuList = Win32_VideoController.getGPUID();
 
@@ -28,9 +30,11 @@ final class Gpu {
 				gpuChoice.addItem(gpu);
 			}
 
-			Map<String, String> gpuProperties = Win32_VideoController
-					.getGPU(gpuChoice.getItemAt(gpuChoice.getSelectedIndex()));
-			gpuFields[0].setText(gpuProperties.get("Name"));
+			Map<String, String> gpuProperties = Win32_VideoController.getGPU(gpuChoice.getItemAt(gpuChoice.getSelectedIndex()));
+			String gpuName = gpuProperties.get("Name");
+			gpuFields[0].setText(gpuName);
+			IconImageChooser.gpuImageChooser(gpuIcon, gpuName);
+			
 			gpuFields[1].setText(gpuProperties.get("PNPDeviceID"));
 			gpuFields[2].setText(gpuProperties.get("CurrentHorizontalResolution"));
 			gpuFields[3].setText(gpuProperties.get("CurrentVerticalResolution"));
@@ -55,16 +59,20 @@ final class Gpu {
 											// a Long value
 			return true;
 		}
-		addGpuChoiceActionListener(gpuChoice, gpuFields);
+		addGpuChoiceActionListener(gpuIcon, gpuChoice, gpuFields);
 		return true;
 	}
 
-	private static void addGpuChoiceActionListener(JComboBox<String> gpuChoice, JTextField... gpuFields) {
+	private static void addGpuChoiceActionListener(JLabel gpuIcon, JComboBox<String> gpuChoice, JTextField... gpuFields) {
 		gpuChoice.addActionListener(e -> {
 			Map<String, String> gpuProperties;
 			try {
 				gpuProperties = Win32_VideoController.getGPU(gpuChoice.getItemAt(gpuChoice.getSelectedIndex()));
-				gpuFields[0].setText(gpuProperties.get("Name"));
+				
+				String gpuName = gpuProperties.get("Name");
+				gpuFields[0].setText(gpuName);
+				IconImageChooser.gpuImageChooser(gpuIcon, gpuName);
+				
 				gpuFields[1].setText(gpuProperties.get("PNPDeviceID"));
 				gpuFields[2].setText(gpuProperties.get("CurrentHorizontalResolution"));
 				gpuFields[3].setText(gpuProperties.get("CurrentVerticalResolution"));

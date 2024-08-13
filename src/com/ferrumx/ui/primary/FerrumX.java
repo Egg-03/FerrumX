@@ -116,6 +116,7 @@ public class FerrumX {
 	private JTextField smbiosVersionTf;
 	private JTextField biosLanguageTf;
 	// GPU
+	private JLabel gpuLogo;
 	private JComboBox<String> gpuChoiceComboBox;
 	private JTextField gpuNameTf;
 	private JTextField gpuPnpTf;
@@ -156,6 +157,7 @@ public class FerrumX {
 	private JTextField diskInterfaceTf;
 	private JTextArea diskPartTa;
 	// OS
+	private JLabel osCoverImg;
 	private JComboBox<String> currentOsChoiceBox;
 	private JTextField osCaptionTf;
 	private JTextField osVersionTf;
@@ -226,7 +228,7 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v11082024 Beta]");
+		mainFrame.setTitle("FerrumX [Build v13082024 Beta]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 640);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -1525,10 +1527,10 @@ public class FerrumX {
 		gbc_gpuIdentifierPanel.gridy = 0;
 		gpuPanel.add(gpuIdentifierPanel, gbc_gpuIdentifierPanel);
 		GridBagLayout gbl_gpuIdentifierPanel = new GridBagLayout();
-		gbl_gpuIdentifierPanel.columnWidths = new int[] { 0, 0, 0 };
+		gbl_gpuIdentifierPanel.columnWidths = new int[] { 0, 0, 0, 0 };
 		gbl_gpuIdentifierPanel.rowHeights = new int[] { 0, 0, 0, 0 };
-		gbl_gpuIdentifierPanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_gpuIdentifierPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_gpuIdentifierPanel.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_gpuIdentifierPanel.rowWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		gpuIdentifierPanel.setLayout(gbl_gpuIdentifierPanel);
 
 		JLabel gpuChoice = new JLabel("GPU#");
@@ -1542,7 +1544,7 @@ public class FerrumX {
 		gpuChoiceComboBox = new JComboBox<>();
 		GridBagConstraints gbc_gpuChoiceComboBox = new GridBagConstraints();
 		gbc_gpuChoiceComboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_gpuChoiceComboBox.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuChoiceComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_gpuChoiceComboBox.gridx = 1;
 		gbc_gpuChoiceComboBox.gridy = 0;
 		gpuIdentifierPanel.add(gpuChoiceComboBox, gbc_gpuChoiceComboBox);
@@ -1558,12 +1560,27 @@ public class FerrumX {
 		gpuNameTf = new JTextField();
 		GridBagConstraints gbc_gpuNameTf = new GridBagConstraints();
 		gbc_gpuNameTf.fill = GridBagConstraints.HORIZONTAL;
-		gbc_gpuNameTf.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuNameTf.insets = new Insets(0, 0, 5, 5);
 		gbc_gpuNameTf.gridx = 1;
 		gbc_gpuNameTf.gridy = 1;
 		gpuIdentifierPanel.add(gpuNameTf, gbc_gpuNameTf);
 		gpuNameTf.setEditable(false);
 		gpuNameTf.setColumns(10);
+		
+		JPanel gpuManufacturerLogoPanel = new JPanel();
+		gpuManufacturerLogoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "GPU Manufacturer", TitledBorder.RIGHT, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_gpuManufacturerLogoPanel = new GridBagConstraints();
+		gbc_gpuManufacturerLogoPanel.gridheight = 3;
+		gbc_gpuManufacturerLogoPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_gpuManufacturerLogoPanel.fill = GridBagConstraints.BOTH;
+		gbc_gpuManufacturerLogoPanel.gridx = 2;
+		gbc_gpuManufacturerLogoPanel.gridy = 0;
+		gpuIdentifierPanel.add(gpuManufacturerLogoPanel, gbc_gpuManufacturerLogoPanel);
+		gpuManufacturerLogoPanel.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		gpuLogo = new JLabel("");
+		gpuLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		gpuManufacturerLogoPanel.add(gpuLogo);
 
 		JLabel gpuPnpId = new JLabel("PNP Device ID");
 		GridBagConstraints gbc_gpuPnpId = new GridBagConstraints();
@@ -1575,6 +1592,7 @@ public class FerrumX {
 
 		gpuPnpTf = new JTextField();
 		GridBagConstraints gbc_gpuPnpTf = new GridBagConstraints();
+		gbc_gpuPnpTf.insets = new Insets(0, 0, 0, 5);
 		gbc_gpuPnpTf.fill = GridBagConstraints.HORIZONTAL;
 		gbc_gpuPnpTf.gridx = 1;
 		gbc_gpuPnpTf.gridy = 2;
@@ -2380,10 +2398,9 @@ public class FerrumX {
 		osPanel.add(osCoverImagePanel, gbc_osCoverImagePanel);
 		osCoverImagePanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel osCoverImg = new JLabel("");
+		osCoverImg = new JLabel("");
 		osCoverImagePanel.add(osCoverImg);
 		osCoverImg.setHorizontalAlignment(SwingConstants.CENTER);
-		osCoverImg.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/windows_logos/windows11.svg")));
 
 		JLabel osVersion = new JLabel("Version");
 		GridBagConstraints gbc_osVersion = new GridBagConstraints();
@@ -2961,7 +2978,7 @@ public class FerrumX {
 			Future<Boolean> initializeMainboard = exec.submit(() -> Mainboard.initializeMainboard(mbManufacturerTf, mbModelTf, mbProductTf, mbSerialNumberTf,
 							mbVersionTf, mbPnpTf, biosNameTf, biosCaptionTf, biosManufacturerTf, biosReleaseDateTf,
 							biosVersionTf, biosStatusTf, smbiosPresenceTf, smbiosVersionTf, biosLanguageTf));
-			Future<Boolean> initializeGpu = exec.submit(() -> Gpu.initializeGpu(gpuChoiceComboBox, gpuNameTf, gpuPnpTf,
+			Future<Boolean> initializeGpu = exec.submit(() -> Gpu.initializeGpu(gpuLogo, gpuChoiceComboBox, gpuNameTf, gpuPnpTf,
 					gpuHorizontalResTf, gpuVerticalResTf, gpuBitsTf, gpuMinRefTf, gpuMaxRefTf, gpuCurrentRefTf,
 					gpuDACTf, gpuVramTf, gpuDriverVersionTf, gpuDriverDateTf, gpuVideoProcessorTf));
 			Future<Boolean> initializeNetwork = exec.submit(() -> Network.initializeNetwork(netConnectionChoiceBox,
@@ -2970,7 +2987,7 @@ public class FerrumX {
 			Future<Boolean> initializeStorage = exec.submit(() -> Storage.initializeStorage(diskIndexChoiceBox,
 					diskPartTa, diskCaptionTf, diskModelTf, diskSizeTf, firmwareRevisionTf, diskSerialNumberTf,
 					diskPartitionsTf, diskStatusTf, diskInterfaceTf));
-			Future<Boolean> initializeOs = exec.submit(() -> OperatingSystem.getOsProperties(currentOsChoiceBox,
+			Future<Boolean> initializeOs = exec.submit(() -> OperatingSystem.getOsProperties(osCoverImg, currentOsChoiceBox,
 					osCaptionTf, osVersionTf, osManufacturerTf, osArchitectureTf, osBuildNumberTf, osInstallDateTf,
 					osLastBootTf, osSerialTf, osPrimaryTf, osDistributedTf, osPortTf, osDeviceNameTf, osUserCountTf,
 					osRegUserTf, osLangTf, osSysDriveTf, osWinDirTf, osSysDirTf));

@@ -13,7 +13,7 @@ import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
 import com.ferrumx.system.hardware.Win32_CacheMemory;
 import com.ferrumx.system.hardware.Win32_Processor;
 import com.ferrumx.ui.secondary.ExceptionUI;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.ferrumx.ui.utilities.IconImageChooser;
 
 final class Cpu {
 
@@ -62,11 +62,7 @@ final class Cpu {
 			// set cpu logo img based on manufacturer
 			String manufacturer = cpuProperties.get("Manufacturer");
 			cpuFields[4].setText(manufacturer);
-			if (manufacturer.equals("AuthenticAMD")) {
-				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.svg")));
-			} else if (manufacturer.equals("GenuineIntel")) {
-				cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.svg")));
-			}
+			IconImageChooser.cpuImageChooser(cpuLogo, manufacturer);
 			
 			List<String> cpuCacheList = Win32_AssociatedProcessorMemory.getCacheID(currentCpu);
 			for (String currentCacheId : cpuCacheList) {
@@ -118,11 +114,7 @@ final class Cpu {
 				// set cpu logo img based on manufacturer
 				String manufacturer = cpuProperties.get("Manufacturer");
 				cpuFields[4].setText(manufacturer);
-				if (manufacturer.equals("AuthenticAMD")) {
-					cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/amd.svg")));
-				} else if (manufacturer.equals("GenuineIntel")) {
-					cpuLogo.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/cpu_manufactuer_icons/intel.svg")));
-				}
+				IconImageChooser.cpuImageChooser(cpuLogo, manufacturer);
 				
 				cacheTa.selectAll();
 				cacheTa.replaceSelection("");

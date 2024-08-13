@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.ferrumx.system.operating_system.Win32_OperatingSystem;
 import com.ferrumx.ui.secondary.ExceptionUI;
+import com.ferrumx.ui.utilities.IconImageChooser;
 
 final class OperatingSystem {
 
@@ -16,7 +18,7 @@ final class OperatingSystem {
 		throw new IllegalStateException("Utility Class");
 	}
 
-	protected static boolean getOsProperties(JComboBox<String> osChoice, JTextField... osFields) {
+	protected static boolean getOsProperties(JLabel osLogo, JComboBox<String> osChoice, JTextField... osFields) {
 		try {
 			List<String> osList = Win32_OperatingSystem.getOSList();
 
@@ -29,9 +31,12 @@ final class OperatingSystem {
 				osChoice.addItem(os);
 			}
 
-			Map<String, String> osProperties = Win32_OperatingSystem
-					.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
-			osFields[0].setText(osProperties.get("Caption"));
+			Map<String, String> osProperties = Win32_OperatingSystem.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
+			
+			String caption = osProperties.get("Caption");
+			osFields[0].setText(caption);
+			IconImageChooser.osImageChooser(osLogo, caption);
+			
 			osFields[1].setText(osProperties.get("Version"));
 			osFields[2].setText(osProperties.get("Manufacturer"));
 			osFields[3].setText(osProperties.get("OSArchitecture"));
@@ -54,16 +59,19 @@ final class OperatingSystem {
 			new ExceptionUI("OS Error", e.getMessage()).setVisible(true);
 			return false;
 		}
-		addOsChoiceActionListener(osChoice, osFields);
+		addOsChoiceActionListener(osLogo, osChoice, osFields);
 		return true;
 	}
 
-	private static void addOsChoiceActionListener(JComboBox<String> osChoice, JTextField[] osFields) {
+	private static void addOsChoiceActionListener(JLabel osLogo, JComboBox<String> osChoice, JTextField[] osFields) {
 		osChoice.addActionListener(e -> {
 			try {
-				Map<String, String> osProperties = Win32_OperatingSystem
-						.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
-				osFields[0].setText(osProperties.get("Caption"));
+				Map<String, String> osProperties = Win32_OperatingSystem.getOSInfo(osChoice.getItemAt(osChoice.getSelectedIndex()));
+				
+				String caption = osProperties.get("Caption");
+				osFields[0].setText(caption);
+				IconImageChooser.osImageChooser(osLogo, caption);
+				
 				osFields[1].setText(osProperties.get("Version"));
 				osFields[2].setText(osProperties.get("Manufacturer"));
 				osFields[3].setText(osProperties.get("OSArchitecture"));
