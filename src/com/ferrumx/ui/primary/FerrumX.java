@@ -228,7 +228,7 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v13082024 Beta]");
+		mainFrame.setTitle("FerrumX [Build v14082024 Beta]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 640);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -282,7 +282,7 @@ public class FerrumX {
 
 	private void initializeMenu(JFrame mainFrame, JTabbedPane tabbedPane, JMenuBar menuBar) {
 		//theme menu
-		JMenu themeMenu = new JMenu("Theme");
+		JMenu themeMenu = new JMenu("Appearance");
 		menuBar.add(themeMenu);
 
 		JRadioButtonMenuItem darkThemeChoice = new JRadioButtonMenuItem("Mac Dark");
@@ -341,6 +341,15 @@ public class FerrumX {
 		themeButtonGroup.add(monokaiproThemeChoice);
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
+		
+		//options menu
+		JMenu optionsMenu = new JMenu("Options");
+		menuBar.add(optionsMenu);
+		
+		JMenuItem Screenshot = new JMenuItem("Screenshot");
+		Screenshot.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/menu_icons/screenshot.svg")));
+		Screenshot.addActionListener(e->ComponentImageCapture.getScreenshot(mainFrame, tabbedPane.getTitleAt(tabbedPane.getSelectedIndex())));
+		optionsMenu.add(Screenshot);
 
 		//help menu
 		JMenu helpMenu = new JMenu("Help");
@@ -368,15 +377,6 @@ public class FerrumX {
 			confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 		});
 		helpMenu.add(updateCheck);
-		
-		//options menu
-		JMenu optionsMenu = new JMenu("Options");
-		menuBar.add(optionsMenu);
-		
-		JMenuItem Screenshot = new JMenuItem("Screenshot");
-		Screenshot.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/menu_icons/screenshot.svg")));
-		Screenshot.addActionListener(e->ComponentImageCapture.getScreenshot(mainFrame, tabbedPane.getTitleAt(tabbedPane.getSelectedIndex())));
-		optionsMenu.add(Screenshot);
 	}
 
 	private void initializeCpuPanel(JTabbedPane tabbedPane, JPanel hwidCpuPanel) {
@@ -3002,7 +3002,7 @@ public class FerrumX {
 			startScreen.setStorageLabel(initializeStorage.get());
 			startScreen.setOsLabel(initializeOs.get() && initializeUserAndTime.get());
 
-			TimeUnit.MILLISECONDS.sleep(250);
+			TimeUnit.MILLISECONDS.sleep(150);
 			startScreen.dispose();
 		} catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
 			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
