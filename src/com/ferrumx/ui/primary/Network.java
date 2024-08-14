@@ -61,32 +61,33 @@ final class Network {
 	}
 
 	private static void addNetworkChoiceActionListener(JComboBox<String> networkChoice, JTextField... networkFields) {
-		networkChoice.addActionListener(e -> {
-			String currentID = networkChoice.getItemAt(networkChoice.getSelectedIndex());
-			Map<String, String> networkAdapter;
-			try {
-				networkAdapter = Win32_NetworkAdapter.getNetworkAdapters(currentID);
-				String index = Win32_NetworkAdapterSetting.getIndex(currentID);
-				Map<String, String> networkAdapterConfiguration = Win32_NetworkAdapterConfiguration
-						.getAdapterConfiguration(index);
+		networkChoice.addActionListener(e -> 
+			new Thread(()->{
+				String currentID = networkChoice.getItemAt(networkChoice.getSelectedIndex());
+				Map<String, String> networkAdapter;
+				try {
+					networkAdapter = Win32_NetworkAdapter.getNetworkAdapters(currentID);
+					String index = Win32_NetworkAdapterSetting.getIndex(currentID);
+					Map<String, String> networkAdapterConfiguration = Win32_NetworkAdapterConfiguration
+							.getAdapterConfiguration(index);
 
-				networkFields[0].setText(networkAdapter.get("Name"));
-				networkFields[1].setText(networkAdapter.get("PNPDeviceID"));
-				networkFields[2].setText(networkAdapter.get("MACAddress"));
-				networkFields[3].setText(networkAdapter.get("NetConnectionID"));
+					networkFields[0].setText(networkAdapter.get("Name"));
+					networkFields[1].setText(networkAdapter.get("PNPDeviceID"));
+					networkFields[2].setText(networkAdapter.get("MACAddress"));
+					networkFields[3].setText(networkAdapter.get("NetConnectionID"));
 
-				networkFields[4].setText(networkAdapterConfiguration.get("IPEnabled"));
-				networkFields[5].setText(networkAdapterConfiguration.get("IPAddress"));
-				networkFields[6].setText(networkAdapterConfiguration.get("IPSubnet"));
-				networkFields[7].setText(networkAdapterConfiguration.get("DefaultIPGateway"));
-				networkFields[8].setText(networkAdapterConfiguration.get("DHCPEnabled"));
-				networkFields[9].setText(networkAdapterConfiguration.get("DHCPServer"));
-				networkFields[10].setText(networkAdapterConfiguration.get("DNSHostName"));
-				networkFields[11].setText(networkAdapterConfiguration.get("DNSServerSearchOrder"));
-			} catch (IndexOutOfBoundsException | IOException e1) {
-				new ExceptionUI("Network Initialization Error", e1.getMessage()).setVisible(true);
-			}
-
-		});
+					networkFields[4].setText(networkAdapterConfiguration.get("IPEnabled"));
+					networkFields[5].setText(networkAdapterConfiguration.get("IPAddress"));
+					networkFields[6].setText(networkAdapterConfiguration.get("IPSubnet"));
+					networkFields[7].setText(networkAdapterConfiguration.get("DefaultIPGateway"));
+					networkFields[8].setText(networkAdapterConfiguration.get("DHCPEnabled"));
+					networkFields[9].setText(networkAdapterConfiguration.get("DHCPServer"));
+					networkFields[10].setText(networkAdapterConfiguration.get("DNSHostName"));
+					networkFields[11].setText(networkAdapterConfiguration.get("DNSServerSearchOrder"));
+				} catch (IndexOutOfBoundsException | IOException e1) {
+					new ExceptionUI("Network Initialization Error", e1.getMessage()).setVisible(true);
+				}
+			}).start()
+		);
 	}
 }

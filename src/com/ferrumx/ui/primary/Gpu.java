@@ -64,38 +64,39 @@ final class Gpu {
 	}
 
 	private static void addGpuChoiceActionListener(JLabel gpuIcon, JComboBox<String> gpuChoice, JTextField... gpuFields) {
-		gpuChoice.addActionListener(e -> {
-			Map<String, String> gpuProperties;
-			try {
-				gpuProperties = Win32_VideoController.getGPU(gpuChoice.getItemAt(gpuChoice.getSelectedIndex()));
-				
-				String gpuName = gpuProperties.get("Name");
-				gpuFields[0].setText(gpuName);
-				IconImageChooser.gpuImageChooser(gpuIcon, gpuName);
-				
-				gpuFields[1].setText(gpuProperties.get("PNPDeviceID"));
-				gpuFields[2].setText(gpuProperties.get("CurrentHorizontalResolution"));
-				gpuFields[3].setText(gpuProperties.get("CurrentVerticalResolution"));
-				gpuFields[4].setText(gpuProperties.get("CurrentBitsPerPixel"));
-				gpuFields[5].setText(gpuProperties.get("MinRefreshRate") + " Hz");
-				gpuFields[6].setText(gpuProperties.get("MaxRefreshRate") + " Hz");
-				gpuFields[7].setText(gpuProperties.get("CurrentRefreshRate") + " Hz");
-				gpuFields[8].setText(gpuProperties.get("AdapterDACType"));
+		gpuChoice.addActionListener(e ->
+			new Thread(()->{
+				Map<String, String> gpuProperties;
+				try {
+					gpuProperties = Win32_VideoController.getGPU(gpuChoice.getItemAt(gpuChoice.getSelectedIndex()));
+					
+					String gpuName = gpuProperties.get("Name");
+					gpuFields[0].setText(gpuName);
+					IconImageChooser.gpuImageChooser(gpuIcon, gpuName);
+					
+					gpuFields[1].setText(gpuProperties.get("PNPDeviceID"));
+					gpuFields[2].setText(gpuProperties.get("CurrentHorizontalResolution"));
+					gpuFields[3].setText(gpuProperties.get("CurrentVerticalResolution"));
+					gpuFields[4].setText(gpuProperties.get("CurrentBitsPerPixel"));
+					gpuFields[5].setText(gpuProperties.get("MinRefreshRate") + " Hz");
+					gpuFields[6].setText(gpuProperties.get("MaxRefreshRate") + " Hz");
+					gpuFields[7].setText(gpuProperties.get("CurrentRefreshRate") + " Hz");
+					gpuFields[8].setText(gpuProperties.get("AdapterDACType"));
 
-				gpuFields[10].setText(gpuProperties.get("DriverVersion"));
-				gpuFields[11].setText(gpuProperties.get("DriverDate"));
-				gpuFields[12].setText(gpuProperties.get("VideoProcessor"));
+					gpuFields[10].setText(gpuProperties.get("DriverVersion"));
+					gpuFields[11].setText(gpuProperties.get("DriverDate"));
+					gpuFields[12].setText(gpuProperties.get("VideoProcessor"));
 
-				Long adapterRAM = Long.valueOf(gpuProperties.get("AdapterRAM")) / (1024 * 1024);
-				gpuFields[9].setText(String.valueOf(adapterRAM) + " MB");
+					Long adapterRAM = Long.valueOf(gpuProperties.get("AdapterRAM")) / (1024 * 1024);
+					gpuFields[9].setText(String.valueOf(adapterRAM) + " MB");
 
-			} catch (IndexOutOfBoundsException | IOException e1) {
-				new ExceptionUI("Video Controller Initialization Error", e1.getMessage()).setVisible(true);
-			} catch (NumberFormatException e1) {
-				gpuFields[9].setText("N/A"); // sets VRAM field to N/A in case the adapterRAM property cannot be parsed
-												// into a Long value
-			}
-
-		});
+				} catch (IndexOutOfBoundsException | IOException e1) {
+					new ExceptionUI("Video Controller Initialization Error", e1.getMessage()).setVisible(true);
+				} catch (NumberFormatException e1) {
+					gpuFields[9].setText("N/A"); // sets VRAM field to N/A in case the adapterRAM property cannot be parsed
+													// into a Long value
+				}
+			}).start()
+		);
 	}
 }
