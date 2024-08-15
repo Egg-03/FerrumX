@@ -25,7 +25,12 @@ public class ComponentImageCapture {
 		component.paint(image.getGraphics());
 		
 		try {
-			File savedScreenshotFile = new File(User.getUsername()+"-"+name+".png");
+			//create a screenshots folder if it does not exist
+			if(!new File("screenshots").isDirectory()) {
+				new File("screenshots").mkdir();
+			}
+				
+			File savedScreenshotFile = new File("screenshots/"+User.getUsername()+"-"+name+".png");
 			String screenshotFileName = savedScreenshotFile.getName();
 			String screenshotFilePath = savedScreenshotFile.getAbsolutePath();
 			
