@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import javax.swing.JProgressBar;
 
 public class StatusUI extends JFrame {
 
@@ -99,6 +100,11 @@ public class StatusUI extends JFrame {
 		storageLabel.setIcon(new FlatSVGIcon(StatusUI.class.getResource("/resources/tab_icons_small/Storage.svg")));
 		storageLabel.setBounds(218, 79, 97, 20);
 		statusPanel.add(storageLabel);
+		
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setIndeterminate(true);
+		progressBar.setBounds(20, 110, 370, 3);
+		statusPanel.add(progressBar);
 	}
 
 	public void setHardwareLabel(Boolean status) {
@@ -149,5 +155,4 @@ public class StatusUI extends JFrame {
 			this.storageLabel.setText("Storage ✓");
 		}
 	}
-
 }

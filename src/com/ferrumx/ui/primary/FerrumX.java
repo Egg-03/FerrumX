@@ -54,7 +54,7 @@ import com.ferrumx.ui.secondary.ConfirmationUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
 import com.ferrumx.ui.utilities.ComponentImageCapture;
-
+import com.ferrumx.ui.utilities.ThemeLoader;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class FerrumX {
@@ -191,7 +191,7 @@ public class FerrumX {
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
+			UIManager.setLookAndFeel(ThemeLoader.load());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
 			new ExceptionUI("Theme Error", e.getMessage()).setVisible(true);
 		}
@@ -218,6 +218,7 @@ public class FerrumX {
 		try {
 			UIManager.setLookAndFeel(lnfName);
 			SwingUtilities.updateComponentTreeUI(mainframe);
+			ThemeLoader.store(lnfName);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			new ExceptionUI("Theme Change Error", e.getMessage()).setVisible(true);
 		}
@@ -228,7 +229,7 @@ public class FerrumX {
 	 */
 	private void initializeComponents() {
 		mainFrame = new JFrame();
-		mainFrame.setTitle("FerrumX [Build v15082024 Beta]");
+		mainFrame.setTitle("FerrumX [Build v16082024 Beta]");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
 		mainFrame.setBounds(100, 100, 860, 640);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -291,7 +292,6 @@ public class FerrumX {
 				changeTheme("com.formdev.flatlaf.themes.FlatMacDarkLaf", mainFrame);
 			}
 		});
-		darkThemeChoice.setSelected(true);
 		themeMenu.add(darkThemeChoice);
 
 		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Cyan Light");
@@ -342,6 +342,8 @@ public class FerrumX {
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
 		
+		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
+		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, lightThemeChoice, greyThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");
 		menuBar.add(optionsMenu);
