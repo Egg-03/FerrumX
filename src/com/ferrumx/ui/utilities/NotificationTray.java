@@ -4,7 +4,6 @@ import java.awt.AWTException;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
-import java.util.concurrent.TimeUnit;
 
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -48,16 +47,10 @@ public class NotificationTray {
 		 try {
 				sysTray.add(trayIcon);
 				trayIcon.displayMessage("FerrumX", message, type);
-				TimeUnit.SECONDS.sleep(5);
 				sysTray.remove(trayIcon);
 			} catch (AWTException e) {
 				new ExceptionUI("System Tray Notification Error", e.getMessage());
 				sysTray.remove(trayIcon);
-			} catch (InterruptedException e) {
-				new ExceptionUI("System Tray Notification Auto Close Error", e.getMessage());
-				sysTray.remove(trayIcon);
-				Thread.currentThread().interrupt();
 			}
 	}
-	
 }
