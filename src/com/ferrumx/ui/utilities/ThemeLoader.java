@@ -93,7 +93,7 @@ public class ThemeLoader {
 			case "com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme":
 				themeButtons[4].setSelected(true);
 				break;
-			case "com.formdev.flatlaf.intellijthemes.FlatCarbonIJThem":
+			case "com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme":
 				themeButtons[5].setSelected(true);
 				break;
 			default:
