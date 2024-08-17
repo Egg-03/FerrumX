@@ -26,6 +26,8 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class AboutUI extends JFrame {
 	private static final long serialVersionUID = 4517185644185035860L;
@@ -40,7 +42,7 @@ public class AboutUI extends JFrame {
 	public AboutUI() {
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AboutUI.class.getResource("/resources/icon_main.png")));
-		setBounds(100, 100, 570, 350);
+		setBounds(100, 100, 570, 420);
 		setTitle("About FerrumX");
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 
@@ -71,9 +73,9 @@ public class AboutUI extends JFrame {
 		mainPanel.add(thirdPartyPanel, gbc_thirdPartyPanel);
 		GridBagLayout gbl_thirdPartyPanel = new GridBagLayout();
 		gbl_thirdPartyPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_thirdPartyPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_thirdPartyPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_thirdPartyPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_thirdPartyPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_thirdPartyPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		thirdPartyPanel.setLayout(gbl_thirdPartyPanel);
 		
 		JLabel themeSupport = new JLabel("Theme Support");
@@ -196,7 +198,7 @@ public class AboutUI extends JFrame {
 		JLabel extraIcons = new JLabel("Extra Icons");
 		GridBagConstraints gbc_extraIcons = new GridBagConstraints();
 		gbc_extraIcons.anchor = GridBagConstraints.EAST;
-		gbc_extraIcons.insets = new Insets(0, 0, 0, 5);
+		gbc_extraIcons.insets = new Insets(0, 0, 5, 5);
 		gbc_extraIcons.gridx = 0;
 		gbc_extraIcons.gridy = 3;
 		thirdPartyPanel.add(extraIcons, gbc_extraIcons);
@@ -207,11 +209,29 @@ public class AboutUI extends JFrame {
 		extraIconsLink.setText(extraIconLink);
 		extraIconsLink.setEditable(false);
 		GridBagConstraints gbc_extraIconsLink = new GridBagConstraints();
+		gbc_extraIconsLink.insets = new Insets(0, 0, 5, 0);
 		gbc_extraIconsLink.fill = GridBagConstraints.HORIZONTAL;
 		gbc_extraIconsLink.gridx = 1;
 		gbc_extraIconsLink.gridy = 3;
 		thirdPartyPanel.add(extraIconsLink, gbc_extraIconsLink);
 		extraIconsLink.setColumns(10);
+		
+		JScrollPane unsignedNoticeScrollPane = new JScrollPane();
+		GridBagConstraints gbc_unsignedNoticeScrollPane = new GridBagConstraints();
+		gbc_unsignedNoticeScrollPane.fill = GridBagConstraints.BOTH;
+		gbc_unsignedNoticeScrollPane.gridwidth = 2;
+		gbc_unsignedNoticeScrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_unsignedNoticeScrollPane.gridx = 0;
+		gbc_unsignedNoticeScrollPane.gridy = 4;
+		thirdPartyPanel.add(unsignedNoticeScrollPane, gbc_unsignedNoticeScrollPane);
+		
+		JTextArea unsignedNotice = new JTextArea();
+		unsignedNotice.setFont(new Font("Segoe UI", Font.ITALIC, 11));
+		unsignedNoticeScrollPane.setViewportView(unsignedNotice);
+		unsignedNotice.setEditable(false);
+		unsignedNotice.setWrapStyleWord(true);
+		unsignedNotice.setLineWrap(true);
+		unsignedNotice.setText("WARNING: The executable in this release has been wrapped using launch4j and is currently unsigned (I'm too poor to afford signing). As of now, the project's github repository is the only official distribution page for the program. Be careful if you've downloaded the program from other sources.");
 		extraIconsLink.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
