@@ -702,7 +702,6 @@ public class FerrumX {
 
 		JLabel cpuVersion = new JLabel("Version");
 		GridBagConstraints gbc_cpuVersion = new GridBagConstraints();
-		gbc_cpuVersion.anchor = GridBagConstraints.EAST;
 		gbc_cpuVersion.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuVersion.gridx = 0;
 		gbc_cpuVersion.gridy = 0;
@@ -720,7 +719,6 @@ public class FerrumX {
 
 		JLabel cpuFamily = new JLabel("Family");
 		GridBagConstraints gbc_cpuFamily = new GridBagConstraints();
-		gbc_cpuFamily.anchor = GridBagConstraints.EAST;
 		gbc_cpuFamily.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuFamily.gridx = 2;
 		gbc_cpuFamily.gridy = 0;
@@ -738,7 +736,6 @@ public class FerrumX {
 
 		JLabel cpuVirtStatus = new JLabel("Virtualization");
 		GridBagConstraints gbc_cpuVirtStatus = new GridBagConstraints();
-		gbc_cpuVirtStatus.anchor = GridBagConstraints.EAST;
 		gbc_cpuVirtStatus.insets = new Insets(0, 0, 5, 5);
 		gbc_cpuVirtStatus.gridx = 4;
 		gbc_cpuVirtStatus.gridy = 0;
@@ -756,7 +753,6 @@ public class FerrumX {
 
 		JLabel cpuCaption = new JLabel("Caption");
 		GridBagConstraints gbc_cpuCaption = new GridBagConstraints();
-		gbc_cpuCaption.anchor = GridBagConstraints.EAST;
 		gbc_cpuCaption.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuCaption.gridx = 0;
 		gbc_cpuCaption.gridy = 1;
@@ -774,7 +770,6 @@ public class FerrumX {
 
 		JLabel cpuStepping = new JLabel("Stepping");
 		GridBagConstraints gbc_cpuStepping = new GridBagConstraints();
-		gbc_cpuStepping.anchor = GridBagConstraints.EAST;
 		gbc_cpuStepping.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuStepping.gridx = 2;
 		gbc_cpuStepping.gridy = 1;
@@ -792,7 +787,6 @@ public class FerrumX {
 
 		JLabel cpuId = new JLabel("ProcessorID");
 		GridBagConstraints gbc_cpuId = new GridBagConstraints();
-		gbc_cpuId.anchor = GridBagConstraints.EAST;
 		gbc_cpuId.insets = new Insets(0, 0, 0, 5);
 		gbc_cpuId.gridx = 4;
 		gbc_cpuId.gridy = 1;
