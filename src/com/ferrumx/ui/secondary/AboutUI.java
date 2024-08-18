@@ -55,7 +55,7 @@ public class AboutUI extends JFrame {
 		gbl_mainPanel.columnWeights = new double[] { 1.0, 0.0, 1.0, Double.MIN_VALUE };
 		gbl_mainPanel.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		mainPanel.setLayout(gbl_mainPanel);
-		
+
 		setVersionPanel(mainPanel);
 		setContributionPanel(mainPanel);
 		setThirdPartyPanel(mainPanel);
@@ -77,15 +77,16 @@ public class AboutUI extends JFrame {
 		gbl_thirdPartyPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_thirdPartyPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		thirdPartyPanel.setLayout(gbl_thirdPartyPanel);
-		
+
 		JLabel themeSupport = new JLabel("Theme Support");
+		themeSupport.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/theme.svg")));
 		GridBagConstraints gbc_themeSupport = new GridBagConstraints();
 		gbc_themeSupport.insets = new Insets(0, 0, 5, 5);
-		gbc_themeSupport.anchor = GridBagConstraints.EAST;
+		gbc_themeSupport.anchor = GridBagConstraints.WEST;
 		gbc_themeSupport.gridx = 0;
 		gbc_themeSupport.gridy = 0;
 		thirdPartyPanel.add(themeSupport, gbc_themeSupport);
-		
+
 		JTextField themeSupportLink = new JTextField();
 		themeSupportLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		themeSupportLink.setText(themeLink);
@@ -116,15 +117,16 @@ public class AboutUI extends JFrame {
 		gbc_themeSupportLink.gridx = 1;
 		gbc_themeSupportLink.gridy = 0;
 		thirdPartyPanel.add(themeSupportLink, gbc_themeSupportLink);
-		
+
 		JLabel svgSupport = new JLabel("SVG Support");
+		svgSupport.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/library.svg")));
 		GridBagConstraints gbc_svgSupport = new GridBagConstraints();
-		gbc_svgSupport.anchor = GridBagConstraints.EAST;
+		gbc_svgSupport.anchor = GridBagConstraints.WEST;
 		gbc_svgSupport.insets = new Insets(0, 0, 5, 5);
 		gbc_svgSupport.gridx = 0;
 		gbc_svgSupport.gridy = 1;
 		thirdPartyPanel.add(svgSupport, gbc_svgSupport);
-		
+
 		JTextField svgSupportLink = new JTextField();
 		svgSupportLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		svgSupportLink.setForeground(new Color(0, 191, 255));
@@ -155,15 +157,16 @@ public class AboutUI extends JFrame {
 				confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 			}
 		});
-		
+
 		JLabel iniSupport = new JLabel("INI Support");
+		iniSupport.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/library.svg")));
 		GridBagConstraints gbc_iniSupport = new GridBagConstraints();
-		gbc_iniSupport.anchor = GridBagConstraints.EAST;
+		gbc_iniSupport.anchor = GridBagConstraints.WEST;
 		gbc_iniSupport.insets = new Insets(0, 0, 5, 5);
 		gbc_iniSupport.gridx = 0;
 		gbc_iniSupport.gridy = 2;
 		thirdPartyPanel.add(iniSupport, gbc_iniSupport);
-		
+
 		JTextField iniSupportLink = new JTextField();
 		iniSupportLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		iniSupportLink.setForeground(new Color(0, 191, 255));
@@ -194,15 +197,16 @@ public class AboutUI extends JFrame {
 				confirm.getBtnNo().addActionListener(e1->confirm.dispose());
 			}
 		});
-		
+
 		JLabel extraIcons = new JLabel("Extra Icons");
+		extraIcons.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/extension.svg")));
 		GridBagConstraints gbc_extraIcons = new GridBagConstraints();
-		gbc_extraIcons.anchor = GridBagConstraints.EAST;
+		gbc_extraIcons.anchor = GridBagConstraints.WEST;
 		gbc_extraIcons.insets = new Insets(0, 0, 5, 5);
 		gbc_extraIcons.gridx = 0;
 		gbc_extraIcons.gridy = 3;
 		thirdPartyPanel.add(extraIcons, gbc_extraIcons);
-		
+
 		JTextField extraIconsLink = new JTextField();
 		extraIconsLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		extraIconsLink.setForeground(new Color(0, 191, 255));
@@ -215,7 +219,7 @@ public class AboutUI extends JFrame {
 		gbc_extraIconsLink.gridy = 3;
 		thirdPartyPanel.add(extraIconsLink, gbc_extraIconsLink);
 		extraIconsLink.setColumns(10);
-		
+
 		JScrollPane unsignedNoticeScrollPane = new JScrollPane();
 		GridBagConstraints gbc_unsignedNoticeScrollPane = new GridBagConstraints();
 		gbc_unsignedNoticeScrollPane.fill = GridBagConstraints.BOTH;
@@ -224,7 +228,7 @@ public class AboutUI extends JFrame {
 		gbc_unsignedNoticeScrollPane.gridx = 0;
 		gbc_unsignedNoticeScrollPane.gridy = 4;
 		thirdPartyPanel.add(unsignedNoticeScrollPane, gbc_unsignedNoticeScrollPane);
-		
+
 		JTextArea unsignedNotice = new JTextArea();
 		unsignedNotice.setFont(new Font("Segoe UI", Font.ITALIC, 11));
 		unsignedNoticeScrollPane.setViewportView(unsignedNotice);
@@ -254,8 +258,7 @@ public class AboutUI extends JFrame {
 
 	private void setContributionPanel(JPanel mainPanel) {
 		JPanel contributionPanel = new JPanel();
-		contributionPanel
-				.setBorder(new TitledBorder(null, "Contribution", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		contributionPanel.setBorder(new TitledBorder(null, "Contribution", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_contributionPanel = new GridBagConstraints();
 		gbc_contributionPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_contributionPanel.gridwidth = 3;
@@ -269,89 +272,92 @@ public class AboutUI extends JFrame {
 		gbl_contributionPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_contributionPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		contributionPanel.setLayout(gbl_contributionPanel);
-				
-						JTextField developerLink = new JTextField();
-						developerLink.setForeground(new Color(0, 191, 255));
-						developerLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-						developerLink.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-								ConfirmationUI confirm = new ConfirmationUI("Developer Profile","This will open a new browser window. Continue ?");
-								confirm.getBtnYes().addActionListener(e1-> {
-									try {
-										Desktop.getDesktop().browse(new URI(devLink));
-										confirm.dispose();
-										developerLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
-									} catch (URISyntaxException | IOException ex) {
-										new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
-										confirm.dispose();
-									}
-								});
 
-								confirm.getBtnNo().addActionListener(e1->confirm.dispose());
-							}
-						});
-						
-								JLabel developer = new JLabel("Developed By");
-								GridBagConstraints gbc_developer = new GridBagConstraints();
-								gbc_developer.anchor = GridBagConstraints.EAST;
-								gbc_developer.insets = new Insets(0, 0, 5, 5);
-								gbc_developer.gridx = 0;
-								gbc_developer.gridy = 0;
-								contributionPanel.add(developer, gbc_developer);
-						developerLink.setText(devLink);
-						developerLink.setEditable(false);
-						GridBagConstraints gbc_developerLink = new GridBagConstraints();
-						gbc_developerLink.fill = GridBagConstraints.HORIZONTAL;
-						gbc_developerLink.insets = new Insets(0, 0, 5, 0);
-						gbc_developerLink.gridx = 1;
-						gbc_developerLink.gridy = 0;
-						contributionPanel.add(developerLink, gbc_developerLink);
-						developerLink.setColumns(10);
-		
-				JLabel iconMaker = new JLabel("Logo and Icons By");
-				GridBagConstraints gbc_iconMaker = new GridBagConstraints();
-				gbc_iconMaker.anchor = GridBagConstraints.EAST;
-				gbc_iconMaker.insets = new Insets(0, 0, 0, 5);
-				gbc_iconMaker.gridx = 0;
-				gbc_iconMaker.gridy = 1;
-				contributionPanel.add(iconMaker, gbc_iconMaker);
-		
-				JTextField iconMakerLink = new JTextField();
-				iconMakerLink.setForeground(new Color(0, 191, 255));
-				iconMakerLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				iconMakerLink.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						ConfirmationUI confirm = new ConfirmationUI("Contributor Profile","This will open a new browser window. Continue ?");
-						confirm.getBtnYes().addActionListener(e1-> {
-							try {
-								Desktop.getDesktop().browse(new URI(iconLink));
-								confirm.dispose();
-								iconMakerLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
-							} catch (URISyntaxException | IOException ex) {
-								new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
-								confirm.dispose();
-							}
-						});
-
-						confirm.getBtnNo().addActionListener(e1->confirm.dispose());
+		JTextField developerLink = new JTextField();
+		developerLink.setForeground(new Color(0, 191, 255));
+		developerLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		developerLink.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ConfirmationUI confirm = new ConfirmationUI("Developer Profile","This will open a new browser window. Continue ?");
+				confirm.getBtnYes().addActionListener(e1-> {
+					try {
+						Desktop.getDesktop().browse(new URI(devLink));
+						confirm.dispose();
+						developerLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
+					} catch (URISyntaxException | IOException ex) {
+						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						confirm.dispose();
 					}
 				});
-				iconMakerLink.setText(iconLink);
-				iconMakerLink.setEditable(false);
-				GridBagConstraints gbc_iconMakerLink = new GridBagConstraints();
-				gbc_iconMakerLink.fill = GridBagConstraints.HORIZONTAL;
-				gbc_iconMakerLink.gridx = 1;
-				gbc_iconMakerLink.gridy = 1;
-				contributionPanel.add(iconMakerLink, gbc_iconMakerLink);
-				iconMakerLink.setColumns(10);
+
+				confirm.getBtnNo().addActionListener(e1->confirm.dispose());
+			}
+		});
+
+		JLabel developer = new JLabel("Developer");
+		developer.setToolTipText("Wrapper and UI Developer");
+		developer.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/developer.svg")));
+		GridBagConstraints gbc_developer = new GridBagConstraints();
+		gbc_developer.anchor = GridBagConstraints.WEST;
+		gbc_developer.insets = new Insets(0, 0, 5, 5);
+		gbc_developer.gridx = 0;
+		gbc_developer.gridy = 0;
+		contributionPanel.add(developer, gbc_developer);
+		developerLink.setText(devLink);
+		developerLink.setEditable(false);
+		GridBagConstraints gbc_developerLink = new GridBagConstraints();
+		gbc_developerLink.fill = GridBagConstraints.HORIZONTAL;
+		gbc_developerLink.insets = new Insets(0, 0, 5, 0);
+		gbc_developerLink.gridx = 1;
+		gbc_developerLink.gridy = 0;
+		contributionPanel.add(developerLink, gbc_developerLink);
+		developerLink.setColumns(10);
+
+		JLabel iconMaker = new JLabel("Designer");
+		iconMaker.setToolTipText("Logo and Icon Designer");
+		iconMaker.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/designer.svg")));
+		GridBagConstraints gbc_iconMaker = new GridBagConstraints();
+		gbc_iconMaker.anchor = GridBagConstraints.WEST;
+		gbc_iconMaker.insets = new Insets(0, 0, 0, 5);
+		gbc_iconMaker.gridx = 0;
+		gbc_iconMaker.gridy = 1;
+		contributionPanel.add(iconMaker, gbc_iconMaker);
+
+		JTextField iconMakerLink = new JTextField();
+		iconMakerLink.setForeground(new Color(0, 191, 255));
+		iconMakerLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		iconMakerLink.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ConfirmationUI confirm = new ConfirmationUI("Contributor Profile","This will open a new browser window. Continue ?");
+				confirm.getBtnYes().addActionListener(e1-> {
+					try {
+						Desktop.getDesktop().browse(new URI(iconLink));
+						confirm.dispose();
+						iconMakerLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
+					} catch (URISyntaxException | IOException ex) {
+						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						confirm.dispose();
+					}
+				});
+
+				confirm.getBtnNo().addActionListener(e1->confirm.dispose());
+			}
+		});
+		iconMakerLink.setText(iconLink);
+		iconMakerLink.setEditable(false);
+		GridBagConstraints gbc_iconMakerLink = new GridBagConstraints();
+		gbc_iconMakerLink.fill = GridBagConstraints.HORIZONTAL;
+		gbc_iconMakerLink.gridx = 1;
+		gbc_iconMakerLink.gridy = 1;
+		contributionPanel.add(iconMakerLink, gbc_iconMakerLink);
+		iconMakerLink.setColumns(10);
 	}
 
 	private void setVersionPanel(JPanel mainPanel) {
 		JPanel wrapperVersionPanel = new JPanel();
-		wrapperVersionPanel.setBorder(
-				new TitledBorder(null, "Wrapper Version", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		wrapperVersionPanel.setBorder(new TitledBorder(null, "Wrapper Version", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_wrapperVersionPanel = new GridBagConstraints();
 		gbc_wrapperVersionPanel.fill = GridBagConstraints.BOTH;
 		gbc_wrapperVersionPanel.insets = new Insets(0, 0, 5, 5);
@@ -364,6 +370,7 @@ public class AboutUI extends JFrame {
 		wrapperVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		wrapperVersionPanel.add(wrapperVersion);
 		wrapperVersion.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
+		wrapperVersion.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/api.svg")));
 
 		JPanel logoPanel = new JPanel();
 		logoPanel.setBorder(new TitledBorder(null, "Click to open the github page", TitledBorder.LEADING,
@@ -401,8 +408,7 @@ public class AboutUI extends JFrame {
 		logoPanel.add(logo, gbc_logo);
 
 		JPanel guiVersionPanel = new JPanel();
-		guiVersionPanel
-				.setBorder(new TitledBorder(null, "GUI Version", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		guiVersionPanel.setBorder(new TitledBorder(null, "GUI Version", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_guiVersionPanel = new GridBagConstraints();
 		gbc_guiVersionPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_guiVersionPanel.fill = GridBagConstraints.BOTH;
@@ -411,9 +417,11 @@ public class AboutUI extends JFrame {
 		mainPanel.add(guiVersionPanel, gbc_guiVersionPanel);
 		guiVersionPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel guiVersion = new JLabel("v17082024 Beta");
+		JLabel guiVersion = new JLabel("v18082024 Beta");
 		guiVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		guiVersionPanel.add(guiVersion);
 		guiVersion.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
+		guiVersion.setIcon(new FlatSVGIcon(AboutUI.class.getResource("/resources/extra_icons/ui.svg")));
+		
 	}
 }

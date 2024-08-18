@@ -421,13 +421,14 @@ public class FerrumX {
 		hwidPanel.add(hwidTf, gbc_hwidTf);
 		hwidTf.setColumns(10);
 
-		JButton copyHwidButton = new JButton("Copy");
+		JButton copyHwidButton = new JButton();
+		copyHwidButton.setToolTipText("Copy HWID to Clipboard");
+		copyHwidButton.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/extra_icons/copy.svg")));
 		copyHwidButton.addActionListener(e -> {
 			hwidTf.selectAll();
 			hwidTf.copy();
 		});
 		GridBagConstraints gbc_copyHwidButton = new GridBagConstraints();
-		gbc_copyHwidButton.anchor = GridBagConstraints.EAST;
 		gbc_copyHwidButton.gridx = 2;
 		gbc_copyHwidButton.gridy = 0;
 		hwidPanel.add(copyHwidButton, gbc_copyHwidButton);
