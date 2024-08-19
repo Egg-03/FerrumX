@@ -11,13 +11,14 @@ public class IOPortTest {
 	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
 		List<String> portID = Win32_PortConnector.getBaseboardPortID();
 		Map<String, String> ports = null;
-		
-		for(String id:portID) {
+
+		for (String id : portID) {
 			ports = Win32_PortConnector.getBaseboardPorts(id);
-			for(Map.Entry<String, String> port: ports.entrySet())
-				System.out.println(port.getKey()+": "+port.getValue());
+			for (Map.Entry<String, String> port : ports.entrySet()) {
+				System.out.println(port.getKey() + ": " + port.getValue());
+			}
 			System.out.println();
-		}	
+		}
 	}
 
 }

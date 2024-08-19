@@ -10,13 +10,14 @@ public class PhysicalMemoryTest {
 	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
 		List<String> memoryID = Win32_PhysicalMemory.getTag();
 		Map<String, String> memory = null;
-		
+
 		System.out.println(memoryID);
-		
-		for(String id:memoryID) {
+
+		for (String id : memoryID) {
 			memory = Win32_PhysicalMemory.getMemory(id);
-			for(Map.Entry<String, String> entry: memory.entrySet())
-				System.out.println(entry.getKey()+": "+entry.getValue());
+			for (Map.Entry<String, String> entry : memory.entrySet()) {
+				System.out.println(entry.getKey() + ": " + entry.getValue());
+			}
 			System.out.println();
 		}
 	}
