@@ -417,7 +417,7 @@ public class AboutUI extends JFrame {
 		mainPanel.add(guiVersionPanel, gbc_guiVersionPanel);
 		guiVersionPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel guiVersion = new JLabel("v18082024 Beta");
+		JLabel guiVersion = new JLabel("v1.0.0");
 		guiVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		guiVersionPanel.add(guiVersion);
 		guiVersion.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
