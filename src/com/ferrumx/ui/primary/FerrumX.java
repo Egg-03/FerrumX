@@ -270,6 +270,33 @@ public class FerrumX {
 		// Initialize the os and the user panels
 		JPanel osAndUserPanel = new JPanel();
 		initializeOsAndUserPanel(tabbedPane, osAndUserPanel);
+		
+		// Initialize the battery panel
+		JPanel batteryPanel = new JPanel();
+		batteryPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Battery", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		initializeBatteryPanel(tabbedPane, batteryPanel);
+		GridBagLayout gbl_batteryPanel = new GridBagLayout();
+		gbl_batteryPanel.columnWidths = new int[]{0, 0};
+		gbl_batteryPanel.rowHeights = new int[]{0, 0};
+		gbl_batteryPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_batteryPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		batteryPanel.setLayout(gbl_batteryPanel);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 0;
+		batteryPanel.add(scrollPane, gbc_scrollPane);
+		
+		JTextArea batteryWarningTextArea = new JTextArea();
+		batteryWarningTextArea.setForeground(new Color(51, 204, 255));
+		batteryWarningTextArea.setFont(new Font("Ebrima", Font.ITALIC, 11));
+		batteryWarningTextArea.setText("NOTE: The battery panel will display information only when the system detects a battery. For desktops that don't run on a battery, the fields will be blank.");
+		batteryWarningTextArea.setLineWrap(true);
+		batteryWarningTextArea.setEditable(false);
+		scrollPane.setViewportView(batteryWarningTextArea);
+		batteryWarningTextArea.setColumns(10);
 
 		// Initialize the report panel
 		initializeReportPanel(tabbedPane);
@@ -2803,6 +2830,10 @@ public class FerrumX {
 		gbc_timeZoneCaptionTf.gridy = 4;
 		userPanel.add(timeZoneCaptionTf, gbc_timeZoneCaptionTf);
 		timeZoneCaptionTf.setColumns(10);
+	}
+	
+	private void initializeBatteryPanel(JTabbedPane tabbedPane, JPanel batteryPanel) {
+		tabbedPane.addTab("Battery", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/Battery.svg")), batteryPanel, "Displays Battery Information");
 	}
 
 	private void initializeReportPanel(JTabbedPane tabbedPane) {
