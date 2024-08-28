@@ -6,24 +6,23 @@ import java.util.Map;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
- * This class contains methods that query Win32_Battery class of WMI to fetch
- * Battery information.
+ * This class contains methods that query Win32_PortableBattery class of WMI to
+ * fetch Battery information. Can be used alongside the
+ * {@link com.ferrumx.system.hardware.Win32_Battery } class.
  * <p>
- * Fetches the following properties: Caption, Description, Name, Status,
- * DeviceID, PowerManagementCapabilities, PowerManagementSupported,
- * BatteryStatus, BatteryChemistry, DesignCapacity, DesignVoltage,
- * EstimatedChargeRemaining, EstimatedChargeRemaining
+ * Fetches the following properties: Caption, Name, DeviceID, BatteryStatus,
+ * BatteryChemistry, DesignCapacity, DesignVoltage details of your Battery
  * <p>
  * Version
  *
  * @author Egg-03
  * @version 1.2.5
  */
-public class Win32_Battery {
-	private static String classname = "Win32_Battery";
-	private static String attributes = "Caption, Description, Name, Status, DeviceID, PowerManagementCapabilities, PowerManagementSupported, BatteryStatus, Chemistry, DesignCapacity, DesignVoltage, EstimatedChargeRemaining, EstimatedRunTime";
+public class Win32_PortableBattery {
+	private static String classname = "Win32_PortableBattery";
+	private static String attributes = "Caption, Name, DeviceID, BatteryStatus, Chemistry, DesignCapacity, DesignVoltage";
 
-	private Win32_Battery() {
+	private Win32_PortableBattery() {
 		throw new IllegalStateException("Utility Class");
 	}
 
@@ -33,11 +32,9 @@ public class Win32_Battery {
 	 * passes the WMI Classname and the properties whose values we want to fetch, as
 	 * parameters
 	 *
-	 * @return the Caption, Description, Name, Status, DeviceID,
-	 *         PowerManagementCapabilities, PowerManagementSupported, BatteryStatus,
-	 *         BatteryChemistry, DesignCapacity, DesignVoltage,
-	 *         EstimatedChargeRemaining, EstimatedRunTime details of your Battery in
-	 *         the form of a {@link java.util.Map}
+	 * @return the Caption, Name, DeviceID, BatteryStatus, BatteryChemistry,
+	 *         DesignCapacity, DesignVoltage details of your Battery in the form of
+	 *         a {@link java.util.Map}
 	 * @throws IOException               re-throws the exception thrown by
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)}
 	 *                                   when there are I/O Errors during streaming
@@ -49,7 +46,7 @@ public class Win32_Battery {
 	 *                                   fetched from Windows Powershell
 	 */
 
-	public static Map<String, String> getBattery() throws IOException, IndexOutOfBoundsException {
+	public static Map<String, String> getPortableBattery() throws IOException, IndexOutOfBoundsException {
 		return CIM_ML.get(classname, attributes);
 	}
 }
