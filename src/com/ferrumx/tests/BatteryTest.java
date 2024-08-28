@@ -13,6 +13,7 @@ public class BatteryTest {
 		for(Map.Entry<String, String> batteryProperty: Battery.entrySet()) {
 			System.out.println(batteryProperty.getKey()+": "+batteryProperty.getValue());
 		}
+		System.out.println();
 		
 		Map<String, String> portableBattery = Win32_PortableBattery.getPortableBattery();
 		for(Map.Entry<String, String> portableBatteryProperty: portableBattery.entrySet()) {
