@@ -2824,15 +2824,15 @@ public class FerrumX {
 		tabbedPane.addTab("Battery", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/Battery.svg")), batteryPanel, "Displays Battery Information");
 		batteryPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Battery", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gbl_batteryPanel = new GridBagLayout();
-		gbl_batteryPanel.columnWidths = new int[]{0, 0};
+		gbl_batteryPanel.columnWidths = new int[]{0, 0, 0};
 		gbl_batteryPanel.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_batteryPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_batteryPanel.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		gbl_batteryPanel.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		batteryPanel.setLayout(gbl_batteryPanel);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 0;
@@ -2847,10 +2847,27 @@ public class FerrumX {
 		scrollPane.setViewportView(batteryWarningTextArea);
 		batteryWarningTextArea.setColumns(10);
 		
+		JButton refresh = new JButton("");
+		refresh.addActionListener(e->
+			new Thread(()->{
+				Battery.initializeBattery(batteryCaptionTf, batteryStatusTf, batteryStatusTwoTf, batteryChemistryTf,
+						batteryChargeTf, batteryRuntimeTf, batteryNameTf, batteryDeviceIDTf, batteryCapcityTf,
+						batteryVoltageTf);
+			}).start()
+		);
+		refresh.setToolTipText("Refresh Battery Information");
+		refresh.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/extra_icons/refresh.svg")));
+		GridBagConstraints gbc_refresh = new GridBagConstraints();
+		gbc_refresh.insets = new Insets(0, 0, 5, 0);
+		gbc_refresh.gridx = 1;
+		gbc_refresh.gridy = 0;
+		batteryPanel.add(refresh, gbc_refresh);
+		
 		JPanel batteryPanelOne = new JPanel();
 		batteryPanelOne.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Win32_Battery", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_batteryPanelOne = new GridBagConstraints();
-		gbc_batteryPanelOne.insets = new Insets(0, 0, 5, 0);
+		gbc_batteryPanelOne.gridwidth = 2;
+		gbc_batteryPanelOne.insets = new Insets(0, 0, 5, 5);
 		gbc_batteryPanelOne.fill = GridBagConstraints.BOTH;
 		gbc_batteryPanelOne.gridx = 0;
 		gbc_batteryPanelOne.gridy = 1;
@@ -3003,6 +3020,8 @@ public class FerrumX {
 		JPanel batteryPanelTwo = new JPanel();
 		batteryPanelTwo.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Win32_PortableBattery", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_batteryPanelTwo = new GridBagConstraints();
+		gbc_batteryPanelTwo.gridwidth = 2;
+		gbc_batteryPanelTwo.insets = new Insets(0, 0, 0, 5);
 		gbc_batteryPanelTwo.fill = GridBagConstraints.BOTH;
 		gbc_batteryPanelTwo.gridx = 0;
 		gbc_batteryPanelTwo.gridy = 2;
