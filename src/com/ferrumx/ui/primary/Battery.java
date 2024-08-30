@@ -28,7 +28,7 @@ final class Battery {
 				batteryFields[1].setText(battery.get("Status"));
 				batteryFields[2].setText(batteryStatusInterpreter(battery.get("BatteryStatus")));
 				batteryFields[3].setText(batteryChemistryInterpreter(battery.get("Chemistry")));
-				batteryFields[4].setText(batteryCharge);
+				batteryFields[4].setText(batteryCharge+"%");
 				batteryFields[5].setText(battery.get("EstimatedRunTime")+" min.");
 				
 				batteryImageUpdateByCharge(batteryCharge, batteryChargeIcon);
