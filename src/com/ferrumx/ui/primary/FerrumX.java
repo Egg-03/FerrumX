@@ -183,6 +183,8 @@ public class FerrumX {
 	private JTextField timeZoneNameTf;
 	private JTextField timeZoneCaptionTf;
 	// Battery
+	private JLabel batteryChargeView; //the icon representing the current charge level on the battery
+	private JLabel batteryChargePercentage; // the charge percentage on the battery icon panel
 	private JTextField batteryCaptionTf;
 	private JTextField batteryStatusTf;
 	private JTextField batteryStatusTwoTf;
@@ -196,6 +198,7 @@ public class FerrumX {
 
 	// Links
 	private String appLatestReleasePage = "https://github.com/Egg-03/FerrumX/releases/latest";
+	
 	
 	/**
 	 * Launch the application.
@@ -2848,12 +2851,11 @@ public class FerrumX {
 		batteryWarningTextArea.setColumns(10);
 		
 		JButton refresh = new JButton("");
-		refresh.addActionListener(e->
-			new Thread(()->{
-				Battery.initializeBattery(batteryCaptionTf, batteryStatusTf, batteryStatusTwoTf, batteryChemistryTf,
+		refresh.addActionListener(e-> new Thread(()->
+				Battery.initializeBattery(batteryChargePercentage, batteryChargeView, batteryCaptionTf, batteryStatusTf, batteryStatusTwoTf, batteryChemistryTf,
 						batteryChargeTf, batteryRuntimeTf, batteryNameTf, batteryDeviceIDTf, batteryCapcityTf,
-						batteryVoltageTf);
-			}).start()
+						batteryVoltageTf)
+			).start()
 		);
 		refresh.setToolTipText("Refresh Battery Information");
 		refresh.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/extra_icons/refresh.svg")));
@@ -2967,7 +2969,7 @@ public class FerrumX {
 		gbl_batteryIconPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		batteryIconPanel.setLayout(gbl_batteryIconPanel);
 		
-		JLabel batteryChargeView = new JLabel("");
+		batteryChargeView = new JLabel("");
 		batteryChargeView.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/battery_level_images/battery_50.svg")));
 		GridBagConstraints gbc_batteryChargeView = new GridBagConstraints();
 		gbc_batteryChargeView.insets = new Insets(0, 0, 5, 0);
@@ -2975,7 +2977,7 @@ public class FerrumX {
 		gbc_batteryChargeView.gridy = 0;
 		batteryIconPanel.add(batteryChargeView, gbc_batteryChargeView);
 		
-		JLabel batteryChargePercentage = new JLabel("Current Charge Level: XX%");
+		batteryChargePercentage = new JLabel("Current Charge Level: XX%");
 		GridBagConstraints gbc_batteryChargePercentage = new GridBagConstraints();
 		gbc_batteryChargePercentage.gridx = 0;
 		gbc_batteryChargePercentage.gridy = 1;
@@ -3289,7 +3291,7 @@ public class FerrumX {
 					osCaptionTf, osVersionTf, osManufacturerTf, osArchitectureTf, osBuildNumberTf, osInstallDateTf,
 					osLastBootTf, osSerialTf, osPrimaryTf, osDistributedTf, osPortTf, osDeviceNameTf, osUserCountTf,
 					osRegUserTf, osLangTf, osSysDriveTf, osWinDirTf, osSysDirTf));
-			Future<?> initializeBattery = exec.submit(()-> Battery.initializeBattery(batteryCaptionTf, batteryStatusTf,
+			Future<?> initializeBattery = exec.submit(()-> Battery.initializeBattery(batteryChargePercentage, batteryChargeView, batteryCaptionTf, batteryStatusTf,
 					batteryStatusTwoTf,batteryChemistryTf,batteryChargeTf,batteryRuntimeTf,batteryNameTf,batteryDeviceIDTf,
 					batteryCapcityTf,batteryVoltageTf));
 			Future<Boolean> initializeUserAndTime = exec.submit(() -> UserAndTime.initializeUserAndTime(userTf, userHomeTf, timeZoneNameTf, timeZoneCaptionTf));

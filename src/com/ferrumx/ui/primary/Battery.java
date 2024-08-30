@@ -3,35 +3,42 @@ package com.ferrumx.ui.primary;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.ferrumx.system.hardware.Win32_Battery;
 import com.ferrumx.system.hardware.Win32_PortableBattery;
 import com.ferrumx.ui.secondary.ExceptionUI;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 final class Battery {
 	private Battery() {
 		throw new IllegalStateException("Utility Class");
 	}
 	
-	protected static void initializeBattery(JTextField... batteryFields) {
+	protected static void initializeBattery(JLabel batteryChargePercentage, JLabel batteryChargeIcon, JTextField... batteryFields) {
 		try {
 			Map<String, String> battery = Win32_Battery.getBattery();
 			Map<String, String> portableBattery = Win32_PortableBattery.getPortableBattery();
 			
 			if(!battery.isEmpty()) {
+				String batteryCharge = battery.get("EstimatedChargeRemaining");
+				
 				batteryFields[0].setText(battery.get("Caption"));
 				batteryFields[1].setText(battery.get("Status"));
 				batteryFields[2].setText(batteryStatusInterpreter(battery.get("BatteryStatus")));
 				batteryFields[3].setText(batteryChemistryInterpreter(battery.get("Chemistry")));
-				batteryFields[4].setText(battery.get("EstimatedChargeRemaining")+"%");
+				batteryFields[4].setText(batteryCharge);
 				batteryFields[5].setText(battery.get("EstimatedRunTime")+" min.");
+				
+				batteryImageUpdateByCharge(batteryCharge, batteryChargeIcon);
+				batteryChargePercentage.setText("Current Charge Level: "+batteryCharge+"%");
 			}
 			
 			if(!portableBattery.isEmpty()) {
 				batteryFields[6].setText(portableBattery.get("Name"));
 				batteryFields[7].setText(portableBattery.get("DeviceID"));
-				batteryFields[8].setText(portableBattery.get("DesignCapacity")+" mWh");
+				batteryFields[8].setText(portableBattery.get("DesignCapacity")+"mWh");
 				batteryFields[9].setText(portableBattery.get("DesignVoltage")+ "mV");
 			}
 		} catch (IndexOutOfBoundsException | IOException e) {
@@ -45,7 +52,7 @@ final class Battery {
 		case "1":
 			return "Discharging";
 		case "2":
-			return "Unknown";
+			return "Plugged In";
 		case "3":
 			return "Fully Charged";
 		case "4":
@@ -90,5 +97,21 @@ final class Battery {
 		default:
 			return chemistry;
 		}
+	}
+	
+	private static void batteryImageUpdateByCharge(String currentCharge, JLabel batteryChargeIcon) {
+		Integer charge = Integer.valueOf(currentCharge);
+		if(charge<= 100 && charge >=76)
+			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_100.svg")));
+		else if(charge <=75 && charge >=51)
+			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_75.svg")));
+		else if(charge <=50 && charge >=16)
+			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_50.svg")));
+		else if(charge <=15 && charge >=6)
+			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_15.svg")));
+		else if(charge <=5 && charge >=1)
+			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_5.svg")));
+		else
+			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_0.svg")));
 	}
 }
