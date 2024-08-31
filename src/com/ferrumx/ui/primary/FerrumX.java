@@ -2970,7 +2970,7 @@ public class FerrumX {
 		batteryIconPanel.setLayout(gbl_batteryIconPanel);
 		
 		batteryChargeView = new JLabel("");
-		batteryChargeView.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/battery_level_images/battery_50.svg")));
+		batteryChargeView.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/battery_level_images/Battery-0.svg")));
 		GridBagConstraints gbc_batteryChargeView = new GridBagConstraints();
 		gbc_batteryChargeView.insets = new Insets(0, 0, 5, 0);
 		gbc_batteryChargeView.gridx = 0;

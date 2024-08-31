@@ -101,17 +101,9 @@ final class Battery {
 	
 	private static void batteryImageUpdateByCharge(String currentCharge, JLabel batteryChargeIcon) {
 		Integer charge = Integer.valueOf(currentCharge);
-		if(charge<= 100 && charge >=76)
-			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_100.svg")));
-		else if(charge <=75 && charge >=51)
-			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_75.svg")));
-		else if(charge <=50 && charge >=16)
-			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_50.svg")));
-		else if(charge <=15 && charge >=6)
-			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_15.svg")));
-		else if(charge <=5 && charge >=1)
-			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_5.svg")));
-		else
-			batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/battery_0.svg")));
+		Integer ceilCharge = Math.ceilDiv(charge,10)*10; // Round to the ceiling value of the nearest multiple of 10
+		String currentBatteryIndicator = String.valueOf(ceilCharge);
+		
+		batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/Battery_"+currentBatteryIndicator+".svg")));
 	}
 }
