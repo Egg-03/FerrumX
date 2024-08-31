@@ -104,6 +104,6 @@ final class Battery {
 		Integer ceilCharge = Math.ceilDiv(charge,10)*10; // Round to the ceiling value of the nearest multiple of 10
 		String currentBatteryIndicator = String.valueOf(ceilCharge);
 		
-		batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/Battery_"+currentBatteryIndicator+".svg")));
+		batteryChargeIcon.setIcon(new FlatSVGIcon(Battery.class.getResource("/resources/battery_level_images/Battery-"+currentBatteryIndicator+".svg")));
 	}
 }
