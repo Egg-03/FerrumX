@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -3308,9 +3309,16 @@ public class FerrumX {
 
 			TimeUnit.MILLISECONDS.sleep(150);
 			startScreen.dispose();
-		} catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
-			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
-			Thread.currentThread().interrupt();
+		} catch (RejectedExecutionException | NullPointerException | InterruptedException e) {
+				String message = e.getMessage();
+				String stackTrace = Arrays.toString(e.getStackTrace());
+				new ExceptionUI("Host Gather System Info Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
+				Thread.currentThread().interrupt();
+		}
+		catch (ExecutionException e) {
+			String message = e.getCause().getMessage();
+			String stackTrace = Arrays.toString(e.getCause().getStackTrace());
+			new ExceptionUI("Host Gather System Info Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 	}
 }
