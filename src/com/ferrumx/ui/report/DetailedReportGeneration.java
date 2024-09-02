@@ -146,7 +146,7 @@ public class DetailedReportGeneration {
 				reportDisplay.append("\n");
 			}
 			if (currentAudio.isEmpty()) {
-				errorDisplay.append("Audio Info: Unavailable");
+				errorDisplay.append("Audio Info: Unavailable\n");
 			} else {
 				errorDisplay.append("Audio Info: Success\n");
 			}
