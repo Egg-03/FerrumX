@@ -32,8 +32,8 @@ public class IconImageChooser {
 		logoMap.put("GenuineTMx86", "/resources/cpu_manufactuer_icons/transmeta.svg");
 		// National Semiconductor
 		logoMap.put("Geode by NSC", "/resources/cpu_manufactuer_icons/national_semiconductor.svg");
-		// VIK
-		logoMap.put("VIA VIA VIA ", "/resources/cpu_manufactuer_icons/VIK.svg");
+		// VIA
+		logoMap.put("VIA VIA VIA ", "/resources/cpu_manufactuer_icons/VIA.svg");
 		
 		if(logoMap.containsKey(cpuName))
 			icon.setIcon(new FlatSVGIcon(FerrumX.class.getResource(logoMap.get(cpuName))));
