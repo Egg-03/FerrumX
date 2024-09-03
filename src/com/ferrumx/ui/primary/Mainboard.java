@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.swing.JTextField;
@@ -48,7 +49,9 @@ final class Mainboard {
 			mainboardFields[13].setText(bios.get("SMBIOSBIOSVersion"));
 			mainboardFields[14].setText(bios.get("CurrentLanguage"));
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Mainboard/BIOS Initialization Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Mainboard/BIOS Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		}
 		return true;

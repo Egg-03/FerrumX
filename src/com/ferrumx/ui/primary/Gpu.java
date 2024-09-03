@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,9 @@ final class Gpu {
 			gpuFields[9].setText(String.valueOf(adapterRAM) + " MB");
 
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Video Controller Initialization Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Video Controller Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e1) {
 			gpuFields[9].setText("N/A"); // sets VRAM field to N/A in case the adapterRAM property cannot be parsed into
@@ -91,7 +94,9 @@ final class Gpu {
 					gpuFields[9].setText(String.valueOf(adapterRAM) + " MB");
 
 				} catch (IndexOutOfBoundsException | IOException e1) {
-					new ExceptionUI("Video Controller Initialization Error", e1.getMessage()).setVisible(true);
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("Video Controller Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e1) {
 					gpuFields[9].setText("N/A"); // sets VRAM field to N/A in case the adapterRAM property cannot be parsed
 													// into a Long value

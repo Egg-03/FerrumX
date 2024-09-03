@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.swing.JLabel;
@@ -42,7 +43,9 @@ final class Battery {
 				batteryFields[9].setText(portableBattery.get("DesignVoltage")+ "mV");
 			}
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Battery Initialization Error", e.getMessage()).setVisible(true);
+			String message = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Battery Initialization Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 		
 	}

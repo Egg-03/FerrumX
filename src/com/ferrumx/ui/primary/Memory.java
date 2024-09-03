@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,9 @@ final class Memory {
 			memoryFields[7].setText((String.valueOf(memoryCapacity) + " MB"));
 
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Memory Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Memory Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e1) {
 			memoryFields[7].setText("N/A"); // sets RAM capacity field to N/A in case the adapterRAM property cannot be
@@ -84,7 +87,9 @@ final class Memory {
 					memoryFields[7].setText((String.valueOf(memoryCapacity) + " MB"));
 
 				} catch (IndexOutOfBoundsException | IOException e2) {
-					new ExceptionUI("Memory Error", e2.getMessage()).setVisible(true);
+					String errorMessage = e2.getMessage();
+					String stackTrace = Arrays.toString(e2.getStackTrace());
+					new ExceptionUI("Memory Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e1) {
 					memoryFields[7].setText("N/A"); // sets RAM capacity field to N/A in case the adapterRAM property cannot
 													// be parsed into a Long value

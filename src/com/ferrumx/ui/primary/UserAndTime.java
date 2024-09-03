@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.swing.JTextField;
@@ -28,7 +29,9 @@ final class UserAndTime {
 			userTimeFields[2].setText(timeZone.get("StandardName"));
 			userTimeFields[3].setText(timeZone.get("Caption"));
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Time Zone Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getCause().getMessage();
+			String stackTrace = Arrays.toString(e.getCause().getStackTrace());
+			new ExceptionUI("Time Zone Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		}
 		return true;

@@ -208,15 +208,18 @@ public class FerrumX {
 		try {
 			UIManager.setLookAndFeel(ThemeLoader.load());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
-			new ExceptionUI("Theme Error", e.getMessage()).setVisible(true);
+			String message = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Theme Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 
 		try {
 			FerrumX window = new FerrumX();
 			window.mainFrame.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
-			new ExceptionUI("FerrumX Application Window Launch Error", e.getMessage()).setVisible(true);
+			String message = e.getCause().getMessage();
+			String stackTrace = Arrays.toString(e.getCause().getStackTrace());
+			new ExceptionUI("FerrumX Application Window Launch Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 	}
 

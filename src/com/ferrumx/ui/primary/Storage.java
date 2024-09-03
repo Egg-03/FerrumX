@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,9 @@ final class Storage {
 						+ Win32_LogicalDiskToPartition.getDriveLetter(currentPartition) + "\n");
 			}
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Storage Initialization Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Storage Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e) {
 			storageFields[2].setText("N/A");
@@ -92,7 +95,9 @@ final class Storage {
 								+ Win32_LogicalDiskToPartition.getDriveLetter(currentPartition) + "\n");
 					}
 				} catch (IndexOutOfBoundsException | IOException e1) {
-					new ExceptionUI("Storage Initialization Error", e1.getMessage()).setVisible(true);
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("Storage Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e1) {
 					storageFields[2].setText("N/A");
 				}

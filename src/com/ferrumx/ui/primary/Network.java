@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,9 @@ final class Network {
 			networkFields[10].setText(networkAdapterConfiguration.get("DNSHostName"));
 			networkFields[11].setText(networkAdapterConfiguration.get("DNSServerSearchOrder"));
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Network Initialization Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Network Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		}
 		addNetworkChoiceActionListener(networkChoice, networkFields);
@@ -85,7 +88,9 @@ final class Network {
 					networkFields[10].setText(networkAdapterConfiguration.get("DNSHostName"));
 					networkFields[11].setText(networkAdapterConfiguration.get("DNSServerSearchOrder"));
 				} catch (IndexOutOfBoundsException | IOException e1) {
-					new ExceptionUI("Network Initialization Error", e1.getMessage()).setVisible(true);
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("Network Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				}
 			}).start()
 		);

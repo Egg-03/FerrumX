@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +57,9 @@ final class OperatingSystem {
 			osFields[17].setText(osProperties.get("SystemDirectory"));
 
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("OS Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("OS Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		}
 		addOsChoiceActionListener(osLogo, osChoice, osFields);
@@ -91,7 +94,9 @@ final class OperatingSystem {
 					osFields[16].setText(osProperties.get("WindowsDirectory"));
 					osFields[17].setText(osProperties.get("SystemDirectory"));
 				} catch (IndexOutOfBoundsException | IOException e1) {
-					new ExceptionUI("OS Error", e1.getMessage()).setVisible(true);
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("OS Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				}
 
 			}).start()

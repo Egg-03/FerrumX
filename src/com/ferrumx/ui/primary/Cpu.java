@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,9 @@ final class Cpu {
 
 
 		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("CPU Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("CPU Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e2) {
 			cpuFields[8].setText("N/A");
@@ -126,7 +129,9 @@ final class Cpu {
 								+ " KB - " + cpuCacheProperties.get("Associativity") + " way\n");
 					}
 				} catch (IndexOutOfBoundsException | IOException e2) {
-					new ExceptionUI("CPU Error", e2.getMessage()).setVisible(true);
+					String errorMessage = e2.getMessage();
+					String stackTrace = Arrays.toString(e2.getStackTrace());
+					new ExceptionUI("CPU Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e3) {
 					cpuFields[8].setText("N/A");
 				}

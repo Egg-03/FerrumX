@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
+import java.util.Arrays;
 
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -38,7 +39,9 @@ public class NotificationTray {
 			//an action listener should be added which will close this notification on click
 			//this should be done after retrieving an instance of TrayIcon using the getNotification() function
 		} catch (AWTException e) {
-			new ExceptionUI("System Tray Notification Error", e.getMessage());
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("System Tray Notification Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			sysTray.remove(trayIcon);
 		}
     }
@@ -49,7 +52,9 @@ public class NotificationTray {
 				trayIcon.displayMessage("FerrumX", message, type);
 				sysTray.remove(trayIcon);
 			} catch (AWTException e) {
-				new ExceptionUI("System Tray Notification Error", e.getMessage());
+				String errorMessage = e.getMessage();
+				String stackTrace = Arrays.toString(e.getStackTrace());
+				new ExceptionUI("System Tray Notification Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				sysTray.remove(trayIcon);
 			}
 	}
