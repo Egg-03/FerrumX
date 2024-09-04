@@ -3,6 +3,7 @@ package com.ferrumx.system.hardware;
 import java.io.IOException;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
@@ -44,9 +45,16 @@ public class Win32_PortableBattery {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
 	 */
 
-	public static Map<String, String> getPortableBattery() throws IOException, IndexOutOfBoundsException {
+	public static Map<String, String> getPortableBattery() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.get(classname, attributes);
 	}
 }

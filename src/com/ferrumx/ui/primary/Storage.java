@@ -9,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_DiskDrive;
 import com.ferrumx.system.operating_system.Win32_DiskDriveToDiskPartition;
 import com.ferrumx.system.operating_system.Win32_LogicalDiskToPartition;
@@ -53,13 +54,19 @@ final class Storage {
 				partitionDetails.append("Partition: " + currentPartition + ", Drive Letter: "
 						+ Win32_LogicalDiskToPartition.getDriveLetter(currentPartition) + "\n");
 			}
-		} catch (IndexOutOfBoundsException | IOException e) {
+		} catch (IndexOutOfBoundsException | IOException | ShellException e) {
 			String errorMessage = e.getMessage();
 			String stackTrace = Arrays.toString(e.getStackTrace());
 			new ExceptionUI("Storage Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e) {
 			storageFields[2].setText("N/A");
+		} catch (InterruptedException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Storage Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			Thread.currentThread().interrupt();
+			return false;
 		}
 		addStorageChoiceActionListener(diskChoice, partitionDetails, storageFields);
 		return true;
@@ -94,12 +101,17 @@ final class Storage {
 						partitionDetails.append("Partition: " + currentPartition + ", Drive Letter: "
 								+ Win32_LogicalDiskToPartition.getDriveLetter(currentPartition) + "\n");
 					}
-				} catch (IndexOutOfBoundsException | IOException e1) {
+				} catch (IndexOutOfBoundsException | IOException | ShellException e1) {
 					String errorMessage = e1.getMessage();
 					String stackTrace = Arrays.toString(e1.getStackTrace());
 					new ExceptionUI("Storage Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e1) {
 					storageFields[2].setText("N/A");
+				} catch (InterruptedException e1) {
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("Storage Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+					Thread.currentThread().interrupt();
 				}
 			}).start()
 		);

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.swing.JTextField;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_BIOS;
 import com.ferrumx.system.hardware.Win32_Baseboard;
 import com.ferrumx.ui.secondary.ExceptionUI;
@@ -48,10 +49,16 @@ final class Mainboard {
 			mainboardFields[12].setText(bios.get("SMBIOSPResent"));
 			mainboardFields[13].setText(bios.get("SMBIOSBIOSVersion"));
 			mainboardFields[14].setText(bios.get("CurrentLanguage"));
-		} catch (IndexOutOfBoundsException | IOException e) {
+		} catch (IndexOutOfBoundsException | IOException | ShellException e) {
 			String errorMessage = e.getMessage();
 			String stackTrace = Arrays.toString(e.getStackTrace());
 			new ExceptionUI("Mainboard/BIOS Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			return false;
+		} catch (InterruptedException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Mainboard/BIOS Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			Thread.currentThread().interrupt();
 			return false;
 		}
 		return true;

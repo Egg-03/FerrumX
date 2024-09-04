@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
@@ -16,7 +17,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * Family, Stepping, VirtualizationFirmwareEnabled, ProcessorID
  *
  * @author Egg-03
- * @version 1.2.0
+ * @version 1.2.5
  */
 public class Win32_Processor {
 	private static String classname = "Win32_Processor";
@@ -39,8 +40,15 @@ public class Win32_Processor {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
 	 */
-	public static List<String> getProcessorList() throws IOException, IndexOutOfBoundsException {
+	public static List<String> getProcessorList() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.getID(classname, "DeviceID");
 	}
 
@@ -59,9 +67,16 @@ public class Win32_Processor {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
 	 */
 	public static Map<String, String> getCurrentProcessor(String deviceID)
-			throws IOException, IndexOutOfBoundsException {
+			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.getWhere(classname, "DeviceID", deviceID, attributes);
 	}
 }

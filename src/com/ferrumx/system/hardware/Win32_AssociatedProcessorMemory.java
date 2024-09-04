@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.ferrumx.system.logger.ErrorLog;
+import com.ferrumx.exceptions.ShellException;
 
 /**
  * This class serves as a relationship between {@link Win32_Processor} and
@@ -17,7 +16,7 @@ import com.ferrumx.system.logger.ErrorLog;
  * retrieve cache related information
  *
  * @author Egg-03
- * @version 1.1.0
+ * @version 1.2.5
  */
 
 public class Win32_AssociatedProcessorMemory {
@@ -41,8 +40,27 @@ public class Win32_AssociatedProcessorMemory {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
+	 *                                   <p>
+	 *                                   While catching any of the Exceptions, you
+	 *                                   may return an empty string to avoid any
+	 *                                   {@link java.lang.NullPointerException} that
+	 *                                   might get thrown because your variable
+	 *                                   might be expecting a string. However, this
+	 *                                   does not make you immune from the
+	 *                                   NullPointerExceptions that may be thrown in
+	 *                                   case of powershell output format changes in
+	 *                                   the future, causing the underlying parsing
+	 *                                   logic to fail.
 	 */
-	public static List<String> getCacheID(String cpuID) throws IOException, IndexOutOfBoundsException {
+	public static List<String> getCacheID(String cpuID)
+			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		String methodName = "getCacheID(String cpuID)";
 		String[] command = { "powershell.exe", "/c",
 				"Get-CimInstance -ClassName Win32_AssociatedProcessorMemory | Where-Object {$_.Dependent.DeviceID -eq '"
@@ -51,30 +69,22 @@ public class Win32_AssociatedProcessorMemory {
 		List<String> cacheIDList = new ArrayList<>();
 
 		Process process = Runtime.getRuntime().exec(command);
-		try {
-			int exitCode = process.waitFor();
-			if (exitCode != 0) {
-				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-				String errorLine;
-				List<String> errorList = new ArrayList<>();
+		int exitCode = process.waitFor();
+		if (exitCode != 0) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
 
-				while ((errorLine = error.readLine()) != null) {
-					if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-						errorList.add(errorLine);
-					}
+			while ((errorLine = error.readLine()) != null) {
+				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
+					errorList.add(errorLine);
 				}
-
-				error.close();
-				ErrorLog errorLog = new ErrorLog();
-
-				errorLog.log("\n" + classname + "-" + methodName + "\n" + errorList.toString()
-						+ "\nProcess Exited with code:" + exitCode + "\n");
-				return Collections.emptyList();
 			}
-		} catch (InterruptedException e) {
-			ErrorLog errorLog = new ErrorLog();
-			errorLog.log("\n" + classname + "-" + methodName + "\n" + e.getMessage() + "\n\n");
-			Thread.currentThread().interrupt();
+
+			error.close();
+
+			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorList.toString()
+					+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_Battery;
 import com.ferrumx.system.hardware.Win32_PortableBattery;
 import com.ferrumx.ui.secondary.ExceptionUI;
@@ -42,10 +43,15 @@ final class Battery {
 				batteryFields[8].setText(portableBattery.get("DesignCapacity")+"mWh");
 				batteryFields[9].setText(portableBattery.get("DesignVoltage")+ "mV");
 			}
-		} catch (IndexOutOfBoundsException | IOException e) {
+		} catch (IndexOutOfBoundsException | IOException | ShellException e) {
 			String message = e.getMessage();
 			String stackTrace = Arrays.toString(e.getStackTrace());
 			new ExceptionUI("Battery Initialization Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
+		} catch (InterruptedException e) {
+			String message = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Battery Initialization Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			Thread.currentThread().interrupt();
 		}
 		
 	}

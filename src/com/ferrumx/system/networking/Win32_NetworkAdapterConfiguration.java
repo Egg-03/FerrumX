@@ -3,6 +3,7 @@ package com.ferrumx.system.networking;
 import java.io.IOException;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
@@ -16,7 +17,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * DHCPLeaseObtained, DHCPLeaseExpires, DNSHostName, DNSServerSearchOrder
  *
  * @author Egg-03
- * @version 1.1.0
+ * @version 1.2.5
  */
 public class Win32_NetworkAdapterConfiguration {
 	private static String classname = "Win32_NetworkAdapterConfiguration";
@@ -43,9 +44,16 @@ public class Win32_NetworkAdapterConfiguration {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
 	 */
 	public static Map<String, String> getAdapterConfiguration(String adapterIndex)
-			throws IOException, IndexOutOfBoundsException {
+			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.getWhere(classname, "Index", adapterIndex, attributes);
 	}
 }

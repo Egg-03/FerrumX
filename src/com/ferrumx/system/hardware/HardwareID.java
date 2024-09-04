@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.formatter.cim.CIM_SL;
 
@@ -15,7 +16,7 @@ import com.ferrumx.formatter.cim.CIM_SL;
  * "CPUName/CPUID/MotherboardName/DriveIDs"
  *
  * @author Egg-03
- * @version 1.2.4
+ * @version 1.2.5
  */
 public class HardwareID {
 	protected HardwareID() {
@@ -32,8 +33,15 @@ public class HardwareID {
 	 *                                   extracting the IDs
 	 * @throws IOException               in case of any IOException thrown by the
 	 *                                   underlying parser
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
 	 */
-	private static String getDiskSerials() throws IndexOutOfBoundsException, IOException {
+	private static String getDiskSerials() throws IndexOutOfBoundsException, IOException, ShellException, InterruptedException {
 		List<String> ideInterface = CIM_ML.getIDWhere("Win32_DiskDrive", "InterfaceType", "IDE", "SerialNumber");
 		List<String> scsiInterface = CIM_ML.getIDWhere("Win32_DiskDrive", "InterfaceType", "SCSI", "SerialNumber");
 
