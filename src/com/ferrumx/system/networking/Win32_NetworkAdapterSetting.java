@@ -24,7 +24,7 @@ import com.ferrumx.exceptions.ShellException;
  * {@link Win32_NetworkAdapterConfiguration#getAdapterConfiguration(String)}
  *
  * @author Egg-03
- * @version 1.2.5
+ * @version 1.3.0
  */
 public class Win32_NetworkAdapterSetting {
 	private static String classname = "Win32_NetworkAdapterSetting";
