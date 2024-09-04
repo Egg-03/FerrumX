@@ -17,7 +17,7 @@ import com.ferrumx.exceptions.ShellException;
  * {@link CIM_SL}
  *
  * @author Egg-03
- * @version 1.2.5
+ * @version 1.3.0
  */
 public class CIM_SL {
 	private static String classname = CIM_SL.class.getClass().getName();

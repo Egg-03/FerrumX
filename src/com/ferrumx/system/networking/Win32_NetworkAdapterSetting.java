@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ferrumx.exceptions.ShellException;
-import com.ferrumx.system.logger.ErrorLog;
 
 /**
  * This class relates {@link com.ferrumx.system.hardware.Win32_NetworkAdapter}

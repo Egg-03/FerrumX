@@ -6,8 +6,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * This class is used by {@link com.ferrumx.formatter.cim.CIM_ML} and
+ * This class was used by {@link com.ferrumx.formatter.cim.CIM_ML} and
  * {@link com.ferrumx.formatter.cim.CIM_SL} classes to log errors in a file.
+ * It has since been replaced by a custom exception class.
  * While not necessary, the developers can use this class to log additional
  * errors if the development demands it.
  *
@@ -15,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  * @version 1.1.0
  */
 public class ErrorLog {
-	private static boolean use_flag = false;
+	private static boolean useFlag = false;
 
 	/**
 	 * This method logs the given message in a file. The naming convention of the
@@ -27,7 +28,7 @@ public class ErrorLog {
 	 * @param message takes the error message and logs it to a file
 	 */
 	public synchronized void log(String message) {
-		while (ErrorLog.use_flag) {
+		while (ErrorLog.useFlag) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -36,7 +37,7 @@ public class ErrorLog {
 			}
 		}
 
-		use_flag = true;
+		useFlag = true;
 
 		LocalDateTime ldt = LocalDateTime.now();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -51,7 +52,7 @@ public class ErrorLog {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			use_flag = false;
+			useFlag = false;
 			notifyAll();
 		}
 	}

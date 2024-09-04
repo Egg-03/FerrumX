@@ -16,7 +16,7 @@ import com.ferrumx.exceptions.ShellException;
  * retrieve cache related information
  *
  * @author Egg-03
- * @version 1.2.5
+ * @version 1.3.0
  */
 
 public class Win32_AssociatedProcessorMemory {

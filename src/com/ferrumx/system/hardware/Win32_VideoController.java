@@ -17,7 +17,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * DriverVersion, VideoProcessor
  *
  * @author Egg-03
- * @version 1.2.5
+ * @version 1.3.0
  */
 public class Win32_VideoController {
 	private static String classname = "Win32_VideoController";

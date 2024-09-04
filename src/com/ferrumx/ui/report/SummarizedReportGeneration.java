@@ -11,6 +11,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.system.currentuser.User;
 import com.ferrumx.system.hardware.HardwareID;
@@ -117,14 +118,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("HWID Generation: Success\n");
 			}
-		} catch (InterruptedException | ExecutionException e) {
-			Throwable cause = e.getCause();
-			if (cause instanceof IOException || cause instanceof IndexOutOfBoundsException) {
-				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + cause.getMessage() + "\n");
-			} else {
-				errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getMessage() + "\n");
-				Thread.currentThread().interrupt();
-			}
+		} catch (InterruptedException  e) {
+			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getMessage() + "\n");
+			Thread.currentThread().interrupt();
+		} catch (ExecutionException e) {
+			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getCause().getMessage() + "\n");
 		}
 	}
 
@@ -148,8 +146,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("Audio Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n" + e);
+		} catch (InterruptedException e) {
+			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n" + e);
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -173,8 +174,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("Printer Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -204,8 +208,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("Storage Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("STORAGE ERROR: Unable to fetch Storage Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("STORAGE ERROR: Unable to fetch Storage Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -238,8 +245,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("Network Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("NETWORK ERROR: Unable to fetch Network Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("NETWORK ERROR: Unable to fetch Network Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -261,8 +271,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("I/O Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -279,8 +292,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("BIOS Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -297,8 +313,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("Mainboard Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -321,8 +340,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("GPU Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -346,8 +368,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("Memory Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("MEMORY ERROR: Unable to fetch Memory Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("MEMORY ERROR: Unable to fetch Memory Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -374,8 +399,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("CPU Cache Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -398,8 +426,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("OS Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -423,8 +454,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("CPU Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
@@ -443,8 +477,11 @@ public class SummarizedReportGeneration {
 			} else {
 				errorDisplay.append("Time-zone Info: Success\n");
 			}
-		} catch (IOException | IndexOutOfBoundsException e) {
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
 			errorDisplay.append("TIMEZONE ERROR: Unable to fetch TimeZone Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("TIMEZONE ERROR: Unable to fetch TimeZone Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
 		}
 	}
 
