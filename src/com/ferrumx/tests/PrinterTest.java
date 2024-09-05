@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_Printer;
 
 public class PrinterTest {
-	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		List<String> deviceIDs = Win32_Printer.getDeviceIDList();
 		Map<String, String> currentPrinter;
 

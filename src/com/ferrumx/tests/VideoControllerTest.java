@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_VideoController;
 
 public class VideoControllerTest {
 
-	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		List<String> gpuIDs = Win32_VideoController.getGPUID();
 		Map<String, String> currentGPU;
 

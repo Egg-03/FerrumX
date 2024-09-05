@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
 import com.ferrumx.system.hardware.Win32_CacheMemory;
 import com.ferrumx.system.hardware.Win32_Processor;
 
 public class CacheMemory {
 
-	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		List<String> cpuID = Win32_Processor.getProcessorList();
 		List<String> cacheID = null;
 
