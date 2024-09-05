@@ -42,9 +42,11 @@ public class IconImageChooser {
 	public static void gpuImageChooser(JLabel icon, String gpuName) {
 		Map<String, String> logoMap = new LinkedHashMap<>();
 		logoMap.put("AMD", "/resources/gpu_manufacturer_icons/amd.svg");
+		logoMap.put("ATI", "/resources/gpu_manufacturer_icons/ati.svg");
 		logoMap.put("NVIDIA", "/resources/gpu_manufacturer_icons/nvidia.svg");
 		logoMap.put("Intel", "/resources/gpu_manufacturer_icons/intel.svg");
 		logoMap.put("Matrox", "/resources/gpu_manufacturer_icons/matrox.svg");
+		logoMap.put("3dfx", "/resources/gpu_manufacturer_icons/3dfx.svg");
 		
 		for(Map.Entry<String, String> logos : logoMap.entrySet()) {
 			if(gpuName.contains(logos.getKey()))
