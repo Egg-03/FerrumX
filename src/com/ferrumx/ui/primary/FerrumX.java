@@ -252,7 +252,7 @@ public class FerrumX {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("FerrumX");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
-		mainFrame.setBounds(100, 100, 860, 640);
+		mainFrame.setBounds(100, 100, 860, 680);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -304,12 +304,11 @@ public class FerrumX {
 		initializeMenu(mainFrame, tabbedPane, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
 		
-		JTextField timeAndOperationModeField = new JTextField();
+		JLabel timeAndOperationModeField = new JLabel();
+		timeAndOperationModeField.setHorizontalAlignment(SwingConstants.CENTER);
 		timeAndOperationModeField.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
 		timeAndOperationModeField.setText(DateTime.getDate()+"   |   Operation Mode: "+Elevation.elevationStatus()+"   |   "+System.getProperty("java.runtime.name")+" "+System.getProperty("java.runtime.version"));
-		timeAndOperationModeField.setEditable(false);
 		mainFrame.getContentPane().add(timeAndOperationModeField, BorderLayout.SOUTH);
-		timeAndOperationModeField.setColumns(10);
 		
 	}
 
