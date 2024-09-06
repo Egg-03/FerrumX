@@ -55,6 +55,8 @@ import com.ferrumx.ui.secondary.ConfirmationUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
 import com.ferrumx.ui.utilities.ComponentImageCapture;
+import com.ferrumx.ui.utilities.DateTime;
+import com.ferrumx.ui.utilities.Elevation;
 import com.ferrumx.ui.utilities.ThemeLoader;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
@@ -201,6 +203,7 @@ public class FerrumX {
 	private String appLatestReleasePage = "https://github.com/Egg-03/FerrumX/releases/latest";
 	
 	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -300,6 +303,13 @@ public class FerrumX {
 		JMenuBar menuBar = new JMenuBar();
 		initializeMenu(mainFrame, tabbedPane, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
+		
+		JTextField timeAndOperationModeField = new JTextField();
+		timeAndOperationModeField.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
+		timeAndOperationModeField.setText(DateTime.getDate()+"   |   Operation Mode: "+Elevation.elevationStatus()+"   |   "+System.getProperty("java.runtime.name")+" "+System.getProperty("java.runtime.version"));
+		timeAndOperationModeField.setEditable(false);
+		mainFrame.getContentPane().add(timeAndOperationModeField, BorderLayout.SOUTH);
+		timeAndOperationModeField.setColumns(10);
 		
 	}
 
