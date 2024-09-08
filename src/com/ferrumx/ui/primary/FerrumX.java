@@ -304,6 +304,7 @@ public class FerrumX {
 		initializeMenu(mainFrame, tabbedPane, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
 		
+		//show the date of last app startup and operation mode
 		JLabel timeAndOperationModeField = new JLabel();
 		timeAndOperationModeField.setHorizontalAlignment(SwingConstants.CENTER);
 		timeAndOperationModeField.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
