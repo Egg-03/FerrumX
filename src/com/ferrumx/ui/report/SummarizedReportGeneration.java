@@ -16,6 +16,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.system.currentuser.User;
 import com.ferrumx.system.hardware.HardwareID;
 import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
+import com.ferrumx.system.hardware.Win32_DesktopMonitor;
 import com.ferrumx.system.hardware.Win32_DiskDrive;
 import com.ferrumx.system.hardware.Win32_NetworkAdapter;
 import com.ferrumx.system.hardware.Win32_PhysicalMemory;
@@ -31,7 +32,7 @@ import com.ferrumx.system.operating_system.Win32_OperatingSystem;
 import com.ferrumx.system.operating_system.Win32_TimeZone;
 
 public class SummarizedReportGeneration {
-
+	
 	private SummarizedReportGeneration() {
 		throw new IllegalStateException("Utility Class");
 	}
@@ -83,6 +84,9 @@ public class SummarizedReportGeneration {
 
 			reportDisplayDisk(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(57));
+			
+			reportDisplayMonitor(reportDisplay, errorDisplay);
+			SwingUtilities.invokeLater(() -> progress.setValue(60));
 
 			reportDisplayOS(reportDisplay, errorDisplay);
 			SwingUtilities.invokeLater(() -> progress.setValue(64));
@@ -108,76 +112,82 @@ public class SummarizedReportGeneration {
 		}).start();
 	}
 
-	private static void reportDisplayHardwareID(JTextArea reportDisplay, JTextArea errorDisplay) {
-		reportDisplay.append("-------------------HARDWARE ID----------------------\n");
+	private static void reportDisplayBIOS(JTextArea reportDisplay, JTextArea errorDisplay) {
+		reportDisplay.append("----------------------BIOS INFO------------------------\n");
 		try {
-			String hwid = HardwareID.getHardwareID();
-			reportDisplay.append(hwid + "\n");
-			if (hwid.isBlank() || hwid.isEmpty()) {
-				errorDisplay.append("HWID Generation: Unavailable\n");
-			} else {
-				errorDisplay.append("HWID Generation: Success\n");
+			Map<String, String> BIOS = CIM_ML.getWhere("Win32_BIOS", "PrimaryBIOS", "True",
+					"Name, Manufacturer, ReleaseDate");
+			for (Map.Entry<String, String> entry : BIOS.entrySet()) {
+				reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
 			}
-		} catch (InterruptedException  e) {
-			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getMessage() + "\n");
-			Thread.currentThread().interrupt();
-		} catch (ExecutionException e) {
-			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getCause().getMessage() + "\n");
-		}
-	}
-
-	private static void reportDisplaySound(JTextArea reportDisplay, JTextArea errorDisplay) {
-		List<String> deviceIDs;
-		Map<String, String> currentAudio = Collections.emptyMap(); // this prevents null pointer exception
-
-		reportDisplay.append("----------------------AUDIO INFO------------------------\n");
-		try {
-			deviceIDs = Win32_SoundDevice.getSoundDeviceID();
-			for (String currentID : deviceIDs) {
-				currentAudio = CIM_ML.getWhere("Win32_SoundDevice", "DeviceID", currentID,
-						"Caption, Manufacturer, Status");
-				for (Map.Entry<String, String> entry : currentAudio.entrySet()) {
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
-				}
-				reportDisplay.append("\n");
-			}
-			if (currentAudio.isEmpty()) {
-				errorDisplay.append("Audio Info: Unavailable\n");
+			if (BIOS.isEmpty()) {
+				errorDisplay.append("BIOS Info: Unavailable\n");
 			} else {
-				errorDisplay.append("Audio Info: Success\n");
+				errorDisplay.append("BIOS Info: Success\n");
 			}
 		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n" + e);
+			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n" + e + "\n");
 		} catch (InterruptedException e) {
-			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n" + e);
+			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n" + e + "\n");
 			Thread.currentThread().interrupt();
 		}
 	}
 
-	private static void reportDisplayPrinter(JTextArea reportDisplay, JTextArea errorDisplay) {
+	private static void reportDisplayCPU(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> currentPrinter = Collections.emptyMap();
+		Map<String, String> currentCPU = Collections.emptyMap();
 
-		reportDisplay.append("----------------------PRINTER INFO------------------------\n");
+		reportDisplay.append("----------------------CPU INFO------------------------\n");
 		try {
-			deviceIDs = Win32_Printer.getDeviceIDList();
+			deviceIDs = Win32_Processor.getProcessorList();
 			for (String currentID : deviceIDs) {
-				currentPrinter = CIM_ML.getWhere("Win32_Printer", "DeviceID", currentID,
-						"Name, HorizontalResolution, VerticalResolution, DriverName, Local, Network");
-				for (Map.Entry<String, String> entry : currentPrinter.entrySet()) {
+				currentCPU = CIM_ML.getWhere("Win32_Processor", "DeviceID", currentID,
+						"Name, NumberOfCores, ThreadCount, NumberOfLogicalProcessors, Manufacturer");
+				for (Map.Entry<String, String> entry : currentCPU.entrySet()) {
 					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
 				}
 				reportDisplay.append("\n");
 			}
-			if (currentPrinter.isEmpty()) {
-				errorDisplay.append("Printer Info: Unavailable\n");
+			if (currentCPU.isEmpty()) {
+				errorDisplay.append("CPU Info: Unavailable\n");
 			} else {
-				errorDisplay.append("Printer Info: Success\n");
+				errorDisplay.append("CPU Info: Success\n");
 			}
 		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n" + e + "\n");
+			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n" + e + "\n");
 		} catch (InterruptedException e) {
-			errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n" + e + "\n");
+			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	private static void reportDisplayCPUCache(JTextArea reportDisplay, JTextArea errorDisplay) {
+		List<String> cpuID;
+		List<String> cacheID;
+
+		Map<String, String> cache = Collections.emptyMap();
+		reportDisplay.append("----------------------CPU CACHE------------------------\n");
+		try {
+			cpuID = Win32_Processor.getProcessorList();
+			for (String id : cpuID) {
+				cacheID = Win32_AssociatedProcessorMemory.getCacheID(id);
+				for (String currentCacheID : cacheID) {
+					cache = CIM_ML.getWhere("Win32_CacheMemory", "DeviceID", currentCacheID, "Purpose, InstalledSize");
+					for (Map.Entry<String, String> currentCache : cache.entrySet()) {
+						reportDisplay.append(currentCache.getKey() + ": " + currentCache.getValue()+"\n");
+					}
+					reportDisplay.append("\n");
+				}
+			}
+			if (cache.isEmpty()) {
+				errorDisplay.append("CPU Cache Info: Unavailable\n");
+			} else {
+				errorDisplay.append("CPU Cache Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
+			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n" + e + "\n");
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -212,6 +222,124 @@ public class SummarizedReportGeneration {
 			errorDisplay.append("STORAGE ERROR: Unable to fetch Storage Info\n" + e + "\n");
 		} catch (InterruptedException e) {
 			errorDisplay.append("STORAGE ERROR: Unable to fetch Storage Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	private static void reportDisplayGPU(JTextArea reportDisplay, JTextArea errorDisplay) {
+		List<String> gpuIDs;
+		Map<String, String> currentGPU = Collections.emptyMap();
+
+		reportDisplay.append("----------------------VIDEO CONTROLLER------------------------\n");
+		try {
+			gpuIDs = Win32_VideoController.getGPUID();
+			for (String currentID : gpuIDs) {
+				currentGPU = CIM_ML.getWhere("Win32_VideoController", "DeviceID", currentID,
+						"Name, VideoProcessor, DriverVersion, AdapterRAM, CurrentHorizontalResolution, CurrentVerticalResolution");
+				for (Map.Entry<String, String> entry : currentGPU.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
+			}
+			if (currentGPU.isEmpty()) {
+				errorDisplay.append("GPU Info: Unavailable\n");
+			} else {
+				errorDisplay.append("GPU Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
+			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	private static void reportDisplayHardwareID(JTextArea reportDisplay, JTextArea errorDisplay) {
+		reportDisplay.append("-------------------HARDWARE ID----------------------\n");
+		try {
+			String hwid = HardwareID.getHardwareID();
+			reportDisplay.append(hwid + "\n");
+			if (hwid.isBlank() || hwid.isEmpty()) {
+				errorDisplay.append("HWID Generation: Unavailable\n");
+			} else {
+				errorDisplay.append("HWID Generation: Success\n");
+			}
+		} catch (InterruptedException  e) {
+			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getMessage() + "\n");
+			Thread.currentThread().interrupt();
+		} catch (ExecutionException e) {
+			errorDisplay.append("HWID ERROR: Unable to fetch HWID Info\n" + e.getCause().getMessage() + "\n");
+		}
+	}
+
+	private static void reportDisplayIO(JTextArea reportDisplay, JTextArea errorDisplay) {
+		List<String> portID;
+		Map<String, String> ports = Collections.emptyMap();
+
+		reportDisplay.append("----------------------MAINBOARD I/O INFO------------------------\n");
+		try {
+			portID = Win32_PortConnector.getBaseboardPortID();
+			for (String id : portID) {
+				ports = CIM_ML.getWhere("Win32_PortConnector", "Tag", id, "ExternalReferenceDesignator");
+				for (Map.Entry<String, String> port : ports.entrySet()) {
+					reportDisplay.append(port.getValue() + "\n");
+				}
+			}
+			if (ports.isEmpty()) {
+				errorDisplay.append("I/O Info: Unavailable\n");
+			} else {
+				errorDisplay.append("I/O Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
+			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	private static void reportDisplayMonitor(JTextArea reportDisplay, JTextArea errorDisplay) {
+		List<String> deviceIDs;
+		Map<String, String> monitorProperties = Collections.emptyMap();
+
+		reportDisplay.append("----------------------DISPLAY------------------------\n");
+		try {
+			deviceIDs = Win32_DesktopMonitor.getMonitorID();
+			for (String currentID : deviceIDs) {
+				monitorProperties = Win32_DesktopMonitor.getMonitorProperties(currentID);
+				for (Map.Entry<String, String> entry : monitorProperties.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
+			}
+			if (monitorProperties.isEmpty()) {
+				errorDisplay.append("Display Info: Unavailable\n");
+			} else {
+				errorDisplay.append("Display Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
+			errorDisplay.append("DISPLAY ERROR: Unable to fetch Display Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("DISPLAY ERROR: Unable to fetch Display Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	private static void reportDisplayMotherboard(JTextArea reportDisplay, JTextArea errorDisplay) {
+		reportDisplay.append("----------------------MAINBOARD------------------------\n");
+		try {
+			Map<String, String> motherboard = CIM_ML.get("Win32_Baseboard", "Manufacturer, Model, Product");
+			for (Map.Entry<String, String> entry : motherboard.entrySet()) {
+				reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+			}
+
+			if (motherboard.isEmpty()) {
+				errorDisplay.append("Mainboard Info: Unavailable\n");
+			} else {
+				errorDisplay.append("Mainboard Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
+			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -253,97 +381,57 @@ public class SummarizedReportGeneration {
 		}
 	}
 
-	private static void reportDisplayIO(JTextArea reportDisplay, JTextArea errorDisplay) {
-		List<String> portID;
-		Map<String, String> ports = Collections.emptyMap();
+	private static void reportDisplayOS(JTextArea reportDisplay, JTextArea errorDisplay) {
+		List<String> oslist;
+		Map<String, String> osinfo = Collections.emptyMap();
 
-		reportDisplay.append("----------------------MAINBOARD I/O INFO------------------------\n");
+		reportDisplay.append("----------------------OS INFO------------------------\n");
 		try {
-			portID = Win32_PortConnector.getBaseboardPortID();
-			for (String id : portID) {
-				ports = CIM_ML.getWhere("Win32_PortConnector", "Tag", id, "ExternalReferenceDesignator");
-				for (Map.Entry<String, String> port : ports.entrySet()) {
-					reportDisplay.append(port.getValue() + "\n");
-				}
-			}
-			if (ports.isEmpty()) {
-				errorDisplay.append("I/O Info: Unavailable\n");
-			} else {
-				errorDisplay.append("I/O Info: Success\n");
-			}
-		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
-		} catch (InterruptedException e) {
-			errorDisplay.append("I/O ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	private static void reportDisplayBIOS(JTextArea reportDisplay, JTextArea errorDisplay) {
-		reportDisplay.append("----------------------BIOS INFO------------------------\n");
-		try {
-			Map<String, String> BIOS = CIM_ML.getWhere("Win32_BIOS", "PrimaryBIOS", "True",
-					"Name, Manufacturer, ReleaseDate");
-			for (Map.Entry<String, String> entry : BIOS.entrySet()) {
-				reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
-			}
-			if (BIOS.isEmpty()) {
-				errorDisplay.append("BIOS Info: Unavailable\n");
-			} else {
-				errorDisplay.append("BIOS Info: Success\n");
-			}
-		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n" + e + "\n");
-		} catch (InterruptedException e) {
-			errorDisplay.append("BIOS ERROR: Unable to fetch BIOS Info\n" + e + "\n");
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	private static void reportDisplayMotherboard(JTextArea reportDisplay, JTextArea errorDisplay) {
-		reportDisplay.append("----------------------MAINBOARD------------------------\n");
-		try {
-			Map<String, String> motherboard = CIM_ML.get("Win32_Baseboard", "Manufacturer, Model, Product");
-			for (Map.Entry<String, String> entry : motherboard.entrySet()) {
-				reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
-			}
-
-			if (motherboard.isEmpty()) {
-				errorDisplay.append("Mainboard Info: Unavailable\n");
-			} else {
-				errorDisplay.append("Mainboard Info: Success\n");
-			}
-		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
-		} catch (InterruptedException e) {
-			errorDisplay.append("MAINBOARD ERROR: Unable to fetch Motherboard Info\n" + e + "\n");
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	private static void reportDisplayGPU(JTextArea reportDisplay, JTextArea errorDisplay) {
-		List<String> gpuIDs;
-		Map<String, String> currentGPU = Collections.emptyMap();
-
-		reportDisplay.append("----------------------VIDEO CONTROLLER------------------------\n");
-		try {
-			gpuIDs = Win32_VideoController.getGPUID();
-			for (String currentID : gpuIDs) {
-				currentGPU = CIM_ML.getWhere("Win32_VideoController", "DeviceID", currentID,
-						"Name, VideoProcessor, DriverVersion, AdapterRAM, CurrentHorizontalResolution, CurrentVerticalResolution");
-				for (Map.Entry<String, String> entry : currentGPU.entrySet()) {
+			oslist = Win32_OperatingSystem.getOSList();
+			for (String currentOS : oslist) {
+				osinfo = CIM_ML.getWhere("Win32_OperatingSystem", "Name", currentOS,
+						"Caption, InstallDate, CSName, BuildNumber, OSArchitecture, WindowsDirectory");
+				for (Map.Entry<String, String> entry : osinfo.entrySet()) {
 					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
 				}
 			}
-			if (currentGPU.isEmpty()) {
-				errorDisplay.append("GPU Info: Unavailable\n");
+			if (osinfo.isEmpty()) {
+				errorDisplay.append("OS Info: Unavailable\n");
 			} else {
-				errorDisplay.append("GPU Info: Success\n");
+				errorDisplay.append("OS Info: Success\n");
 			}
 		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n" + e + "\n");
+			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n" + e + "\n");
 		} catch (InterruptedException e) {
-			errorDisplay.append("GPU ERROR: Unable to fetch VideoCard Info\n" + e + "\n");
+			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n" + e + "\n");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	private static void reportDisplayPrinter(JTextArea reportDisplay, JTextArea errorDisplay) {
+		List<String> deviceIDs;
+		Map<String, String> currentPrinter = Collections.emptyMap();
+
+		reportDisplay.append("----------------------PRINTER INFO------------------------\n");
+		try {
+			deviceIDs = Win32_Printer.getDeviceIDList();
+			for (String currentID : deviceIDs) {
+				currentPrinter = CIM_ML.getWhere("Win32_Printer", "DeviceID", currentID,
+						"Name, HorizontalResolution, VerticalResolution, DriverName, Local, Network");
+				for (Map.Entry<String, String> entry : currentPrinter.entrySet()) {
+					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
+				}
+				reportDisplay.append("\n");
+			}
+			if (currentPrinter.isEmpty()) {
+				errorDisplay.append("Printer Info: Unavailable\n");
+			} else {
+				errorDisplay.append("Printer Info: Success\n");
+			}
+		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
+			errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n" + e + "\n");
+		} catch (InterruptedException e) {
+			errorDisplay.append("PRINTER ERROR: Unable to fetch Printer Info\n" + e + "\n");
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -376,88 +464,30 @@ public class SummarizedReportGeneration {
 		}
 	}
 
-	private static void reportDisplayCPUCache(JTextArea reportDisplay, JTextArea errorDisplay) {
-		List<String> cpuID;
-		List<String> cacheID;
-
-		Map<String, String> cache = Collections.emptyMap();
-		reportDisplay.append("----------------------CPU CACHE------------------------\n");
-		try {
-			cpuID = Win32_Processor.getProcessorList();
-			for (String id : cpuID) {
-				cacheID = Win32_AssociatedProcessorMemory.getCacheID(id);
-				for (String currentCacheID : cacheID) {
-					cache = CIM_ML.getWhere("Win32_CacheMemory", "DeviceID", currentCacheID, "Purpose, InstalledSize");
-					for (Map.Entry<String, String> currentCache : cache.entrySet()) {
-						reportDisplay.append(currentCache.getKey() + ": " + currentCache.getValue()+"\n");
-					}
-					reportDisplay.append("\n");
-				}
-			}
-			if (cache.isEmpty()) {
-				errorDisplay.append("CPU Cache Info: Unavailable\n");
-			} else {
-				errorDisplay.append("CPU Cache Info: Success\n");
-			}
-		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n" + e + "\n");
-		} catch (InterruptedException e) {
-			errorDisplay.append("CPU CACHE ERROR: Unable to fetch CPU Cache Info\n" + e + "\n");
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	private static void reportDisplayOS(JTextArea reportDisplay, JTextArea errorDisplay) {
-		List<String> oslist;
-		Map<String, String> osinfo = Collections.emptyMap();
-
-		reportDisplay.append("----------------------OS INFO------------------------\n");
-		try {
-			oslist = Win32_OperatingSystem.getOSList();
-			for (String currentOS : oslist) {
-				osinfo = CIM_ML.getWhere("Win32_OperatingSystem", "Name", currentOS,
-						"Caption, InstallDate, CSName, BuildNumber, OSArchitecture, WindowsDirectory");
-				for (Map.Entry<String, String> entry : osinfo.entrySet()) {
-					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
-				}
-			}
-			if (osinfo.isEmpty()) {
-				errorDisplay.append("OS Info: Unavailable\n");
-			} else {
-				errorDisplay.append("OS Info: Success\n");
-			}
-		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n" + e + "\n");
-		} catch (InterruptedException e) {
-			errorDisplay.append("OS ERROR: Unable to fetch Operating System Info\n" + e + "\n");
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	private static void reportDisplayCPU(JTextArea reportDisplay, JTextArea errorDisplay) {
+	private static void reportDisplaySound(JTextArea reportDisplay, JTextArea errorDisplay) {
 		List<String> deviceIDs;
-		Map<String, String> currentCPU = Collections.emptyMap();
+		Map<String, String> currentAudio = Collections.emptyMap(); // this prevents null pointer exception
 
-		reportDisplay.append("----------------------CPU INFO------------------------\n");
+		reportDisplay.append("----------------------AUDIO INFO------------------------\n");
 		try {
-			deviceIDs = Win32_Processor.getProcessorList();
+			deviceIDs = Win32_SoundDevice.getSoundDeviceID();
 			for (String currentID : deviceIDs) {
-				currentCPU = CIM_ML.getWhere("Win32_Processor", "DeviceID", currentID,
-						"Name, NumberOfCores, ThreadCount, NumberOfLogicalProcessors, Manufacturer");
-				for (Map.Entry<String, String> entry : currentCPU.entrySet()) {
+				currentAudio = CIM_ML.getWhere("Win32_SoundDevice", "DeviceID", currentID,
+						"Caption, Manufacturer, Status");
+				for (Map.Entry<String, String> entry : currentAudio.entrySet()) {
 					reportDisplay.append(entry.getKey() + ": " + entry.getValue() + "\n");
 				}
 				reportDisplay.append("\n");
 			}
-			if (currentCPU.isEmpty()) {
-				errorDisplay.append("CPU Info: Unavailable\n");
+			if (currentAudio.isEmpty()) {
+				errorDisplay.append("Audio Info: Unavailable\n");
 			} else {
-				errorDisplay.append("CPU Info: Success\n");
+				errorDisplay.append("Audio Info: Success\n");
 			}
 		} catch (IOException | IndexOutOfBoundsException | ShellException e) {
-			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n" + e + "\n");
+			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n" + e);
 		} catch (InterruptedException e) {
-			errorDisplay.append("CPU ERROR: Unable to fetch CPU Info\n" + e + "\n");
+			errorDisplay.append("AUDIO ERROR: Unable to fetch Audio Info\n" + e);
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -484,7 +514,7 @@ public class SummarizedReportGeneration {
 			Thread.currentThread().interrupt();
 		}
 	}
-
+	
 	private static void reportDisplayUser(JTextArea reportDisplay, JTextArea errorDisplay) {
 		reportDisplay.append("----------------------USER INFO------------------------\n");
 		reportDisplay.append("Current Username: " + User.getUsername() + "\n");

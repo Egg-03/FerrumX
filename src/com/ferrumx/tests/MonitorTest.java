@@ -7,7 +7,7 @@ import java.util.Map;
 import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_DesktopMonitor;
 
-public class Monitor {
+public class MonitorTest {
 	public static void main(String[] args)
 			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		List<String> deviceIDs = Win32_DesktopMonitor.getMonitorID();
