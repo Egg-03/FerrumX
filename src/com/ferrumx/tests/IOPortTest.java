@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_PortConnector;
 
 public class IOPortTest {
 
-	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		List<String> portID = Win32_PortConnector.getBaseboardPortID();
 		Map<String, String> ports = null;
 

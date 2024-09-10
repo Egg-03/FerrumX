@@ -3,6 +3,7 @@ package com.ferrumx.ui.utilities;
 import java.awt.TrayIcon.MessageType;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.JRadioButtonMenuItem;
 
@@ -35,7 +36,9 @@ public class ThemeLoader {
 			ini.put("Theme", "CurrentTheme", themeClass);
 			ini.store();
 		} catch (IOException e) {
-			new ExceptionUI("Theme Save Error", e.getMessage()).setVisible(true);
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Theme Save Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 	}
 	
@@ -70,7 +73,9 @@ public class ThemeLoader {
 			return ini.get("Theme", "CurrentTheme");
 				
 		} catch (IOException e) {
-			e.printStackTrace();
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Theme Load Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return defaultTheme;
 		}
 	}
@@ -81,10 +86,10 @@ public class ThemeLoader {
 			case "com.formdev.flatlaf.themes.FlatMacDarkLaf":
 				themeButtons[0].setSelected(true);
 				break;
-			case "com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme":
+			case "com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme":
 				themeButtons[1].setSelected(true);
 				break;
-			case "com.formdev.flatlaf.FlatDarculaLaf":
+			case "com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMoonlightIJTheme":
 				themeButtons[2].setSelected(true);
 				break;
 			case "com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme":

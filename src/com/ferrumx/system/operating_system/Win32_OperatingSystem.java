@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
@@ -18,7 +19,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * SystemDrive, WindowsDirectory
  *
  * @author Egg-03
- * @version 1.1.0
+ * @version 1.3.0
  */
 public class Win32_OperatingSystem {
 	private static String classname = "Win32_OperatingSystem";
@@ -42,8 +43,26 @@ public class Win32_OperatingSystem {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
+	 *                                   <p>
+	 *                                   While catching any of the Exceptions, you
+	 *                                   may return an empty List to avoid any
+	 *                                   {@link java.lang.NullPointerException} that
+	 *                                   might get thrown because your variable
+	 *                                   might be expecting a string. However, this
+	 *                                   does not make you immune from the
+	 *                                   NullPointerExceptions that may be thrown in
+	 *                                   case of powershell output format changes in
+	 *                                   the future, causing the underlying parsing
+	 *                                   logic to fail.
 	 */
-	public static List<String> getOSList() throws IOException, IndexOutOfBoundsException {
+	public static List<String> getOSList() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.getID(classname, "Name");
 	}
 
@@ -62,8 +81,26 @@ public class Win32_OperatingSystem {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
+	 *                                   <p>
+	 *                                   While catching any of the Exceptions, you
+	 *                                   may return an empty Map to avoid any
+	 *                                   {@link java.lang.NullPointerException} that
+	 *                                   might get thrown because your variable
+	 *                                   might be expecting a string. However, this
+	 *                                   does not make you immune from the
+	 *                                   NullPointerExceptions that may be thrown in
+	 *                                   case of powershell output format changes in
+	 *                                   the future, causing the underlying parsing
+	 *                                   logic to fail.
 	 */
-	public static Map<String, String> getOSInfo(String OSName) throws IOException, IndexOutOfBoundsException {
+	public static Map<String, String> getOSInfo(String OSName) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.getWhere(classname, "Name", OSName, attributes);
 	}
 }

@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.operating_system.Win32_OperatingSystem;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.utilities.IconImageChooser;
@@ -55,8 +57,16 @@ final class OperatingSystem {
 			osFields[16].setText(osProperties.get("WindowsDirectory"));
 			osFields[17].setText(osProperties.get("SystemDirectory"));
 
-		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("OS Error", e.getMessage()).setVisible(true);
+		} catch (IndexOutOfBoundsException | IOException | ShellException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("OS Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			return false;
+		} catch (InterruptedException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("OS Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			Thread.currentThread().interrupt();
 			return false;
 		}
 		addOsChoiceActionListener(osLogo, osChoice, osFields);
@@ -90,8 +100,15 @@ final class OperatingSystem {
 					osFields[15].setText(osProperties.get("SystemDrive"));
 					osFields[16].setText(osProperties.get("WindowsDirectory"));
 					osFields[17].setText(osProperties.get("SystemDirectory"));
-				} catch (IndexOutOfBoundsException | IOException e1) {
-					new ExceptionUI("OS Error", e1.getMessage()).setVisible(true);
+				} catch (IndexOutOfBoundsException | IOException | ShellException e1) {
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("OS Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+				} catch (InterruptedException e1) {
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("OS Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+					Thread.currentThread().interrupt();
 				}
 
 			}).start()

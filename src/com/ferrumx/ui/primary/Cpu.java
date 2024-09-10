@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
 import com.ferrumx.system.hardware.Win32_CacheMemory;
 import com.ferrumx.system.hardware.Win32_Processor;
@@ -72,12 +74,20 @@ final class Cpu {
 			}
 
 
-		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("CPU Error", e.getMessage()).setVisible(true);
+		} catch (IndexOutOfBoundsException | IOException | ShellException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("CPU Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e2) {
 			cpuFields[8].setText("N/A");
 			return true;
+		} catch (InterruptedException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("CPU Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			Thread.currentThread().interrupt();
+			return false;
 		}
 
 		addCpuChoiceActionEvent(cpuLogo, cpuChoice, cacheTa, cpuFields);
@@ -125,10 +135,17 @@ final class Cpu {
 						cacheTa.append(cpuCacheProperties.get("Purpose") + ": " + cpuCacheProperties.get("InstalledSize")
 								+ " KB - " + cpuCacheProperties.get("Associativity") + " way\n");
 					}
-				} catch (IndexOutOfBoundsException | IOException e2) {
-					new ExceptionUI("CPU Error", e2.getMessage()).setVisible(true);
+				} catch (IndexOutOfBoundsException | IOException | ShellException e2) {
+					String errorMessage = e2.getMessage();
+					String stackTrace = Arrays.toString(e2.getStackTrace());
+					new ExceptionUI("CPU Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e3) {
 					cpuFields[8].setText("N/A");
+				} catch (InterruptedException e1) {
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("CPU Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+					Thread.currentThread().interrupt();
 				}
 			}).start()
 		);

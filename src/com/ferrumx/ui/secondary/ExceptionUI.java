@@ -37,9 +37,8 @@ public class ExceptionUI extends JFrame {
 		panel.setBounds(10, 11, 454, 130);
 		getContentPane().add(panel);
 		panel.setLayout(null);
-		exceptionArea.setForeground(new Color(0, 128, 128));
-
 		exceptionArea.setLineWrap(true);
+		exceptionArea.setForeground(new Color(0, 128, 128));
 		exceptionArea.setEditable(false);
 		exceptionArea.setBackground(new Color(32, 32, 32));
 		exceptionArea.setText(errorMessage);

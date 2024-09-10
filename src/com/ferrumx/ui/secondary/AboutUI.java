@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -103,7 +104,9 @@ public class AboutUI extends JFrame {
 						confirm.dispose();
 						themeSupportLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
 					} catch (URISyntaxException | IOException ex) {
-						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						String errorMessage = ex.getMessage();
+						String stackTrace = Arrays.toString(ex.getStackTrace());
+						new ExceptionUI("Link Visit Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 						confirm.dispose();
 					}
 				});
@@ -149,7 +152,9 @@ public class AboutUI extends JFrame {
 						confirm.dispose();
 						svgSupportLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
 					} catch (URISyntaxException | IOException ex) {
-						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						String errorMessage = ex.getMessage();
+						String stackTrace = Arrays.toString(ex.getStackTrace());
+						new ExceptionUI("Link Visit Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 						confirm.dispose();
 					}
 				});
@@ -189,7 +194,9 @@ public class AboutUI extends JFrame {
 						confirm.dispose();
 						iniSupportLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
 					} catch (URISyntaxException | IOException ex) {
-						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						String errorMessage = ex.getMessage();
+						String stackTrace = Arrays.toString(ex.getStackTrace());
+						new ExceptionUI("Link Visit Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 						confirm.dispose();
 					}
 				});
@@ -246,7 +253,9 @@ public class AboutUI extends JFrame {
 						confirm.dispose();
 						extraIconsLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
 					} catch (URISyntaxException | IOException ex) {
-						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						String errorMessage = ex.getMessage();
+						String stackTrace = Arrays.toString(ex.getStackTrace());
+						new ExceptionUI("Link Visit Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 						confirm.dispose();
 					}
 				});
@@ -286,7 +295,9 @@ public class AboutUI extends JFrame {
 						confirm.dispose();
 						developerLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
 					} catch (URISyntaxException | IOException ex) {
-						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						String errorMessage = ex.getMessage();
+						String stackTrace = Arrays.toString(ex.getStackTrace());
+						new ExceptionUI("Link Visit Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 						confirm.dispose();
 					}
 				});
@@ -337,7 +348,9 @@ public class AboutUI extends JFrame {
 						confirm.dispose();
 						iconMakerLink.setForeground(new Color(225, 0, 225)); //this will mark as visited
 					} catch (URISyntaxException | IOException ex) {
-						new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+						String errorMessage = ex.getMessage();
+						String stackTrace = Arrays.toString(ex.getStackTrace());
+						new ExceptionUI("Link Visit Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 						confirm.dispose();
 					}
 				});
@@ -366,7 +379,7 @@ public class AboutUI extends JFrame {
 		mainPanel.add(wrapperVersionPanel, gbc_wrapperVersionPanel);
 		wrapperVersionPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel wrapperVersion = new JLabel("v1.2.4");
+		JLabel wrapperVersion = new JLabel("v1.3.0");
 		wrapperVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		wrapperVersionPanel.add(wrapperVersion);
 		wrapperVersion.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
@@ -398,7 +411,9 @@ public class AboutUI extends JFrame {
 				try {
 					Desktop.getDesktop().browse(new URI(appLink));
 				} catch (URISyntaxException | IOException ex) {
-					new ExceptionUI("Link Visit Error", ex.getMessage()).setVisible(true);
+					String errorMessage = ex.getMessage();
+					String stackTrace = Arrays.toString(ex.getStackTrace());
+					new ExceptionUI("Link Visit Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				}
 			}
 		});
@@ -417,7 +432,7 @@ public class AboutUI extends JFrame {
 		mainPanel.add(guiVersionPanel, gbc_guiVersionPanel);
 		guiVersionPanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JLabel guiVersion = new JLabel("v1.0.0");
+		JLabel guiVersion = new JLabel("v1.1.0");
 		guiVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		guiVersionPanel.add(guiVersion);
 		guiVersion.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));

@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_DiskDrive;
 import com.ferrumx.system.operating_system.Win32_DiskDriveToDiskPartition;
 import com.ferrumx.system.operating_system.Win32_LogicalDiskToPartition;
 
 public class DiskDriveTest {
 
-	public static void main(String[] args) throws IOException, IndexOutOfBoundsException {
+	public static void main(String[] args) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		List<String> diskID = Win32_DiskDrive.getDriveID();
 		List<String> diskPartition;
 		Map<String, String> disk = null;

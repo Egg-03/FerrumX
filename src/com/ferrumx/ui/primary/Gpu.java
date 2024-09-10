@@ -1,6 +1,7 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_VideoController;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.utilities.IconImageChooser;
@@ -51,13 +53,21 @@ final class Gpu {
 			Long adapterRAM = Long.valueOf(gpuProperties.get("AdapterRAM")) / (1024 * 1024);
 			gpuFields[9].setText(String.valueOf(adapterRAM) + " MB");
 
-		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Video Controller Initialization Error", e.getMessage()).setVisible(true);
+		} catch (IndexOutOfBoundsException | IOException | ShellException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Video Controller Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e1) {
 			gpuFields[9].setText("N/A"); // sets VRAM field to N/A in case the adapterRAM property cannot be parsed into
 											// a Long value
 			return true;
+		} catch (InterruptedException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Video Controller Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			Thread.currentThread().interrupt();
+			return false;
 		}
 		addGpuChoiceActionListener(gpuIcon, gpuChoice, gpuFields);
 		return true;
@@ -90,11 +100,18 @@ final class Gpu {
 					Long adapterRAM = Long.valueOf(gpuProperties.get("AdapterRAM")) / (1024 * 1024);
 					gpuFields[9].setText(String.valueOf(adapterRAM) + " MB");
 
-				} catch (IndexOutOfBoundsException | IOException e1) {
-					new ExceptionUI("Video Controller Initialization Error", e1.getMessage()).setVisible(true);
+				} catch (IndexOutOfBoundsException | IOException | ShellException e1) {
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("Video Controller Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e1) {
 					gpuFields[9].setText("N/A"); // sets VRAM field to N/A in case the adapterRAM property cannot be parsed
 													// into a Long value
+				} catch (InterruptedException e1) {
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("Video Controller Initialization Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+					Thread.currentThread().interrupt();
 				}
 			}).start()
 		);

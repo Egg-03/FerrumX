@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 
 /**
@@ -15,7 +16,7 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * Manufacturer
  *
  * @author Egg-03
- * @version 1.1.0
+ * @version 1.3.0
  */
 public class Win32_SoundDevice {
 	private static String classname = "Win32_SoundDevice";
@@ -38,8 +39,15 @@ public class Win32_SoundDevice {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
 	 */
-	public static List<String> getSoundDeviceID() throws IOException, IndexOutOfBoundsException {
+	public static List<String> getSoundDeviceID() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.getID(classname, "DeviceID");
 	}
 
@@ -59,9 +67,16 @@ public class Win32_SoundDevice {
 	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
 	 */
 	public static Map<String, String> getCurrentAudioDevice(String deviceID)
-			throws IOException, IndexOutOfBoundsException {
+			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		return CIM_ML.getWhere(classname, "DeviceID", deviceID, attributes);
 	}
 }

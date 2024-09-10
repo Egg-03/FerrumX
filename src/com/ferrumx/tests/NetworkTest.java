@@ -1,14 +1,16 @@
 package com.ferrumx.tests;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_NetworkAdapter;
 import com.ferrumx.system.networking.Win32_NetworkAdapterConfiguration;
 import com.ferrumx.system.networking.Win32_NetworkAdapterSetting;
 
 public class NetworkTest {
-	public static void main(String[] args) throws Exception, IndexOutOfBoundsException {
+	public static void main(String[] args) throws IndexOutOfBoundsException, IOException, ShellException, InterruptedException {
 		List<String> deviceIDs = Win32_NetworkAdapter.getDeviceIDList();
 		Map<String, String> networkAdapter;
 		Map<String, String> networkAdapterConfiguration;

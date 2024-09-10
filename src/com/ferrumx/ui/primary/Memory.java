@@ -1,12 +1,14 @@
 package com.ferrumx.ui.primary;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.system.hardware.Win32_PhysicalMemory;
 import com.ferrumx.ui.secondary.ExceptionUI;
 
@@ -49,12 +51,20 @@ final class Memory {
 			Long memoryCapacity = Long.valueOf(memoryProperties.get("Capacity")) / (1024 * 1024);
 			memoryFields[7].setText((String.valueOf(memoryCapacity) + " MB"));
 
-		} catch (IndexOutOfBoundsException | IOException e) {
-			new ExceptionUI("Memory Error", e.getMessage()).setVisible(true);
+		} catch (IndexOutOfBoundsException | IOException | ShellException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Memory Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 			return false;
 		} catch (NumberFormatException e1) {
 			memoryFields[7].setText("N/A"); // sets RAM capacity field to N/A in case the adapterRAM property cannot be
 											// parsed into a Long value
+		} catch (InterruptedException e) {
+			String errorMessage = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Memory Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+			Thread.currentThread().interrupt();
+			return false;
 		}
 		addMemoryChoiceActionListner(memoryChoice, memoryFields);
 		return true;
@@ -83,11 +93,18 @@ final class Memory {
 					Long memoryCapacity = Long.valueOf(memoryProperties.get("Capacity")) / (1024 * 1024);
 					memoryFields[7].setText((String.valueOf(memoryCapacity) + " MB"));
 
-				} catch (IndexOutOfBoundsException | IOException e2) {
-					new ExceptionUI("Memory Error", e2.getMessage()).setVisible(true);
+				} catch (IndexOutOfBoundsException | IOException | ShellException e2) {
+					String errorMessage = e2.getMessage();
+					String stackTrace = Arrays.toString(e2.getStackTrace());
+					new ExceptionUI("Memory Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
 				} catch (NumberFormatException e1) {
 					memoryFields[7].setText("N/A"); // sets RAM capacity field to N/A in case the adapterRAM property cannot
 													// be parsed into a Long value
+				} catch (InterruptedException e1) {
+					String errorMessage = e1.getMessage();
+					String stackTrace = Arrays.toString(e1.getStackTrace());
+					new ExceptionUI("Memory Error", "Error: "+errorMessage+"\nStackTrace: \n"+stackTrace).setVisible(true);
+					Thread.currentThread().interrupt();
 				}
 			}).start()
 		 );

@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,6 +55,8 @@ import com.ferrumx.ui.secondary.ConfirmationUI;
 import com.ferrumx.ui.secondary.ExceptionUI;
 import com.ferrumx.ui.secondary.StatusUI;
 import com.ferrumx.ui.utilities.ComponentImageCapture;
+import com.ferrumx.ui.utilities.DateTime;
+import com.ferrumx.ui.utilities.Elevation;
 import com.ferrumx.ui.utilities.ThemeLoader;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
@@ -182,9 +185,24 @@ public class FerrumX {
 	private JTextField userHomeTf;
 	private JTextField timeZoneNameTf;
 	private JTextField timeZoneCaptionTf;
+	// Battery
+	private JLabel batteryChargeView; //the icon representing the current charge level on the battery
+	private JLabel batteryChargePercentage; // the charge percentage on the battery icon panel
+	private JTextField batteryCaptionTf;
+	private JTextField batteryStatusTf;
+	private JTextField batteryStatusTwoTf;
+	private JTextField batteryChemistryTf;
+	private JTextField batteryChargeTf;
+	private JTextField batteryRuntimeTf;
+	private JTextField batteryNameTf;
+	private JTextField batteryDeviceIDTf;
+	private JTextField batteryCapcityTf;
+	private JTextField batteryVoltageTf;
 
 	// Links
 	private String appLatestReleasePage = "https://github.com/Egg-03/FerrumX/releases/latest";
+	
+	
 	
 	/**
 	 * Launch the application.
@@ -193,15 +211,18 @@ public class FerrumX {
 		try {
 			UIManager.setLookAndFeel(ThemeLoader.load());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
-			new ExceptionUI("Theme Error", e.getMessage()).setVisible(true);
+			String message = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Theme Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 
 		try {
 			FerrumX window = new FerrumX();
 			window.mainFrame.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
-			new ExceptionUI("FerrumX Application Window Launch Error", e.getMessage()).setVisible(true);
+			String message = e.getCause().getMessage();
+			String stackTrace = Arrays.toString(e.getCause().getStackTrace());
+			new ExceptionUI("FerrumX Application Window Launch Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 	}
 
@@ -231,7 +252,7 @@ public class FerrumX {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("FerrumX");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
-		mainFrame.setBounds(100, 100, 860, 640);
+		mainFrame.setBounds(100, 100, 860, 680);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -270,6 +291,10 @@ public class FerrumX {
 		// Initialize the os and the user panels
 		JPanel osAndUserPanel = new JPanel();
 		initializeOsAndUserPanel(tabbedPane, osAndUserPanel);
+		
+		// Initialize the battery panel
+		JPanel batteryPanel = new JPanel();
+		initializeBatteryPanel(tabbedPane, batteryPanel);
 
 		// Initialize the report panel
 		initializeReportPanel(tabbedPane);
@@ -278,6 +303,13 @@ public class FerrumX {
 		JMenuBar menuBar = new JMenuBar();
 		initializeMenu(mainFrame, tabbedPane, menuBar);
 		mainFrame.getContentPane().add(menuBar, BorderLayout.NORTH);
+		
+		//show the date of last app startup and operation mode
+		JLabel timeAndOperationModeField = new JLabel();
+		timeAndOperationModeField.setHorizontalAlignment(SwingConstants.CENTER);
+		timeAndOperationModeField.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 12));
+		timeAndOperationModeField.setText(DateTime.getDate()+"   |   Operation Mode: "+Elevation.elevationStatus()+"   |   "+System.getProperty("java.runtime.name")+" "+System.getProperty("java.runtime.version"));
+		mainFrame.getContentPane().add(timeAndOperationModeField, BorderLayout.SOUTH);
 		
 	}
 
@@ -294,21 +326,21 @@ public class FerrumX {
 		});
 		themeMenu.add(darkThemeChoice);
 
-		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Cyan Light");
-		lightThemeChoice.addActionListener(e -> {
-			if (lightThemeChoice.isSelected()) {
-				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme", mainFrame);
+		JRadioButtonMenuItem gruvboxThemeChoice = new JRadioButtonMenuItem("Gruvbox Dark");
+		gruvboxThemeChoice.addActionListener(e -> {
+			if (gruvboxThemeChoice.isSelected()) {
+				changeTheme("com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme", mainFrame);
 			}
 		});
-		themeMenu.add(lightThemeChoice);
+		themeMenu.add(gruvboxThemeChoice);
 
-		JRadioButtonMenuItem greyThemeChoice = new JRadioButtonMenuItem("Darcula Grey");
-		greyThemeChoice.addActionListener(e -> {
-			if (greyThemeChoice.isSelected()) {
-				changeTheme("com.formdev.flatlaf.FlatDarculaLaf", mainFrame);
+		JRadioButtonMenuItem moonlightThemeChoice = new JRadioButtonMenuItem("Moonlight Purple");
+		moonlightThemeChoice.addActionListener(e -> {
+			if (moonlightThemeChoice.isSelected()) {
+				changeTheme("com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMoonlightIJTheme", mainFrame);
 			}
 		});
-		themeMenu.add(greyThemeChoice);
+		themeMenu.add(moonlightThemeChoice);
 
 		JRadioButtonMenuItem monokaiproThemeChoice = new JRadioButtonMenuItem("Monokai Pro");
 		monokaiproThemeChoice.addActionListener(e -> {
@@ -335,15 +367,15 @@ public class FerrumX {
 		themeMenu.add(carbonThemeChoice);
 
 		ButtonGroup themeButtonGroup = new ButtonGroup();
-		themeButtonGroup.add(lightThemeChoice);
-		themeButtonGroup.add(greyThemeChoice);
+		themeButtonGroup.add(gruvboxThemeChoice);
+		themeButtonGroup.add(moonlightThemeChoice);
 		themeButtonGroup.add(darkThemeChoice);
 		themeButtonGroup.add(monokaiproThemeChoice);
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
 		
 		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
-		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, lightThemeChoice, greyThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice);
+		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");
 		menuBar.add(optionsMenu);
@@ -2804,6 +2836,291 @@ public class FerrumX {
 		userPanel.add(timeZoneCaptionTf, gbc_timeZoneCaptionTf);
 		timeZoneCaptionTf.setColumns(10);
 	}
+	
+	private void initializeBatteryPanel(JTabbedPane tabbedPane, JPanel batteryPanel) {
+		tabbedPane.addTab("Battery", new FlatSVGIcon(FerrumX.class.getResource("/resources/tab_icons_small/Battery.svg")), batteryPanel, "Displays Battery Information");
+		batteryPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Battery", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagLayout gbl_batteryPanel = new GridBagLayout();
+		gbl_batteryPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_batteryPanel.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_batteryPanel.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_batteryPanel.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		batteryPanel.setLayout(gbl_batteryPanel);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 0;
+		batteryPanel.add(scrollPane, gbc_scrollPane);
+		
+		JTextArea batteryWarningTextArea = new JTextArea();
+		batteryWarningTextArea.setForeground(new Color(51, 204, 255));
+		batteryWarningTextArea.setFont(new Font("Ebrima", Font.ITALIC, 11));
+		batteryWarningTextArea.setText("NOTE: The battery panel will display information only when the system detects a battery. For desktops that don't run on a battery, the fields will be blank.");
+		batteryWarningTextArea.setLineWrap(true);
+		batteryWarningTextArea.setEditable(false);
+		scrollPane.setViewportView(batteryWarningTextArea);
+		batteryWarningTextArea.setColumns(10);
+		
+		JButton refresh = new JButton("");
+		refresh.addActionListener(e-> new Thread(()->
+				Battery.initializeBattery(batteryChargePercentage, batteryChargeView, batteryCaptionTf, batteryStatusTf, batteryStatusTwoTf, batteryChemistryTf,
+						batteryChargeTf, batteryRuntimeTf, batteryNameTf, batteryDeviceIDTf, batteryCapcityTf,
+						batteryVoltageTf)
+			).start()
+		);
+		refresh.setToolTipText("Refresh Battery Information");
+		refresh.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/extra_icons/refresh.svg")));
+		GridBagConstraints gbc_refresh = new GridBagConstraints();
+		gbc_refresh.insets = new Insets(0, 0, 5, 0);
+		gbc_refresh.gridx = 1;
+		gbc_refresh.gridy = 0;
+		batteryPanel.add(refresh, gbc_refresh);
+		
+		JPanel batteryPanelOne = new JPanel();
+		batteryPanelOne.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Win32_Battery", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_batteryPanelOne = new GridBagConstraints();
+		gbc_batteryPanelOne.gridwidth = 2;
+		gbc_batteryPanelOne.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryPanelOne.fill = GridBagConstraints.BOTH;
+		gbc_batteryPanelOne.gridx = 0;
+		gbc_batteryPanelOne.gridy = 1;
+		batteryPanel.add(batteryPanelOne, gbc_batteryPanelOne);
+		GridBagLayout gbl_batteryPanelOne = new GridBagLayout();
+		gbl_batteryPanelOne.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_batteryPanelOne.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_batteryPanelOne.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_batteryPanelOne.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		batteryPanelOne.setLayout(gbl_batteryPanelOne);
+		
+		JLabel batteryCaption = new JLabel("Caption");
+		GridBagConstraints gbc_batteryCaption = new GridBagConstraints();
+		gbc_batteryCaption.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryCaption.anchor = GridBagConstraints.EAST;
+		gbc_batteryCaption.gridx = 0;
+		gbc_batteryCaption.gridy = 0;
+		batteryPanelOne.add(batteryCaption, gbc_batteryCaption);
+		
+		batteryCaptionTf = new JTextField();
+		batteryCaptionTf.setEditable(false);
+		GridBagConstraints gbc_batteryCaptionTf = new GridBagConstraints();
+		gbc_batteryCaptionTf.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryCaptionTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryCaptionTf.gridx = 1;
+		gbc_batteryCaptionTf.gridy = 0;
+		batteryPanelOne.add(batteryCaptionTf, gbc_batteryCaptionTf);
+		batteryCaptionTf.setColumns(10);
+		
+		JLabel batteryStatus = new JLabel("Status");
+		GridBagConstraints gbc_batteryStatus = new GridBagConstraints();
+		gbc_batteryStatus.anchor = GridBagConstraints.EAST;
+		gbc_batteryStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryStatus.gridx = 0;
+		gbc_batteryStatus.gridy = 1;
+		batteryPanelOne.add(batteryStatus, gbc_batteryStatus);
+		
+		batteryStatusTf = new JTextField();
+		batteryStatusTf.setEditable(false);
+		GridBagConstraints gbc_batteryStatusTf = new GridBagConstraints();
+		gbc_batteryStatusTf.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryStatusTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryStatusTf.gridx = 1;
+		gbc_batteryStatusTf.gridy = 1;
+		batteryPanelOne.add(batteryStatusTf, gbc_batteryStatusTf);
+		batteryStatusTf.setColumns(10);
+		
+		JLabel battryStatusTwo = new JLabel("Battery Status");
+		GridBagConstraints gbc_battryStatusTwo = new GridBagConstraints();
+		gbc_battryStatusTwo.anchor = GridBagConstraints.EAST;
+		gbc_battryStatusTwo.insets = new Insets(0, 0, 5, 5);
+		gbc_battryStatusTwo.gridx = 0;
+		gbc_battryStatusTwo.gridy = 2;
+		batteryPanelOne.add(battryStatusTwo, gbc_battryStatusTwo);
+		
+		batteryStatusTwoTf = new JTextField();
+		batteryStatusTwoTf.setEditable(false);
+		GridBagConstraints gbc_batteryStatusTwoTf = new GridBagConstraints();
+		gbc_batteryStatusTwoTf.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryStatusTwoTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryStatusTwoTf.gridx = 1;
+		gbc_batteryStatusTwoTf.gridy = 2;
+		batteryPanelOne.add(batteryStatusTwoTf, gbc_batteryStatusTwoTf);
+		batteryStatusTwoTf.setColumns(10);
+		
+		JLabel batteryChemistry = new JLabel("Chemistry");
+		GridBagConstraints gbc_batteryChemistry = new GridBagConstraints();
+		gbc_batteryChemistry.anchor = GridBagConstraints.EAST;
+		gbc_batteryChemistry.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryChemistry.gridx = 0;
+		gbc_batteryChemistry.gridy = 3;
+		batteryPanelOne.add(batteryChemistry, gbc_batteryChemistry);
+		
+		batteryChemistryTf = new JTextField();
+		batteryChemistryTf.setEditable(false);
+		GridBagConstraints gbc_batteryChemistryTf = new GridBagConstraints();
+		gbc_batteryChemistryTf.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryChemistryTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryChemistryTf.gridx = 1;
+		gbc_batteryChemistryTf.gridy = 3;
+		batteryPanelOne.add(batteryChemistryTf, gbc_batteryChemistryTf);
+		batteryChemistryTf.setColumns(10);
+		
+		JPanel batteryIconPanel = new JPanel();
+		batteryIconPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Battery Charge", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_batteryIconPanel = new GridBagConstraints();
+		gbc_batteryIconPanel.gridheight = 6;
+		gbc_batteryIconPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_batteryIconPanel.fill = GridBagConstraints.BOTH;
+		gbc_batteryIconPanel.gridx = 2;
+		gbc_batteryIconPanel.gridy = 0;
+		batteryPanelOne.add(batteryIconPanel, gbc_batteryIconPanel);
+		GridBagLayout gbl_batteryIconPanel = new GridBagLayout();
+		gbl_batteryIconPanel.columnWidths = new int[]{344, 0};
+		gbl_batteryIconPanel.rowHeights = new int[]{116, 0, 0};
+		gbl_batteryIconPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_batteryIconPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		batteryIconPanel.setLayout(gbl_batteryIconPanel);
+		
+		batteryChargeView = new JLabel("");
+		batteryChargeView.setIcon(new FlatSVGIcon(FerrumX.class.getResource("/resources/battery_level_images/Battery-0.svg")));
+		GridBagConstraints gbc_batteryChargeView = new GridBagConstraints();
+		gbc_batteryChargeView.insets = new Insets(0, 0, 5, 0);
+		gbc_batteryChargeView.gridx = 0;
+		gbc_batteryChargeView.gridy = 0;
+		batteryIconPanel.add(batteryChargeView, gbc_batteryChargeView);
+		
+		batteryChargePercentage = new JLabel("Current Charge Level: XX%");
+		GridBagConstraints gbc_batteryChargePercentage = new GridBagConstraints();
+		gbc_batteryChargePercentage.gridx = 0;
+		gbc_batteryChargePercentage.gridy = 1;
+		batteryIconPanel.add(batteryChargePercentage, gbc_batteryChargePercentage);
+		
+		JLabel batteryCharge = new JLabel("Charge");
+		GridBagConstraints gbc_batteryCharge = new GridBagConstraints();
+		gbc_batteryCharge.anchor = GridBagConstraints.EAST;
+		gbc_batteryCharge.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryCharge.gridx = 0;
+		gbc_batteryCharge.gridy = 4;
+		batteryPanelOne.add(batteryCharge, gbc_batteryCharge);
+		
+		batteryChargeTf = new JTextField();
+		batteryChargeTf.setEditable(false);
+		GridBagConstraints gbc_batteryChargeTf = new GridBagConstraints();
+		gbc_batteryChargeTf.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryChargeTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryChargeTf.gridx = 1;
+		gbc_batteryChargeTf.gridy = 4;
+		batteryPanelOne.add(batteryChargeTf, gbc_batteryChargeTf);
+		batteryChargeTf.setColumns(10);
+		
+		JLabel batteryRuntime = new JLabel("Runtime");
+		GridBagConstraints gbc_batteryRuntime = new GridBagConstraints();
+		gbc_batteryRuntime.anchor = GridBagConstraints.EAST;
+		gbc_batteryRuntime.insets = new Insets(0, 0, 0, 5);
+		gbc_batteryRuntime.gridx = 0;
+		gbc_batteryRuntime.gridy = 5;
+		batteryPanelOne.add(batteryRuntime, gbc_batteryRuntime);
+		
+		batteryRuntimeTf = new JTextField();
+		batteryRuntimeTf.setEditable(false);
+		GridBagConstraints gbc_batteryRuntimeTf = new GridBagConstraints();
+		gbc_batteryRuntimeTf.insets = new Insets(0, 0, 0, 5);
+		gbc_batteryRuntimeTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryRuntimeTf.gridx = 1;
+		gbc_batteryRuntimeTf.gridy = 5;
+		batteryPanelOne.add(batteryRuntimeTf, gbc_batteryRuntimeTf);
+		batteryRuntimeTf.setColumns(10);
+		
+		JPanel batteryPanelTwo = new JPanel();
+		batteryPanelTwo.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Win32_PortableBattery", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_batteryPanelTwo = new GridBagConstraints();
+		gbc_batteryPanelTwo.gridwidth = 2;
+		gbc_batteryPanelTwo.insets = new Insets(0, 0, 0, 5);
+		gbc_batteryPanelTwo.fill = GridBagConstraints.BOTH;
+		gbc_batteryPanelTwo.gridx = 0;
+		gbc_batteryPanelTwo.gridy = 2;
+		batteryPanel.add(batteryPanelTwo, gbc_batteryPanelTwo);
+		GridBagLayout gbl_batteryPanelTwo = new GridBagLayout();
+		gbl_batteryPanelTwo.columnWidths = new int[]{0, 0, 0};
+		gbl_batteryPanelTwo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_batteryPanelTwo.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_batteryPanelTwo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		batteryPanelTwo.setLayout(gbl_batteryPanelTwo);
+		
+		JLabel batteryName = new JLabel("Name");
+		GridBagConstraints gbc_batteryName = new GridBagConstraints();
+		gbc_batteryName.anchor = GridBagConstraints.EAST;
+		gbc_batteryName.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryName.gridx = 0;
+		gbc_batteryName.gridy = 0;
+		batteryPanelTwo.add(batteryName, gbc_batteryName);
+		
+		batteryNameTf = new JTextField();
+		batteryNameTf.setEditable(false);
+		GridBagConstraints gbc_batteryNameTf = new GridBagConstraints();
+		gbc_batteryNameTf.insets = new Insets(0, 0, 5, 0);
+		gbc_batteryNameTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryNameTf.gridx = 1;
+		gbc_batteryNameTf.gridy = 0;
+		batteryPanelTwo.add(batteryNameTf, gbc_batteryNameTf);
+		batteryNameTf.setColumns(10);
+		
+		JLabel batteryID = new JLabel("DeviceID");
+		GridBagConstraints gbc_batteryID = new GridBagConstraints();
+		gbc_batteryID.anchor = GridBagConstraints.EAST;
+		gbc_batteryID.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryID.gridx = 0;
+		gbc_batteryID.gridy = 1;
+		batteryPanelTwo.add(batteryID, gbc_batteryID);
+		
+		batteryDeviceIDTf = new JTextField();
+		batteryDeviceIDTf.setEditable(false);
+		GridBagConstraints gbc_batteryDeviceIDTf = new GridBagConstraints();
+		gbc_batteryDeviceIDTf.insets = new Insets(0, 0, 5, 0);
+		gbc_batteryDeviceIDTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryDeviceIDTf.gridx = 1;
+		gbc_batteryDeviceIDTf.gridy = 1;
+		batteryPanelTwo.add(batteryDeviceIDTf, gbc_batteryDeviceIDTf);
+		batteryDeviceIDTf.setColumns(10);
+		
+		JLabel batteryCapacity = new JLabel("Capacity");
+		GridBagConstraints gbc_batteryCapacity = new GridBagConstraints();
+		gbc_batteryCapacity.anchor = GridBagConstraints.EAST;
+		gbc_batteryCapacity.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryCapacity.gridx = 0;
+		gbc_batteryCapacity.gridy = 2;
+		batteryPanelTwo.add(batteryCapacity, gbc_batteryCapacity);
+		
+		batteryCapcityTf = new JTextField();
+		batteryCapcityTf.setEditable(false);
+		GridBagConstraints gbc_batteryCapcityTf = new GridBagConstraints();
+		gbc_batteryCapcityTf.insets = new Insets(0, 0, 5, 0);
+		gbc_batteryCapcityTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryCapcityTf.gridx = 1;
+		gbc_batteryCapcityTf.gridy = 2;
+		batteryPanelTwo.add(batteryCapcityTf, gbc_batteryCapcityTf);
+		batteryCapcityTf.setColumns(10);
+		
+		JLabel batteryVoltage = new JLabel("Voltage");
+		GridBagConstraints gbc_batteryVoltage = new GridBagConstraints();
+		gbc_batteryVoltage.anchor = GridBagConstraints.EAST;
+		gbc_batteryVoltage.insets = new Insets(0, 0, 5, 5);
+		gbc_batteryVoltage.gridx = 0;
+		gbc_batteryVoltage.gridy = 3;
+		batteryPanelTwo.add(batteryVoltage, gbc_batteryVoltage);
+		
+		batteryVoltageTf = new JTextField();
+		batteryVoltageTf.setEditable(false);
+		GridBagConstraints gbc_batteryVoltageTf = new GridBagConstraints();
+		gbc_batteryVoltageTf.insets = new Insets(0, 0, 5, 0);
+		gbc_batteryVoltageTf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_batteryVoltageTf.gridx = 1;
+		gbc_batteryVoltageTf.gridy = 3;
+		batteryPanelTwo.add(batteryVoltageTf, gbc_batteryVoltageTf);
+		batteryVoltageTf.setColumns(10);
+	}
 
 	private void initializeReportPanel(JTabbedPane tabbedPane) {
 		JPanel reportPanel = new JPanel();
@@ -2988,6 +3305,9 @@ public class FerrumX {
 					osCaptionTf, osVersionTf, osManufacturerTf, osArchitectureTf, osBuildNumberTf, osInstallDateTf,
 					osLastBootTf, osSerialTf, osPrimaryTf, osDistributedTf, osPortTf, osDeviceNameTf, osUserCountTf,
 					osRegUserTf, osLangTf, osSysDriveTf, osWinDirTf, osSysDirTf));
+			Future<?> initializeBattery = exec.submit(()-> Battery.initializeBattery(batteryChargePercentage, batteryChargeView, batteryCaptionTf, batteryStatusTf,
+					batteryStatusTwoTf,batteryChemistryTf,batteryChargeTf,batteryRuntimeTf,batteryNameTf,batteryDeviceIDTf,
+					batteryCapcityTf,batteryVoltageTf));
 			Future<Boolean> initializeUserAndTime = exec.submit(() -> UserAndTime.initializeUserAndTime(userTf, userHomeTf, timeZoneNameTf, timeZoneCaptionTf));
 
 			startScreen.setHardwareLabel(initializeHardwareId.get());
@@ -2998,12 +3318,20 @@ public class FerrumX {
 			startScreen.setNetworkLabel(initializeNetwork.get());
 			startScreen.setStorageLabel(initializeStorage.get());
 			startScreen.setOsLabel(initializeOs.get() && initializeUserAndTime.get());
+			initializeBattery.get();
 
 			TimeUnit.MILLISECONDS.sleep(150);
 			startScreen.dispose();
-		} catch (RejectedExecutionException | NullPointerException | ExecutionException | InterruptedException e) {
-			new ExceptionUI("Host Gather System Info Error", e.getMessage()).setVisible(true);
-			Thread.currentThread().interrupt();
+		} catch (RejectedExecutionException | NullPointerException | InterruptedException e) {
+				String message = e.getMessage();
+				String stackTrace = Arrays.toString(e.getStackTrace());
+				new ExceptionUI("Host Gather System Info Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
+				Thread.currentThread().interrupt();
+		}
+		catch (ExecutionException e) {
+			String message = e.getCause().getMessage();
+			String stackTrace = Arrays.toString(e.getCause().getStackTrace());
+			new ExceptionUI("Host Gather System Info Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 	}
 }

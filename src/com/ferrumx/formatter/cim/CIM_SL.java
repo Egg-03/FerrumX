@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ferrumx.system.logger.ErrorLog;
+import com.ferrumx.exceptions.ShellException;
 
 /**
  * This class queries all the WMI Classes based on the attributes passed to it's
@@ -17,7 +17,7 @@ import com.ferrumx.system.logger.ErrorLog;
  * {@link CIM_SL}
  *
  * @author Egg-03
- * @version 1.1.0
+ * @version 1.3.0
  */
 public class CIM_SL {
 	private static String classname = CIM_SL.class.getClass().getName();
@@ -40,38 +40,51 @@ public class CIM_SL {
 	 * @throws IOException               in case of general I/O errors
 	 * @throws IndexOutOfBoundsException in case of text parsing issues from
 	 *                                   powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
+	 *                                   <p>
+	 *                                   While catching any of the Exceptions, you
+	 *                                   may return an empty string to avoid any
+	 *                                   {@link java.lang.NullPointerException} that
+	 *                                   might get thrown because your variable
+	 *                                   might be expecting a string. However, this
+	 *                                   does not make you immune from the
+	 *                                   NullPointerExceptions that may be thrown in
+	 *                                   case of powershell output format changes in
+	 *                                   the future, causing the underlying parsing
+	 *                                   logic to fail.
 	 */
-	public static String get(String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
+	public static String get(String WMI_Class, String WMI_Attribute)
+			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		String methodName = "runCommand(String WMI_Class, String WMI_Attribute)";
 
 		String[] command = { "powershell.exe",
 				"Get-CimInstance -ClassName " + WMI_Class + " | Select-Object " + WMI_Attribute + " | Format-List" };
 		Process process = Runtime.getRuntime().exec(command);
-		try {
-			int exitCode = process.waitFor();
-			if (exitCode != 0) {
-				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-				String errorLine;
-				List<String> errorList = new ArrayList<>();
 
-				while ((errorLine = error.readLine()) != null) {
-					if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-						errorList.add(errorLine);
-					}
+		int exitCode = process.waitFor();
+		if (exitCode != 0) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
+
+			while ((errorLine = error.readLine()) != null) {
+				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
+					errorList.add(errorLine);
 				}
-
-				error.close();
-				ErrorLog errorLog = new ErrorLog();
-
-				errorLog.log("\n" + classname + "-" + methodName + "\n" + errorList.toString()
-						+ "\nProcess Exited with code:" + exitCode + "\n");
-				return "";
 			}
-		} catch (InterruptedException e) {
-			ErrorLog errorLog = new ErrorLog();
-			errorLog.log("\n" + classname + "-" + methodName + "\n" + e.getMessage() + "\n\n");
-			Thread.currentThread().interrupt();
+
+			error.close();
+
+			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorList.toString()
+					+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 		String currentLine;
@@ -112,39 +125,49 @@ public class CIM_SL {
 	 * @throws IOException               in case of general I/O errors
 	 * @throws IndexOutOfBoundsException in case of text parsing issues from
 	 *                                   powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
+	 *                                   <p>
+	 *                                   While catching any of the Exceptions, you
+	 *                                   may return an empty string to avoid any
+	 *                                   {@link java.lang.NullPointerException} that
+	 *                                   might get thrown because your variable
+	 *                                   might be expecting a string. However, this
+	 *                                   does not make you immune from the
+	 *                                   NullPointerExceptions that may be thrown in
+	 *                                   case of powershell output format changes in
+	 *                                   the future, causing the underlying parsing
+	 *                                   logic to fail.
 	 */
 	public static String getWhere(String WMI_Class, String determinantProperty, String determinantValue,
-			String WMI_Attribute) throws IOException, IndexOutOfBoundsException {
+			String WMI_Attribute) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		String methodName = "runCommand(String WMI_Class, String whereCondition, String WMI_Attribute)";
 		String[] command = { "powershell.exe",
 				"Get-CimInstance -ClassName " + WMI_Class + " | Where-Object {$_." + determinantProperty + " -eq " + "'"
 						+ determinantValue + "'}" + " | Select-Object " + WMI_Attribute + " | Format-List" };
 		Process process = Runtime.getRuntime().exec(command);
 
-		try {
-			int exitCode = process.waitFor();
-			if (exitCode != 0) {
-				BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-				String errorLine;
-				List<String> errorList = new ArrayList<>();
+		int exitCode = process.waitFor();
+		if (exitCode != 0) {
+			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String errorLine;
+			List<String> errorList = new ArrayList<>();
 
-				while ((errorLine = error.readLine()) != null) {
-					if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-						errorList.add(errorLine);
-					}
+			while ((errorLine = error.readLine()) != null) {
+				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
+					errorList.add(errorLine);
 				}
-
-				error.close();
-				ErrorLog errorLog = new ErrorLog();
-
-				errorLog.log("\n" + classname + "-" + methodName + "\n" + errorList.toString()
-						+ "\nProcess Exited with code:" + exitCode + "\n");
-				return "";
 			}
-		} catch (InterruptedException e) {
-			ErrorLog errorLog = new ErrorLog();
-			errorLog.log("\n" + classname + "-" + methodName + "\n" + e.getMessage() + "\n\n");
-			Thread.currentThread().interrupt();
+
+			error.close();
+
+			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorList.toString()
+					+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));

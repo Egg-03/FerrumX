@@ -1,0 +1,63 @@
+package com.ferrumx.system.hardware;
+
+import java.io.IOException;
+import java.util.Map;
+
+import com.ferrumx.exceptions.ShellException;
+import com.ferrumx.formatter.cim.CIM_ML;
+
+/**
+ * This class contains methods that query Win32_Battery class of WMI to fetch
+ * Battery information.
+ * <p>
+ * Fetches the following properties: Caption, Description, Name, Status,
+ * DeviceID, PowerManagementCapabilities, PowerManagementSupported,
+ * BatteryStatus, BatteryChemistry, DesignCapacity, DesignVoltage,
+ * EstimatedChargeRemaining, EstimatedChargeRemaining
+ * <p>
+ * Version
+ *
+ * @author Egg-03
+ * @version 1.3.0
+ */
+public class Win32_Battery {
+	private static String classname = "Win32_Battery";
+	private static String attributes = "Caption, Description, Name, Status, DeviceID, PowerManagementCapabilities, PowerManagementSupported, BatteryStatus, Chemistry, DesignCapacity, DesignVoltage, EstimatedChargeRemaining, EstimatedRunTime";
+
+	private Win32_Battery() {
+		throw new IllegalStateException("Utility Class");
+	}
+
+	/**
+	 * This method calls the
+	 * {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)} function and
+	 * passes the WMI Classname and the properties whose values we want to fetch, as
+	 * parameters
+	 *
+	 * @return the Caption, Description, Name, Status, DeviceID,
+	 *         PowerManagementCapabilities, PowerManagementSupported, BatteryStatus,
+	 *         BatteryChemistry, DesignCapacity, DesignVoltage,
+	 *         EstimatedChargeRemaining, EstimatedRunTime details of your Battery in
+	 *         the form of a {@link java.util.Map}
+	 * @throws IOException               re-throws the exception thrown by
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)}
+	 *                                   when there are I/O Errors during streaming
+	 *                                   of data from and to Powershell and other
+	 *                                   generated files
+	 * @throws IndexOutOfBoundsException re-throws the exception thrown by
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)}
+	 *                                   when there is a parsing error of data
+	 *                                   fetched from Windows Powershell
+	 * @throws ShellException            if any internal command used in the
+	 *                                   powershell throws errors
+	 * @throws InterruptedException      if the thread waiting for the process to
+	 *                                   exit, gets interrupted. When catching this
+	 *                                   exception, you may re-throw it's
+	 *                                   interrupted status by using
+	 *                                   Thread.currentThread().interrupt();
+	 */
+
+	public static Map<String, String> getBattery() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
+		return CIM_ML.get(classname, attributes);
+	}
+}
