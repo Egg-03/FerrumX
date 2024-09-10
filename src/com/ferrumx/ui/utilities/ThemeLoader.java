@@ -86,10 +86,10 @@ public class ThemeLoader {
 			case "com.formdev.flatlaf.themes.FlatMacDarkLaf":
 				themeButtons[0].setSelected(true);
 				break;
-			case "com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme":
+			case "com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme":
 				themeButtons[1].setSelected(true);
 				break;
-			case "com.formdev.flatlaf.FlatDarculaLaf":
+			case "com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMoonlightIJTheme":
 				themeButtons[2].setSelected(true);
 				break;
 			case "com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme":

@@ -326,21 +326,21 @@ public class FerrumX {
 		});
 		themeMenu.add(darkThemeChoice);
 
-		JRadioButtonMenuItem lightThemeChoice = new JRadioButtonMenuItem("Cyan Light");
-		lightThemeChoice.addActionListener(e -> {
-			if (lightThemeChoice.isSelected()) {
-				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme", mainFrame);
+		JRadioButtonMenuItem gruvboxThemeChoice = new JRadioButtonMenuItem("Gruvbox Dark");
+		gruvboxThemeChoice.addActionListener(e -> {
+			if (gruvboxThemeChoice.isSelected()) {
+				changeTheme("com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme", mainFrame);
 			}
 		});
-		themeMenu.add(lightThemeChoice);
+		themeMenu.add(gruvboxThemeChoice);
 
-		JRadioButtonMenuItem greyThemeChoice = new JRadioButtonMenuItem("Darcula Grey");
-		greyThemeChoice.addActionListener(e -> {
-			if (greyThemeChoice.isSelected()) {
-				changeTheme("com.formdev.flatlaf.FlatDarculaLaf", mainFrame);
+		JRadioButtonMenuItem moonlightThemeChoice = new JRadioButtonMenuItem("Moonlight Purple");
+		moonlightThemeChoice.addActionListener(e -> {
+			if (moonlightThemeChoice.isSelected()) {
+				changeTheme("com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMoonlightIJTheme", mainFrame);
 			}
 		});
-		themeMenu.add(greyThemeChoice);
+		themeMenu.add(moonlightThemeChoice);
 
 		JRadioButtonMenuItem monokaiproThemeChoice = new JRadioButtonMenuItem("Monokai Pro");
 		monokaiproThemeChoice.addActionListener(e -> {
@@ -367,15 +367,15 @@ public class FerrumX {
 		themeMenu.add(carbonThemeChoice);
 
 		ButtonGroup themeButtonGroup = new ButtonGroup();
-		themeButtonGroup.add(lightThemeChoice);
-		themeButtonGroup.add(greyThemeChoice);
+		themeButtonGroup.add(gruvboxThemeChoice);
+		themeButtonGroup.add(moonlightThemeChoice);
 		themeButtonGroup.add(darkThemeChoice);
 		themeButtonGroup.add(monokaiproThemeChoice);
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
 		
 		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
-		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, lightThemeChoice, greyThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice);
+		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");
 		menuBar.add(optionsMenu);
