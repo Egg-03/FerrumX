@@ -6,8 +6,7 @@
 FerrumX is a lightweight Hardware and Network Information wrapper written in pure Java. It contacts some [Computer System Hardware Classes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes) and [Operating System Classes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/operating-system-classes) of Windows Management Instrumentation (WMI) through PowerShell to fetch comprehensive system details on Windows Operating Systems.
 
 It also has a simple user friendly GUI Application that lists hardware info in separate panels. Comes in 6 different FlatLaf Looks and Feels
-![Untitled](https://github.com/user-attachments/assets/e2af21ab-8b69-42bc-aff7-e1403c4490f0)
-For more images and tutorials on how to use the GUI, visit the wiki.
+![AllThemes](https://github.com/user-attachments/assets/d925be51-0a9f-4041-a264-be3ef36bef10)
 
 # Key Features
 <ins>Pre-built Jar File:</ins> Simplifies usage by providing a downloadable jar file that can be directly imported as a classpath dependency. No external dependencies required (Skill issue: I need to learn about build tools.)
@@ -20,25 +19,33 @@ For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/Ferrum
 
 # Installation
 <h4>For Developers:</h4>
+If you wish to use the wrapper in your own project, you can do so by downloading the main jar file along with it's documentation
 
-- Download the latest jar file from [FerrumX Releases](https://github.com/Egg-03/FerrumX/releases)
-- Import the jar file as a classpath dependency in your project.
+
+- Download the main jar file *[FerrumX-core-vX.X.X]* from [FerrumX Releases](https://github.com/Egg-03/FerrumX/releases)
+- [Optional] Download the javadoc jar file *[FerrumX-doc-vX.X.X]*
+- Import the main jar file as a classpath dependency in your project.
+- [Optional] Attach the javadoc to the jar file
+
+The methods for linking an external jar file with its javadoc as a dependency varies with the IDE you will use. You should be able to find online help for it and if I get time, I'll 
+attach the tutorials for Eclipse and IntelliJ Idea
 
 <h4>For End Users:</h4>
 
 - Download the GUI Application from [FerrumX Releases](https://github.com/Egg-03/FerrumX/releases)
-- Run the downloaded executable file.
+- Run the downloaded executable file [for portable version]
+- Install the setup and run from the desktop shortcut [for installer version]
 
 # Dependencies
 > [!NOTE]
-> The wrapper does not have any dependencies.
+> The wrapper does not have any additional dependencies.
 
 > [!NOTE]
-> The GUI Application has 3 dependencies:
+> The GUI Application uses the following projects as dependencies:
 > [Flatlaf](https://github.com/JFormDesigner/FlatLaf),
 > [ini4j](https://ini4j.sourceforge.net/index.html),
 > [jsvg](https://github.com/weisJ/jsvg)
-> All of them are bundled within the application itself
+> which are bundled within the application itself
 
 # Documentation
 Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
@@ -46,8 +53,6 @@ Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation
 # Usage
 Please refer to our [Wiki](https://github.com/Egg-03/FerrumX/wiki) page to learn about the various functions and their usage, along with example code snippets.
 You can also check out some examples [here](https://github.com/Egg-03/FerrumX/tree/be360eeb6bbf1ca6e992d5d8fbb1e2109bfa6514/src/com/ferrumx/tests)
-
-For guidance on the GUI Application itself, check this tutorial out: 
 
 # License
 This project is licensed under the MIT License. Read the LICENSE.md for more information.
