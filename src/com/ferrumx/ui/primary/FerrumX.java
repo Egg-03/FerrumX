@@ -385,7 +385,7 @@ public class FerrumX {
 		themeButtonGroup.add(carbonThemeChoice);
 		themeButtonGroup.add(samLaf);
 		
-		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
+		//this will load the currently applied theme name from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
 		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice, samLaf);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");

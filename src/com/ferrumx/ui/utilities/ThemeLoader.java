@@ -82,7 +82,9 @@ public class ThemeLoader {
 	
 	//will read the current loaded theme class name and select the appropriate theme button
 	public static void notifyCurrentThemeUsage(JRadioButtonMenuItem...themeButtons) {
-		switch(ThemeLoader.load()) {
+		try {
+			Wini ini = new Wini(new File("settings/theme.ini"));
+			switch(ini.get("Theme", "CurrentTheme")) {
 			case "com.formdev.flatlaf.themes.FlatMacDarkLaf":
 				themeButtons[0].setSelected(true);
 				break;
@@ -106,6 +108,12 @@ public class ThemeLoader {
 				break;
 			default:
 				themeButtons[0].setSelected(true);
-		}				
+			}		
+		} catch (IOException e) {
+			String message = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
+			new ExceptionUI("Theme Notify Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
+		}
+
 	}
 }
