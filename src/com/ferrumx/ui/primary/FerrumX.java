@@ -58,6 +58,7 @@ import com.ferrumx.ui.utilities.ComponentImageCapture;
 import com.ferrumx.ui.utilities.DateTime;
 import com.ferrumx.ui.utilities.Elevation;
 import com.ferrumx.ui.utilities.ThemeLoader;
+import com.ferrumx.ui.utilities.UIManagerConfigurations;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 public class FerrumX {
@@ -209,7 +210,9 @@ public class FerrumX {
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel(ThemeLoader.load());
+			UIManager.setLookAndFeel("com.ferrumx.ui.customthemes.SamLaf");
+			UIManagerConfigurations.enableRoundComponents();
+			UIManagerConfigurations.enableTabSeparators(true);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
 			String message = e.getMessage();
 			String stackTrace = Arrays.toString(e.getStackTrace());
@@ -252,7 +255,7 @@ public class FerrumX {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("FerrumX");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
-		mainFrame.setBounds(100, 100, 860, 680);
+		mainFrame.setBounds(100, 100, 860, 630);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -442,7 +445,6 @@ public class FerrumX {
 		hwidPanel.setLayout(gbl_hwidPanel);
 
 		hwidTf = new JTextField();
-		hwidTf.setForeground(new Color(13, 186, 223));
 		hwidTf.setEditable(false);
 		GridBagConstraints gbc_hwidTf = new GridBagConstraints();
 		gbc_hwidTf.gridwidth = 2;
@@ -1547,8 +1549,7 @@ public class FerrumX {
 		gpuPanel.setLayout(gbl_gpuPanel);
 
 		JPanel gpuIdentifierPanel = new JPanel();
-		gpuIdentifierPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
-				"Identifier", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		gpuIdentifierPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Identifier", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_gpuIdentifierPanel = new GridBagConstraints();
 		gbc_gpuIdentifierPanel.fill = GridBagConstraints.BOTH;
 		gbc_gpuIdentifierPanel.insets = new Insets(0, 0, 5, 0);
@@ -1637,8 +1638,7 @@ public class FerrumX {
 		gpuPanel.add(separator, gbc_separator);
 
 		JPanel displayInfoPanel = new JPanel();
-		displayInfoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
-				"Display Information", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		displayInfoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Display Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_displayInfoPanel = new GridBagConstraints();
 		gbc_displayInfoPanel.fill = GridBagConstraints.BOTH;
 		gbc_displayInfoPanel.insets = new Insets(0, 0, 5, 0);
