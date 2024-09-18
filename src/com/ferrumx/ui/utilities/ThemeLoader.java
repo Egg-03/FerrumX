@@ -101,6 +101,9 @@ public class ThemeLoader {
 			case "com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme":
 				themeButtons[5].setSelected(true);
 				break;
+			case "com.ferrumx.ui.customthemes.SamLaf":
+				themeButtons[6].setSelected(true);
+				break;
 			default:
 				themeButtons[0].setSelected(true);
 		}				

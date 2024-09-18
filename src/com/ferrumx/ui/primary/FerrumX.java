@@ -204,13 +204,12 @@ public class FerrumX {
 	private String appLatestReleasePage = "https://github.com/Egg-03/FerrumX/releases/latest";
 	
 	
-	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.ferrumx.ui.customthemes.SamLaf");
+			UIManager.setLookAndFeel(ThemeLoader.load());
 			UIManagerConfigurations.enableRoundComponents();
 			UIManagerConfigurations.enableTabSeparators(true);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
@@ -223,8 +222,8 @@ public class FerrumX {
 			FerrumX window = new FerrumX();
 			window.mainFrame.setVisible(true);
 		} catch (Exception e) {
-			String message = e.getCause().getMessage();
-			String stackTrace = Arrays.toString(e.getCause().getStackTrace());
+			String message = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
 			new ExceptionUI("FerrumX Application Window Launch Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 	}
@@ -368,6 +367,14 @@ public class FerrumX {
 			}
 		});
 		themeMenu.add(carbonThemeChoice);
+		
+		JRadioButtonMenuItem samLaf = new JRadioButtonMenuItem("Sam's Blood Moon");
+		samLaf.addActionListener(e -> {
+			if (samLaf.isSelected()) {
+				changeTheme("com.ferrumx.ui.customthemes.SamLaf", mainFrame);
+			}
+		});
+		themeMenu.add(samLaf);
 
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(gruvboxThemeChoice);
@@ -376,9 +383,10 @@ public class FerrumX {
 		themeButtonGroup.add(monokaiproThemeChoice);
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
+		themeButtonGroup.add(samLaf);
 		
 		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
-		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice);
+		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice, samLaf);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");
 		menuBar.add(optionsMenu);
