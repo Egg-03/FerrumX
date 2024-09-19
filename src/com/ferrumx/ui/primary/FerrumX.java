@@ -1,7 +1,6 @@
 package com.ferrumx.ui.primary;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -60,6 +59,7 @@ import com.ferrumx.ui.utilities.Elevation;
 import com.ferrumx.ui.utilities.ThemeLoader;
 import com.ferrumx.ui.utilities.UIManagerConfigurations;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import javax.swing.border.LineBorder;
 
 public class FerrumX {
 
@@ -212,6 +212,7 @@ public class FerrumX {
 			UIManager.setLookAndFeel(ThemeLoader.load());
 			UIManagerConfigurations.enableRoundComponents();
 			UIManagerConfigurations.enableTabSeparators(true);
+			
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
 			String message = e.getMessage();
 			String stackTrace = Arrays.toString(e.getStackTrace());
@@ -324,6 +325,7 @@ public class FerrumX {
 		darkThemeChoice.addActionListener(e -> {
 			if (darkThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.themes.FlatMacDarkLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(darkThemeChoice);
@@ -332,6 +334,7 @@ public class FerrumX {
 		gruvboxThemeChoice.addActionListener(e -> {
 			if (gruvboxThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(gruvboxThemeChoice);
@@ -340,6 +343,7 @@ public class FerrumX {
 		moonlightThemeChoice.addActionListener(e -> {
 			if (moonlightThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMoonlightIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(moonlightThemeChoice);
@@ -348,6 +352,7 @@ public class FerrumX {
 		monokaiproThemeChoice.addActionListener(e -> {
 			if (monokaiproThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(monokaiproThemeChoice);
@@ -356,6 +361,7 @@ public class FerrumX {
 		purpleThemeChoice.addActionListener(e -> {
 			if (purpleThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(purpleThemeChoice);
@@ -364,6 +370,7 @@ public class FerrumX {
 		carbonThemeChoice.addActionListener(e -> {
 			if (carbonThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(carbonThemeChoice);
@@ -372,6 +379,7 @@ public class FerrumX {
 		samLaf.addActionListener(e -> {
 			if (samLaf.isSelected()) {
 				changeTheme("com.ferrumx.ui.customthemes.SamLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK);
 			}
 		});
 		themeMenu.add(samLaf);
@@ -2341,8 +2349,7 @@ public class FerrumX {
 		diskInterfaceTf.setColumns(10);
 
 		JPanel diskPartitionPanel = new JPanel();
-		diskPartitionPanel.setBorder(new TitledBorder(null, "Drive Partition Layout", TitledBorder.LEFT,
-				TitledBorder.TOP, null, new Color(221, 221, 221)));
+		diskPartitionPanel.setBorder(new TitledBorder(new LineBorder(null), "Drive Partition Layout", TitledBorder.LEFT, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_diskPartitionPanel = new GridBagConstraints();
 		gbc_diskPartitionPanel.gridwidth = 2;
 		gbc_diskPartitionPanel.fill = GridBagConstraints.BOTH;
@@ -2864,7 +2871,6 @@ public class FerrumX {
 		batteryPanel.add(scrollPane, gbc_scrollPane);
 		
 		JTextArea batteryWarningTextArea = new JTextArea();
-		batteryWarningTextArea.setForeground(new Color(51, 204, 255));
 		batteryWarningTextArea.setFont(new Font("Ebrima", Font.ITALIC, 11));
 		batteryWarningTextArea.setText("NOTE: The battery panel will display information only when the system detects a battery. For desktops that don't run on a battery, the fields will be blank.");
 		batteryWarningTextArea.setLineWrap(true);
