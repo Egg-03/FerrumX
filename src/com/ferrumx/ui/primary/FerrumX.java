@@ -383,6 +383,15 @@ public class FerrumX {
 			}
 		});
 		themeMenu.add(samLaf);
+		
+		JRadioButtonMenuItem bellLaf = new JRadioButtonMenuItem("Bell's Pink World");
+		bellLaf.addActionListener(e -> {
+			if (bellLaf.isSelected()) {
+				changeTheme("com.ferrumx.ui.customthemes.BellLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK);
+			}
+		});
+		themeMenu.add(bellLaf);
 
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(gruvboxThemeChoice);
@@ -392,9 +401,10 @@ public class FerrumX {
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
 		themeButtonGroup.add(samLaf);
+		themeButtonGroup.add(bellLaf);
 		
 		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
-		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice, samLaf);
+		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice, samLaf, bellLaf);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");
 		menuBar.add(optionsMenu);
