@@ -118,6 +118,12 @@ public class ThemeLoader {
 			themeButtons[7].setSelected(true);
 			FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK);
 			break;
+		case "com.ferrumx.ui.customthemes.NoirLightLaf":
+			themeButtons[8].setSelected(true);
+			break;
+		case "com.ferrumx.ui.customthemes.NoirDarkLaf":
+			themeButtons[9].setSelected(true);
+			break;
 		default:
 			themeButtons[0].setSelected(true);
 		}

@@ -67,6 +67,7 @@ public class FerrumX {
 	// HWID
 	private JTextField hwidTf;
 	// CPU
+	private JLabel cpuLogo; // contains logo or img
 	private JComboBox<String> cpuChoice;
 	private JTextField cpuCoreTf;
 	private JTextField cpuThreadTf;
@@ -86,7 +87,6 @@ public class FerrumX {
 	private JTextField cpuIdTf;
 	private JTextField cpuL2Tf;
 	private JTextField cpuL3Tf;
-	private JLabel cpuLogo;
 	private JTextArea cacheTa;
 	// Memory
 	private JComboBox<String> memorySlotChoice;
@@ -120,7 +120,7 @@ public class FerrumX {
 	private JTextField smbiosVersionTf;
 	private JTextField biosLanguageTf;
 	// GPU
-	private JLabel gpuLogo;
+	private JLabel gpuLogo; // contains logo or image
 	private JComboBox<String> gpuChoiceComboBox;
 	private JTextField gpuNameTf;
 	private JTextField gpuPnpTf;
@@ -161,7 +161,7 @@ public class FerrumX {
 	private JTextField diskInterfaceTf;
 	private JTextArea diskPartTa;
 	// OS
-	private JLabel osCoverImg;
+	private JLabel osCoverImg; // contains logo or img
 	private JComboBox<String> currentOsChoiceBox;
 	private JTextField osCaptionTf;
 	private JTextField osVersionTf;
@@ -392,6 +392,24 @@ public class FerrumX {
 			}
 		});
 		themeMenu.add(bellLaf);
+		
+		JRadioButtonMenuItem noirLightLaf = new JRadioButtonMenuItem("Noir Light");
+		noirLightLaf.addActionListener(e -> {
+			if (noirLightLaf.isSelected()) {
+				changeTheme("com.ferrumx.ui.customthemes.NoirLightLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
+			}
+		});
+		themeMenu.add(noirLightLaf);
+		
+		JRadioButtonMenuItem noirDarkLaf = new JRadioButtonMenuItem("Noir Dark");
+		noirDarkLaf.addActionListener(e -> {
+			if (noirDarkLaf.isSelected()) {
+				changeTheme("com.ferrumx.ui.customthemes.NoirDarkLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
+			}
+		});
+		themeMenu.add(noirDarkLaf);
 
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(gruvboxThemeChoice);
@@ -402,9 +420,11 @@ public class FerrumX {
 		themeButtonGroup.add(carbonThemeChoice);
 		themeButtonGroup.add(samLaf);
 		themeButtonGroup.add(bellLaf);
+		themeButtonGroup.add(noirLightLaf);
+		themeButtonGroup.add(noirDarkLaf);
 		
 		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
-		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice, samLaf, bellLaf);
+		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice, samLaf, bellLaf, noirLightLaf, noirDarkLaf);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");
 		menuBar.add(optionsMenu);
