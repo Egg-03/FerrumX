@@ -109,7 +109,7 @@ public class ThemeLoader {
 			break;
 		case "com.ferrumx.ui.customthemes.SamLaf":
 			themeButtons[6].setSelected(true);
-			FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK); 
+			FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.decode("#fe4956"));
 			break;
 			/* Since this function is called during the initializeMenu() function in FerrumX.java, which is
 			 * called during the UI component loading phase, the pink color filter gets applied before the

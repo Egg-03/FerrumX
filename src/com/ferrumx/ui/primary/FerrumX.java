@@ -379,7 +379,7 @@ public class FerrumX {
 		samLaf.addActionListener(e -> {
 			if (samLaf.isSelected()) {
 				changeTheme("com.ferrumx.ui.customthemes.SamLaf", mainFrame);
-				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.decode("#fe4956"));
 			}
 		});
 		themeMenu.add(samLaf);
