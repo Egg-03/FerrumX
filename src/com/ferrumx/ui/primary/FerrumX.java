@@ -3321,7 +3321,7 @@ public class FerrumX {
 			copyStatusTf.setText("Successfully copied the Logs to clipboard");
 		});
 	}
-
+	// TODO revisit and try SwingWorker instead
 	private void initializeSystemInfo(StatusUI startScreen) {
 		try (ExecutorService exec = Executors.newCachedThreadPool()) {
 			Future<Boolean> initializeHardwareId = exec.submit(() -> HardwareId.initializeHardwareId(hwidTf));
