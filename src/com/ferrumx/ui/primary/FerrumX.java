@@ -1,7 +1,6 @@
 package com.ferrumx.ui.primary;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -58,7 +57,9 @@ import com.ferrumx.ui.utilities.ComponentImageCapture;
 import com.ferrumx.ui.utilities.DateTime;
 import com.ferrumx.ui.utilities.Elevation;
 import com.ferrumx.ui.utilities.ThemeLoader;
+import com.ferrumx.ui.utilities.UIManagerConfigurations;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import javax.swing.border.LineBorder;
 
 public class FerrumX {
 
@@ -66,6 +67,7 @@ public class FerrumX {
 	// HWID
 	private JTextField hwidTf;
 	// CPU
+	private JLabel cpuLogo; // contains logo or img
 	private JComboBox<String> cpuChoice;
 	private JTextField cpuCoreTf;
 	private JTextField cpuThreadTf;
@@ -85,7 +87,6 @@ public class FerrumX {
 	private JTextField cpuIdTf;
 	private JTextField cpuL2Tf;
 	private JTextField cpuL3Tf;
-	private JLabel cpuLogo;
 	private JTextArea cacheTa;
 	// Memory
 	private JComboBox<String> memorySlotChoice;
@@ -119,7 +120,7 @@ public class FerrumX {
 	private JTextField smbiosVersionTf;
 	private JTextField biosLanguageTf;
 	// GPU
-	private JLabel gpuLogo;
+	private JLabel gpuLogo; // contains logo or image
 	private JComboBox<String> gpuChoiceComboBox;
 	private JTextField gpuNameTf;
 	private JTextField gpuPnpTf;
@@ -160,7 +161,7 @@ public class FerrumX {
 	private JTextField diskInterfaceTf;
 	private JTextArea diskPartTa;
 	// OS
-	private JLabel osCoverImg;
+	private JLabel osCoverImg; // contains logo or img
 	private JComboBox<String> currentOsChoiceBox;
 	private JTextField osCaptionTf;
 	private JTextField osVersionTf;
@@ -203,13 +204,15 @@ public class FerrumX {
 	private String appLatestReleasePage = "https://github.com/Egg-03/FerrumX/releases/latest";
 	
 	
-	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(ThemeLoader.load());
+			UIManagerConfigurations.enableRoundComponents();
+			UIManagerConfigurations.enableTabSeparators(true);
+			
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException e) {
 			String message = e.getMessage();
 			String stackTrace = Arrays.toString(e.getStackTrace());
@@ -220,8 +223,8 @@ public class FerrumX {
 			FerrumX window = new FerrumX();
 			window.mainFrame.setVisible(true);
 		} catch (Exception e) {
-			String message = e.getCause().getMessage();
-			String stackTrace = Arrays.toString(e.getCause().getStackTrace());
+			String message = e.getMessage();
+			String stackTrace = Arrays.toString(e.getStackTrace());
 			new ExceptionUI("FerrumX Application Window Launch Error", "Error: "+message+"\nStackTrace: \n"+stackTrace).setVisible(true);
 		}
 	}
@@ -252,7 +255,7 @@ public class FerrumX {
 		mainFrame = new JFrame();
 		mainFrame.setTitle("FerrumX");
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(FerrumX.class.getResource("/resources/icon_main.png")));
-		mainFrame.setBounds(100, 100, 860, 680);
+		mainFrame.setBounds(100, 100, 860, 630);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -322,6 +325,7 @@ public class FerrumX {
 		darkThemeChoice.addActionListener(e -> {
 			if (darkThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.themes.FlatMacDarkLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(darkThemeChoice);
@@ -330,6 +334,7 @@ public class FerrumX {
 		gruvboxThemeChoice.addActionListener(e -> {
 			if (gruvboxThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatGruvboxDarkHardIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(gruvboxThemeChoice);
@@ -338,6 +343,7 @@ public class FerrumX {
 		moonlightThemeChoice.addActionListener(e -> {
 			if (moonlightThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMoonlightIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(moonlightThemeChoice);
@@ -346,6 +352,7 @@ public class FerrumX {
 		monokaiproThemeChoice.addActionListener(e -> {
 			if (monokaiproThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(monokaiproThemeChoice);
@@ -354,6 +361,7 @@ public class FerrumX {
 		purpleThemeChoice.addActionListener(e -> {
 			if (purpleThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(purpleThemeChoice);
@@ -362,9 +370,46 @@ public class FerrumX {
 		carbonThemeChoice.addActionListener(e -> {
 			if (carbonThemeChoice.isSelected()) {
 				changeTheme("com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
 		themeMenu.add(carbonThemeChoice);
+		
+		JRadioButtonMenuItem samLaf = new JRadioButtonMenuItem("Sam's Blood Moon");
+		samLaf.addActionListener(e -> {
+			if (samLaf.isSelected()) {
+				changeTheme("com.egg.flatlafcustomthemes.SamLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.decode("#fe4956"));
+			}
+		});
+		themeMenu.add(samLaf);
+		
+		JRadioButtonMenuItem bellLaf = new JRadioButtonMenuItem("Bell's Pink World");
+		bellLaf.addActionListener(e -> {
+			if (bellLaf.isSelected()) {
+				changeTheme("com.egg.flatlafcustomthemes.BellLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK);
+			}
+		});
+		themeMenu.add(bellLaf);
+		
+		JRadioButtonMenuItem noirLightLaf = new JRadioButtonMenuItem("Noir Light");
+		noirLightLaf.addActionListener(e -> {
+			if (noirLightLaf.isSelected()) {
+				changeTheme("com.egg.flatlafcustomthemes.NoirLightLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
+			}
+		});
+		themeMenu.add(noirLightLaf);
+		
+		JRadioButtonMenuItem noirDarkLaf = new JRadioButtonMenuItem("Noir Dark");
+		noirDarkLaf.addActionListener(e -> {
+			if (noirDarkLaf.isSelected()) {
+				changeTheme("com.egg.flatlafcustomthemes.NoirDarkLaf", mainFrame);
+				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
+			}
+		});
+		themeMenu.add(noirDarkLaf);
 
 		ButtonGroup themeButtonGroup = new ButtonGroup();
 		themeButtonGroup.add(gruvboxThemeChoice);
@@ -373,9 +418,13 @@ public class FerrumX {
 		themeButtonGroup.add(monokaiproThemeChoice);
 		themeButtonGroup.add(purpleThemeChoice);
 		themeButtonGroup.add(carbonThemeChoice);
+		themeButtonGroup.add(samLaf);
+		themeButtonGroup.add(bellLaf);
+		themeButtonGroup.add(noirLightLaf);
+		themeButtonGroup.add(noirDarkLaf);
 		
 		//this will load the currently applied theme from the ini file and will invoke the setSelected method for the currently applied JRadioButtonMenuItem theme button
-		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice);
+		ThemeLoader.notifyCurrentThemeUsage(darkThemeChoice, gruvboxThemeChoice, moonlightThemeChoice, monokaiproThemeChoice, purpleThemeChoice, carbonThemeChoice, samLaf, bellLaf, noirLightLaf, noirDarkLaf);
 		//options menu
 		JMenu optionsMenu = new JMenu("Options");
 		menuBar.add(optionsMenu);
@@ -442,7 +491,6 @@ public class FerrumX {
 		hwidPanel.setLayout(gbl_hwidPanel);
 
 		hwidTf = new JTextField();
-		hwidTf.setForeground(new Color(13, 186, 223));
 		hwidTf.setEditable(false);
 		GridBagConstraints gbc_hwidTf = new GridBagConstraints();
 		gbc_hwidTf.gridwidth = 2;
@@ -1547,8 +1595,7 @@ public class FerrumX {
 		gpuPanel.setLayout(gbl_gpuPanel);
 
 		JPanel gpuIdentifierPanel = new JPanel();
-		gpuIdentifierPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
-				"Identifier", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		gpuIdentifierPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Identifier", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_gpuIdentifierPanel = new GridBagConstraints();
 		gbc_gpuIdentifierPanel.fill = GridBagConstraints.BOTH;
 		gbc_gpuIdentifierPanel.insets = new Insets(0, 0, 5, 0);
@@ -1637,8 +1684,7 @@ public class FerrumX {
 		gpuPanel.add(separator, gbc_separator);
 
 		JPanel displayInfoPanel = new JPanel();
-		displayInfoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
-				"Display Information", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(221, 221, 221)));
+		displayInfoPanel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Display Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_displayInfoPanel = new GridBagConstraints();
 		gbc_displayInfoPanel.fill = GridBagConstraints.BOTH;
 		gbc_displayInfoPanel.insets = new Insets(0, 0, 5, 0);
@@ -2333,8 +2379,7 @@ public class FerrumX {
 		diskInterfaceTf.setColumns(10);
 
 		JPanel diskPartitionPanel = new JPanel();
-		diskPartitionPanel.setBorder(new TitledBorder(null, "Drive Partition Layout", TitledBorder.LEFT,
-				TitledBorder.TOP, null, new Color(221, 221, 221)));
+		diskPartitionPanel.setBorder(new TitledBorder(new LineBorder(null), "Drive Partition Layout", TitledBorder.LEFT, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_diskPartitionPanel = new GridBagConstraints();
 		gbc_diskPartitionPanel.gridwidth = 2;
 		gbc_diskPartitionPanel.fill = GridBagConstraints.BOTH;
@@ -2856,7 +2901,6 @@ public class FerrumX {
 		batteryPanel.add(scrollPane, gbc_scrollPane);
 		
 		JTextArea batteryWarningTextArea = new JTextArea();
-		batteryWarningTextArea.setForeground(new Color(51, 204, 255));
 		batteryWarningTextArea.setFont(new Font("Ebrima", Font.ITALIC, 11));
 		batteryWarningTextArea.setText("NOTE: The battery panel will display information only when the system detects a battery. For desktops that don't run on a battery, the fields will be blank.");
 		batteryWarningTextArea.setLineWrap(true);
@@ -3277,7 +3321,7 @@ public class FerrumX {
 			copyStatusTf.setText("Successfully copied the Logs to clipboard");
 		});
 	}
-
+	// TODO revisit and try SwingWorker instead
 	private void initializeSystemInfo(StatusUI startScreen) {
 		try (ExecutorService exec = Executors.newCachedThreadPool()) {
 			Future<Boolean> initializeHardwareId = exec.submit(() -> HardwareId.initializeHardwareId(hwidTf));
