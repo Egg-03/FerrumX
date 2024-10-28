@@ -378,7 +378,7 @@ public class FerrumX {
 		JRadioButtonMenuItem samLaf = new JRadioButtonMenuItem("Sam's Blood Moon");
 		samLaf.addActionListener(e -> {
 			if (samLaf.isSelected()) {
-				changeTheme("com.ferrumx.ui.customthemes.SamLaf", mainFrame);
+				changeTheme("com.egg.flatlafcustomthemes.SamLaf", mainFrame);
 				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.decode("#fe4956"));
 			}
 		});
@@ -387,7 +387,7 @@ public class FerrumX {
 		JRadioButtonMenuItem bellLaf = new JRadioButtonMenuItem("Bell's Pink World");
 		bellLaf.addActionListener(e -> {
 			if (bellLaf.isSelected()) {
-				changeTheme("com.ferrumx.ui.customthemes.BellLaf", mainFrame);
+				changeTheme("com.egg.flatlafcustomthemes.BellLaf", mainFrame);
 				FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK);
 			}
 		});
@@ -396,7 +396,7 @@ public class FerrumX {
 		JRadioButtonMenuItem noirLightLaf = new JRadioButtonMenuItem("Noir Light");
 		noirLightLaf.addActionListener(e -> {
 			if (noirLightLaf.isSelected()) {
-				changeTheme("com.ferrumx.ui.customthemes.NoirLightLaf", mainFrame);
+				changeTheme("com.egg.flatlafcustomthemes.NoirLightLaf", mainFrame);
 				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});
@@ -405,7 +405,7 @@ public class FerrumX {
 		JRadioButtonMenuItem noirDarkLaf = new JRadioButtonMenuItem("Noir Dark");
 		noirDarkLaf.addActionListener(e -> {
 			if (noirDarkLaf.isSelected()) {
-				changeTheme("com.ferrumx.ui.customthemes.NoirDarkLaf", mainFrame);
+				changeTheme("com.egg.flatlafcustomthemes.NoirDarkLaf", mainFrame);
 				FlatSVGIcon.ColorFilter.getInstance().setMapper(null);
 			}
 		});

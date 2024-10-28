@@ -107,21 +107,21 @@ public class ThemeLoader {
 		case "com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme":
 			themeButtons[5].setSelected(true);
 			break;
-		case "com.ferrumx.ui.customthemes.SamLaf":
+		case "com.egg.flatlafcustomthemes.SamLaf":
 			themeButtons[6].setSelected(true);
 			FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.decode("#fe4956"));
 			break;
 			/* Since this function is called during the initializeMenu() function in FerrumX.java, which is
 			 * called during the UI component loading phase, the pink color filter gets applied before the
 			 * components are visible */
-		case "com.ferrumx.ui.customthemes.BellLaf":
+		case "com.egg.flatlafcustomthemes.BellLaf":
 			themeButtons[7].setSelected(true);
 			FlatSVGIcon.ColorFilter.getInstance().setMapper(Color -> java.awt.Color.PINK);
 			break;
-		case "com.ferrumx.ui.customthemes.NoirLightLaf":
+		case "com.egg.flatlafcustomthemes.NoirLightLaf":
 			themeButtons[8].setSelected(true);
 			break;
-		case "com.ferrumx.ui.customthemes.NoirDarkLaf":
+		case "com.egg.flatlafcustomthemes.NoirDarkLaf":
 			themeButtons[9].setSelected(true);
 			break;
 		default:
