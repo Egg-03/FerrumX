@@ -2,7 +2,7 @@
   <img src="https://github.com/Egg-03/FerrumX/assets/111327101/9aee9cdf-5213-401b-814d-a9738ee1a24c" alt="FerrumX logo">
 </p>
 
-![Project Stats](https://openhub.net/p/FerrumX/widgets/project_thin_badge.gif)
+[![Project Stats](https://openhub.net/p/FerrumX/widgets/project_thin_badge.gif)](https://openhub.net/p/FerrumX)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
