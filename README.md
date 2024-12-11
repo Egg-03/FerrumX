@@ -11,7 +11,7 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 
-![License](https://img.shields.io/github/license/Egg-03/FerrumX)
+[![License](https://img.shields.io/github/license/Egg-03/FerrumX)](https://github.com/Egg-03/FerrumX/blob/main/LICENSE)
 ![Repo Size](https://img.shields.io/github/repo-size/Egg-03/FerrumX)
 ![Language](https://img.shields.io/github/languages/top/Egg-03/FerrumX)
 ![Release Version](https://img.shields.io/github/v/release/Egg-03/FerrumX)
