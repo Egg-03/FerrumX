@@ -14,7 +14,7 @@ import com.ferrumx.exceptions.ShellException;
  * <p>
  * Supports Single-line parsing of output from the powershell Is recommend for
  * extracting a single property only For multi-property extraction, see
- * {@link CIM_SL}
+ * {@link CIM_ML}
  *
  * @author Egg-03
  * @version 1.3.0
