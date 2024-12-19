@@ -69,7 +69,7 @@ public class Win32_OperatingSystem {
 	/**
 	 * Fetches a OS properties for a particular OS
 	 *
-	 * @param OSName the iterative List fetched from {@link #getOSInfo(String)}
+	 * @param OSName the iterative List fetched from {@link #getOSList()}
 	 * @return a {@link java.util.Map} of OS properties and their values mentioned
 	 *         in the class description
 	 * @throws IOException               re-throws the exception thrown by
