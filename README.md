@@ -41,8 +41,7 @@ attach the tutorials for Eclipse and IntelliJ Idea
 
 
 # Dependencies
-> [!NOTE]
-> The wrapper does not have any additional dependencies.
+> The wrapper relies on optional dependencies, the testing framework JUnit5 and the logging framework TinyLog 2.7.0 for testing code
 
 # Documentation
 Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
