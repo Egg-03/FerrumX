@@ -22,7 +22,7 @@ class ShellExceptionTest {
 	@Test
 	void slGet() throws IndexOutOfBoundsException, IOException, InterruptedException {
 		try {
-			CIM_SL.get("FalseClass", "FalseATtribute");
+			CIM_SL.get("FalseClass", "FalseAttribute");
 			fail("Expected exception was not thrown");
 		} catch (ShellException e) {
 			Logger.debug(e.getMessage());
