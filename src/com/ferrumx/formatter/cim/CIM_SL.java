@@ -3,9 +3,6 @@ package com.ferrumx.formatter.cim;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ferrumx.exceptions.ShellException;
 
 /**
@@ -17,11 +14,10 @@ import com.ferrumx.exceptions.ShellException;
  * {@link CIM_ML}
  *
  * @author Egg-03
- * @version 1.3.0
+ * @version 1.3.1
  */
 public class CIM_SL {
-	private static String classname = CIM_SL.class.getClass().getName();
-
+	
 	private CIM_SL() {
 		throw new IllegalStateException("Utility Class");
 	}
@@ -59,9 +55,7 @@ public class CIM_SL {
 	 *                                   the future, causing the underlying parsing
 	 *                                   logic to fail.
 	 */
-	public static String get(String WMI_Class, String WMI_Attribute)
-			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		String methodName = "runCommand(String WMI_Class, String WMI_Attribute)";
+	public static String get(String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 
 		String[] command = { "powershell.exe",
 				"Get-CimInstance -ClassName " + WMI_Class + " | Select-Object " + WMI_Attribute + " | Format-List" };
@@ -69,40 +63,10 @@ public class CIM_SL {
 
 		int exitCode = process.waitFor();
 		if (exitCode != 0) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			String errorLine;
-			StringBuilder errorLines = new StringBuilder();
-
-			while ((errorLine = error.readLine()) != null) {
-				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorLines.append(errorLine);
-				}
-			}
-
-			error.close();
-
-			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorLines.toString()
-					+ "\nProcess Exited with code:" + exitCode + "\n");
+			errorCapture(process, exitCode);
 		}
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-		String currentLine;
-		String actualName = "";
-
-		while ((currentLine = br.readLine()) != null) {
-			if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-				if (currentLine.contains(" : ")) {
-					actualName = currentLine;
-				} else {
-					actualName = actualName.concat(currentLine);
-				}
-			}
-		}
-
-		br.close();
-
-		return actualName.substring(actualName.indexOf(":") + 1).strip();
+		return dataCapture(process);
 	}
 
 	/**
@@ -144,9 +108,8 @@ public class CIM_SL {
 	 *                                   the future, causing the underlying parsing
 	 *                                   logic to fail.
 	 */
-	public static String getWhere(String WMI_Class, String determinantProperty, String determinantValue,
-			String WMI_Attribute) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		String methodName = "runCommand(String WMI_Class, String whereCondition, String WMI_Attribute)";
+	public static String getWhere(String WMI_Class, String determinantProperty, String determinantValue, String WMI_Attribute) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
+		
 		String[] command = { "powershell.exe",
 				"Get-CimInstance -ClassName " + WMI_Class + " | Where-Object {$_." + determinantProperty + " -eq " + "'"
 						+ determinantValue + "'}" + " | Select-Object " + WMI_Attribute + " | Format-List" };
@@ -154,7 +117,21 @@ public class CIM_SL {
 
 		int exitCode = process.waitFor();
 		if (exitCode != 0) {
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			errorCapture(process, exitCode);
+		}
+
+		return dataCapture(process);
+	}
+	
+	/**
+	 * Captures power-shell errors and throw them as ShellExceptions in case the process exit code is not 0
+	 * @param process
+	 * @param exitCode
+	 * @throws IOException
+	 * @throws ShellException
+	 */
+	private static void errorCapture(Process process, int exitCode) throws IOException, ShellException {
+		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
 			String errorLine;
 			StringBuilder errorLines = new StringBuilder();
 
@@ -163,28 +140,31 @@ public class CIM_SL {
 					errorLines.append(errorLine);
 				}
 			}
-
-			error.close();
-
-			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorLines.toString()
-					+ "\nProcess Exited with code:" + exitCode + "\n");
+			throw new ShellException ((errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n"));
 		}
+	}
+	
+	/**
+	 * Captures the power-shell outputs and returns them in a String format
+	 * @param process
+	 * @return
+	 * @throws IOException
+	 */
+	private static String dataCapture(Process process) throws IOException {
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));) {
+			String currentLine;
+			String actualName = "";
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-		String currentLine;
-		String actualName = "";
-
-		while ((currentLine = br.readLine()) != null) {
-			if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-				if (currentLine.contains(" : ")) {
-					actualName = currentLine;
-				} else {
-					actualName = actualName.concat(currentLine);
+			while ((currentLine = br.readLine()) != null) {
+				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
+					if (currentLine.contains(" : ")) {
+						actualName = currentLine;
+					} else {
+						actualName = actualName.concat(currentLine);
+					}
 				}
 			}
+			return actualName.substring(actualName.indexOf(":") + 1).strip();
 		}
-		br.close();
-		return actualName.substring(actualName.indexOf(":") + 1).strip();
 	}
 }
