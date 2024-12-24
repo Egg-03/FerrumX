@@ -15,7 +15,6 @@ import com.ferrumx.exceptions.ShellException;
  * fetches the letters assigned to a partition.
  *
  * @author Egg-03
- * @version 1.3.0
  */
 public class Win32_LogicalDiskToPartition {
 	private static String classname = "Win32_LogicalDiskToPartition";

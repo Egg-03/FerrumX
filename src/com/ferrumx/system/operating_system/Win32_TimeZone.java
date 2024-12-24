@@ -12,7 +12,6 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * The following attributes are fetched: Caption, Bias, StandardName
  *
  * @author Egg-03
- * @version 1.3.0
  */
 public class Win32_TimeZone {
 	private static String classname = "Win32_TimeZone";

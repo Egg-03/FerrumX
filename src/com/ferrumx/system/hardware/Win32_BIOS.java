@@ -15,7 +15,6 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * SMBIOSBIOSVersion
  *
  * @author Egg-03
- * @version 1.3.0
  */
 public class Win32_BIOS {
 	private static String classname = "Win32_BIOS";

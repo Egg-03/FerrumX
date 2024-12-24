@@ -14,7 +14,6 @@ import com.ferrumx.exceptions.ShellException;
  * {@link CIM_ML}
  *
  * @author Egg-03
- * @version 1.3.1
  */
 public class CIM_SL {
 	

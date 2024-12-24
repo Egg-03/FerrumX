@@ -16,7 +16,6 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * DataWidth, Speed, ConfiguredClockSpeed, DeviceLocator, SerialNumber
  *
  * @author Egg-03
- * @version 1.3.0
  */
 
 public class Win32_PhysicalMemory {

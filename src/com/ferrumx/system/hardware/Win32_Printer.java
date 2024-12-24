@@ -17,7 +17,6 @@ import com.ferrumx.formatter.cim.CIM_ML;
  * ShareName, SpoolEnabled, WorkOffline
  *
  * @author Egg-03
- * @version 1.3.0
  */
 public class Win32_Printer {
 	private static String classname = "Win32_Printer";

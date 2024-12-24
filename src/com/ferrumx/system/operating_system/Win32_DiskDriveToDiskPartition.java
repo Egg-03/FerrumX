@@ -20,7 +20,6 @@ import com.ferrumx.exceptions.ShellException;
  * drive letters for the given partitions in a drive
  *
  * @author Egg-03
- * @version 1.3.0
  */
 public class Win32_DiskDriveToDiskPartition {
 	private static String classname = "Win32_DiskDriveToDiskPartition";
