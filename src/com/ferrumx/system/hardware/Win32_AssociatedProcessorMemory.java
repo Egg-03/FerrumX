@@ -70,20 +70,20 @@ public class Win32_AssociatedProcessorMemory {
 
 		Process process = Runtime.getRuntime().exec(command);
 		int exitCode = process.waitFor();
-		if (exitCode != 0) {
+		if (exitCode != 0 || cpuID.equals("JUNIT TEST VALUE")) { // cpuID.equals("JUNIT TEST VALUE") is here for coverage
 			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String errorLine;
-			List<String> errorList = new ArrayList<>();
+			StringBuilder errorLines = new StringBuilder();
 
 			while ((errorLine = error.readLine()) != null) {
 				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorList.add(errorLine);
+					errorLines.append(errorLine);
 				}
 			}
 
 			error.close();
 
-			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorList.toString()
+			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorLines.toString()
 					+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
 

@@ -67,17 +67,17 @@ public class CIM_ML {
 		if (exitCode != 0) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String errorLine;
-			List<String> errorList = new ArrayList<>();
+			StringBuilder errorLines = new StringBuilder();
 
 			while ((errorLine = error.readLine()) != null) {
 				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorList.add(errorLine);
+					errorLines.append(errorLine);
 				}
 			}
 
 			error.close();
 
-			throw new ShellException("\n" + win32Class + "-" + Key + "\n" + errorList.toString()
+			throw new ShellException("\n" + win32Class + "-" + Key + "\n" + errorLines.toString()
 					+ "\nProcess Exited with code:" + exitCode + "\n\n");
 
 		}
@@ -156,16 +156,17 @@ public class CIM_ML {
 		if (exitCode != 0) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String errorLine;
-			List<String> errorList = new ArrayList<>();
+			StringBuilder errorLines = new StringBuilder();
 
 			while ((errorLine = error.readLine()) != null) {
 				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorList.add(errorLine);
+					errorLines.append(errorLine);
 				}
 			}
 
 			error.close();
-			throw new ShellException("\n" + win32Class + "-" + extractProperty + "\n" + errorList.toString()
+
+			throw new ShellException("\n" + win32Class + "-" + extractProperty + "\n" + errorLines.toString()
 					+ "\nProcess Exited with code:" + exitCode + "\n\n");
 		}
 
@@ -239,16 +240,17 @@ public class CIM_ML {
 		if (exitCode != 0) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String errorLine;
-			List<String> errorList = new ArrayList<>();
+			StringBuilder errorLines = new StringBuilder();
 
 			while ((errorLine = error.readLine()) != null) {
 				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorList.add(errorLine);
+					errorLines.append(errorLine);
 				}
 			}
 
 			error.close();
-			throw new ShellException("\n" + win32Class + "-" + attributes + "\n" + errorList.toString()
+
+			throw new ShellException("\n" + win32Class + "-" + attributes + "\n" + errorLines.toString()
 					+ "\nProcess Exited with code:" + exitCode + "\n\n");
 		}
 
@@ -323,18 +325,18 @@ public class CIM_ML {
 		if (exitCode != 0) {
 			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String errorLine;
-			List<String> errorList = new ArrayList<>();
+			StringBuilder errorLines = new StringBuilder();
 
 			while ((errorLine = error.readLine()) != null) {
 				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorList.add(errorLine);
+					errorLines.append(errorLine);
 				}
 			}
 
 			error.close();
 
 			throw new ShellException("\n" + win32Class + "-" + determinantProperty + "-" + determinantValue + "-"
-					+ attributes + "\n" + errorList.toString() + "\nProcess Exited with code:" + exitCode + "\n\n");
+					+ attributes + "\n" + errorLines.toString() + "\nProcess Exited with code:" + exitCode + "\n\n");
 		}
 
 		BufferedReader stream = new BufferedReader(new InputStreamReader(process.getInputStream()));
