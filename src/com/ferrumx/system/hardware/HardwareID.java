@@ -18,7 +18,8 @@ import com.ferrumx.formatter.cim.CIM_SL;
  * @author Egg-03
  */
 public class HardwareID {
-	protected HardwareID() {
+	
+	private HardwareID() {
 		throw new IllegalStateException("Utility Class");
 	}
 
