@@ -41,18 +41,7 @@ public class CIM_SL {
 	 *                                   exit, gets interrupted. When catching this
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
-	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty string to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
+	 *                                   Thread.currentThread().interrupt();                                  
 	 */
 	public static String get(String WMI_Class, String WMI_Attribute) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 
@@ -94,18 +83,7 @@ public class CIM_SL {
 	 *                                   exit, gets interrupted. When catching this
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
-	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty string to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
+	 *                                   Thread.currentThread().interrupt();                                 
 	 */
 	public static String getWhere(String WMI_Class, String determinantProperty, String determinantValue, String WMI_Attribute) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		

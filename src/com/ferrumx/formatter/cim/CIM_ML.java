@@ -44,17 +44,6 @@ public class CIM_ML {
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty list to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
 	 */
 	public static List<String> getID(String win32Class, String Key) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		String[] command = { "powershell.exe",
@@ -94,17 +83,6 @@ public class CIM_ML {
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty List to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
 	 */
 	public static List<String> getIDWhere(String win32Class, String determinantProperty, String determinantValue, String extractProperty) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		String[] command = { "powershell.exe",
@@ -140,17 +118,6 @@ public class CIM_ML {
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty Map to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
 	 */
 	public static Map<String, String> get(String win32Class, String attributes)
 			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
@@ -195,18 +162,8 @@ public class CIM_ML {
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty Map to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
 	 */
+	
 	public static Map<String, String> getWhere(String win32Class, String determinantProperty, String determinantValue,String attributes) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 
 		String[] command = { "powershell.exe",
@@ -256,7 +213,8 @@ public class CIM_ML {
 			while ((currentLine = stream.readLine()) != null) {
 				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
 					if (currentLine.contains(" : ")) {
-						attributeValues.add(value = currentLine);
+						value = currentLine;
+						attributeValues.add(currentLine);
 					} else {
 						int lastIndex = attributeValues.size() - 1;
 						attributeValues.set(lastIndex, attributeValues.get(lastIndex).concat(value));
@@ -288,8 +246,9 @@ public class CIM_ML {
 					String key = "";
 					String value = "";
 					if (currentLine.contains(" : ")) {
-						attributesAndTheirValues.put(key = currentLine.substring(0, currentLine.indexOf(":")).strip(),
-								value = currentLine.substring(currentLine.indexOf(":") + 1).strip());
+						key = currentLine.substring(0, currentLine.indexOf(":")).strip();
+						value = currentLine.substring(currentLine.indexOf(":") + 1).strip();
+						attributesAndTheirValues.put(key, value);
 					} else {
 						attributesAndTheirValues.replace(key, value.concat(currentLine.strip()));
 					}
