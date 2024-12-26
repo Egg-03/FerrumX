@@ -45,8 +45,8 @@ public class HardwareID {
 		List<String> ideInterface = CIM_ML.getIDWhere("Win32_DiskDrive", "InterfaceType", "IDE", "SerialNumber");
 		List<String> scsiInterface = CIM_ML.getIDWhere("Win32_DiskDrive", "InterfaceType", "SCSI", "SerialNumber");
 
-		StringBuilder ideDrives = new StringBuilder("");
-		StringBuilder scsiDrives = new StringBuilder("");
+		StringBuilder ideDrives = new StringBuilder();
+		StringBuilder scsiDrives = new StringBuilder();
 
 		for (String ide : ideInterface) {
 			ideDrives.append(ide);
