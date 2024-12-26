@@ -1,12 +1,11 @@
-package com.ferrumx.system.hardware;
+package com.ferrumx.system.associatedclasses;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ferrumx.exceptions.ShellException;
+import com.ferrumx.system.hardware.Win32_CacheMemory;
+import com.ferrumx.system.hardware.Win32_Processor;
 
 /**
  * This class serves as a relationship between {@link Win32_Processor} and
@@ -57,45 +56,9 @@ public class Win32_AssociatedProcessorMemory {
 		Process process = Runtime.getRuntime().exec(command);
 		int exitCode = process.waitFor();
 		if (exitCode != 0 || cpuID.equals("JUNIT TEST VALUE")) { // cpuID.equals("JUNIT TEST VALUE") is here for coverage
-			errorCapture(process, exitCode);
+			Capture.errorCapture(process, exitCode);
 		}
-		return dataCapture(process);
-	}
-	
-	private static void errorCapture(Process process, int exitCode) throws IOException, ShellException {
-		
-		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-			String errorLine;
-			StringBuilder errorLines = new StringBuilder();
-
-			while ((errorLine = error.readLine()) != null) {
-				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorLines.append(errorLine);
-				}
-			}
-			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
-		}
-	}
-	
-	private static List<String> dataCapture(Process process) throws IOException {
-
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-
-			List<String> cacheIDList = new ArrayList<>();
-			String currentLine;
-			String value = "";
-			while ((currentLine = br.readLine()) != null) {
-				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-					if (currentLine.contains(" : ")) {
-						value = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\""));
-						cacheIDList.add(value);
-					} else {
-						int lastIndex = cacheIDList.size() - 1;
-						cacheIDList.set(lastIndex, cacheIDList.get(lastIndex).concat(value));
-					}
-				}
-			}
-			return cacheIDList;
-		}
+		return Capture.dataCapture(process);
 	}
 }
+	

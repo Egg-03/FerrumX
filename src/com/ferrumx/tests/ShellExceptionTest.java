@@ -10,10 +10,10 @@ import org.tinylog.Logger;
 import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.formatter.cim.CIM_SL;
-import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
-import com.ferrumx.system.networking.Win32_NetworkAdapterSetting;
-import com.ferrumx.system.operating_system.Win32_DiskDriveToDiskPartition;
-import com.ferrumx.system.operating_system.Win32_LogicalDiskToPartition;
+import com.ferrumx.system.associatedclasses.Win32_AssociatedProcessorMemory;
+import com.ferrumx.system.associatedclasses.Win32_DiskDriveToDiskPartition;
+import com.ferrumx.system.associatedclasses.Win32_LogicalDiskToPartition;
+import com.ferrumx.system.associatedclasses.Win32_NetworkAdapterSetting;
 /**
  * This will query the power-shell with wrong commands to see if the error received is thrown as a ShellException
  */

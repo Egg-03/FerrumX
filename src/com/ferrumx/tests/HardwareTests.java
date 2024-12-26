@@ -11,8 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.tinylog.Logger;
 
 import com.ferrumx.exceptions.ShellException;
+import com.ferrumx.system.associatedclasses.Win32_AssociatedProcessorMemory;
+import com.ferrumx.system.associatedclasses.Win32_DiskDriveToDiskPartition;
+import com.ferrumx.system.associatedclasses.Win32_LogicalDiskToPartition;
+import com.ferrumx.system.associatedclasses.Win32_NetworkAdapterSetting;
 import com.ferrumx.system.hardware.HardwareID;
-import com.ferrumx.system.hardware.Win32_AssociatedProcessorMemory;
 import com.ferrumx.system.hardware.Win32_BIOS;
 import com.ferrumx.system.hardware.Win32_Baseboard;
 import com.ferrumx.system.hardware.Win32_Battery;
@@ -28,9 +31,6 @@ import com.ferrumx.system.hardware.Win32_Processor;
 import com.ferrumx.system.hardware.Win32_SoundDevice;
 import com.ferrumx.system.hardware.Win32_VideoController;
 import com.ferrumx.system.networking.Win32_NetworkAdapterConfiguration;
-import com.ferrumx.system.networking.Win32_NetworkAdapterSetting;
-import com.ferrumx.system.operating_system.Win32_DiskDriveToDiskPartition;
-import com.ferrumx.system.operating_system.Win32_LogicalDiskToPartition;
 
 class HardwareTests {
 	

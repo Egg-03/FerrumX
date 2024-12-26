@@ -1,9 +1,6 @@
-package com.ferrumx.system.operating_system;
+package com.ferrumx.system.associatedclasses;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ferrumx.exceptions.ShellException;
@@ -54,48 +51,8 @@ public class Win32_DiskDriveToDiskPartition {
 
 		int exitCode = process.waitFor();
 		if (exitCode != 0 || driveID.equals("JUNIT TEST VALUE")) { // driveID.equals("JUNIT TEST VALUE") is here for coverage
-			errorCapture(process, exitCode);
+			Capture.errorCapture(process, exitCode);
 		}
-		return dataCapture(process);
-	}
-	
-	private static void errorCapture(Process process, int exitCode) throws IOException, ShellException {
-		
-		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-			
-			String errorLine;
-			StringBuilder errorLines = new StringBuilder();
-
-			while ((errorLine = error.readLine()) != null) {
-				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorLines.append(errorLine);
-				}
-			}
-
-			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
-		}
-	}
-	
-	private static List<String> dataCapture(Process process) throws IOException {
-		
-		try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-			
-			List<String> partitionList = new ArrayList<>();
-			String currentLine;
-			String value = "";
-			while ((currentLine = br.readLine()) != null) {
-				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-					if (currentLine.contains(" : ")) {
-						value = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\""));
-						partitionList.add(value);
-					} else {
-						int lastIndex = partitionList.size() - 1;
-						partitionList.set(lastIndex, partitionList.get(lastIndex).concat(value));
-					}
-				}
-			}
-			
-			return partitionList;
-		}
+		return Capture.dataCapture(process);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
+import com.ferrumx.system.associatedclasses.Win32_AssociatedProcessorMemory;
 
 /**
  * This class contains methods that query the Win32_CacheMemory class of WMI to

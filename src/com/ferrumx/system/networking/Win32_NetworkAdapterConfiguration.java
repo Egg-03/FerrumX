@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
+import com.ferrumx.system.associatedclasses.Win32_NetworkAdapterSetting;
 
 /**
  * This class queries the Win32_NetworkAdapterConfiguration class of WMI and

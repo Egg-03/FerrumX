@@ -1,10 +1,11 @@
-package com.ferrumx.system.networking;
+package com.ferrumx.system.associatedclasses;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.ferrumx.exceptions.ShellException;
+import com.ferrumx.system.networking.Win32_NetworkAdapterConfiguration;
 
 /**
  * This class relates {@link com.ferrumx.system.hardware.Win32_NetworkAdapter}
@@ -54,28 +55,12 @@ public class Win32_NetworkAdapterSetting {
 		int exitCode = process.waitFor();
 		
 		if (exitCode != 0 || deviceID.equals("JUNIT TEST VALUE")) { // deviceID.equals("JUNIT TEST VALUE") is here for coverage
-			errorCapture(process, exitCode);
+			Capture.errorCapture(process, exitCode);
 		}
 		
+		// A custom data capture function cause the one from the Capture class wont work here
 		return dataCapture(process);
 
-	}
-	
-	private static void errorCapture(Process process, int exitCode) throws ShellException, IOException {
-		
-		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-			
-			String errorLine;
-			StringBuilder errorLines = new StringBuilder();
-
-			while ((errorLine = error.readLine()) != null) {
-				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorLines.append(errorLine);
-				}
-			}
-
-			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
-		}
 	}
 	
 	private static String dataCapture(Process process) throws IOException {

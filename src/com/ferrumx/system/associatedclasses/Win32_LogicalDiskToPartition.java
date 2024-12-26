@@ -1,4 +1,4 @@
-package com.ferrumx.system.operating_system;
+package com.ferrumx.system.associatedclasses;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,27 +47,12 @@ public class Win32_LogicalDiskToPartition {
 		int exitCode = process.waitFor();
 		
 		if (exitCode != 0 || partitionID.equals("JUNIT TEST VALUE")) { // partitionID.equals("JUNIT TEST VALUE") is here for coverage
-			errorCapture(process, exitCode);
+			Capture.errorCapture(process, exitCode);
 		}
 		
+		// A custom data capture function cause the one from the Capture class wont work here
 		return dataCapture(process);
 
-	}
-	
-	private static void errorCapture(Process process, int exitCode) throws ShellException, IOException {
-		
-		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-			String errorLine;
-			StringBuilder errorLines = new StringBuilder();
-
-			while ((errorLine = error.readLine()) != null) {
-				if (!errorLine.isBlank() || !errorLine.isEmpty()) {
-					errorLines.append(errorLine);
-				}
-			}
-
-			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
-		}
 	}
 	
 	private static String dataCapture(Process process) throws IOException {
