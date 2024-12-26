@@ -15,8 +15,7 @@ import com.ferrumx.exceptions.ShellException;
  * @author Egg-03
  */
 public class Win32_LogicalDiskToPartition {
-	private static String classname = "Win32_LogicalDiskToPartition";
-
+	
 	private Win32_LogicalDiskToPartition() {
 		throw new IllegalStateException("Utility Class");
 	}
@@ -39,17 +38,25 @@ public class Win32_LogicalDiskToPartition {
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
 	 */
-	public static String getDriveLetter(String partitionID)
-			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		String methodName = "getDriveLetter(String partitionID)";
+	public static String getDriveLetter(String partitionID) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 		String[] command = { "powershell.exe", "/c",
 				"Get-CimInstance -ClassName Win32_LogicalDiskToPartition | Where-Object {$_.Antecedent.DeviceID -eq '"
 						+ partitionID + "'} | Select-Object Dependent | Format-List" };
 
 		Process process = Runtime.getRuntime().exec(command);
 		int exitCode = process.waitFor();
+		
 		if (exitCode != 0 || partitionID.equals("JUNIT TEST VALUE")) { // partitionID.equals("JUNIT TEST VALUE") is here for coverage
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			errorCapture(process, exitCode);
+		}
+		
+		return dataCapture(process);
+
+	}
+	
+	private static void errorCapture(Process process, int exitCode) throws ShellException, IOException {
+		
+		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
 			String errorLine;
 			StringBuilder errorLines = new StringBuilder();
 
@@ -59,22 +66,21 @@ public class Win32_LogicalDiskToPartition {
 				}
 			}
 
-			error.close();
-
-			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorLines.toString()
-					+ "\nProcess Exited with code:" + exitCode + "\n");
+			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String currentLine;
-		String driveLetter = "N/A";
-		while ((currentLine = br.readLine()) != null) {
-			if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-				driveLetter = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\""));
+	}
+	
+	private static String dataCapture(Process process) throws IOException {
+		
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+			String currentLine;
+			String driveLetter = "N/A";
+			while ((currentLine = br.readLine()) != null) {
+				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
+					driveLetter = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\""));
+				}
 			}
+			return driveLetter;
 		}
-		br.close();
-
-		return driveLetter;
 	}
 }
