@@ -22,8 +22,7 @@ import com.ferrumx.exceptions.ShellException;
  * @author Egg-03
  */
 public class Win32_DiskDriveToDiskPartition {
-	private static String classname = "Win32_DiskDriveToDiskPartition";
-
+	
 	private Win32_DiskDriveToDiskPartition() {
 		throw new IllegalStateException("Utility Class");
 	}
@@ -43,33 +42,27 @@ public class Win32_DiskDriveToDiskPartition {
 	 *                                   exit, gets interrupted. When catching this
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
-	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty List to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
+	 *                                   Thread.currentThread().interrupt();                                
 	 */
-	public static List<String> getPartitionList(String driveID)
-			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		String methodName = "getPartitionList(String driveID)";
+	public static List<String> getPartitionList(String driveID) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
+		
 		String[] command = { "powershell.exe", "/c",
 				"Get-CimInstance -ClassName Win32_DiskDriveToDiskPartition | Where-Object {$_.Antecedent.DeviceID -eq '"
 						+ driveID + "'} | Select-Object Dependent | Format-List" };
-
-		List<String> partitionList = new ArrayList<>();
 
 		Process process = Runtime.getRuntime().exec(command);
 
 		int exitCode = process.waitFor();
 		if (exitCode != 0 || driveID.equals("JUNIT TEST VALUE")) { // driveID.equals("JUNIT TEST VALUE") is here for coverage
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			errorCapture(process, exitCode);
+		}
+		return dataCapture(process);
+	}
+	
+	private static void errorCapture(Process process, int exitCode) throws IOException, ShellException {
+		
+		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+			
 			String errorLine;
 			StringBuilder errorLines = new StringBuilder();
 
@@ -79,29 +72,30 @@ public class Win32_DiskDriveToDiskPartition {
 				}
 			}
 
-			error.close();
-
-			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorLines.toString()
-					+ "\nProcess Exited with code:" + exitCode + "\n");
+			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String currentLine;
-
-		String value = "";
-		while ((currentLine = br.readLine()) != null) {
-			if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-				if (currentLine.contains(" : ")) {
-					partitionList.add(value = currentLine.substring(currentLine.indexOf("\"") + 1,
-							currentLine.lastIndexOf("\"")));
-				} else {
-					int lastIndex = partitionList.size() - 1;
-					partitionList.set(lastIndex, partitionList.get(lastIndex).concat(value));
+	}
+	
+	private static List<String> dataCapture(Process process) throws IOException {
+		
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+			
+			List<String> partitionList = new ArrayList<>();
+			String currentLine;
+			String value = "";
+			while ((currentLine = br.readLine()) != null) {
+				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
+					if (currentLine.contains(" : ")) {
+						value = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\""));
+						partitionList.add(value);
+					} else {
+						int lastIndex = partitionList.size() - 1;
+						partitionList.set(lastIndex, partitionList.get(lastIndex).concat(value));
+					}
 				}
 			}
+			
+			return partitionList;
 		}
-		br.close();
-
-		return partitionList;
 	}
 }

@@ -3,8 +3,6 @@ package com.ferrumx.system.operating_system;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.ferrumx.exceptions.ShellException;
 
@@ -40,17 +38,6 @@ public class Win32_LogicalDiskToPartition {
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty string to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
 	 */
 	public static String getDriveLetter(String partitionID)
 			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {

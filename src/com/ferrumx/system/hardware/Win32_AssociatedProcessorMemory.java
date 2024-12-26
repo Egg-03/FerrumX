@@ -19,8 +19,7 @@ import com.ferrumx.exceptions.ShellException;
  */
 
 public class Win32_AssociatedProcessorMemory {
-	private static String classname = "Win32_AssociatedProcessorMemory";
-
+	
 	private Win32_AssociatedProcessorMemory() {
 		throw new IllegalStateException("Utility Class");
 	}
@@ -46,31 +45,26 @@ public class Win32_AssociatedProcessorMemory {
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty string to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
 	 */
-	public static List<String> getCacheID(String cpuID)
-			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		String methodName = "getCacheID(String cpuID)";
+	public static List<String> getCacheID(String cpuID) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
+		
 		String[] command = { "powershell.exe", "/c",
 				"Get-CimInstance -ClassName Win32_AssociatedProcessorMemory | Where-Object {$_.Dependent.DeviceID -eq '"
 						+ cpuID + "'} | Select-Object Antecedent | Format-List" };
 
-		List<String> cacheIDList = new ArrayList<>();
+		
 
 		Process process = Runtime.getRuntime().exec(command);
 		int exitCode = process.waitFor();
 		if (exitCode != 0 || cpuID.equals("JUNIT TEST VALUE")) { // cpuID.equals("JUNIT TEST VALUE") is here for coverage
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			errorCapture(process, exitCode);
+		}
+		return dataCapture(process);
+	}
+	
+	private static void errorCapture(Process process, int exitCode) throws IOException, ShellException {
+		
+		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
 			String errorLine;
 			StringBuilder errorLines = new StringBuilder();
 
@@ -79,31 +73,29 @@ public class Win32_AssociatedProcessorMemory {
 					errorLines.append(errorLine);
 				}
 			}
-
-			error.close();
-
-			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorLines.toString()
-					+ "\nProcess Exited with code:" + exitCode + "\n");
+			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
+	}
+	
+	private static List<String> dataCapture(Process process) throws IOException {
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String currentLine;
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 
-		String value = "";
-		while ((currentLine = br.readLine()) != null) {
-			if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-				if (currentLine.contains(" : ")) {
-					cacheIDList.add(value = currentLine.substring(currentLine.indexOf("\"") + 1,
-							currentLine.lastIndexOf("\"")));
-				} else {
-					int lastIndex = cacheIDList.size() - 1;
-					cacheIDList.set(lastIndex, cacheIDList.get(lastIndex).concat(value));
+			List<String> cacheIDList = new ArrayList<>();
+			String currentLine;
+			String value = "";
+			while ((currentLine = br.readLine()) != null) {
+				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
+					if (currentLine.contains(" : ")) {
+						value = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\""));
+						cacheIDList.add(value);
+					} else {
+						int lastIndex = cacheIDList.size() - 1;
+						cacheIDList.set(lastIndex, cacheIDList.get(lastIndex).concat(value));
+					}
 				}
 			}
+			return cacheIDList;
 		}
-
-		br.close();
-
-		return cacheIDList;
 	}
 }

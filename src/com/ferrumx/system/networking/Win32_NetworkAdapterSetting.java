@@ -3,8 +3,6 @@ package com.ferrumx.system.networking;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.ferrumx.exceptions.ShellException;
 
@@ -26,7 +24,6 @@ import com.ferrumx.exceptions.ShellException;
  * @author Egg-03
  */
 public class Win32_NetworkAdapterSetting {
-	private static String classname = "Win32_NetworkAdapterSetting";
 
 	private Win32_NetworkAdapterSetting() {
 		throw new IllegalStateException("Utility Class");
@@ -48,29 +45,26 @@ public class Win32_NetworkAdapterSetting {
 	 *                                   exception, you may re-throw it's
 	 *                                   interrupted status by using
 	 *                                   Thread.currentThread().interrupt();
-	 *                                   <p>
-	 *                                   While catching any of the Exceptions, you
-	 *                                   may return an empty string to avoid any
-	 *                                   {@link java.lang.NullPointerException} that
-	 *                                   might get thrown because your variable
-	 *                                   might be expecting a string. However, this
-	 *                                   does not make you immune from the
-	 *                                   NullPointerExceptions that may be thrown in
-	 *                                   case of powershell output format changes in
-	 *                                   the future, causing the underlying parsing
-	 *                                   logic to fail.
 	 */
 	public static String getIndex(String deviceID) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		String methodName = "getIndex(String deviceID)";
-		String setting = "";
 
-		String[] command = { "powershell.exe", "/c",
-				"Get-CimInstance -ClassName Win32_NetworkAdapterSetting | Where-Object {$_.Element.DeviceID -eq '"
-						+ deviceID + "'} | Select-Object Setting | Format-List" };
+		String[] command = { "powershell.exe", "/c", "Get-CimInstance -ClassName Win32_NetworkAdapterSetting | Where-Object {$_.Element.DeviceID -eq '"+ deviceID + "'} | Select-Object Setting | Format-List" };
+		
 		Process process = Runtime.getRuntime().exec(command);
 		int exitCode = process.waitFor();
+		
 		if (exitCode != 0 || deviceID.equals("JUNIT TEST VALUE")) { // deviceID.equals("JUNIT TEST VALUE") is here for coverage
-			BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			errorCapture(process, exitCode);
+		}
+		
+		return dataCapture(process);
+
+	}
+	
+	private static void errorCapture(Process process, int exitCode) throws ShellException, IOException {
+		
+		try(BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+			
 			String errorLine;
 			StringBuilder errorLines = new StringBuilder();
 
@@ -80,28 +74,25 @@ public class Win32_NetworkAdapterSetting {
 				}
 			}
 
-			error.close();
-
-			throw new ShellException("\n" + classname + "-" + methodName + "\n" + errorLines.toString()
-					+ "\nProcess Exited with code:" + exitCode + "\n");
+			throw new ShellException(errorLines.toString()+ "\nProcess Exited with code:" + exitCode + "\n");
 		}
+	}
+	
+	private static String dataCapture(Process process) throws IOException {
+		try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+			String setting = "";
+			String currentLine;
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-		String currentLine;
-
-		while ((currentLine = br.readLine()) != null) {
-			if (!currentLine.isBlank() || !currentLine.isEmpty()) {
-				if (currentLine.contains(" : ")) {
-					setting = currentLine;
-				} else {
-					setting = setting.concat(currentLine);
+			while ((currentLine = br.readLine()) != null) {
+				if (!currentLine.isBlank() || !currentLine.isEmpty()) {
+					if (currentLine.contains(" : ")) {
+						setting = currentLine;
+					} else {
+						setting = setting.concat(currentLine);
+					}
 				}
 			}
+			return setting.substring(setting.indexOf("=") + 1, setting.indexOf(")")).trim();	
 		}
-
-		br.close();
-
-		return setting.substring(setting.indexOf("=") + 1, setting.indexOf(")")).trim();
 	}
 }
