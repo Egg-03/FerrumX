@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.egg-03</groupId>
   <artifactId>ferrum-x</artifactId>
-  <version>1.3.3</version>
+  <version>1.3.4</version>
   <name>FerrumX</name>
   <description>A lightweight Hardware and Network Info wrapper in JAVA that queries some Computer System Hardware and Operating System Classes of WMI to fetch hardware, network, OS and other information for Windows Operating Systems</description>
   <url>https://github.com/Egg-03/FerrumX</url>
