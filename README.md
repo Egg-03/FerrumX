@@ -13,11 +13,7 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 
 [![License](https://img.shields.io/github/license/Egg-03/FerrumX)](https://github.com/Egg-03/FerrumX/blob/main/LICENSE)
-![Repo Size](https://img.shields.io/github/repo-size/Egg-03/FerrumX)
-![Language](https://img.shields.io/github/languages/top/Egg-03/FerrumX)
-![Release Version](https://img.shields.io/github/v/release/Egg-03/FerrumX)
-![Release Date](https://img.shields.io/github/release-date/Egg-03/FerrumX)
-![Downloads](https://img.shields.io/github/downloads/Egg-03/FerrumX/total)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.egg-03/ferrum-x)](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x)
 ![Commits to main since latest release](https://img.shields.io/github/commits-since/Egg-03/FerrumX/latest)
 
 # About
@@ -27,22 +23,22 @@ FerrumX is a lightweight Hardware and Network Information wrapper written in pur
 FerrumX has been tested to work exclusively on <strong>Windows 8.1, Windows 10 and Windows 11</strong> devices.
 For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/FerrumL) [not actively developed anymore]
 
-# Installation
-<h4>For Developers:</h4>
-If you wish to use the wrapper in your own project, you can do so by downloading the main jar file along with it's documentation
+# Download
+Maven:
+```xml
+<dependency>
+    <groupId>io.github.egg-03</groupId>
+    <artifactId>ferrum-x</artifactId>
+    <version>1.3.3</version>
+</dependency>
+```
 
+Gradle:
+```gradle
+implementation group: 'io.github.egg-03', name: 'ferrum-x', version: '1.3.3'
+```
 
-- Download the main jar file *[FerrumX-core-vX.X.X]* from [FerrumX Releases](https://github.com/Egg-03/FerrumX/releases)
-- [Optional] Download the javadoc jar file *[FerrumX-doc-vX.X.X]*
-- Import the main jar file as a classpath dependency in your project.
-- [Optional] Attach the javadoc to the jar file
-
-The methods for linking an external jar file with its javadoc as a dependency varies with the IDE you will use. You should be able to find online help for it and if I get time, I'll 
-attach the tutorials for Eclipse and IntelliJ Idea
-
-
-# Dependencies
-> The wrapper relies on optional dependencies, the testing framework JUnit5 and the logging framework TinyLog 2.7.0 for testing code
+For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
 
 # Documentation
 Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
