@@ -17,8 +17,8 @@ import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.formatter.cim.CIM_SL;
 
 /**
- * Hardware ID generation class based on the MD5 digest of the ID in the following format :
- * "CPUID+MACAddressOfPhysicalAdapters+DiskIDs"
+ * Hardware ID generation class based on the SHA256 digest of the ID in the following format :
+ * "CPUID+DiskIDs"
  *
  * @author Egg-03
  */
@@ -66,7 +66,7 @@ public class HardwareID {
 	
 
 	/**
-	 * Uses {@link java.util.concurrent.ExecutorService} to spawn four threads with
+	 * Uses {@link java.util.concurrent.ExecutorService} to spawn two threads with
 	 * each thread calling the
 	 * {@link com.ferrumx.formatter.cim.CIM_SL#getPropertyValue(String, String)} directly or
 	 * through the Win32 Classes to get specific parts of HWID which is then
@@ -94,6 +94,6 @@ public class HardwareID {
 			id.removeIf(s -> s == null || s.trim().isEmpty());
 		}
 		 
-	    return DigestUtils.md5Hex(StringUtils.join(id, null).getBytes(StandardCharsets.UTF_8)).toUpperCase();
+	    return DigestUtils.sha256Hex(StringUtils.join(id, null).getBytes(StandardCharsets.UTF_8)).toUpperCase();
 	}
 }
