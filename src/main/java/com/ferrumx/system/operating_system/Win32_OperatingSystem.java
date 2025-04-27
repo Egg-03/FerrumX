@@ -34,12 +34,12 @@ public class Win32_OperatingSystem {
 	 *
 	 * @return a {@link java.util.List} of OS Names found in the system
 	 * @throws IOException               re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertyValue(String, String)}
 	 *                                   when there are I/O Errors during streaming
 	 *                                   of data from and to Powershell and other
 	 *                                   generated files
 	 * @throws IndexOutOfBoundsException re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getID(String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertyValue(String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
 	 * @throws ShellException            if any internal command used in the
@@ -62,7 +62,7 @@ public class Win32_OperatingSystem {
 	 *                                   logic to fail.
 	 */
 	public static List<String> getOSList() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		return CIM_ML.getID(classname, "Name");
+		return CIM_ML.getPropertyValue(classname, "Name");
 	}
 
 	/**
@@ -72,12 +72,12 @@ public class Win32_OperatingSystem {
 	 * @return a {@link java.util.Map} of OS properties and their values mentioned
 	 *         in the class description
 	 * @throws IOException               re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValuesWhere(String, String, String, String)}
 	 *                                   when there are I/O Errors during streaming
 	 *                                   of data from and to Powershell and other
 	 *                                   generated files
 	 * @throws IndexOutOfBoundsException re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValuesWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
 	 * @throws ShellException            if any internal command used in the
@@ -100,6 +100,6 @@ public class Win32_OperatingSystem {
 	 *                                   logic to fail.
 	 */
 	public static Map<String, String> getOSInfo(String OSName) throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		return CIM_ML.getWhere(classname, "Name", OSName, attributes);
+		return CIM_ML.getPropertiesAndTheirValuesWhere(classname, "Name", OSName, attributes);
 	}
 }

@@ -17,7 +17,7 @@ class CIM_SL_Test {
 
 	@Test
 	void slGet() throws IndexOutOfBoundsException, IOException, ShellException, InterruptedException {
-		String test = CIM_SL.get("Win32_Baseboard", "Manufacturer");
+		String test = CIM_SL.getPropertyValue("Win32_Baseboard", "Manufacturer");
 		Logger.debug(test);
 		if(test.isBlank() || test.isEmpty()) {
 			Logger.debug("CIM_SL requesting BIOS info is not exposed by the target machine. Possibly running a VM.");
@@ -27,7 +27,7 @@ class CIM_SL_Test {
 	
 	@Test
 	void slGetWhere() throws IndexOutOfBoundsException, IOException, ShellException, InterruptedException {
-		String test = CIM_SL.getWhere("Win32_Processor", "DeviceID", "CPU0", "Name");
+		String test = CIM_SL.getPropertyValueWhere("Win32_Processor", "DeviceID", "CPU0", "Name");
 		Logger.debug(test);
 		if(test.isBlank() || test.isEmpty()) {
 			Logger.debug("CIM_SL requesting CPU info is not exposed by the target machine. Possibly running a VM.");

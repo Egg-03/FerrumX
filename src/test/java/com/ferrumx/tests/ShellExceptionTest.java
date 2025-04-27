@@ -22,7 +22,7 @@ class ShellExceptionTest {
 	@Test
 	void slGet() throws IndexOutOfBoundsException, IOException, InterruptedException {
 		try {
-			CIM_SL.get("FalseClass", "FalseAttribute");
+			CIM_SL.getPropertyValue("FalseClass", "FalseAttribute");
 			fail("Expected exception was not thrown");
 		} catch (ShellException e) {
 			Logger.debug(e.getMessage());
@@ -32,7 +32,7 @@ class ShellExceptionTest {
 	@Test
 	void slgetWhere() throws IndexOutOfBoundsException, IOException, InterruptedException {
 		try {
-			CIM_SL.getWhere("Test", "Test", "Test", "Test");
+			CIM_SL.getPropertyValueWhere("Test", "Test", "Test", "Test");
 			fail("Expected exception was not thrown");
 		} catch (ShellException e) {
 			Logger.debug(e.getMessage());
@@ -42,7 +42,7 @@ class ShellExceptionTest {
 	@Test
 	void mlget() throws IndexOutOfBoundsException, IOException, InterruptedException {
 		try {
-			CIM_ML.get("Test", "Test");
+			CIM_ML.getPropertiesAndTheirValues("Test", "Test");
 			fail("Expected exception was not thrown");
 		} catch (ShellException e) {
 			Logger.debug(e.getMessage());
@@ -52,7 +52,7 @@ class ShellExceptionTest {
 	@Test
 	void mlgetId() throws IndexOutOfBoundsException, IOException, InterruptedException {
 		try {
-			CIM_ML.getID("Test", "Test");
+			CIM_ML.getPropertyValue("Test", "Test");
 			fail("Expected exception was not thrown");
 		} catch (ShellException e) {
 			Logger.debug(e.getMessage());
@@ -62,7 +62,7 @@ class ShellExceptionTest {
 	@Test
 	void mlgetIdWhere() throws IndexOutOfBoundsException, IOException, InterruptedException {
 		try {
-			CIM_ML.getIDWhere("Test", "Test", "Test", "Test");
+			CIM_ML.getPropertyValueWhere("Test", "Test", "Test", "Test");
 			fail("Expected exception was not thrown");
 		} catch (ShellException e) {
 			Logger.debug(e.getMessage());
@@ -72,7 +72,7 @@ class ShellExceptionTest {
 	@Test
 	void mlgetWhere() throws IndexOutOfBoundsException, IOException, InterruptedException {
 		try {
-			CIM_ML.getWhere("Test", "Test", "Test", "Test");
+			CIM_ML.getPropertiesAndTheirValuesWhere("Test", "Test", "Test", "Test");
 			fail("Expected exception was not thrown");
 		} catch (ShellException e) {
 			Logger.debug(e.getMessage());

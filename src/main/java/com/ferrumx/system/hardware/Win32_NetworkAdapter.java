@@ -28,14 +28,14 @@ public class Win32_NetworkAdapter {
 	/**
 	 * Fetches a list of DeviceIDs of the Network Adapters that are active
 	 *
-	 * @return a {@link java.util.List} of all the active Adapter DeviceIDs
+	 * @return a {@link java.util.List} of all the physical adapter DeviceIDs
 	 * @throws IOException               re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getIDWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertyValueWhere(String, String, String, String)}
 	 *                                   when there are I/O Errors during streaming
 	 *                                   of data from and to Powershell and other
 	 *                                   generated files
 	 * @throws IndexOutOfBoundsException re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getIDWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertyValueWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
 	 * @throws ShellException            if any internal command used in the
@@ -47,7 +47,7 @@ public class Win32_NetworkAdapter {
 	 *                                   Thread.currentThread().interrupt();
 	 */
 	public static List<String> getDeviceIDList() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		return CIM_ML.getIDWhere(classname, "NetEnabled", "True", "DeviceID");
+		return CIM_ML.getPropertyValueWhere(classname, "PhysicalAdapter", "True", "DeviceID");
 	}
 
 	/**
@@ -59,16 +59,16 @@ public class Win32_NetworkAdapter {
 	 * @return a {@link java.util.Map} of the properties and their values mentioned
 	 *         in the class description
 	 * @throws IOException               re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValuesWhere(String, String, String, String)}
 	 *                                   when there are I/O Errors during streaming
-	 *                                   of data from and to Powershell and other
+	 *                                   of data from and to Power-shell and other
 	 *                                   generated files
 	 * @throws IndexOutOfBoundsException re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValuesWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
-	 *                                   fetched from Windows Powershell
+	 *                                   fetched from Windows Power-shell
 	 * @throws ShellException            if any internal command used in the
-	 *                                   powershell throws errors
+	 *                                   power-shell throws errors
 	 * @throws InterruptedException      if the thread waiting for the process to
 	 *                                   exit, gets interrupted. When catching this
 	 *                                   exception, you may re-throw it's
@@ -77,7 +77,7 @@ public class Win32_NetworkAdapter {
 	 */
 	public static Map<String, String> getNetworkAdapters(String deviceID)
 			throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		return CIM_ML.getWhere(classname, "DeviceID", deviceID, attributes);
+		return CIM_ML.getPropertiesAndTheirValuesWhere(classname, "DeviceID", deviceID, attributes);
 	}
 
 }

@@ -27,18 +27,18 @@ public class Win32_BIOS {
 	/**
 	 * Fetches Primary BIOS Information (If your motherboard has multiple BIOSes,
 	 * the Main BIOS information will always be fetched). Internally calls
-	 * {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
+	 * {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValuesWhere(String, String, String, String)}
 	 * with the parameters being (classname, "PrimaryBIOS", "True", attributes);
 	 *
 	 * @return a {@link java.util.Map} containing the properties and their values
 	 *         mentioned in the class description, as key-value pairs
 	 * @throws IOException               re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValuesWhere(String, String, String, String)}
 	 *                                   when there are I/O Errors during streaming
 	 *                                   of data from and to Powershell and other
 	 *                                   generated files
 	 * @throws IndexOutOfBoundsException re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getWhere(String, String, String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValuesWhere(String, String, String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
 	 * @throws ShellException            if any internal command used in the
@@ -50,6 +50,6 @@ public class Win32_BIOS {
 	 *                                   Thread.currentThread().interrupt();
 	 */
 	public static Map<String, String> getPrimaryBIOS() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
-		return CIM_ML.getWhere(classname, "PrimaryBIOS", "True", attributes);
+		return CIM_ML.getPropertiesAndTheirValuesWhere(classname, "PrimaryBIOS", "True", attributes);
 	}
 }

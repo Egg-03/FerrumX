@@ -1,12 +1,14 @@
 package com.ferrumx.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.tinylog.Logger;
 
@@ -38,7 +40,7 @@ class HardwareTests {
 	void hardwareIdTest() throws ExecutionException, InterruptedException {
 		String hwid = HardwareID.getHardwareID();
 		Logger.debug(hwid);
-		assertFalse(hwid.isBlank() || hwid.isEmpty());
+		assertFalse(StringUtils.isBlank(hwid));
 	}
 	
 	@Test
@@ -214,7 +216,7 @@ class HardwareTests {
 			assertFalse(networkAdapter.isEmpty());
 			
 			String index = Win32_NetworkAdapterSetting.getIndex(currentID);
-			assertFalse(index.isBlank() || index.isEmpty());
+			assertFalse(StringUtils.isEmpty(index));
 			
 			Map<String, String> networkAdapterConfiguration = Win32_NetworkAdapterConfiguration.getAdapterConfiguration(index);
 			assertFalse(networkAdapterConfiguration.isEmpty());

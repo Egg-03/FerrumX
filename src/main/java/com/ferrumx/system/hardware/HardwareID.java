@@ -1,19 +1,24 @@
 package com.ferrumx.system.hardware;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
 import com.ferrumx.formatter.cim.CIM_SL;
 
 /**
- * Hardware ID generation class based on the following format :
- * "CPUName/CPUID/MotherboardName/DriveIDs"
+ * Hardware ID generation class based on the MD5 digest of the ID in the following format :
+ * "CPUID+MACAddressOfPhysicalAdapters+DiskIDs"
  *
  * @author Egg-03
  */
@@ -25,7 +30,7 @@ public class HardwareID {
 
 	/**
 	 * Uses
-	 * {@link com.ferrumx.formatter.cim.CIM_ML#getIDWhere(String, String, String, String)}
+	 * {@link com.ferrumx.formatter.cim.CIM_ML#getPropertyValueWhere(String, String, String, String)}
 	 * to fetch IDE and SCSI Interface Type Disk IDs
 	 *
 	 * @return a concatenated list of all IDE and SCSI drive IDs currently installed
@@ -34,7 +39,7 @@ public class HardwareID {
 	 * @throws IOException               in case of any IOException thrown by the
 	 *                                   underlying parser
 	 * @throws ShellException            if any internal command used in the
-	 *                                   powershell throws errors
+	 *                                   power-shell throws errors
 	 * @throws InterruptedException      if the thread waiting for the process to
 	 *                                   exit, gets interrupted. When catching this
 	 *                                   exception, you may re-throw it's
@@ -42,8 +47,8 @@ public class HardwareID {
 	 *                                   Thread.currentThread().interrupt();
 	 */
 	private static String getDiskSerials() throws IndexOutOfBoundsException, IOException, ShellException, InterruptedException {
-		List<String> ideInterface = CIM_ML.getIDWhere("Win32_DiskDrive", "InterfaceType", "IDE", "SerialNumber");
-		List<String> scsiInterface = CIM_ML.getIDWhere("Win32_DiskDrive", "InterfaceType", "SCSI", "SerialNumber");
+		List<String> ideInterface = CIM_ML.getPropertyValueWhere("Win32_DiskDrive", "InterfaceType", "IDE", "SerialNumber");
+		List<String> scsiInterface = CIM_ML.getPropertyValueWhere("Win32_DiskDrive", "InterfaceType", "SCSI", "SerialNumber");
 
 		StringBuilder ideDrives = new StringBuilder();
 		StringBuilder scsiDrives = new StringBuilder();
@@ -58,11 +63,12 @@ public class HardwareID {
 
 		return ideDrives.toString() + scsiDrives.toString();
 	}
+	
 
 	/**
 	 * Uses {@link java.util.concurrent.ExecutorService} to spawn four threads with
 	 * each thread calling the
-	 * {@link com.ferrumx.formatter.cim.CIM_SL#get(String, String)} directly or
+	 * {@link com.ferrumx.formatter.cim.CIM_SL#getPropertyValue(String, String)} directly or
 	 * through the Win32 Classes to get specific parts of HWID which is then
 	 * ultimately combined to form the final ID
 	 *
@@ -75,22 +81,19 @@ public class HardwareID {
 	 */
 	public static String getHardwareID() throws ExecutionException, InterruptedException {
 
-		String cpuName = "N/A";
-		String cpuId = "N/A";
-		String motherBoardName = "N/A";
-		String driveId = "N/A";
+		List<String> id = new ArrayList<>();
 
-		try (ExecutorService EXEC = Executors.newFixedThreadPool(4);) {
-			Future<String> cpuNameTask = EXEC.submit(() -> CIM_SL.get("Win32_Processor", "Name"));
-			Future<String> cpuIdTask = EXEC.submit(() -> CIM_SL.get("Win32_Processor", "ProcessorID"));
-			Future<String> motherBoardNameTask = EXEC.submit(() -> CIM_SL.get("Win32_BaseBoard", "Product"));
+		try (ExecutorService EXEC = Executors.newFixedThreadPool(2);) {
+			
+			Future<String> cpuIdTask = EXEC.submit(() -> CIM_SL.getPropertyValue("Win32_Processor", "ProcessorID"));
 			Future<String> driveIdTask = EXEC.submit(HardwareID::getDiskSerials);
 
-			cpuName = cpuNameTask.get();
-			cpuId = cpuIdTask.get();
-			motherBoardName = motherBoardNameTask.get();
-			driveId = driveIdTask.get();
+			id.add(cpuIdTask.get());
+			id.add(driveIdTask.get());
+			
+			id.removeIf(s -> s == null || s.trim().isEmpty());
 		}
-		return cpuName + "/" + cpuId + "/" + motherBoardName + "/" + driveId;
+		 
+	    return DigestUtils.md5Hex(StringUtils.join(id, null).getBytes(StandardCharsets.UTF_8)).toUpperCase();
 	}
 }

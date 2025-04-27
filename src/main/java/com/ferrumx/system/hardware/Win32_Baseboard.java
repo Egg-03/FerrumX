@@ -26,19 +26,19 @@ public class Win32_Baseboard {
 
 	/**
 	 * This method calls the
-	 * {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)} function and
+	 * {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValues(String, String)} function and
 	 * passes the WMI Classname and the properties whose values we want to fetch, as
 	 * parameters
 	 *
 	 * @return the Manufacturer, Model, Product, SerialNumber, Version details of
 	 *         your Motherboard in the form of a {@link java.util.Map}
 	 * @throws IOException               re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValues(String, String)}
 	 *                                   when there are I/O Errors during streaming
 	 *                                   of data from and to Powershell and other
 	 *                                   generated files
 	 * @throws IndexOutOfBoundsException re-throws the exception thrown by
-	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#get(String, String)}
+	 *                                   {@link com.ferrumx.formatter.cim.CIM_ML#getPropertiesAndTheirValues(String, String)}
 	 *                                   when there is a parsing error of data
 	 *                                   fetched from Windows Powershell
 	 * @throws ShellException            if any internal command used in the
@@ -51,10 +51,10 @@ public class Win32_Baseboard {
 	 */
 	public static Map<String, String> getMotherboard() throws IOException, IndexOutOfBoundsException, ShellException, InterruptedException {
 
-		Map<String, String> mbProperty = CIM_ML.get(classname, attributes);
+		Map<String, String> mbProperty = CIM_ML.getPropertiesAndTheirValues(classname, attributes);
 
 		// get motherbard's plug-n-play deviceID from another class
-		mbProperty.put("PNPDeviceID", CIM_SL.get("Win32_MotherBoardDevice", "PNPDeviceID"));
+		mbProperty.put("PNPDeviceID", CIM_SL.getPropertyValue("Win32_MotherBoardDevice", "PNPDeviceID"));
 
 		return mbProperty;
 	}
