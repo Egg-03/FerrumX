@@ -51,7 +51,6 @@ class HardwareTests {
 	        assertTrue(true, "CPU not found, test considered inconclusive for detailed information.");
 	        return; 
 	    }
-		assertFalse(cpuList.isEmpty());
 		
 		for(String cpu:cpuList) {
 			Map<String, String> cpuProperties = Win32_Processor.getCurrentProcessor(cpu);
