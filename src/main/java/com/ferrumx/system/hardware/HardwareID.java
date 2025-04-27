@@ -18,7 +18,7 @@ import com.ferrumx.formatter.cim.CIM_SL;
 
 /**
  * Hardware ID generation class based on the SHA256 digest of the ID in the following format :
- * "CPUID+DiskIDs"
+ * "CPUID+BaseboardID+DiskIDs"
  *
  * @author Egg-03
  */
@@ -66,7 +66,7 @@ public class HardwareID {
 	
 
 	/**
-	 * Uses {@link java.util.concurrent.ExecutorService} to spawn two threads with
+	 * Uses {@link java.util.concurrent.ExecutorService} to spawn threads as needed with
 	 * each thread calling the
 	 * {@link com.ferrumx.formatter.cim.CIM_SL#getPropertyValue(String, String)} directly or
 	 * through the Win32 Classes to get specific parts of HWID which is then
@@ -83,17 +83,19 @@ public class HardwareID {
 
 		List<String> id = new ArrayList<>();
 
-		try (ExecutorService EXEC = Executors.newFixedThreadPool(2);) {
+		try (ExecutorService EXEC = Executors.newCachedThreadPool();) {
 			
 			Future<String> cpuIdTask = EXEC.submit(() -> CIM_SL.getPropertyValue("Win32_Processor", "ProcessorID"));
+			Future<String> mainboardTask = EXEC.submit(()-> CIM_SL.getPropertyValue("Win32_Baseboard", "SerialNumber"));
 			Future<String> driveIdTask = EXEC.submit(HardwareID::getDiskSerials);
 
 			id.add(cpuIdTask.get());
+			id.add(mainboardTask.get());
 			id.add(driveIdTask.get());
 			
-			id.removeIf(s -> s == null || s.trim().isEmpty());
+			id.removeIf(s -> s == null || StringUtils.isBlank(s));
 		}
-		 
+		
 	    return DigestUtils.sha256Hex(StringUtils.join(id, null).getBytes(StandardCharsets.UTF_8)).toUpperCase();
 	}
 }
