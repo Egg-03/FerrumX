@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.ferrumx.exceptions.ShellException;
 import com.ferrumx.formatter.cim.CIM_ML;
-import com.ferrumx.formatter.cim.CIM_SL;
 
 /**
  * Hardware ID generation class based on the SHA256 digest of the ID in the following format :
@@ -85,8 +84,8 @@ public class HardwareID {
 
 		try (ExecutorService EXEC = Executors.newCachedThreadPool();) {
 			
-			Future<String> cpuIdTask = EXEC.submit(() -> CIM_SL.getPropertyValue("Win32_Processor", "ProcessorID"));
-			Future<String> mainboardTask = EXEC.submit(()-> CIM_SL.getPropertyValue("Win32_Baseboard", "SerialNumber"));
+			Future<String> cpuIdTask = EXEC.submit(() -> StringUtils.join(CIM_ML.getPropertyValue("Win32_Processor", "ProcessorID"), null));
+			Future<String> mainboardTask = EXEC.submit(()-> StringUtils.join(CIM_ML.getPropertyValue("Win32_Baseboard", "SerialNumber"), null));
 			Future<String> driveIdTask = EXEC.submit(HardwareID::getDiskSerials);
 
 			id.add(cpuIdTask.get());
