@@ -46,21 +46,13 @@ public class HardwareID {
 	 *                                   Thread.currentThread().interrupt();
 	 */
 	private static String getDiskSerials() throws IndexOutOfBoundsException, IOException, ShellException, InterruptedException {
-		List<String> ideInterface = CIM_ML.getPropertyValueWhere("Win32_DiskDrive", "InterfaceType", "IDE", "SerialNumber");
-		List<String> scsiInterface = CIM_ML.getPropertyValueWhere("Win32_DiskDrive", "InterfaceType", "SCSI", "SerialNumber");
-
-		StringBuilder ideDrives = new StringBuilder();
-		StringBuilder scsiDrives = new StringBuilder();
-
-		for (String ide : ideInterface) {
-			ideDrives.append(ide);
-		}
-
-		for (String scsi : scsiInterface) {
-			scsiDrives.append(scsi);
-		}
-
-		return ideDrives.toString() + scsiDrives.toString();
+		
+		// load list with ide interface disk ids first
+		List<String> allDiskSerials = CIM_ML.getPropertyValueWhere("Win32_DiskDrive", "InterfaceType", "IDE", "SerialNumber");
+		// then add scsi interface disk ids to it
+		allDiskSerials.addAll(CIM_ML.getPropertyValueWhere("Win32_DiskDrive", "InterfaceType", "SCSI", "SerialNumber"));
+		
+		return StringUtils.join(allDiskSerials, null);
 	}
 	
 
