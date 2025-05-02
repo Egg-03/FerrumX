@@ -18,7 +18,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: ['8', '11', '17', '21']
+        java: ['19', '20', '21', '24']
     permissions: write-all
     
     runs-on: windows-latest
