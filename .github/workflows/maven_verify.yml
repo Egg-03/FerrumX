@@ -16,17 +16,19 @@ on:
 
 jobs:
   build:
-  
+    strategy:
+      matrix:
+        java: ['8', '11', '17', '21']
     permissions: write-all
     
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 21
+    - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: ${{ matrix.java }}
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
