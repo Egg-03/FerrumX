@@ -29,13 +29,13 @@ Maven:
 <dependency>
     <groupId>io.github.egg-03</groupId>
     <artifactId>ferrum-x</artifactId>
-    <version>1.3.6</version>
+    <version>1.3.7</version>
 </dependency>
 ```
 
 Gradle:
 ```gradle
-implementation group: 'io.github.egg-03', name: 'ferrum-x', version: '1.3.6'
+implementation group: 'io.github.egg-03', name: 'ferrum-x', version: '1.3.7'
 ```
 
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
