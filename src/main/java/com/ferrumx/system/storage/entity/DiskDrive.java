@@ -4,38 +4,49 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 public class DiskDrive {
 
     @SerializedName("DeviceID")
+    @Nullable
     private String deviceId;
 
     @SerializedName("Caption")
+    @Nullable
     private String caption;
 
     @SerializedName("Model")
+    @Nullable
     private String model;
 
     @SerializedName("Size")
-    private long size;
+    @Nullable
+    private Long size;
 
     @SerializedName("FirmwareRevision")
+    @Nullable
     private String firmwareRevision;
 
     @SerializedName("SerialNumber")
+    @Nullable
     private String serialNumber;
 
     @SerializedName("Partitions")
-    private int partitions;
+    @Nullable
+    private Integer partitions;
 
     @SerializedName("Status")
+    @Nullable
     private String status;
 
     @SerializedName("InterfaceType")
+    @Nullable
     private String interfaceType;
 
     @SerializedName("PNPDeviceID")
+    @Nullable
     private String pnpDeviceId;
 
     @Override

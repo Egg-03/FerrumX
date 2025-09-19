@@ -4,41 +4,53 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 public class DiskPartition {
 
     @SerializedName("DeviceID")
+    @Nullable
     private String deviceId;
 
     @SerializedName("Name")
+    @Nullable
     private String name;
 
     @SerializedName("Description")
+    @Nullable
     private String description;
 
     @SerializedName("BlockSize")
+    @Nullable
     private Long blockSize;
 
     @SerializedName("NumberOfBlocks")
+    @Nullable
     private Long numberOfBlocks;
 
     @SerializedName("Bootable")
-    private boolean bootable;
+    @Nullable
+    private Boolean bootable;
 
     @SerializedName("PrimaryPartition")
-    private boolean primaryPartition;
+    @Nullable
+    private Boolean primaryPartition;
 
     @SerializedName("BootPartition")
-    private boolean bootPartition;
+    @Nullable
+    private Boolean bootPartition;
 
     @SerializedName("DiskIndex")
-    private int diskIndex;
+    @Nullable
+    private Integer diskIndex;
 
     @SerializedName("Size")
+    @Nullable
     private Long size;
 
     @SerializedName("Type")
+    @Nullable
     private String type;
 
     @Override
@@ -47,4 +59,3 @@ public class DiskPartition {
         return gson.toJson(this);
     }
 }
-

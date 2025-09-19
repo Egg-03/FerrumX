@@ -3,50 +3,65 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 public class PhysicalMemory {
 
     @SerializedName("Tag")
+    @Nullable
     private String tag;
 
     @SerializedName("Name")
+    @Nullable
     private String name;
 
     @SerializedName("Manufacturer")
+    @Nullable
     private String manufacturer;
 
     @SerializedName("Model")
+    @Nullable
     private String model;
 
     @SerializedName("OtherIdentifyingInfo")
+    @Nullable
     private String otherIdentifyingInfo;
 
     @SerializedName("PartNumber")
+    @Nullable
     private String partNumber;
 
     @SerializedName("FormFactor")
-    private int formFactor;
+    @Nullable
+    private Integer formFactor;
 
     @SerializedName("BankLabel")
+    @Nullable
     private String bankLabel;
 
     @SerializedName("Capacity")
-    private long capacity;
+    @Nullable
+    private Long capacity;
 
     @SerializedName("DataWidth")
-    private int dataWidth;
+    @Nullable
+    private Integer dataWidth;
 
     @SerializedName("Speed")
-    private int speed;
+    @Nullable
+    private Integer speed;
 
     @SerializedName("ConfiguredClockSpeed")
-    private int configuredClockSpeed;
+    @Nullable
+    private Integer configuredClockSpeed;
 
     @SerializedName("DeviceLocator")
+    @Nullable
     private String deviceLocator;
 
     @SerializedName("SerialNumber")
+    @Nullable
     private String serialNumber;
 
     @Override
@@ -55,4 +70,3 @@ public class PhysicalMemory {
         return gson.toJson(this);
     }
 }
-

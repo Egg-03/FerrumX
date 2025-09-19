@@ -4,62 +4,81 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Data;
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 public class Processor {
 
     @SerializedName("DeviceID")
+    @Nullable
     private String deviceId;
 
     @SerializedName("Name")
+    @Nullable
     private String name;
 
     @SerializedName("NumberOfCores")
-    private int numberOfCores;
+    @Nullable
+    private Integer numberOfCores;
 
     @SerializedName("ThreadCount")
-    private int threadCount;
+    @Nullable
+    private Integer threadCount;
 
     @SerializedName("NumberOfLogicalProcessors")
-    private int numberOfLogicalProcessors;
+    @Nullable
+    private Integer numberOfLogicalProcessors;
 
     @SerializedName("Manufacturer")
+    @Nullable
     private String manufacturer;
 
     @SerializedName("AddressWidth")
-    private int addressWidth;
+    @Nullable
+    private Integer addressWidth;
 
     @SerializedName("L2CacheSize")
-    private int l2CacheSize;
+    @Nullable
+    private Integer l2CacheSize;
 
     @SerializedName("L3CacheSize")
-    private int l3CacheSize;
+    @Nullable
+    private Integer l3CacheSize;
 
     @SerializedName("MaxClockSpeed")
-    private int maxClockSpeed;
+    @Nullable
+    private Integer maxClockSpeed;
 
     @SerializedName("ExtClock")
-    private int extClock;
+    @Nullable
+    private Integer extClock;
 
     @SerializedName("SocketDesignation")
+    @Nullable
     private String socketDesignation;
 
     @SerializedName("Version")
+    @Nullable
     private String version;
 
     @SerializedName("Caption")
+    @Nullable
     private String caption;
 
     @SerializedName("Family")
-    private int family;
+    @Nullable
+    private Integer family;
 
     @SerializedName("Stepping")
-    private int stepping;
+    @Nullable
+    private Integer stepping;
 
     @SerializedName("VirtualizationFirmwareEnabled")
-    private boolean virtualizationFirmwareEnabled;
+    @Nullable
+    private Boolean virtualizationFirmwareEnabled;
 
     @SerializedName("ProcessorId")
+    @Nullable
     private String processorId;
 
     @Override
