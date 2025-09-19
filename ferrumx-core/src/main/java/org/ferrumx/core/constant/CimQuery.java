@@ -15,7 +15,7 @@ public enum CimQuery {
     PROCESSOR_QUERY("Get-CimInstance Win32_Processor | Select-Object * | ConvertTo-Json"),
     PROCESSOR_CACHE_QUERY("Get-CimInstance Win32_CacheMemory | Select-Object * | ConvertTo-Json"),
 
-    BIOS_QUERY("Get-CimInstance Win32_BIOS | Where-Object { $_.PrimaryBIOS -eq $true } | Select-Object * | ConvertTo-Json"),
+    BIOS_QUERY("Get-CimInstance Win32_BIOS | Select-Object * | ConvertTo-Json"),
     MAINBOARD_QUERY("Get-CimInstance Win32_Baseboard | Select-Object * | ConvertTo-Json"),
     MAINBOARD_PORT_QUERY("Get-CimInstance Win32_PortConnector | Select-Object * | ConvertTo-Json"),
 

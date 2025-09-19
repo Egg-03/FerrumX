@@ -45,6 +45,10 @@ public class Bios {
     @Nullable
     private String smbiosBiosVersion;
 
+    @SerializedName("PrimaryBIOS")
+    @Nullable
+    private Boolean primaryBios;
+
     @Override
     public String toString() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

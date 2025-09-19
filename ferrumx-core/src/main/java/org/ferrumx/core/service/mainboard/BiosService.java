@@ -7,13 +7,13 @@ import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
+import java.util.List;
 
 public class BiosService {
 
     @NotNull
-    public Optional<Bios> getBios() {
+    public List<Bios> getBios() {
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.BIOS_QUERY.getQuery());
-        return MapperUtil.mapToObject(response.getCommandOutput(), Bios.class);
+        return MapperUtil.mapToList(response.getCommandOutput(), Bios.class);
     }
 }
