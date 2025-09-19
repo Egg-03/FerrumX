@@ -1,5 +1,6 @@
 package org.ferrumx.service.storage;
 
+import org.ferrumx.constant.CimQuery;
 import org.ferrumx.entity.storage.DiskDrive;
 import org.ferrumx.util.MapperUtil;
 import com.profesorfalken.jpowershell.PowerShell;
@@ -13,7 +14,7 @@ public class DiskDriveService {
     @NotNull
     public List<DiskDrive> getDiskDrives() {
 
-        PowerShellResponse response = PowerShell.executeSingleCommand("Get-CimInstance Win32_DiskDrive | Select-Object * | ConvertTo-Json");
+        PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.DISK_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), DiskDrive.class);
     }
 }
