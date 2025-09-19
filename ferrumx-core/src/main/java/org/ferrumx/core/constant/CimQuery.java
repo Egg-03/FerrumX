@@ -27,7 +27,9 @@ public enum CimQuery {
     OPERATING_SYSTEM_QUERY("Get-CimInstance Win32_OperatingSystem | Select-Object * | ConvertTo-Json"),
 
     DISK_QUERY("Get-CimInstance Win32_DiskDrive | Select-Object * | ConvertTo-Json"),
-    DISK_PARTITION_QUERY("Get-CimInstance Win32_DiskPartition | Select-Object * | ConvertTo-Json");
+    DISK_PARTITION_QUERY("Get-CimInstance Win32_DiskPartition | Select-Object * | ConvertTo-Json"),
+
+    COMPUTER_SYSTEM_PRODUCT("Get-CimInstance -ClassName Win32_ComputerSystemProduct | Select-Object * | ConvertTo-Json");
 
     private final String query;
 }
