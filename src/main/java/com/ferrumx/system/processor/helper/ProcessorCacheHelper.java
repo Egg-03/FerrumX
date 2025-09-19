@@ -5,14 +5,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 public class ProcessorCacheHelper {
 
-    @Nullable
+    @NotNull
     public List<ProcessorCache> getProcessorCaches() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand("Get-CimInstance Win32_CacheMemory | Select-Object * | ConvertTo-Json");

@@ -31,9 +31,6 @@
   <properties>
 	<maven.compiler.release>21</maven.compiler.release>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<sonar.organization>egg-03</sonar.organization>
-  	<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-  	<sonar.exclusions>src/test/java/**/*, pom.xml</sonar.exclusions>
   </properties>
   <dependencies>
   	<dependency>
@@ -63,13 +60,11 @@
   		<groupId>org.tinylog</groupId>
   		<artifactId>tinylog-api</artifactId>
   		<version>2.7.0</version>
-  		<scope>test</scope>
   	</dependency>
   	<dependency>
   		<groupId>org.tinylog</groupId>
   		<artifactId>tinylog-impl</artifactId>
   		<version>2.7.0</version>
-  		<scope>test</scope>
   	</dependency>
   	<dependency>
     	<groupId>org.junit.jupiter</groupId>
@@ -106,7 +101,7 @@
         	</executions>
   		</plugin>
   		<plugin>
-      		<groupId>org.apache.maven.plugins</groupId>
+            <groupId>org.apache.maven.plugins</groupId>
       		<artifactId>maven-javadoc-plugin</artifactId>
       		<version>3.11.2</version>
       		<executions>
@@ -140,31 +135,6 @@
             	</execution>
         	</executions>
     	</plugin>
-    	<plugin>
-        	<groupId>org.sonarsource.scanner.maven</groupId>
-        	<artifactId>sonar-maven-plugin</artifactId>
-        	<version>5.1.0.4751</version>
-      </plugin>
-      <plugin>
- 	  		<groupId>org.jacoco</groupId>
-  			<artifactId>jacoco-maven-plugin</artifactId>
-  			<version>0.8.13</version>
-  			<executions>
-  				<execution>
-                    <id>prepare-agent</id>
-                    <goals>
-                        <goal>prepare-agent</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <id>report</id>
-                    <phase>prepare-package</phase> 
-                    <goals>
-                   		<goal>report</goal>
-                    </goals>
-                </execution>
-           </executions>
-	  </plugin>
   	</plugins>
   </build>
   <scm>
