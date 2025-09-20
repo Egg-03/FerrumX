@@ -1,0 +1,70 @@
+package org.ferrumx.core.entity.network;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lombok.Data;
+
+import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Represents a Network Adapter device on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_NetworkAdapter WMI class.
+ * <p>
+ * See also: {@link NetworkAdapterConfiguration}
+ */
+@Data
+public class NetworkAdapter {
+
+    @SerializedName("DeviceID")
+    @Nullable
+    private String deviceId;
+
+    @SerializedName("Index")
+    @Nullable
+    private Integer index;
+
+    @SerializedName("Name")
+    @Nullable
+    private String name;
+
+    @SerializedName("Description")
+    @Nullable
+    private String description;
+
+    @SerializedName("PNPDeviceID")
+    @Nullable
+    private String pnpDeviceId;
+
+    @SerializedName("MACAddress")
+    @Nullable
+    private String macAddress;
+
+    @SerializedName("Installed")
+    @Nullable
+    private Boolean installed;
+
+    @SerializedName("NetEnabled")
+    @Nullable
+    private Boolean netEnabled;
+
+    @SerializedName("NetConnectionID")
+    @Nullable
+    private String netConnectionId;
+
+    @SerializedName("PhysicalAdapter")
+    @Nullable
+    private Boolean physicalAdapter;
+
+    @SerializedName("TimeOfLastReset")
+    @Nullable
+    private String timeOfLastReset;
+
+    @Override
+    public String toString() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(this);
+    }
+}
+
