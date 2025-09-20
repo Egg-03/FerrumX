@@ -1,4 +1,6 @@
 name: Maven Library Publish
+permissions:
+  contents: read
 
 on:
   release:
