@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a User on a Windows system.
+ */
+
 @Data
 @RequiredArgsConstructor
 public class User {

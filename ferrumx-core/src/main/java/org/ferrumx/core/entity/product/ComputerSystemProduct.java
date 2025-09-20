@@ -5,6 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
+/**
+ * Represents a Computer Product on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_ComputerSystemProduct WMI class.
+ */
 @Data
 public class ComputerSystemProduct {
 

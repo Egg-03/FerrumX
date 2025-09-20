@@ -9,8 +9,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Service class for fetching operating system information from the system.
+ * <p>
+ * This class executes the {@link CimQuery#OPERATING_SYSTEM_QUERY} PowerShell command
+ * and maps the resulting JSON into a list of {@link OperatingSystem} objects.
+ */
 public class OperatingSystemService {
 
+    /**
+     * Retrieves a non-null list of operating systems present on the system.
+     *
+     * @return a list of {@link OperatingSystem} objects representing the system's operating systems.
+     *         If no operating systems are present, returns an empty list.
+     * @throws RuntimeException if there is an error executing the PowerShell command
+     *                          or parsing the output.
+     */
     @NotNull
     public List<OperatingSystem> getOperatingSystems() {
 

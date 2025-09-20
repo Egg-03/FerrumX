@@ -6,6 +6,11 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a Logical Disk Partition on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_DiskPartition WMI class.
+ */
 @Data
 public class DiskPartition {
 

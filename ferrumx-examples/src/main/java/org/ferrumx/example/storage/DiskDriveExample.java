@@ -6,6 +6,13 @@ import org.ferrumx.core.service.storage.DiskDriveService;
 
 import java.util.List;
 
+/**
+ * Example class demonstrating how to fetch and display disk drive information
+ * using {@link DiskDriveService}.
+ * <p>
+ * This class retrieves a list of {@link DiskDrive} objects and logs their JSON representation.
+ * Individual fields of each disk drive can be accessed via the respective getter methods.
+ */
 @Slf4j
 public class DiskDriveExample {
 

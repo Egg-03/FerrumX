@@ -6,6 +6,13 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a Processor Cache entity on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_CacheMemory WMI class.
+ * <p>
+ * See also: {@link Processor}
+ */
 @Data
 public class ProcessorCache {
 

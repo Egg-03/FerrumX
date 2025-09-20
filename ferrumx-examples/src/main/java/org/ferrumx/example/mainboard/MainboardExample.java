@@ -6,6 +6,20 @@ import org.ferrumx.core.service.mainboard.MainboardService;
 
 import java.util.Optional;
 
+/**
+ * Example class demonstrating how to fetch and display mainboard information
+ * using {@link MainboardService}.
+ * <p>
+ * This class shows both approaches for handling the {@link Optional} result:
+ * <ul>
+ *     <li>Using {@link Optional#ifPresent} to safely access the value.</li>
+ *     <li>Using {@link Optional#orElseThrow} to directly get the value or throw
+ *         a {@link java.util.NoSuchElementException} if not present.</li>
+ * </ul>
+ * <p>
+ * The JSON representation of the {@link Mainboard} object is logged,
+ * and individual attributes can be accessed via the getter methods.
+ */
 @Slf4j
 public class MainboardExample {
 

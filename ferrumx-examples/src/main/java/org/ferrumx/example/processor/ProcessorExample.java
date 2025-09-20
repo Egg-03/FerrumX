@@ -6,6 +6,14 @@ import org.ferrumx.core.service.processor.ProcessorService;
 
 import java.util.Optional;
 
+/**
+ * Example class demonstrating how to fetch and display processor information
+ * using {@link ProcessorService}.
+ * <p>
+ * This class retrieves an {@link Optional} {@link Processor} object and logs its JSON
+ * representation. It also shows how to access individual attributes of the processor
+ * via getter methods.
+ */
 @Slf4j
 public class ProcessorExample {
 

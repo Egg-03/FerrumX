@@ -6,6 +6,13 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a Physical or a Logical Drive on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_DiskDrive WMI class.
+ * <p>
+ * See also: {@link DiskPartition}
+ */
 @Data
 public class DiskDrive {
 

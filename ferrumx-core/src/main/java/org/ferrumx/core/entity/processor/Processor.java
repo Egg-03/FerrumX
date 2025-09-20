@@ -6,6 +6,13 @@ import lombok.Data;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a CPU device on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_Processor WMI class.
+ * <p>
+ * See also: {@link ProcessorCache}
+ */
 @Data
 public class Processor {
 

@@ -8,6 +8,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Represents a Network Adapter Configuration on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_NetworkAdapterConfiguration WMI class.
+ * <p>
+ * See also: {@link NetworkAdapter}
+ */
 @Data
 public class NetworkAdapterConfiguration {
 

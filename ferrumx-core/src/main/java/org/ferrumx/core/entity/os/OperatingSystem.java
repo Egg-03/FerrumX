@@ -8,6 +8,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Represents the Windows Operating System.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_OperatingSystem WMI class.
+ */
 @Data
 public class OperatingSystem {
 

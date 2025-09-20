@@ -8,6 +8,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Represents a battery device on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_Battery WMI class.
+ */
 @Data
 public class Battery {
 

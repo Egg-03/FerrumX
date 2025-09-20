@@ -6,6 +6,16 @@ import org.ferrumx.core.service.memory.PhysicalMemoryService;
 
 import java.util.List;
 
+/**
+ * Example class demonstrating how to fetch and display physical memory information
+ * using {@link PhysicalMemoryService}.
+ * <p>
+ * This class fetches a list of {@link PhysicalMemory} objects and logs their
+ * JSON representation.
+ * <p>
+ * Individual attributes of each {@link PhysicalMemory} object can be accessed
+ * via their getter methods.
+ */
 @Slf4j
 public class PhysicalMemoryExample {
 

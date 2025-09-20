@@ -6,6 +6,16 @@ import org.ferrumx.core.service.processor.ProcessorCacheService;
 
 import java.util.List;
 
+/**
+ * Example class demonstrating how to fetch and display processor cache information
+ * using {@link ProcessorCacheService}.
+ * <p>
+ * This class retrieves a list of {@link ProcessorCache} objects and logs their JSON
+ * representation.
+ * <p>
+ * Individual attributes of each {@link ProcessorCache} object can be accessed
+ * via their getter methods.
+ */
 @Slf4j
 public class ProcessorCacheExample {
 

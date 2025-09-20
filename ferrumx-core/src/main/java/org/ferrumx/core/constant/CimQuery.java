@@ -3,6 +3,14 @@ package org.ferrumx.core.constant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enum representing the predefined WMI (CIM) queries used in the system.
+ * <p>
+ * Each constant holds a PowerShell command that queries a specific WMI class
+ * and returns the result in JSON format. These queries are typically executed
+ * using {@link com.profesorfalken.jpowershell.PowerShell} and mapped to
+ * corresponding Java objects.
+ */
 @RequiredArgsConstructor
 @Getter
 public enum CimQuery {

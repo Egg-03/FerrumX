@@ -6,6 +6,16 @@ import org.ferrumx.core.service.network.NetworkAdapterConfigurationService;
 
 import java.util.List;
 
+/**
+ * Example class demonstrating how to fetch and display network adapter configuration
+ * information using {@link NetworkAdapterConfigurationService}.
+ * <p>
+ * This class retrieves a list of {@link NetworkAdapterConfiguration} objects and logs
+ * their JSON representation.
+ * <p>
+ * Individual attributes of each {@link NetworkAdapterConfiguration} object can be accessed
+ * via their getter methods.
+ */
 @Slf4j
 public class NetworkAdapterConfigExample {
 

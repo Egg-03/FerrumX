@@ -6,6 +6,16 @@ import org.ferrumx.core.service.os.OperatingSystemService;
 
 import java.util.List;
 
+/**
+ * Example class demonstrating how to fetch and display operating system information
+ * using {@link OperatingSystemService}.
+ * <p>
+ * This class retrieves a list of {@link OperatingSystem} objects and logs their JSON
+ * representation.
+ * <p>
+ * Individual attributes of each {@link OperatingSystem} object can be accessed
+ * via their getter methods.
+ */
 @Slf4j
 public class OperatingSystemExample {
 

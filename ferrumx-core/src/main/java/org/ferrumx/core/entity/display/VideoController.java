@@ -6,6 +6,11 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a GPU device on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_VideoController WMI class.
+ */
 @Data
 public class VideoController {
 

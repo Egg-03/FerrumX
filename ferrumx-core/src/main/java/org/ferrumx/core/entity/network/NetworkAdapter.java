@@ -7,6 +7,13 @@ import lombok.Data;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents a Network Adapter device on a Windows system.
+ * <p>
+ * Fields correspond to the properties retrieved from the Win32_NetworkAdapter WMI class.
+ * <p>
+ * See also: {@link NetworkAdapterConfiguration}
+ */
 @Data
 public class NetworkAdapter {
 

@@ -6,6 +6,16 @@ import org.ferrumx.core.service.display.VideoControllerService;
 
 import java.util.List;
 
+/**
+ * Example class demonstrating how to fetch and display video controller
+ * information using {@link VideoControllerService}.
+ * <p>
+ * This class executes a CIM query to retrieve all video controllers on the
+ * system and logs the JSON representation of each {@link VideoController} object.
+ * <p>
+ * Individual attributes of each video controller can be accessed via
+ * the getter methods of the {@link VideoController} class.
+ */
 @Slf4j
 public class VideoControllerExample {
 
