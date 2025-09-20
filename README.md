@@ -28,20 +28,20 @@ Maven:
 ```xml
 <dependency>
     <groupId>io.github.egg-03</groupId>
-    <artifactId>ferrum-x</artifactId>
-    <version>1.3.7</version> // OUTDATED (will be updated soon)
+    <artifactId>ferrumx-core</artifactId>
+    <version>2.0.0-RC1</version>
 </dependency>
 ```
 
 Gradle:
 ```gradle
-implementation group: 'io.github.egg-03', name: 'ferrum-x', version: '1.3.7'
+implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.0.0-RC1'
 ```
 
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
 
 # Documentation
-Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/) // WILL BE UPDATED
+Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
 
 # Usage
 // TODO
