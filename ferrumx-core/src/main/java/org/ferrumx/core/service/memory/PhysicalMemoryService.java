@@ -12,7 +12,7 @@ import java.util.List;
 public class PhysicalMemoryService {
 
     @NotNull
-    public List<PhysicalMemory> getPhysicalMemory() {
+    public List<PhysicalMemory> getPhysicalMemories() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.PHYSICAL_MEMORY_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), PhysicalMemory.class);

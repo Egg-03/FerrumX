@@ -10,7 +10,7 @@ import java.util.List;
 public class PhysicalMemoryExample {
 
     public static void main(String[] args) {
-        List<PhysicalMemory> memoryList = new PhysicalMemoryService().getPhysicalMemory();
+        List<PhysicalMemory> memoryList = new PhysicalMemoryService().getPhysicalMemories();
         memoryList.forEach(memory -> log.info("Physical Memory: \n{}", memory));
 
         // individual fields are accessible via getter methods
