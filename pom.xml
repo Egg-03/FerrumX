@@ -7,10 +7,6 @@
     <version>2.0.0</version>
     <packaging>pom</packaging>
 
-    <name>FerrumX</name>
-    <description>A lightweight Hardware and Network Info wrapper in JAVA</description>
-    <url>https://github.com/Egg-03/FerrumX</url>
-
     <modules>
         <module>ferrumx-core</module>
         <module>ferrumx-examples</module>
@@ -19,33 +15,106 @@
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <project.name>FerrumX</project.name>
+        <project.description>A lightweight Hardware and Network Info wrapper in JAVA</project.description>
+        <project.url>https://github.com/Egg-03/FerrumX</project.url>
+
+        <project.license.name>The MIT License</project.license.name>
+        <project.license.url>https://raw.githubusercontent.com/Egg-03/Ferrumx/refs/heads/main/LICENSE</project.license.url>
+
+        <project.developer.id>Egg-03</project.developer.id>
+        <project.developer.name>Egg-03</project.developer.name>
+        <project.developer.email>egg03@duck.com</project.developer.email>
+
+        <project.scm.url>https://github.com/Egg-03/FerrumX.git</project.scm.url>
+        <project.scm.dev>scm:git:ssh://git@github.com:Egg-03/FerrumX.git</project.scm.dev>
     </properties>
+
+    <!-- Mandatory fields for Sonatype Central -->
+    <name>${project.name}</name>
+    <description>${project.description}</description>
+    <url>${project.url}</url>
 
     <licenses>
         <license>
-            <name>The MIT License</name>
-            <url>https://raw.githubusercontent.com/Egg-03/Ferrumx/refs/heads/main/LICENSE</url>
+            <name>${project.license.name}</name>
+            <url>${project.license.url}</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <developers>
         <developer>
-            <id>Egg-03</id>
-            <name>Egg-03</name>
-            <email>egg03@duck.com</email>
-            <roles>
-                <role>developer</role>
-            </roles>
-            <timezone>+5:30</timezone>
-            <properties>
-                <picUrl>https://avatars.githubusercontent.com/Egg-03</picUrl>
-            </properties>
+            <id>${project.developer.id}</id>
+            <name>${project.developer.name}</name>
+            <email>${project.developer.email}</email>
         </developer>
     </developers>
 
     <scm>
-        <url>https://github.com/Egg-03/FerrumX.git</url>
-        <developerConnection>Egg-03</developerConnection>
+        <url>${project.scm.url}</url>
+        <developerConnection>${project.scm.dev}</developerConnection>
     </scm>
+
+    <build>
+        <plugins>
+            <!-- Attach Sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Attach javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Sign -->
+            <plugin>
+                <groupId>org.simplify4u.plugins</groupId>
+                <artifactId>sign-maven-plugin</artifactId>
+                <version>1.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Publish to Central -->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.8.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <checksums>all</checksums>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

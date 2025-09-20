@@ -11,6 +11,8 @@
     <artifactId>ferrumx-examples</artifactId>
     <packaging>jar</packaging>
 
+    <name>FerrumX Examples</name>
+
     <dependencies>
         <dependency>
             <groupId>io.github.egg-03</groupId>
