@@ -5,7 +5,7 @@
 [![Project Stats](https://openhub.net/p/FerrumX/widgets/project_thin_badge.gif)](https://openhub.net/p/FerrumX)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Egg-03/FerrumX/.github%2Fworkflows%2Fbuild_windows_maven.yml)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
+
 
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
@@ -29,7 +29,7 @@ Maven:
 <dependency>
     <groupId>io.github.egg-03</groupId>
     <artifactId>ferrum-x</artifactId>
-    <version>1.3.7</version>
+    <version>1.3.7</version> // OUTDATED (will be updated soon)
 </dependency>
 ```
 
@@ -41,14 +41,48 @@ implementation group: 'io.github.egg-03', name: 'ferrum-x', version: '1.3.7'
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
 
 # Documentation
-Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
+Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/) // WILL BE UPDATED
 
 # Usage
-Please refer to our [Wiki](https://github.com/Egg-03/FerrumX/wiki) page to learn about the various functions and their usage, along with example code snippets.
-You can also check out some examples [here](https://github.com/Egg-03/FerrumX/tree/be360eeb6bbf1ca6e992d5d8fbb1e2109bfa6514/src/com/ferrumx/tests)
+// TODO
 
 # License
 This project is licensed under the MIT License. Read the LICENSE.md for more information.
 
-# Special Thanks
-[Rugino3](https://github.com/Soumil-Biswas) for the banner and documentation proofreading
+# New in v2
+
+> [!NOTE]
+> Read this only if you have ever used v1
+> 
+> I will work on a migration from v1 to v2 guide soon
+
+### **Visual and Functional Overhaul**
+
+1. The legacy shell classes and custom parsing logic have been completely removed and replaced with a new service/entity structure.
+2. Each service now runs a powershell query via jPowershell that parses the JSON output to it's respective entity class via GSON. Instead of a Map data structure in v1, you now get typed objects with their fields which are accessible via the provided getters.
+3. Removed all forced checked exceptions. The only time an unchecked exception may be thrown is if the JSON is malformed.
+4. Improved null safety with the usage of Optional and empty Lists.
+
+### **Features Added/Removed**
+
+1. A new class `ComputerSystemProductService` fetches detailed product information like vendor, name, and UUID.
+2. Removed custom HWID generation logic.
+3. Removed `Win32_Printer` and `Win32_SoundDevice` classes.
+4. Removed the associative classes `Win32_AssociatedProcessorMemory`, `Win32_NetworkAdapterSetting`. They are no longer needed to link Processor with its Cache and a Network Adapter with its Adapter Configuration respectively. However, `Win32_DiskDriveToDiskPartition` and `Win32_LogicalDiskToPartition` are required to link drive letters and partition names to the disks. Right now, they have been removed and a suitable implementation has not been decided yet.
+
+
+### **Project Structure Changes**
+
+1.Multi-Module Project: The codebase is now split into a multi-module Maven project:
+
+    ferrumx-core: Contains the main library logic.
+    ferrumx-examples: Provides practical usage demonstrations.
+
+2.Package Refactoring: All core packages have been moved under the `org.ferrumx.core` namespace, and the root package was renamed from `com.ferrumx` to `org.ferrumx` to align with open-source conventions.
+
+
+### **Testing and Documentation**
+
+1.Unit Testing: An extensive suite of unit tests has been added for all core services using Mockito, ensuring the stability and correctness of the data retrieval logic.
+
+2.Javadoc: All public classes and methods in the ferrumx-core and ferrumx-examples modules have been documented with comprehensive Javadoc, clarifying their purpose and usage.
