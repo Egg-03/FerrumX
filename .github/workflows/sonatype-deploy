@@ -1,0 +1,35 @@
+name: Maven Library Publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout code
+      - uses: actions/checkout@v3
+
+      # 2️⃣ Set up JDK 21 and Maven with credentials and GPG keys
+      - name: Set up Java 21 and Maven
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 21
+          server-id: central
+          server-username: ${{ secrets.NEXUS_USERNAME }}
+          server-password: ${{ secrets.NEXUS_PASSWORD }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      # 3️⃣ Build project, attach sources & javadocs, sign artifacts
+      - name: Build and package
+        run: mvn clean verify -B
+
+      # 4️⃣ Deploy to Sonatype OSSRH staging repository
+      #     - Only deploys artifacts, manual release required
+      - name: Deploy to OSSRH staging
+        run: mvn deploy -PsonatypeDeploy
