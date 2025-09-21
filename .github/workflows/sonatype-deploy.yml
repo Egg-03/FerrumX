@@ -22,11 +22,17 @@ jobs:
           distribution: 'temurin'
           java-version: 21
           server-id: central
-          server-username: ${{ secrets.OSSRH_TOKEN_USERNAME }}
-          server-password: ${{ secrets.OSSRH_TOKEN_PASSWORD }}
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          server-username: USERNAME
+          server-password: PASSWORD
+          gpg-private-key: PRIVATE_KEY
+          gpg-passphrase: PASSPHRASE
 
       # 3️⃣ Deploy to Sonatype OSSRH staging repository
       - name: Deploy to OSSRH staging
         run: mvn clean deploy
+
+        env:
+            USERNAME: ${{ secrets.OSSRH_TOKEN_USERNAME }}
+            PASSWORD: ${{ secrets.OSSRH_TOKEN_PASSWORD }}
+            PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+            PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
