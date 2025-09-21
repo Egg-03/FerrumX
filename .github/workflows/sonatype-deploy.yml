@@ -22,16 +22,11 @@ jobs:
           distribution: 'temurin'
           java-version: 21
           server-id: central
-          server-username: ${{ secrets.NEXUS_USERNAME }}
-          server-password: ${{ secrets.NEXUS_PASSWORD }}
+          server-username: ${{ secrets.OSSRH_TOKEN_USERNAME }}
+          server-password: ${{ secrets.OSSRH_TOKEN_PASSWORD }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
-      # 3️⃣ Build project, attach sources & javadocs, sign artifacts
-      - name: Build and package
-        run: mvn clean verify
-
-      # 4️⃣ Deploy to Sonatype OSSRH staging repository
-      #     - Only deploys artifacts, manual release required
+      # 3️⃣ Deploy to Sonatype OSSRH staging repository
       - name: Deploy to OSSRH staging
-        run: mvn deploy
+        run: mvn clean deploy
