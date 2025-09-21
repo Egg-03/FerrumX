@@ -8,14 +8,12 @@ on:
 
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
-
     steps:
       # 1️⃣ Checkout code
       - uses: actions/checkout@v3
 
-      # 2️⃣ Set up JDK 21 and Maven with credentials and GPG keys
+      # 2️⃣ Set up JDK 21 and Maven
       - name: Set up Java 21 and Maven
         uses: actions/setup-java@v3
         with:
@@ -24,9 +22,11 @@ jobs:
           server-id: central
           server-username: ${{ secrets.OSSRH_TOKEN_USERNAME }}
           server-password: ${{ secrets.OSSRH_TOKEN_PASSWORD }}
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
-      # 3️⃣ Deploy to Sonatype OSSRH staging repository
+      # 3️⃣ Deploy to OSSRH with Simplify4U signing
       - name: Deploy to OSSRH staging
-        run: mvn clean deploy
+        env:
+          SIGN_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          SIGN_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          SIGN_KEY_PASS: ${{ secrets.GPG_PASSPHRASE }}
+        run: mvn clean deploy -B
