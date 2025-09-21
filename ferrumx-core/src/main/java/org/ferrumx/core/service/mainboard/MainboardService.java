@@ -14,7 +14,18 @@ import java.util.Optional;
  * <p>
  * This class executes the {@link CimQuery#MAINBOARD_QUERY} PowerShell command
  * and maps the resulting JSON into a {@link Mainboard} object.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getMainboard()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * MainboardService mainboardService = new MainboardService();
+ * Optional<Mainboard> mainboard = mainboardService.getMainboard();
+ * mainboard.ifPresent(System.out::println);
+ * }</pre>
  */
+
 public class MainboardService {
 
     /**
@@ -22,7 +33,7 @@ public class MainboardService {
      *
      * @return an {@link Optional} of {@link Mainboard} representing the system's mainboard.
      *         Returns {@link Optional#empty()} if no mainboard information is detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

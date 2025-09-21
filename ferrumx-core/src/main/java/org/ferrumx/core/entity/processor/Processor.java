@@ -2,91 +2,117 @@ package org.ferrumx.core.entity.processor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Data;
 import com.google.gson.annotations.SerializedName;
+import lombok.Value;
+import lombok.With;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents a CPU device on a Windows system.
+ * Immutable representation of a CPU device on a Windows system.
  * <p>
- * Fields correspond to the properties retrieved from the Win32_Processor WMI class.
+ * Fields correspond to properties retrieved from the {@code Win32_Processor} WMI class.
+ * Values are captured at query time and do not automatically update.
  * <p>
- * See also: {@link ProcessorCache}
+ * This class is annotated with Lombok {@link lombok.Value} to enforce immutability
+ * <p>
+ * To derive a modified copy, use the generated {@code withXxx(...)} methods
+ * (enabled by Lombok {@link lombok.With}). This allows safe copy-on-write semantics
+ * without breaking immutability.
+ * <p>
+ * JSON serialization and deserialization are handled by Gson.
+ * Each field is annotated with {@link com.google.gson.annotations.SerializedName}
+ * to ensure correct mapping from WMI JSON output.
+ *
+ * <h2>Thread safety</h2>
+ * Instances are inherently thread-safe and may be safely cached or shared
+ * across threads without external synchronization.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * Processor cpu = gson.fromJson(json, Processor.class);
+ * Processor updated = cpu.withThreadCount(16);
+ * System.out.println(cpu); // Pretty-printed JSON
+ * }</pre>
+ *
+ * {@link ProcessorCache} for related cache information
+ * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor">Win32_Processor</a>
  */
-@Data
+
+@Value
+@With
 public class Processor {
 
     @SerializedName("DeviceID")
     @Nullable
-    private String deviceId;
+    String deviceId;
 
     @SerializedName("Name")
     @Nullable
-    private String name;
+    String name;
 
     @SerializedName("NumberOfCores")
     @Nullable
-    private Integer numberOfCores;
+    Integer numberOfCores;
 
     @SerializedName("ThreadCount")
     @Nullable
-    private Integer threadCount;
+    Integer threadCount;
 
     @SerializedName("NumberOfLogicalProcessors")
     @Nullable
-    private Integer numberOfLogicalProcessors;
+    Integer numberOfLogicalProcessors;
 
     @SerializedName("Manufacturer")
     @Nullable
-    private String manufacturer;
+    String manufacturer;
 
     @SerializedName("AddressWidth")
     @Nullable
-    private Integer addressWidth;
+    Integer addressWidth;
 
     @SerializedName("L2CacheSize")
     @Nullable
-    private Integer l2CacheSize;
+    Integer l2CacheSize;
 
     @SerializedName("L3CacheSize")
     @Nullable
-    private Integer l3CacheSize;
+    Integer l3CacheSize;
 
     @SerializedName("MaxClockSpeed")
     @Nullable
-    private Integer maxClockSpeed;
+    Integer maxClockSpeed;
 
     @SerializedName("ExtClock")
     @Nullable
-    private Integer extClock;
+    Integer extClock;
 
     @SerializedName("SocketDesignation")
     @Nullable
-    private String socketDesignation;
+    String socketDesignation;
 
     @SerializedName("Version")
     @Nullable
-    private String version;
+    String version;
 
     @SerializedName("Caption")
     @Nullable
-    private String caption;
+    String caption;
 
     @SerializedName("Family")
     @Nullable
-    private Integer family;
+    Integer family;
 
     @SerializedName("Stepping")
     @Nullable
-    private Integer stepping;
+    Integer stepping;
 
     @SerializedName("VirtualizationFirmwareEnabled")
     @Nullable
-    private Boolean virtualizationFirmwareEnabled;
+    Boolean virtualizationFirmwareEnabled;
 
     @SerializedName("ProcessorId")
     @Nullable
-    private String processorId;
+    String processorId;
 
     @Override
     public String toString() {

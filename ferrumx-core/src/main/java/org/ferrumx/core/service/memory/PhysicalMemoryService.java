@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#PHYSICAL_MEMORY_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link PhysicalMemory} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getPhysicalMemories()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * PhysicalMemoryService memoryService = new PhysicalMemoryService();
+ * List<PhysicalMemory> memories = memoryService.getPhysicalMemories();
+ * memories.forEach(System.out::println);
+ * }</pre>
  */
+
 public class PhysicalMemoryService {
 
     /**
@@ -22,7 +33,7 @@ public class PhysicalMemoryService {
      *
      * @return a list of {@link PhysicalMemory} objects representing the system's RAM.
      *         Returns an empty list if no memory modules are detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

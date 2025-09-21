@@ -14,7 +14,18 @@ import java.util.Optional;
  * <p>
  * This class executes the {@link CimQuery#PROCESSOR_QUERY} PowerShell command
  * and maps the resulting JSON into an {@link Optional} {@link Processor} object.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getProcessor()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * ProcessorService processorService = new ProcessorService();
+ * Optional<Processor> cpu = processorService.getProcessor();
+ * cpu.ifPresent(System.out::println);
+ * }</pre>
  */
+
 public class ProcessorService {
 
     /**
@@ -22,7 +33,7 @@ public class ProcessorService {
      *
      * @return an {@link Optional} of {@link Processor} representing the CPU.
      *         Returns {@link Optional#empty()} if no processor information is detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

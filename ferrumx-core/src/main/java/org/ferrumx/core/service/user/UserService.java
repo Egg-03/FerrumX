@@ -8,7 +8,18 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * This class retrieves the current user's details such as username,
  * home directory, and working directory using standard Java system properties.
+ * <p>
+ * Instances of this service are stateless and thread-safe; multiple threads
+ * can safely invoke {@link #getUser()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * UserService userService = new UserService();
+ * User currentUser = userService.getUser();
+ * System.out.println(currentUser);
+ * }</pre>
  */
+
 public class UserService {
 
     /**
@@ -20,11 +31,10 @@ public class UserService {
     @NotNull
     public User getUser() {
 
-        User user = new User();
-        user.setUserName(System.getProperty("user.name"));
-        user.setUserHome(System.getProperty("user.home"));
-        user.setUserDirectory(System.getProperty("user.dir"));
-
-        return user;
+        return new User(
+                System.getProperty("user.name"),
+                System.getProperty("user.home"),
+                System.getProperty("user.dir")
+        );
     }
 }

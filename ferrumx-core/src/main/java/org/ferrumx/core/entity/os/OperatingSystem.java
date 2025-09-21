@@ -3,114 +3,140 @@ package org.ferrumx.core.entity.os;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-import lombok.Data;
+import lombok.Value;
+import lombok.With;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /**
- * Represents the Windows Operating System.
+ * Immutable representation of the Windows Operating System.
  * <p>
- * Fields correspond to the properties retrieved from the Win32_OperatingSystem WMI class.
+ * Fields correspond to properties retrieved from the {@code Win32_OperatingSystem} WMI class.
+ * Values are captured at query time and do not update automatically.
+ * <p>
+ * This class is annotated with Lombok {@link lombok.Value} to enforce immutability
+ * <p>
+ * Lombok {@link lombok.With} generates {@code withXxx(...)} methods
+ * that allow safe copy-on-write modifications without breaking immutability.
+ * <p>
+ * JSON serialization and deserialization are handled by Gson.
+ * Each field is annotated with {@link com.google.gson.annotations.SerializedName}
+ * to ensure correct mapping from WMI JSON output.
+ *
+ * <h2>Thread safety</h2>
+ * Instances are inherently thread-safe and may be safely cached or shared
+ * across threads without external synchronization.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * OperatingSystem os = gson.fromJson(json, OperatingSystem.class);
+ * OperatingSystem updated = os.withNumberOfUsers(5);
+ * System.out.println(os); // Pretty-printed JSON
+ * }</pre>
+ *
+ * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem">Win32_OperatingSystem</a>
  */
-@Data
+
+@Value
+@With
 public class OperatingSystem {
 
     @SerializedName("Name")
     @Nullable
-    private String name;
+    String name;
 
     @SerializedName("Caption")
     @Nullable
-    private String caption;
+    String caption;
 
     @SerializedName("InstallDate")
     @Nullable
-    private String installDate;
+    String installDate;
 
     @SerializedName("CSName")
     @Nullable
-    private String csName;
+    String csName;
 
     @SerializedName("LastBootUpTime")
     @Nullable
-    private String lastBootUpTime;
+    String lastBootUpTime;
 
     @SerializedName("LocalDateTime")
     @Nullable
-    private String localDateTime;
+    String localDateTime;
 
     @SerializedName("Distributed")
     @Nullable
-    private Boolean distributed;
+    Boolean distributed;
 
     @SerializedName("NumberOfUsers")
     @Nullable
-    private Integer numberOfUsers;
+    Integer numberOfUsers;
 
     @SerializedName("Version")
     @Nullable
-    private String version;
+    String version;
 
     @SerializedName("BootDevice")
     @Nullable
-    private String bootDevice;
+    String bootDevice;
 
     @SerializedName("BuildNumber")
     @Nullable
-    private String buildNumber;
+    String buildNumber;
 
     @SerializedName("BuildType")
     @Nullable
-    private String buildType;
+    String buildType;
 
     @SerializedName("Manufacturer")
     @Nullable
-    private String manufacturer;
+    String manufacturer;
 
     @SerializedName("OSArchitecture")
     @Nullable
-    private String osArchitecture;
+    String osArchitecture;
 
     @SerializedName("MUILanguages")
     @Nullable
-    private List<String> muiLanguages;
+    List<String> muiLanguages;
 
     @SerializedName("PortableOperatingSystem")
     @Nullable
-    private Boolean portableOperatingSystem;
+    Boolean portableOperatingSystem;
 
     @SerializedName("Primary")
     @Nullable
-    private Boolean primary;
+    Boolean primary;
 
     @SerializedName("RegisteredUser")
     @Nullable
-    private String registeredUser;
+    String registeredUser;
 
     @SerializedName("SerialNumber")
     @Nullable
-    private String serialNumber;
+    String serialNumber;
 
     @SerializedName("ServicePackMajorVersion")
     @Nullable
-    private Integer servicePackMajorVersion;
+    Integer servicePackMajorVersion;
 
     @SerializedName("ServicePackMinorVersion")
     @Nullable
-    private Integer servicePackMinorVersion;
+    Integer servicePackMinorVersion;
 
     @SerializedName("SystemDirectory")
     @Nullable
-    private String systemDirectory;
+    String systemDirectory;
 
     @SerializedName("SystemDrive")
     @Nullable
-    private String systemDrive;
+    String systemDrive;
 
     @SerializedName("WindowsDirectory")
     @Nullable
-    private String windowsDirectory;
+    String windowsDirectory;
 
     @Override
     public String toString() {

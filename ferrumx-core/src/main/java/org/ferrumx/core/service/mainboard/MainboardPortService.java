@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#MAINBOARD_PORT_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link MainboardPort} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getMainboardPorts()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * MainboardPortService portService = new MainboardPortService();
+ * List<MainboardPort> ports = portService.getMainboardPorts();
+ * ports.forEach(System.out::println);
+ * }</pre>
  */
+
 public class MainboardPortService {
 
     /**
@@ -22,7 +33,7 @@ public class MainboardPortService {
      *
      * @return a list of {@link MainboardPort} objects representing the system's mainboard ports.
      *         Returns an empty list if no ports are detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

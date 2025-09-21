@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#MONITOR_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link Monitor} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getMonitors()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * MonitorService monitorService = new MonitorService();
+ * List<Monitor> monitors = monitorService.getMonitors();
+ * monitors.forEach(System.out::println);
+ * }</pre>
  */
+
 public class MonitorService {
 
     /**
@@ -22,7 +33,7 @@ public class MonitorService {
      *
      * @return a list of {@link Monitor} objects representing connected monitors.
      *         Returns an empty list if no monitors are detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NonNull

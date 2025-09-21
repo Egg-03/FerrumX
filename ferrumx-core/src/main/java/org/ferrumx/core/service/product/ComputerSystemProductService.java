@@ -13,7 +13,18 @@ import java.util.Optional;
  * <p>
  * This class executes the {@link CimQuery#COMPUTER_SYSTEM_PRODUCT} PowerShell command
  * and maps the resulting JSON into an {@link Optional} {@link ComputerSystemProduct} object.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getProduct()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * ComputerSystemProductService productService = new ComputerSystemProductService();
+ * Optional<ComputerSystemProduct> product = productService.getProduct();
+ * product.ifPresent(System.out::println);
+ * }</pre>
  */
+
 public class ComputerSystemProductService {
 
     /**
@@ -21,7 +32,7 @@ public class ComputerSystemProductService {
      *
      * @return an {@link Optional} of {@link ComputerSystemProduct} representing
      *         the computer system as a product. Returns {@link Optional#empty()} if no product information is detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     public Optional<ComputerSystemProduct> getProduct() {

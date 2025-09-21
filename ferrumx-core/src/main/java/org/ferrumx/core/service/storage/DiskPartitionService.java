@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#DISK_PARTITION_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link DiskPartition} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getDiskPartitions()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * DiskPartitionService partitionService = new DiskPartitionService();
+ * List<DiskPartition> partitions = partitionService.getDiskPartitions();
+ * partitions.forEach(System.out::println);
+ * }</pre>
  */
+
 public class DiskPartitionService {
 
     /**
@@ -22,7 +33,7 @@ public class DiskPartitionService {
      *
      * @return a list of {@link DiskPartition} objects representing the disk partitions.
      *         Returns an empty list if no partitions are detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

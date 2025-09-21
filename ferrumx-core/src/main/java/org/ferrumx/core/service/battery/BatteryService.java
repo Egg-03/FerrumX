@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#BATTERY_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link Battery} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getBatteries()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * BatteryService batteryService = new BatteryService();
+ * List<Battery> batteries = batteryService.getBatteries();
+ * batteries.forEach(System.out::println);
+ * }</pre>
  */
+
 public class BatteryService {
 
     /**
@@ -22,7 +33,7 @@ public class BatteryService {
      *
      * @return a list of {@link Battery} objects representing the system's batteries.
      *         If no batteries are present, returns an empty list.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

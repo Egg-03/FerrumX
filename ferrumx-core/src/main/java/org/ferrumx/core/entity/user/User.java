@@ -2,26 +2,46 @@ package org.ferrumx.core.entity.user;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.With;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents a User on a Windows system.
+ * Immutable representation of a user on a Windows system.
+ * <p>
+ * Fields capture basic user information such as username, user home and user directory.
+ * <p>
+ * This class is annotated with Lombok {@link lombok.Value} to enforce immutability
+ * <p>
+ * Lombok {@link lombok.With} generates {@code withXxx(...)} methods
+ * that allow safe copy-on-write modifications without breaking immutability.
+ * <p>
+ * JSON serialization and deserialization are handled by Gson.
+ *
+ * <h2>Thread safety</h2>
+ * Instances are inherently thread-safe and may be safely cached or shared
+ * across threads without external synchronization.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * User user = gson.fromJson(json, User.class);
+ * User updated = user.withUserName("newUserName");
+ * System.out.println(user); // Pretty-printed JSON
+ * }</pre>
  */
 
-@Data
-@RequiredArgsConstructor
+@Value
+@With
 public class User {
 
     @Nullable
-    private String userName;
+    String userName;
 
     @Nullable
-    private String userHome;
+    String userHome;
 
     @Nullable
-    private String userDirectory;
+    String userDirectory;
 
     @Override
     public String toString() {

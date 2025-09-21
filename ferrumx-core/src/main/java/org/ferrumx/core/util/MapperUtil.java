@@ -15,7 +15,23 @@ import java.util.Optional;
  * Provides methods to convert JSON responses (typically from PowerShell commands)
  * into either a {@link List} of objects or a single {@link Optional} object.
  * This class uses Gson for JSON deserialization.
+ * <p>
+ * <b>Intended usage:</b> This utility is primarily designed to support the internal
+ * service classes in {@code org.ferrumx.core.service} for mapping PowerShell JSON output
+ * to domain entities. Consumers of the library should not need to invoke these methods directly,
+ * unless they are parsing a custom POJO not already handled by the existing service classes.
+ *
+ * <h2>Thread safety</h2>
+ * Instances of Gson are thread-safe after configuration, so all methods in this class
+ * are safe to call concurrently from multiple threads.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * List<Battery> batteries = MapperUtil.mapToList(jsonString, Battery.class);
+ * Optional<Processor> processor = MapperUtil.mapToObject(jsonString, Processor.class);
+ * }</pre>
  */
+
 public class MapperUtil {
 
     private static final Gson gson = new Gson();

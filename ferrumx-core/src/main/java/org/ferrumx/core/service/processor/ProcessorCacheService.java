@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#PROCESSOR_CACHE_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link ProcessorCache} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getProcessorCaches()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * ProcessorCacheService cacheService = new ProcessorCacheService();
+ * List<ProcessorCache> caches = cacheService.getProcessorCaches();
+ * caches.forEach(System.out::println);
+ * }</pre>
  */
+
 public class ProcessorCacheService {
 
     /**
@@ -22,7 +33,7 @@ public class ProcessorCacheService {
      *
      * @return a list of {@link ProcessorCache} objects representing the CPU caches.
      *         Returns an empty list if no cache entries are detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

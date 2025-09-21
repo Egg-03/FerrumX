@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#OPERATING_SYSTEM_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link OperatingSystem} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getOperatingSystems()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * OperatingSystemService osService = new OperatingSystemService();
+ * List<OperatingSystem> operatingSystems = osService.getOperatingSystems();
+ * operatingSystems.forEach(System.out::println);
+ * }</pre>
  */
+
 public class OperatingSystemService {
 
     /**
@@ -22,7 +33,7 @@ public class OperatingSystemService {
      *
      * @return a list of {@link OperatingSystem} objects representing the system's operating systems.
      *         If no operating systems are present, returns an empty list.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull

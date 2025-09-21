@@ -14,7 +14,18 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#BIOS_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link Bios} objects.
+ * <p>
+ * This service is stateless and thread-safe; multiple threads can safely
+ * invoke {@link #getBios()} concurrently.
+ *
+ * <h2>Usage example</h2>
+ * <pre>{@code
+ * BiosService biosService = new BiosService();
+ * List<Bios> biosList = biosService.getBios();
+ * biosList.forEach(System.out::println);
+ * }</pre>
  */
+
 public class BiosService {
 
     /**
@@ -22,7 +33,7 @@ public class BiosService {
      *
      * @return a list of {@link Bios} objects representing the system BIOS.
      *         Returns an empty list if no BIOS entries are detected.
-     * @throws RuntimeException if there is an error executing the PowerShell command
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull
