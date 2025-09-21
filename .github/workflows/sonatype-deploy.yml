@@ -10,7 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1️⃣ Checkout the repo
+      # 1️⃣ Checkout code
       - uses: actions/checkout@v3
 
       # 2️⃣ Set up Java 21 and Maven
@@ -19,9 +19,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
-          server-id: central
-          server-username: ${{ secrets.OSSRH_USERNAME }}
-          server-password: ${{ secrets.OSSRH_TOKEN }}
 
       # 3️⃣ Deploy to OSSRH with Simplify4U signing
       - name: Deploy to OSSRH staging
@@ -31,4 +28,4 @@ jobs:
           SIGN_KEY_PASS: ${{ secrets.GPG_PASSPHRASE }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-        run: mvn clean deploy -B -s $HOME/.m2/settings.xml
+        run: mvn clean deploy -B
