@@ -29,9 +29,9 @@ jobs:
 
       # 3️⃣ Build project, attach sources & javadocs, sign artifacts
       - name: Build and package
-        run: mvn clean verify -B
+        run: mvn clean verify
 
       # 4️⃣ Deploy to Sonatype OSSRH staging repository
       #     - Only deploys artifacts, manual release required
       - name: Deploy to OSSRH staging
-        run: mvn deploy -PsonatypeDeploy
+        run: mvn deploy
