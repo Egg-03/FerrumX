@@ -8,30 +8,39 @@ on:
 
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
 
     steps:
       # 1️⃣ Checkout code
       - uses: actions/checkout@v3
 
-      # 2️⃣ Set up JDK 21 and Maven with credentials and GPG keys
-      - name: Set up Java 21 and Maven
+      # 2️⃣ Set up JDK 21
+      - name: Set up Java 21
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: 21
-          server-id: central
-          server-username: ${{ secrets.NEXUS_USERNAME }}
-          server-password: ${{ secrets.NEXUS_PASSWORD }}
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
-      # 3️⃣ Build project, attach sources & javadocs, sign artifacts
-      - name: Build and package
-        run: mvn clean verify -B
+      # 3️⃣ Configure Maven settings with OSSRH credentials
+      - name: Configure Maven settings
+        run: |
+          mkdir -p $HOME/.m2
+          cat <<EOF > $HOME/.m2/settings.xml
+          <settings>
+            <servers>
+              <server>
+                <id>central</id>
+                <username>${{ secrets.OSSRH_TOKEN_USERNAME }}</username>
+                <password>${{ secrets.OSSRH_TOKEN_PASSWORD }}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
 
-      # 4️⃣ Deploy to Sonatype OSSRH staging repository
-      #     - Only deploys artifacts, manual release required
+      # 4️⃣ Deploy to OSSRH staging with Simplify4U signing
       - name: Deploy to OSSRH staging
-        run: mvn deploy -PsonatypeDeploy
+        env:
+          SIGN_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          SIGN_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          SIGN_KEY_PASS: ${{ secrets.GPG_PASSPHRASE }}
+        run: mvn clean deploy -B
