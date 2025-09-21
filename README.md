@@ -29,13 +29,13 @@ Maven:
 <dependency>
     <groupId>io.github.egg-03</groupId>
     <artifactId>ferrumx-core</artifactId>
-    <version>2.0.0-RC1</version>
+    <version>2.0.0-RC2</version>
 </dependency>
 ```
 
 Gradle:
 ```gradle
-implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.0.0-RC1'
+implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.0.0-RC2'
 ```
 
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
