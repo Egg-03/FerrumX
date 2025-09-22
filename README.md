@@ -21,7 +21,7 @@ FerrumX is a lightweight Hardware and Network Information wrapper written in pur
 
 # Supported Operating Systems
 FerrumX has been tested to work exclusively on <strong>Windows 8.1, Windows 10 and Windows 11</strong> devices.
-For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/FerrumL) [not actively developed anymore]
+For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/FerrumL)
 
 # Download
 Maven:
@@ -29,13 +29,13 @@ Maven:
 <dependency>
     <groupId>io.github.egg-03</groupId>
     <artifactId>ferrumx-core</artifactId>
-    <version>2.0.0-RC2</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
 Gradle:
 ```gradle
-implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.0.0-RC2'
+implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.0.0'
 ```
 
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
@@ -44,45 +44,36 @@ For other build ecosystems, check out the [Maven Central Repository](https://cen
 Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
 
 # Usage
-// TODO
+> [!IMPORTANT]
+> All examples can be found [here](https://github.com/Egg-03/FerrumX/tree/baf00eefa274556c306904e0bf8cb069996a9b8d/ferrumx-examples/src/main/java/org/ferrumx/example).
+
+```java
+public class ProcessorExample {
+
+    public static void main (String[] args) {
+
+        // usage with Optional
+        Optional<Processor> optionalProcessor = new ProcessorService().getProcessor();
+        optionalProcessor.ifPresent(processor -> log.info("Processor Information: \n{}", processor));
+
+        // usage without Optional
+        Processor processor = new ProcessorService().getProcessor().orElseThrow(); // will throw NoSuchElementException if not present
+        log.info("Processor Information: \n{}", processor);
+
+        // individual fields are accessible via getter methods
+        log.info("Processor Name: {}", processor.getName());
+        log.info("Processor Manufacturer: {}", processor.getManufacturer());
+        log.info("Processor Max Clock Speed: {} MHz", processor.getMaxClockSpeed());
+    }
+}
+```
 
 # License
 This project is licensed under the MIT License. Read the LICENSE.md for more information.
 
-# New in v2
+# Information about v2
 
-> [!NOTE]
-> Read this only if you have ever used v1
-> 
-> I will work on a migration from v1 to v2 guide soon
-
-### **Visual and Functional Overhaul**
-
-1. The legacy shell classes and custom parsing logic have been completely removed and replaced with a new service/entity structure.
-2. Each service now runs a powershell query via jPowershell that parses the JSON output to it's respective entity class via GSON. Instead of a Map data structure in v1, you now get typed objects with their fields which are accessible via the provided getters.
-3. Removed all forced checked exceptions. The only time an unchecked exception may be thrown is if the JSON is malformed.
-4. Improved null safety with the usage of Optional and empty Lists.
-
-### **Features Added/Removed**
-
-1. A new class `ComputerSystemProductService` fetches detailed product information like vendor, name, and UUID.
-2. Removed custom HWID generation logic.
-3. Removed `Win32_Printer` and `Win32_SoundDevice` classes.
-4. Removed the associative classes `Win32_AssociatedProcessorMemory`, `Win32_NetworkAdapterSetting`. They are no longer needed to link Processor with its Cache and a Network Adapter with its Adapter Configuration respectively. However, `Win32_DiskDriveToDiskPartition` and `Win32_LogicalDiskToPartition` are required to link drive letters and partition names to the disks. Right now, they have been removed and a suitable implementation has not been decided yet.
+- Changes incorporated in v2.0.0 from v1.3.7 can be found in this [PR](https://github.com/Egg-03/FerrumX/pull/20)
+- A migration guide will be provided in the project's [Wiki](https://github.com/Egg-03/FerrumX/wiki) if you want to migrate from v1 to v2
 
 
-### **Project Structure Changes**
-
-1.Multi-Module Project: The codebase is now split into a multi-module Maven project:
-
-    ferrumx-core: Contains the main library logic.
-    ferrumx-examples: Provides practical usage demonstrations.
-
-2.Package Refactoring: All core packages have been moved under the `org.ferrumx.core` namespace, and the root package was renamed from `com.ferrumx` to `org.ferrumx` to align with open-source conventions.
-
-
-### **Testing and Documentation**
-
-1.Unit Testing: An extensive suite of unit tests has been added for all core services using Mockito, ensuring the stability and correctness of the data retrieval logic.
-
-2.Javadoc: All public classes and methods in the ferrumx-core and ferrumx-examples modules have been documented with comprehensive Javadoc, clarifying their purpose and usage.
