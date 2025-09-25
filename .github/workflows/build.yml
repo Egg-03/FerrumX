@@ -21,13 +21,5 @@ jobs:
           distribution: temurin
           cache: maven
 
-      - name: Install dependencies
-        run: mvn install -DskipTests=true -B -V
-
-      - name: Run tests and collect coverage
+      - name: Run tests
         run: mvn -B verify
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
