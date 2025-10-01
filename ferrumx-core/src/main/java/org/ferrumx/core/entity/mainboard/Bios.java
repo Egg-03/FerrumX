@@ -56,7 +56,7 @@ public class Bios {
     @Nullable
     String releaseDate;
 
-    @SerializedName("SMBIOSPResent")
+    @SerializedName("SMBIOSPresent")
     @Nullable
     Boolean smbiosPresent;
 
