@@ -31,10 +31,10 @@ public class UserService {
     @NotNull
     public User getUser() {
 
-        return new User(
-                System.getProperty("user.name"),
-                System.getProperty("user.home"),
-                System.getProperty("user.dir")
-        );
+        return User.builder()
+                .userName(System.getProperty("user.name"))
+                .userHome(System.getProperty("user.home"))
+                .userDirectory(System.getProperty("user.dir"))
+                .build();
     }
 }

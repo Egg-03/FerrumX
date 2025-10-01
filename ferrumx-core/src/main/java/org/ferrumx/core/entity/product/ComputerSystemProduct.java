@@ -3,6 +3,7 @@ package org.ferrumx.core.entity.product;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
@@ -36,7 +37,7 @@ import lombok.With;
  */
 
 @Value
-@With
+@Builder(toBuilder = true)
 public class ComputerSystemProduct {
 
     @SerializedName("Caption")

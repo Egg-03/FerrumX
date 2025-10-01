@@ -2,6 +2,7 @@ package org.ferrumx.core.entity.user;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
  */
 
 @Value
-@With
+@Builder(toBuilder = true)
 public class User {
 
     @Nullable

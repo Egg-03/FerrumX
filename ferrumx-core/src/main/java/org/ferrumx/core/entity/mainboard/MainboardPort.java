@@ -3,6 +3,7 @@ package org.ferrumx.core.entity.mainboard;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
  */
 
 @Value
-@With
+@Builder(toBuilder = true)
 public class MainboardPort {
 
     @SerializedName("Tag")
