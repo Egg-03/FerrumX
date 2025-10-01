@@ -7,6 +7,7 @@ import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,9 +38,17 @@ public class ProcessorService {
      *                          or parsing the output.
      */
     @NotNull
+    @Deprecated(forRemoval = false)
     public Optional<Processor> getProcessor() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.PROCESSOR_QUERY.getQuery());
         return MapperUtil.mapToObject(response.getCommandOutput(), Processor.class);
+    }
+
+    // TODO write doc and test
+    @NotNull
+    public List<Processor> getProcessors() {
+        PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.PROCESSOR_QUERY.getQuery());
+        return MapperUtil.mapToList(response.getCommandOutput(), Processor.class);
     }
 }
