@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Value;
-import lombok.With;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,28 +13,25 @@ import org.jetbrains.annotations.Nullable;
  * Fields correspond to properties retrieved from the {@code Win32_Processor} WMI class.
  * Values are captured at query time and do not automatically update.
  * <p>
- * This class is annotated with Lombok {@link lombok.Value} to enforce immutability
- * <p>
- * To derive a modified copy, use the generated {@code withXxx(...)} methods
- * (enabled by Lombok {@link lombok.With}). This allows safe copy-on-write semantics
- * without breaking immutability.
- * <p>
- * JSON serialization and deserialization are handled by Gson.
- * Each field is annotated with {@link com.google.gson.annotations.SerializedName}
- * to ensure correct mapping from WMI JSON output.
+ * Instances are thread-safe and may be safely cached or shared across threads.
  *
- * <h2>Thread safety</h2>
- * Instances are inherently thread-safe and may be safely cached or shared
- * across threads without external synchronization.
- *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
- * Processor cpu = gson.fromJson(json, Processor.class);
- * Processor updated = cpu.withThreadCount(16);
- * System.out.println(cpu); // Pretty-printed JSON
+ * // Build a new Processor instance
+ * Processor cpu = Processor.builder()
+ *     .name("Intel Core i9-13900K")
+ *     .numberOfCores(24)
+ *     .threadCount(32)
+ *     .maxClockSpeed(5300)
+ *     .build();
+ *
+ * // Create a modified copy using the builder
+ * Processor updated = cpu.toBuilder()
+ *     .threadCount(64)
+ *     .build();
  * }</pre>
  *
- * {@link ProcessorCache} for related cache information
+ * {@link ProcessorCache} for related cache information.
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor">Win32_Processor</a>
  */
 
@@ -121,5 +117,3 @@ public class Processor {
         return gson.toJson(this);
     }
 }
-
-

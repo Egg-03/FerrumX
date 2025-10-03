@@ -5,36 +5,32 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Value;
-import lombok.With;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Immutable representation of a network adapter device on a Windows system.
+ * Immutable representation of a network adapter on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_NetworkAdapter} WMI class.
  * Values are captured at query time and do not update automatically.
  * <p>
- * This class is annotated with Lombok {@link lombok.Value} to enforce immutability
+ * Instances are thread-safe and may be safely cached or shared across threads.
  * <p>
- * Lombok {@link lombok.With} generates {@code withXxx(...)} methods
- * that allow safe copy-on-write modifications without breaking immutability.
- * <p>
- * JSON serialization and deserialization are handled by Gson.
- * Each field is annotated with {@link com.google.gson.annotations.SerializedName}
- * to ensure correct mapping from WMI JSON output.
- *
- * <h2>Thread safety</h2>
- * Instances are inherently thread-safe and may be safely cached or shared
- * across threads without external synchronization.
  *
  * <h2>Usage example</h2>
  * <pre>{@code
- * NetworkAdapter adapter = gson.fromJson(json, NetworkAdapter.class);
- * NetworkAdapter updated = adapter.withNetEnabled(true);
- * System.out.println(adapter); // Pretty-printed JSON
+ * NetworkAdapter adapter = NetworkAdapter.builder()
+ *     .name("Ethernet 1")
+ *     .macAddress("00:1A:2B:3C:4D:5E")
+ *     .netEnabled(true)
+ *     .build();
+ *
+ * // Create a modified copy
+ * NetworkAdapter updated = adapter.toBuilder()
+ *     .netEnabled(false)
+ *     .build();
  * }</pre>
  *
- * {@link NetworkAdapterConfiguration} for related network configuration details
+ * {@link NetworkAdapterConfiguration} contains related network configuration details.
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-networkadapter">Win32_NetworkAdapter</a>
  */
 
@@ -92,4 +88,3 @@ public class NetworkAdapter {
         return gson.toJson(this);
     }
 }
-

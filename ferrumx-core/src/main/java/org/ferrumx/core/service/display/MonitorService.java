@@ -15,21 +15,33 @@ import java.util.List;
  * This class executes the {@link CimQuery#MONITOR_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link Monitor} objects.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getMonitors()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
+ * // Convenience API (creates its own short-lived session)
  * MonitorService monitorService = new MonitorService();
  * List<Monitor> monitors = monitorService.getMonitors();
- * monitors.forEach(System.out::println);
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     List<Monitor> monitors = monitorService.getMonitors(session);
+ * }
  * }</pre>
  */
 
 public class MonitorService {
 
     /**
-     * Retrieves a non-null list of monitors connected to the system.
+     * Retrieves a list of monitors connected to the system.
+     * <p>
+     * Each invocation creates and uses a short-lived PowerShell session internally.
+     * <p>
+     * Not thread-safe.
+     * <p>
+     * As a workaround, you may create and close an empty {@link PowerShell} session before
+     * calling this method or other methods of the same signature, concurrently.
      *
      * @return a list of {@link Monitor} objects representing connected monitors.
      *         Returns an empty list if no monitors are detected.
@@ -40,6 +52,25 @@ public class MonitorService {
     public List<Monitor> getMonitors() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.MONITOR_QUERY.getQuery());
+        return MapperUtil.mapToList(response.getCommandOutput(), Monitor.class);
+    }
+
+    /**
+     * Retrieves a list of monitors connected to the system using the caller's
+     * {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return a list of {@link Monitor} objects representing connected monitors.
+     *         Returns an empty list if no monitors are detected.
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
+     *                          or parsing the output.
+     */
+    @NonNull
+    public List<Monitor> getMonitors(PowerShell powerShell) {
+
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.MONITOR_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), Monitor.class);
     }
 }

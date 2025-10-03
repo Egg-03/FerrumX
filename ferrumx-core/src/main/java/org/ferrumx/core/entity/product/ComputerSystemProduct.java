@@ -5,32 +5,34 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Value;
-import lombok.With;
 
 /**
  * Immutable representation of a computer product on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_ComputerSystemProduct} WMI class.
- * Values are captured at query time and do not update automatically.
+ * Values are captured at query time and do not automatically update.
  * <p>
- * This class is annotated with Lombok {@link lombok.Value} to enforce immutability
- * <p>
- * Lombok {@link lombok.With} generates {@code withXxx(...)} methods
- * that allow safe copy-on-write modifications without breaking immutability.
- * <p>
- * JSON serialization and deserialization are handled by Gson.
- * Each field is annotated with {@link com.google.gson.annotations.SerializedName}
- * to ensure correct mapping from WMI JSON output.
+ * Instances are thread-safe and may be safely cached or shared across threads.
  *
- * <h2>Thread safety</h2>
- * Instances are inherently thread-safe and may be safely cached or shared
- * across threads without external synchronization.
- *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
- * ComputerSystemProduct product = gson.fromJson(json, ComputerSystemProduct.class);
- * ComputerSystemProduct updated = product.withSkuNumber("PROD-1234");
- * System.out.println(product); // Pretty-printed JSON
+ * // Build a new ComputerSystemProduct instance
+ * ComputerSystemProduct product = ComputerSystemProduct.builder()
+ *     .caption("Workstation PC")
+ *     .description("High-end office workstation")
+ *     .identifyingNumber("ID-001")
+ *     .name("User-PC")
+ *     .skuNumber("PROD-1234")
+ *     .vendor("Default Vendor")
+ *     .version("1.0")
+ *     .uuid("550e8400-e29b-41d4-a716-446655440000")
+ *     .build();
+ *
+ * // Create a modified copy
+ * ComputerSystemProduct updated = product.toBuilder()
+ *     .skuNumber("PROD-5678")
+ *     .build();
+ *
  * }</pre>
  *
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystemproduct">Win32_ComputerSystemProduct</a>
@@ -70,4 +72,3 @@ public class ComputerSystemProduct {
         return gson.toJson(this);
     }
 }
-

@@ -15,31 +15,57 @@ import java.util.List;
  * This class executes the {@link CimQuery#NETWORK_ADAPTER_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link NetworkAdapter} objects.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getNetworkAdapters()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
+ * // Convenience API (creates its own short-lived session)
  * NetworkAdapterService adapterService = new NetworkAdapterService();
  * List<NetworkAdapter> adapters = adapterService.getNetworkAdapters();
- * adapters.forEach(System.out::println);
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     NetworkAdapterService adapterService = new NetworkAdapterService();
+ *     List<NetworkAdapter> adapters = adapterService.getNetworkAdapters(session);
+ * }
  * }</pre>
  */
 
 public class NetworkAdapterService {
 
     /**
-     * Retrieves a non-null list of network adapters present in the system.
+     * Retrieves a list of network adapters present in the system.
+     * <p>
+     * Each invocation creates and uses a short-lived PowerShell session internally.
+     * Not thread-safe.
+     * <p>
+     * As a workaround, you may create and close an empty {@link PowerShell} session before
+     * calling this method concurrently.
      *
      * @return a list of {@link NetworkAdapter} objects representing the system's network adapters.
-     *         Returns an empty list if no network adapters are detected.
-     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
-     *                          or parsing the output.
+     *         Returns an empty list if no adapters are detected.
      */
     @NotNull
     public List<NetworkAdapter> getNetworkAdapters() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.NETWORK_ADAPTER_QUERY.getQuery());
+        return MapperUtil.mapToList(response.getCommandOutput(), NetworkAdapter.class);
+    }
+
+    /**
+     * Retrieves a list of network adapters using the caller's {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return a list of {@link NetworkAdapter} objects representing the system's network adapters.
+     *         Returns an empty list if no adapters are detected.
+     */
+    @NotNull
+    public List<NetworkAdapter> getNetworkAdapters(PowerShell powerShell) {
+
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.NETWORK_ADAPTER_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), NetworkAdapter.class);
     }
 }

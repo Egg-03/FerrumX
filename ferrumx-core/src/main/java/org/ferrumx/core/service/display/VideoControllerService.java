@@ -15,24 +15,37 @@ import java.util.List;
  * This class executes the {@link CimQuery#VIDEO_CONTROLLER_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link VideoController} objects.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getVideoControllers()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
- * VideoControllerService gpuService = new VideoControllerService();
- * List<VideoController> controllers = gpuService.getVideoControllers();
- * controllers.forEach(System.out::println);
+ * // Convenience API (creates its own short-lived session)
+ * VideoControllerService videoControllerService = new VideoControllerService();
+ * List<VideoController> controllers = videoControllerService.getVideoControllers();
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     VideoControllerService videoControllerService = new VideoControllerService();
+ *     List<VideoController> controllers = videoControllerService.getVideoControllers(session);
+ * }
  * }</pre>
  */
 
 public class VideoControllerService {
 
     /**
-     * Retrieves a non-null list of video controllers (GPUs) present in the system.
+     * Retrieves a list of video controllers (GPUs) present in the system.
+     * <p>
+     * Each invocation creates and uses a short-lived PowerShell session internally.
+     * <p>
+     * Not thread-safe.
+     * <p>
+     * As a workaround, you may create and close an empty {@link PowerShell} session before
+     * calling this method or other methods of the same signature, concurrently.
      *
      * @return a list of {@link VideoController} objects representing the video controllers.
-     *         Returns an empty list if no controllers are detected.
+     *         Returns an empty list if none are detected.
      * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
@@ -40,6 +53,25 @@ public class VideoControllerService {
     public List<VideoController> getVideoControllers() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.VIDEO_CONTROLLER_QUERY.getQuery());
+        return MapperUtil.mapToList(response.getCommandOutput(), VideoController.class);
+    }
+
+    /**
+     * Retrieves a list of video controllers (GPUs) present in the system using the caller's
+     * {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return a list of {@link VideoController} objects representing the video controllers.
+     *         Returns an empty list if none are detected.
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
+     *                          or parsing the output.
+     */
+    @NotNull
+    public List<VideoController> getVideoControllers(PowerShell powerShell) {
+
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.VIDEO_CONTROLLER_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), VideoController.class);
     }
 }

@@ -15,14 +15,20 @@ import java.util.Optional;
  * This class executes the {@link CimQuery#MAINBOARD_QUERY} PowerShell command
  * and maps the resulting JSON into a {@link Mainboard} object.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getMainboard()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
+ * // Convenience API (creates its own short-lived session)
  * MainboardService mainboardService = new MainboardService();
  * Optional<Mainboard> mainboard = mainboardService.getMainboard();
- * mainboard.ifPresent(System.out::println);
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     MainboardService mainboardService = new MainboardService();
+ *     Optional<Mainboard> mainboard = mainboardService.getMainboard(session);
+ * }
  * }</pre>
  */
 
@@ -30,15 +36,40 @@ public class MainboardService {
 
     /**
      * Retrieves an {@link Optional} containing the system's mainboard information.
+     * <p>
+     * Each invocation creates and uses a short-lived PowerShell session internally.
+     * <p>
+     * Not thread-safe.
+     * <p>
+     * As a workaround, you may create and close an empty {@link PowerShell} session before
+     * calling this method or other methods of the same signature, concurrently.
      *
      * @return an {@link Optional} of {@link Mainboard} representing the system's mainboard.
-     *         Returns {@link Optional#empty()} if no mainboard information is detected.
+     *
      * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull
     public Optional<Mainboard> getMainboard() {
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.MAINBOARD_QUERY.getQuery());
+        return MapperUtil.mapToObject(response.getCommandOutput(), Mainboard.class);
+    }
+
+    /**
+     * Retrieves an {@link Optional} containing the system's mainboard information
+     * using the caller's {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return an {@link Optional} of {@link Mainboard} representing the system's mainboard.
+     *
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
+     *                          or parsing the output.
+     */
+    @NotNull
+    public Optional<Mainboard> getMainboard(PowerShell powerShell) {
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.MAINBOARD_QUERY.getQuery());
         return MapperUtil.mapToObject(response.getCommandOutput(), Mainboard.class);
     }
 }

@@ -15,21 +15,34 @@ import java.util.List;
  * This class executes the {@link CimQuery#MAINBOARD_PORT_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link MainboardPort} objects.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getMainboardPorts()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
+ * // Convenience API (creates its own short-lived session)
  * MainboardPortService portService = new MainboardPortService();
  * List<MainboardPort> ports = portService.getMainboardPorts();
- * ports.forEach(System.out::println);
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     MainboardPortService portService = new MainboardPortService();
+ *     List<MainboardPort> ports = portService.getMainboardPorts(session);
+ * }
  * }</pre>
  */
 
 public class MainboardPortService {
 
     /**
-     * Retrieves a non-null list of mainboard ports present in the system.
+     * Retrieves a list of mainboard ports present in the system.
+     * <p>
+     * Each invocation creates and uses a short-lived PowerShell session internally.
+     * <p>
+     * Not thread-safe.
+     * <p>
+     * As a workaround, you may create and close an empty {@link PowerShell} session before
+     * calling this method or other methods of the same signature, concurrently.
      *
      * @return a list of {@link MainboardPort} objects representing the system's mainboard ports.
      *         Returns an empty list if no ports are detected.
@@ -40,6 +53,25 @@ public class MainboardPortService {
     public List<MainboardPort> getMainboardPorts() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.MAINBOARD_PORT_QUERY.getQuery());
+        return MapperUtil.mapToList(response.getCommandOutput(), MainboardPort.class);
+    }
+
+    /**
+     * Retrieves a list of mainboard ports present in the system using the caller's
+     * {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return a list of {@link MainboardPort} objects representing the system's mainboard ports.
+     *         Returns an empty list if no ports are detected.
+     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
+     *                          or parsing the output.
+     */
+    @NotNull
+    public List<MainboardPort> getMainboardPorts(PowerShell powerShell) {
+
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.MAINBOARD_PORT_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), MainboardPort.class);
     }
 }

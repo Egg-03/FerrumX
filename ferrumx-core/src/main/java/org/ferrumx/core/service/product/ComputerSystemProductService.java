@@ -14,14 +14,20 @@ import java.util.Optional;
  * This class executes the {@link CimQuery#COMPUTER_SYSTEM_PRODUCT} PowerShell command
  * and maps the resulting JSON into an {@link Optional} {@link ComputerSystemProduct} object.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getProduct()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
+ * // Convenience API (creates its own short-lived session)
  * ComputerSystemProductService productService = new ComputerSystemProductService();
  * Optional<ComputerSystemProduct> product = productService.getProduct();
- * product.ifPresent(System.out::println);
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     ComputerSystemProductService productService = new ComputerSystemProductService();
+ *     Optional<ComputerSystemProduct> product = productService.getProduct(session);
+ * }
  * }</pre>
  */
 
@@ -29,15 +35,31 @@ public class ComputerSystemProductService {
 
     /**
      * Retrieves an {@link Optional} containing the computer system product information.
+     * <p>
+     * Not thread-safe.
      *
      * @return an {@link Optional} of {@link ComputerSystemProduct} representing
      *         the computer system as a product. Returns {@link Optional#empty()} if no product information is detected.
-     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
-     *                          or parsing the output.
      */
     public Optional<ComputerSystemProduct> getProduct() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.COMPUTER_SYSTEM_PRODUCT.getQuery());
+        return MapperUtil.mapToObject(response.getCommandOutput(), ComputerSystemProduct.class);
+    }
+
+    /**
+     * Retrieves an {@link Optional} containing the computer system product information
+     * using the caller's {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return an {@link Optional} of {@link ComputerSystemProduct} representing
+     *         the computer system as a product. Returns {@link Optional#empty()} if no product information is detected.
+     */
+    public Optional<ComputerSystemProduct> getProduct(PowerShell powerShell) {
+
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.COMPUTER_SYSTEM_PRODUCT.getQuery());
         return MapperUtil.mapToObject(response.getCommandOutput(), ComputerSystemProduct.class);
     }
 }

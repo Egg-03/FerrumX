@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
  * This class retrieves the current user's details such as username,
  * home directory, and working directory using standard Java system properties.
  * <p>
- * Instances of this service are stateless and thread-safe; multiple threads
- * can safely invoke {@link #getUser()} concurrently.
  *
  * <h2>Usage example</h2>
  * <pre>{@code

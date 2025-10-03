@@ -5,37 +5,42 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Value;
-import lombok.With;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Immutable representation of a logical disk partition on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_DiskPartition} WMI class.
- * Values are captured at query time and do not update automatically.
+ * Values are captured at query time and do not automatically update.
  * <p>
- * This class is annotated with Lombok {@link Value} to enforce immutability
- * <p>
- * Lombok {@link With} generates {@code withXxx(...)} methods
- * that allow safe copy-on-write modifications without breaking immutability.
- * <p>
+ * Instances are thread-safe and may be safely cached or shared across threads.
  * JSON serialization and deserialization are handled by Gson.
- * Each field is annotated with {@link SerializedName}
- * to ensure correct mapping from WMI JSON output.
  *
- * <h2>Thread safety</h2>
- * Instances are inherently thread-safe and may be safely cached or shared
- * across threads without external synchronization.
- *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
- * DiskPartition partition = gson.fromJson(json, DiskPartition.class);
- * DiskPartition updated = partition.withBootPartition(true);
- * System.out.println(partition); // Pretty-printed JSON
+ * // Build a new DiskPartition
+ * DiskPartition partition = DiskPartition.builder()
+ *     .deviceId("Disk0\\Partition1")
+ *     .name("System Reserved")
+ *     .description("EFI System Partition")
+ *     .blockSize(512L)
+ *     .numberOfBlocks(131072L)
+ *     .bootable(true)
+ *     .primaryPartition(true)
+ *     .bootPartition(true)
+ *     .diskIndex(0)
+ *     .size(67108864L)
+ *     .type("EFI")
+ *     .build();
+ *
+ * // Create a modified copy
+ * DiskPartition resizedPartition = partition.toBuilder()
+ *     .size(134217728L)
+ *     .build();
+ *
  * }</pre>
  *
- * {@link DiskDrive} for additional disk information.
- *
+ * {@link DiskDrive} contains additional information about the physical disk.
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition">Win32_DiskPartition</a>
  */
 

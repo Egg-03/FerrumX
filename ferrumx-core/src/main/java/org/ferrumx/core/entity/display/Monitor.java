@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Value;
-import lombok.With;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,24 +13,22 @@ import org.jetbrains.annotations.Nullable;
  * Fields correspond to properties retrieved from the {@code Win32_DesktopMonitor} WMI class.
  * Values are captured at query time and do not update automatically.
  * <p>
- * This class is annotated with Lombok {@link lombok.Value} to enforce immutability
+ * Instances are inherently thread-safe and may be safely shared or cached across threads.
  * <p>
- * Lombok {@link lombok.With} generates {@code withXxx(...)} methods
- * that allow safe copy-on-write modifications without breaking immutability.
- * <p>
- * JSON serialization and deserialization are handled by Gson.
- * Each field is annotated with {@link com.google.gson.annotations.SerializedName}
- * to ensure correct mapping from WMI JSON output.
- *
- * <h2>Thread safety</h2>
- * Instances are inherently thread-safe and may be safely cached or shared
- * across threads without external synchronization.
  *
  * <h2>Usage example</h2>
  * <pre>{@code
- * Monitor monitor = gson.fromJson(json, Monitor.class);
- * Monitor scaled = monitor.withPixelsPerXLogicalInch(120);
- * System.out.println(monitor); // Pretty-printed JSON
+ * // Build a new monitor instance
+ * Monitor monitor = Monitor.builder()
+ *     .deviceId("MON1")
+ *     .name("Generic PnP Monitor")
+ *     .pixelsPerXLogicalInch(96)
+ *     .build();
+ *
+ * // Modify using toBuilder (copy-on-write)
+ * Monitor updated = monitor.toBuilder()
+ *     .pixelsPerXLogicalInch(120)
+ *     .build();
  * }</pre>
  *
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-desktopmonitor">Win32_DesktopMonitor</a>

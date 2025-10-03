@@ -15,31 +15,54 @@ import java.util.List;
  * This class executes the {@link CimQuery#OPERATING_SYSTEM_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link OperatingSystem} objects.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getOperatingSystems()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
+ * // Convenience API (creates its own short-lived session)
  * OperatingSystemService osService = new OperatingSystemService();
  * List<OperatingSystem> operatingSystems = osService.getOperatingSystems();
- * operatingSystems.forEach(System.out::println);
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     OperatingSystemService osService = new OperatingSystemService();
+ *     List<OperatingSystem> operatingSystems = osService.getOperatingSystems(session);
+ * }
  * }</pre>
  */
 
 public class OperatingSystemService {
 
     /**
-     * Retrieves a non-null list of operating systems present on the system.
+     * Retrieves a list of operating systems present on the system.
+     * <p>
+     * Each invocation creates and uses a short-lived PowerShell session internally.
+     * Not thread-safe.
      *
      * @return a list of {@link OperatingSystem} objects representing the system's operating systems.
-     *         If no operating systems are present, returns an empty list.
-     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
-     *                          or parsing the output.
+     *         Returns an empty list if none are detected.
      */
     @NotNull
     public List<OperatingSystem> getOperatingSystems() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.OPERATING_SYSTEM_QUERY.getQuery());
+        return MapperUtil.mapToList(response.getCommandOutput(), OperatingSystem.class);
+    }
+
+    /**
+     * Retrieves a list of operating systems using the caller's {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return a list of {@link OperatingSystem} objects representing the system's operating systems.
+     *         Returns an empty list if none are detected.
+     */
+    @NotNull
+    public List<OperatingSystem> getOperatingSystems(PowerShell powerShell) {
+
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.OPERATING_SYSTEM_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), OperatingSystem.class);
     }
 }

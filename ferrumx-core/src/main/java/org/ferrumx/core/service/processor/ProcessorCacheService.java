@@ -15,31 +15,54 @@ import java.util.List;
  * This class executes the {@link CimQuery#PROCESSOR_CACHE_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link ProcessorCache} objects.
  * <p>
- * This service is stateless and thread-safe; multiple threads can safely
- * invoke {@link #getProcessorCaches()} concurrently.
+ * <h2>Thread safety</h2>
+ * This class is not thread safe.
  *
- * <h2>Usage example</h2>
+ * <h2>Usage examples</h2>
  * <pre>{@code
+ * // Convenience API (creates its own short-lived session)
  * ProcessorCacheService cacheService = new ProcessorCacheService();
  * List<ProcessorCache> caches = cacheService.getProcessorCaches();
- * caches.forEach(System.out::println);
+ *
+ * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * try (PowerShell session = PowerShell.openSession()) {
+ *     ProcessorCacheService cacheService = new ProcessorCacheService();
+ *     List<ProcessorCache> caches = cacheService.getProcessorCaches(session);
+ * }
  * }</pre>
  */
 
 public class ProcessorCacheService {
 
     /**
-     * Retrieves a non-null list of processor cache entries present in the system.
+     * Retrieves a list of processor cache entries present in the system.
+     * <p>
+     * Each invocation creates and uses a short-lived PowerShell session internally.
+     * Not thread-safe.
      *
      * @return a list of {@link ProcessorCache} objects representing the CPU caches.
-     *         Returns an empty list if no cache entries are detected.
-     * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
-     *                          or parsing the output.
+     *         Returns an empty list if none are detected.
      */
     @NotNull
     public List<ProcessorCache> getProcessorCaches() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.PROCESSOR_CACHE_QUERY.getQuery());
+        return MapperUtil.mapToList(response.getCommandOutput(), ProcessorCache.class);
+    }
+
+    /**
+     * Retrieves a list of processor cache entries using the caller's {@link PowerShell} session.
+     * <p>
+     * Not thread-safe. The provided session must not be shared across threads.
+     *
+     * @param powerShell an existing PowerShell session managed by the caller
+     * @return a list of {@link ProcessorCache} objects representing the CPU caches.
+     *         Returns an empty list if none are detected.
+     */
+    @NotNull
+    public List<ProcessorCache> getProcessorCaches(PowerShell powerShell) {
+
+        PowerShellResponse response = powerShell.executeCommand(CimQuery.PROCESSOR_CACHE_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), ProcessorCache.class);
     }
 
