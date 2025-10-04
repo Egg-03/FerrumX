@@ -21,14 +21,7 @@ class DiskDriveServiceTest {
 
     private DiskDriveService diskDriveService;
 
-    @BeforeEach
-    void setUp() {
-        diskDriveService = new DiskDriveService();
-    }
-
-    @Test
-    void test_getDiskDrives_success() {
-        String json = """
+    private final String json = """
                 [
                   {
                     "DeviceID": "Disk0",
@@ -52,6 +45,14 @@ class DiskDriveServiceTest {
                   }
                 ]
                 """;
+
+    @BeforeEach
+    void setUp() {
+        diskDriveService = new DiskDriveService();
+    }
+
+    @Test
+    void test_getDiskDrives_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(json);
@@ -90,6 +91,49 @@ class DiskDriveServiceTest {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> diskDriveService.getDiskDrives());
+        }
+    }
+
+    @Test
+    void test_getDiskDrives_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<DiskDrive> disks = diskDriveService.getDiskDrives(mockShell);
+            assertFalse(disks.isEmpty());
+            assertEquals("Disk0", disks.get(0).getDeviceId());
+            assertEquals("Samsung SSD 970", disks.get(0).getCaption());
+            assertEquals("Disk1", disks.get(1).getDeviceId());
+            assertEquals("WD Blue HDD", disks.get(1).getCaption());
+        }
+    }
+
+    @Test
+    void test_getDiskDrives_withSession_empty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<DiskDrive> disks = diskDriveService.getDiskDrives(mockShell);
+            assertTrue(disks.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getDiskDrives_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("not a json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> diskDriveService.getDiskDrives(mockShell));
         }
     }
 }

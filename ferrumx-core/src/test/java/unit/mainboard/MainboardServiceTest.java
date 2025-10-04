@@ -19,15 +19,7 @@ class MainboardServiceTest {
 
     private MainboardService mainboardService;
 
-    @BeforeEach
-    void setUp() {
-        mainboardService = new MainboardService();
-    }
-
-    @Test
-    void test_getMainboard_success() {
-
-        String jsonMainboard = """
+    private final String jsonMainboard = """
                 {
                     "Manufacturer": "ASUS",
                     "Model": "ROG STRIX",
@@ -35,6 +27,14 @@ class MainboardServiceTest {
                     "SerialNumber": "123456789"
                 }
                """;
+
+    @BeforeEach
+    void setUp() {
+        mainboardService = new MainboardService();
+    }
+
+    @Test
+    void test_getMainboard_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(jsonMainboard);
@@ -71,6 +71,47 @@ class MainboardServiceTest {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> mainboardService.getMainboard());
+        }
+    }
+
+    @Test
+    void test_getMainboard_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(jsonMainboard);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            Optional<Mainboard> mainboard = mainboardService.getMainboard(mockShell);
+            assertFalse(mainboard.isEmpty());
+            assertEquals("ASUS", mainboard.get().getManufacturer());
+            assertEquals("ROG STRIX", mainboard.get().getModel());
+        }
+    }
+
+    @Test
+    void test_getMainboard_withSession_emptyJson_returnsEmpty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            Optional<Mainboard> mainboard = mainboardService.getMainboard(mockShell);
+            assertTrue(mainboard.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getMainboard_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> mainboardService.getMainboard(mockShell));
         }
     }
 }

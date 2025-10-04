@@ -19,14 +19,7 @@ class BiosServiceTest {
 
     private BiosService biosService;
 
-    @BeforeEach
-    void setUp() {
-        biosService = new BiosService();
-    }
-
-    @Test
-    void test_getBios_success() {
-        String jsonBios = """
+    private final String jsonBios = """
                 {
                     "Caption": "BIOS",
                     "Description": "BIOS Description",
@@ -37,6 +30,14 @@ class BiosServiceTest {
                     "ReleaseDate": "20230101000000.000000+000"
                 }
                 """;
+
+    @BeforeEach
+    void setUp() {
+        biosService = new BiosService();
+    }
+
+    @Test
+    void test_getBios_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(jsonBios);
@@ -73,6 +74,46 @@ class BiosServiceTest {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> biosService.getBios());
+        }
+    }
+
+    @Test
+    void test_getBios_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(jsonBios);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<Bios> bios = biosService.getBios(mockShell);
+            assertFalse(bios.isEmpty());
+            assertEquals("BIOS", bios.getFirst().getCaption());
+            assertEquals("1.0.0", bios.getFirst().getVersion());
+        }
+    }
+
+    @Test
+    void test_getBios_withSession_emptyJson_returnsEmpty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<Bios> bios = biosService.getBios(mockShell);
+            assertTrue(bios.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getBios_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+            assertThrows(JsonSyntaxException.class, () -> biosService.getBios(mockShell));
         }
     }
 }

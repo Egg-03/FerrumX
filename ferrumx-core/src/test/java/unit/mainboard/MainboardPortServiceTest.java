@@ -19,14 +19,7 @@ class MainboardPortServiceTest {
 
     private MainboardPortService mainboardPortService;
 
-    @BeforeEach
-    void setUp() {
-        mainboardPortService = new MainboardPortService();
-    }
-
-    @Test
-    void test_getMainboardPort_success() {
-        String jsonMainboardPort = """
+    private final String jsonMainboardPort = """
                 [
                     {
                         "Tag": "Port1",
@@ -41,6 +34,14 @@ class MainboardPortServiceTest {
                 ]
                
                 """;
+
+    @BeforeEach
+    void setUp() {
+        mainboardPortService = new MainboardPortService();
+    }
+
+    @Test
+    void test_getMainboardPort_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(jsonMainboardPort);
@@ -78,6 +79,47 @@ class MainboardPortServiceTest {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> mainboardPortService.getMainboardPorts());
+        }
+    }
+
+    @Test
+    void test_getMainboardPort_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(jsonMainboardPort);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<MainboardPort> mainboardPort = mainboardPortService.getMainboardPorts(mockShell);
+            assertFalse(mainboardPort.isEmpty());
+            assertEquals("Port1", mainboardPort.get(0).getTag());
+            assertEquals("External1", mainboardPort.get(0).getExternalReferenceDesignator());
+            assertEquals("Internal2", mainboardPort.get(1).getInternalReferenceDesignator());
+        }
+    }
+
+    @Test
+    void test_getMainboardPort_withSession_emptyJson_returnsEmpty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<MainboardPort> mainboardPort = mainboardPortService.getMainboardPorts(mockShell);
+            assertTrue(mainboardPort.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getMainboardPort_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+            assertThrows(JsonSyntaxException.class, () -> mainboardPortService.getMainboardPorts(mockShell));
         }
     }
 }

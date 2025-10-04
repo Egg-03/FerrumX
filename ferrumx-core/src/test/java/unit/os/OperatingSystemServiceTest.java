@@ -21,14 +21,7 @@ class OperatingSystemServiceTest {
 
     private OperatingSystemService operatingSystemService;
 
-    @BeforeEach
-    void setUp() {
-        operatingSystemService = new OperatingSystemService();
-    }
-
-    @Test
-    void test_getOperatingSystem_success() {
-        String json = """
+    private final String json = """
                 {
                   "Name": "Windows 11 Pro",
                   "Caption": "Microsoft Windows 11 Pro",
@@ -40,6 +33,14 @@ class OperatingSystemServiceTest {
                   "OSArchitecture": "64-bit"
                 }
                 """;
+
+    @BeforeEach
+    void setUp() {
+        operatingSystemService = new OperatingSystemService();
+    }
+
+    @Test
+    void test_getOperatingSystem_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(json);
@@ -78,6 +79,49 @@ class OperatingSystemServiceTest {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> operatingSystemService.getOperatingSystems());
+        }
+    }
+
+    @Test
+    void test_getOperatingSystem_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<OperatingSystem> os = operatingSystemService.getOperatingSystems(mockShell);
+            assertFalse(os.isEmpty());
+            assertEquals("Windows 11 Pro", os.getFirst().getName());
+            assertEquals("Microsoft Windows 11 Pro", os.getFirst().getCaption());
+            assertEquals("DESKTOP-1234", os.getFirst().getCsName());
+            assertEquals("11.0.22000", os.getFirst().getVersion());
+        }
+    }
+
+    @Test
+    void test_getOperatingSystem_withSession_empty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<OperatingSystem> os = operatingSystemService.getOperatingSystems(mockShell);
+            assertTrue(os.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getOperatingSystem_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("not a json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> operatingSystemService.getOperatingSystems(mockShell));
         }
     }
 }

@@ -21,14 +21,7 @@ class NetworkAdapterConfigurationServiceTest {
 
     private NetworkAdapterConfigurationService networkAdapterConfigurationService;
 
-    @BeforeEach
-    void setUp() {
-        networkAdapterConfigurationService = new NetworkAdapterConfigurationService();
-    }
-
-    @Test
-    void test_getNetworkAdapterConfiguration_success() {
-        String json = """
+    private final String json = """
                 [
                   {
                     "Index": 0,
@@ -48,6 +41,14 @@ class NetworkAdapterConfigurationServiceTest {
                   }
                 ]
                 """;
+
+    @BeforeEach
+    void setUp() {
+        networkAdapterConfigurationService = new NetworkAdapterConfigurationService();
+    }
+
+    @Test
+    void test_getNetworkAdapterConfiguration_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(json);
@@ -86,6 +87,49 @@ class NetworkAdapterConfigurationServiceTest {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> networkAdapterConfigurationService.getNetworkAdapterConfiguration());
+        }
+    }
+
+    @Test
+    void test_getNetworkAdapterConfiguration_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.getNetworkAdapterConfiguration(mockShell);
+            assertFalse(configs.isEmpty());
+            assertEquals(0, configs.get(0).getIndex());
+            assertEquals(Boolean.TRUE, configs.get(0).getIpEnabled());
+            assertEquals(1, configs.get(1).getIndex());
+            assertEquals(Boolean.FALSE, configs.get(1).getIpEnabled());
+        }
+    }
+
+    @Test
+    void test_getNetworkAdapterConfiguration_withSession_empty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.getNetworkAdapterConfiguration(mockShell);
+            assertTrue(configs.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getNetworkAdapterConfiguration_malformedJson_withSession_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("not a json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> networkAdapterConfigurationService.getNetworkAdapterConfiguration(mockShell));
         }
     }
 }

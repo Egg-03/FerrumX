@@ -21,14 +21,7 @@ class BatteryServiceTest {
 
     private BatteryService batteryService;
 
-    @BeforeEach
-    void setUp() {
-        batteryService = new BatteryService();
-    }
-
-    @Test
-    void test_getBatteries_success() {
-        String json = """
+    private final String json = """
                 [
                   {
                     "DeviceID": "BAT0",
@@ -48,6 +41,14 @@ class BatteryServiceTest {
                   }
                 ]
                 """;
+
+    @BeforeEach
+    void setUp() {
+        batteryService = new BatteryService();
+    }
+
+    @Test
+    void test_getBatteries_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(json);
@@ -86,6 +87,49 @@ class BatteryServiceTest {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> batteryService.getBatteries());
+        }
+    }
+
+    @Test
+    void test_getBatteries_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockSession = mock(PowerShell.class)) {
+            when(mockSession.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<Battery> batteries = batteryService.getBatteries(mockSession);
+            assertFalse(batteries.isEmpty());
+            assertEquals("BAT0", batteries.get(0).getDeviceId());
+            assertEquals("Battery 0", batteries.get(0).getName());
+            assertEquals("BAT1", batteries.get(1).getDeviceId());
+            assertEquals("Battery 1", batteries.get(1).getName());
+        }
+    }
+
+    @Test
+    void test_getBatteries_withSession_empty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockSession = mock(PowerShell.class)) {
+            when(mockSession.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<Battery> batteries = batteryService.getBatteries(mockSession);
+            assertTrue(batteries.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getBatteries_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("not a json");
+
+        try (PowerShell mockSession = mock(PowerShell.class)) {
+            when(mockSession.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> batteryService.getBatteries(mockSession));
         }
     }
 }

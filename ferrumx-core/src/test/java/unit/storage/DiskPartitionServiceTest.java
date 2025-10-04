@@ -21,14 +21,7 @@ class DiskPartitionServiceTest {
 
     private DiskPartitionService diskPartitionService;
 
-    @BeforeEach
-    void setUp() {
-        diskPartitionService = new DiskPartitionService();
-    }
-
-    @Test
-    void test_getDiskPartitions_success() {
-        String json = """
+    private final String json = """
                 [
                   {
                     "DeviceID": "Disk0_Part1",
@@ -52,6 +45,14 @@ class DiskPartitionServiceTest {
                   }
                 ]
                 """;
+
+    @BeforeEach
+    void setUp() {
+        diskPartitionService = new DiskPartitionService();
+    }
+
+    @Test
+    void test_getDiskPartitions_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(json);
@@ -90,6 +91,49 @@ class DiskPartitionServiceTest {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> diskPartitionService.getDiskPartitions());
+        }
+    }
+
+    @Test
+    void test_getDiskPartitions_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<DiskPartition> partitions = diskPartitionService.getDiskPartitions(mockShell);
+            assertFalse(partitions.isEmpty());
+            assertEquals("Disk0_Part1", partitions.get(0).getDeviceId());
+            assertEquals("C:", partitions.get(0).getName());
+            assertEquals("Disk0_Part2", partitions.get(1).getDeviceId());
+            assertEquals("D:", partitions.get(1).getName());
+        }
+    }
+
+    @Test
+    void test_getDiskPartitions_withSession_empty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<DiskPartition> partitions = diskPartitionService.getDiskPartitions(mockShell);
+            assertTrue(partitions.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getDiskPartitions_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> diskPartitionService.getDiskPartitions(mockShell));
         }
     }
 }

@@ -24,15 +24,7 @@ class MonitorServiceTest {
 
     private MonitorService monitorService;
 
-    @BeforeEach
-    void setUp() {
-        monitorService = new MonitorService();
-    }
-
-    @Test
-    void test_getMonitors_success() {
-
-        String json = """
+    private final String json = """
                 [
                   {
                     "DeviceID": "MON1",
@@ -56,6 +48,14 @@ class MonitorServiceTest {
                   }
                 ]
                 """;
+
+    @BeforeEach
+    void setUp() {
+        monitorService = new MonitorService();
+    }
+
+    @Test
+    void test_getMonitors_success() {
 
         PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
         when(mockedResponse.getCommandOutput()).thenReturn(json);
@@ -96,6 +96,50 @@ class MonitorServiceTest {
             powerShellMockedStatic.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockedResponse);
 
             assertThrows(JsonSyntaxException.class, () -> monitorService.getMonitors());
+        }
+    }
+
+    @Test
+    void test_getMonitors_withSession_success() {
+
+        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
+        when(mockedResponse.getCommandOutput()).thenReturn(json);
+
+        try(PowerShell mockSession = mock(PowerShell.class)) {
+            when(mockSession.executeCommand(anyString())).thenReturn(mockedResponse);
+
+            List<Monitor> monitors = monitorService.getMonitors(mockSession);
+            assertFalse(monitors.isEmpty());
+            assertEquals("MON1", monitors.get(0).getDeviceId());
+            assertEquals("Dell U2720Q", monitors.get(0).getName());
+            assertEquals("MON2", monitors.get(1).getDeviceId());
+            assertEquals("LG UltraGear 27GL850", monitors.get(1).getName());
+        }
+    }
+
+    @Test
+    void test_getMonitors_withSession_empty() {
+
+        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
+        when(mockedResponse.getCommandOutput()).thenReturn("");
+
+        try(PowerShell mockSession = mock(PowerShell.class)) {
+            when(mockSession.executeCommand(anyString())).thenReturn(mockedResponse);
+
+            List<Monitor> monitors = monitorService.getMonitors(mockSession);
+            assertTrue(monitors.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getMonitors_withSession_malformedJson_throwsException() {
+
+        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
+        when(mockedResponse.getCommandOutput()).thenReturn("not a valid json");
+
+        try(PowerShell mockSession = mock(PowerShell.class)) {
+            when(mockSession.executeCommand(anyString())).thenReturn(mockedResponse);
+            assertThrows(JsonSyntaxException.class, () -> monitorService.getMonitors(mockSession));
         }
     }
 }

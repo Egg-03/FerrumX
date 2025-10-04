@@ -21,14 +21,7 @@ class NetworkAdapterServiceTest {
 
     private NetworkAdapterService networkAdapterService;
 
-    @BeforeEach
-    void setUp() {
-        networkAdapterService = new NetworkAdapterService();
-    }
-
-    @Test
-    void test_getNetworkAdapters_success() {
-        String json = """
+    private final String json = """
                 [
                   {
                     "DeviceID": "1",
@@ -47,11 +40,19 @@ class NetworkAdapterServiceTest {
                 ]
                 """;
 
-        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
-        when(mockedResponse.getCommandOutput()).thenReturn(json);
+    @BeforeEach
+    void setUp() {
+        networkAdapterService = new NetworkAdapterService();
+    }
+
+    @Test
+    void test_getNetworkAdapters_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
 
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
-            powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockedResponse);
+            powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters();
             assertFalse(adapters.isEmpty());
@@ -64,11 +65,11 @@ class NetworkAdapterServiceTest {
 
     @Test
     void test_getNetworkAdapters_empty() {
-        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
-        when(mockedResponse.getCommandOutput()).thenReturn("");
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
 
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
-            powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockedResponse);
+            powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters();
             assertTrue(adapters.isEmpty());
@@ -77,13 +78,56 @@ class NetworkAdapterServiceTest {
 
     @Test
     void test_getNetworkAdapters_malformedJson_throwsException() {
-        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
-        when(mockedResponse.getCommandOutput()).thenReturn("not a json");
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("not a json");
 
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
-            powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockedResponse);
+            powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> networkAdapterService.getNetworkAdapters());
+        }
+    }
+
+    @Test
+    void test_getNetworkAdapters_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters(mockShell);
+            assertFalse(adapters.isEmpty());
+            assertEquals("1", adapters.get(0).getDeviceId());
+            assertEquals("Ethernet Adapter", adapters.get(0).getName());
+            assertEquals("2", adapters.get(1).getDeviceId());
+            assertEquals("Wi-Fi Adapter", adapters.get(1).getName());
+        }
+    }
+
+    @Test
+    void test_getNetworkAdapters_withSession_empty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters(mockShell);
+            assertTrue(adapters.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getNetworkAdapters_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("not a json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> networkAdapterService.getNetworkAdapters(mockShell));
         }
     }
 }

@@ -19,14 +19,7 @@ class ComputerSystemProductServiceTest {
 
     private ComputerSystemProductService productService;
 
-    @BeforeEach
-    void setUp() {
-        productService = new ComputerSystemProductService();
-    }
-
-    @Test
-    void test_getProduct_success() {
-        String jsonProduct = """
+    private final String jsonProduct = """
                 {
                   "Caption": "Computer System Product",
                   "Description": "Some workstation",
@@ -38,6 +31,14 @@ class ComputerSystemProductServiceTest {
                   "UUID": "550e8400-e29b-41d4-a716-446655440000"
                 }
                 """;
+
+    @BeforeEach
+    void setUp() {
+        productService = new ComputerSystemProductService();
+    }
+
+    @Test
+    void test_getProduct_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(jsonProduct);
@@ -75,6 +76,48 @@ class ComputerSystemProductServiceTest {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> productService.getProduct());
+        }
+    }
+
+    @Test
+    void test_getProduct_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(jsonProduct);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            Optional<ComputerSystemProduct> product = productService.getProduct(mockShell);
+            assertTrue(product.isPresent());
+            assertEquals("MyPC", product.get().getName());
+            assertEquals("Dell", product.get().getVendor());
+            assertEquals("SKU-001", product.get().getSkuNumber());
+        }
+    }
+
+    @Test
+    void test_getProduct_withSession_emptyJson_returnsEmpty() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            Optional<ComputerSystemProduct> product = productService.getProduct(mockShell);
+            assertTrue(product.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getProduct_withSesion_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> productService.getProduct(mockShell));
         }
     }
 }

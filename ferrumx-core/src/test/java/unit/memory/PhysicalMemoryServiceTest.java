@@ -19,14 +19,7 @@ class PhysicalMemoryServiceTest {
 
     private PhysicalMemoryService physicalMemoryService;
 
-    @BeforeEach
-    void setUp() {
-        physicalMemoryService = new PhysicalMemoryService();
-    }
-
-    @Test
-    void test_getPhysicalMemories_success() {
-        String json = """
+    private final String json = """
                 [
                   {
                     "Tag": "Physical Memory 0",
@@ -47,12 +40,19 @@ class PhysicalMemoryServiceTest {
                 ]
                 """;
 
-        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
-        when(mockedResponse.getCommandOutput()).thenReturn(json);
+    @BeforeEach
+    void setUp() {
+        physicalMemoryService = new PhysicalMemoryService();
+    }
 
-        try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
-            mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString()))
-                    .thenReturn(mockedResponse);
+    @Test
+    void test_getPhysicalMemories_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (MockedStatic<PowerShell> mockPowershell = mockStatic(PowerShell.class)) {
+            mockPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             List<PhysicalMemory> memories = physicalMemoryService.getPhysicalMemories();
             assertFalse(memories.isEmpty());
@@ -65,12 +65,12 @@ class PhysicalMemoryServiceTest {
 
     @Test
     void test_getPhysicalMemories_emptyJson_returnsEmptyList() {
-        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
-        when(mockedResponse.getCommandOutput()).thenReturn("");
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
 
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString()))
-                    .thenReturn(mockedResponse);
+                    .thenReturn(mockResponse);
 
             List<PhysicalMemory> memories = physicalMemoryService.getPhysicalMemories();
             assertTrue(memories.isEmpty());
@@ -79,15 +79,57 @@ class PhysicalMemoryServiceTest {
 
     @Test
     void test_getPhysicalMemories_malformedJson_throwsException() {
-        PowerShellResponse mockedResponse = mock(PowerShellResponse.class);
-        when(mockedResponse.getCommandOutput()).thenReturn("invalid json");
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
 
-        try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
-            mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString()))
-                    .thenReturn(mockedResponse);
+        try (MockedStatic<PowerShell> mockPowershell = mockStatic(PowerShell.class)) {
+            mockPowershell.when(() -> PowerShell.executeSingleCommand(anyString()))
+                    .thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class,
                     () -> physicalMemoryService.getPhysicalMemories());
+        }
+    }
+
+    @Test
+    void test_getPhysicalMemories_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<PhysicalMemory> memories = physicalMemoryService.getPhysicalMemories(mockShell);
+            assertFalse(memories.isEmpty());
+            assertEquals("Physical Memory 0", memories.get(0).getTag());
+            assertEquals("DIMM0", memories.get(0).getName());
+            assertEquals("Physical Memory 1", memories.get(1).getTag());
+            assertEquals("DIMM1", memories.get(1).getName());
+        }
+    }
+
+    @Test
+    void test_getPhysicalMemories_withSession_emptyJson_returnsEmptyList() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<PhysicalMemory> memories = physicalMemoryService.getPhysicalMemories(mockShell);
+            assertTrue(memories.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getPhysicalMemories_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+            assertThrows(JsonSyntaxException.class, () -> physicalMemoryService.getPhysicalMemories(mockShell));
         }
     }
 }

@@ -24,15 +24,7 @@ class ProcessorCacheServiceTest {
 
     private ProcessorCacheService processorCacheService;
 
-    @BeforeEach
-    void setUp() {
-        processorCacheService = new ProcessorCacheService();
-    }
-
-    @Test
-    void test_getProcessorCache_success() {
-
-        String jsonProcessor = """
+    private final String jsonProcessor = """
                 [
                   {
                     "DeviceID": "1",
@@ -48,6 +40,14 @@ class ProcessorCacheServiceTest {
                   }
                 ]
                 """;
+
+    @BeforeEach
+    void setUp() {
+        processorCacheService = new ProcessorCacheService();
+    }
+
+    @Test
+    void test_getProcessorCache_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(jsonProcessor);
@@ -86,6 +86,49 @@ class ProcessorCacheServiceTest {
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, ()-> processorCacheService.getProcessorCaches());
+        }
+    }
+
+    @Test
+    void test_getProcessorCache_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(jsonProcessor);
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<ProcessorCache> cache = processorCacheService.getProcessorCaches(mockShell);
+            assertFalse(cache.isEmpty());
+            assertEquals("1", cache.get(0).getDeviceId());
+            assertEquals("2", cache.get(1).getDeviceId());
+        }
+    }
+
+    @Test
+    void test_getProcessorCache_withSession_emptyJson_empty() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<ProcessorCache> cache = processorCacheService.getProcessorCaches(mockShell);
+            assertTrue(cache.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getProcessorCache_withSession_malformedJson_throwsException() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)) {
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, ()-> processorCacheService.getProcessorCaches(mockShell));
         }
     }
 }

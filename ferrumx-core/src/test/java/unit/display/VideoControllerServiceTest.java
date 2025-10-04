@@ -24,15 +24,7 @@ class VideoControllerServiceTest {
 
     private VideoControllerService videoControllerService;
 
-    @BeforeEach
-    void setUp() {
-        videoControllerService = new VideoControllerService();
-    }
-
-    @Test
-    void test_getVideoController_success() {
-
-        String json = """
+    private final String json = """
                 [
                   {
                     "DeviceID": "Video1",
@@ -48,6 +40,14 @@ class VideoControllerServiceTest {
                   }
                 ]
                 """;
+
+    @BeforeEach
+    void setUp() {
+        videoControllerService = new VideoControllerService();
+    }
+
+    @Test
+    void test_getVideoController_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
         when(mockResponse.getCommandOutput()).thenReturn(json);
@@ -87,6 +87,49 @@ class VideoControllerServiceTest {
                     .thenReturn(mockResponse);
 
             assertThrows(JsonSyntaxException.class, () -> videoControllerService.getVideoControllers());
+        }
+    }
+
+    @Test
+    void test_getVideoController_withSession_success() {
+
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn(json);
+
+        try (PowerShell mockShell = mock(PowerShell.class)){
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<VideoController> videoControllers = videoControllerService.getVideoControllers(mockShell);
+            assertFalse(videoControllers.isEmpty());
+            assertEquals("Video1", videoControllers.getFirst().getDeviceId());
+            assertEquals("NVIDIA RTX 3080", videoControllers.getFirst().getName());
+            assertEquals("Video2", videoControllers.get(1).getDeviceId());
+            assertEquals("Intel UHD Graphics 630", videoControllers.get(1).getName());
+        }
+    }
+
+    @Test
+    void test_getVideoControllers_withSession_emptyJson_returnsEmptyList() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("");
+
+        try (PowerShell mockShell = mock(PowerShell.class)){
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            List<VideoController> videoControllers = videoControllerService.getVideoControllers(mockShell);
+            assertTrue(videoControllers.isEmpty());
+        }
+    }
+
+    @Test
+    void test_getVideoControllers_withSession_malformedJson_throwsException() {
+        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
+        when(mockResponse.getCommandOutput()).thenReturn("not valid json");
+
+        try (PowerShell mockShell = mock(PowerShell.class)){
+            when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
+
+            assertThrows(JsonSyntaxException.class, () -> videoControllerService.getVideoControllers(mockShell));
         }
     }
 }
