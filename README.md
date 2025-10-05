@@ -45,7 +45,7 @@ Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation
 
 # Usage
 > [!IMPORTANT]
-> All examples can be found [here](https://github.com/Egg-03/FerrumX/tree/baf00eefa274556c306904e0bf8cb069996a9b8d/ferrumx-examples/src/main/java/org/ferrumx/example).
+> All examples can be found [here](ferrumx-examples/src/main/java/org/ferrumx/example).
 
 ```java
 import javax.annotation.processing.Processor;
