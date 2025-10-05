@@ -29,13 +29,13 @@ Maven:
 <dependency>
     <groupId>io.github.egg-03</groupId>
     <artifactId>ferrumx-core</artifactId>
-    <version>2.0.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
 Gradle:
 ```gradle
-implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.0.1'
+implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.1.0'
 ```
 
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
@@ -48,22 +48,25 @@ Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation
 > All examples can be found [here](https://github.com/Egg-03/FerrumX/tree/baf00eefa274556c306904e0bf8cb069996a9b8d/ferrumx-examples/src/main/java/org/ferrumx/example).
 
 ```java
+import javax.annotation.processing.Processor;
+
 public class ProcessorExample {
 
-    public static void main (String[] args) {
-
-        // usage with Optional
-        Optional<Processor> optionalProcessor = new ProcessorService().getProcessor();
-        optionalProcessor.ifPresent(processor -> log.info("Processor Information: \n{}", processor));
-
-        // usage without Optional
-        Processor processor = new ProcessorService().getProcessor().orElseThrow(); // will throw NoSuchElementException if not present
-        log.info("Processor Information: \n{}", processor);
+    static void main(String[] args) {
+        
+        List<Processor> processorList = new ProcessorService().getProcessors();
+        
+        // you can also create and manage your own re-usable PowerShell session
+        // good for cases where you need to fetch results for multiple queries
+        List<Processor> processorListTwo;
+        try(PowerShell session = PowerShell.openSession()) {
+            processorListTwo = new ProcessorService().getProcessors(session);
+        }
 
         // individual fields are accessible via getter methods
-        log.info("Processor Name: {}", processor.getName());
-        log.info("Processor Manufacturer: {}", processor.getManufacturer());
-        log.info("Processor Max Clock Speed: {} MHz", processor.getMaxClockSpeed());
+        log.info("Processor Name: {}", processorList.getFirst().getName());
+        log.info("Processor Manufacturer: {}", processorList.getFirst().getManufacturer());
+        log.info("Processor Max Clock Speed: {} MHz", processorList.getFirst().getMaxClockSpeed());
     }
 }
 ```

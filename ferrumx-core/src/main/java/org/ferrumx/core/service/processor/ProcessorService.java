@@ -37,11 +37,20 @@ public class ProcessorService {
 
     /**
      * Retrieves an {@link Optional} containing the processor information.
+     * <p>
+     * <b>Deprecated:</b> This method is not reliable on systems with multiple processors,
+     * as it only maps a single {@link Processor} entry from the PowerShell output.
+     * It will fail in multi-CPU environments.
+     * <p>
+     * Use one of the following instead:
+     * <ul>
+     *   <li>{@link #getProcessors()} — creates a short-lived PowerShell session internally.</li>
+     *   <li>{@link #getProcessors(PowerShell)} — uses a caller-managed PowerShell session.</li>
+     * </ul>
      *
-     * @return an {@link Optional} of {@link Processor} representing the CPU.
-     *
+     * @return an {@link Optional} of {@link Processor} representing a single CPU entry.
      * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
-     *                          or parsing the output.
+     *                                            or parsing the output.
      */
     @NotNull
     @Deprecated(forRemoval = true)
