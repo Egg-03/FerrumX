@@ -48,8 +48,6 @@ Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation
 > All examples can be found [here](ferrumx-examples/src/main/java/org/ferrumx/example).
 
 ```java
-import javax.annotation.processing.Processor;
-
 public class ProcessorExample {
 
     static void main(String[] args) {
