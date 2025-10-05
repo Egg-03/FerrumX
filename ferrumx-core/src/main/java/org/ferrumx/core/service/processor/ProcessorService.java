@@ -38,7 +38,7 @@ public class ProcessorService {
     /**
      * Retrieves an {@link Optional} containing the processor information.
      * <p>
-     * <b>Deprecated:</b> This method is not reliable on systems with multiple processors,
+     * @deprecated This method is not reliable on systems with multiple processors,
      * as it only maps a single {@link Processor} entry from the PowerShell output.
      * It will fail in multi-CPU environments.
      * <p>
