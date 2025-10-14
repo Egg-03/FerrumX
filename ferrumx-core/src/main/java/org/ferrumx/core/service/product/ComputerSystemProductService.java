@@ -4,7 +4,7 @@ import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.product.ComputerSystemProduct;
-import org.ferrumx.core.util.MapperUtil;
+import org.ferrumx.core.mapping.MapperUtil;
 
 import java.util.Optional;
 

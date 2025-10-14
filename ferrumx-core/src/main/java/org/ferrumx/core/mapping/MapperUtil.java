@@ -1,4 +1,4 @@
-package org.ferrumx.core.util;
+package org.ferrumx.core.mapping;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,10 +20,6 @@ import java.util.Optional;
  * service classes in {@code org.ferrumx.core.service} for mapping PowerShell JSON output
  * to domain entities. Consumers of the library should not need to invoke these methods directly,
  * unless they are parsing a custom POJO not already handled by the existing service classes.
- *
- * <h2>Thread safety</h2>
- * Instances of Gson are thread-safe after configuration, so all methods in this class
- * are safe to call concurrently from multiple threads.
  *
  * <h2>Usage example</h2>
  * <pre>{@code

@@ -2,7 +2,7 @@ package unit;
 
 import com.google.gson.JsonSyntaxException;
 import org.ferrumx.core.entity.processor.Processor;
-import org.ferrumx.core.util.MapperUtil;
+import org.ferrumx.core.mapping.MapperUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

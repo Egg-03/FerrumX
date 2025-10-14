@@ -2,7 +2,7 @@ package org.ferrumx.core.service.display;
 
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.display.Monitor;
-import org.ferrumx.core.util.MapperUtil;
+import org.ferrumx.core.mapping.MapperUtil;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import lombok.NonNull;
