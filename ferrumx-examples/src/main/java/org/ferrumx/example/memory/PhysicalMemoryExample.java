@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class fetches a list of {@link PhysicalMemory} objects and logs their
  * JSON representation.
- * <p>
+ * </p>
  * Individual attributes of each {@link PhysicalMemory} object can be accessed
  * via their getter methods.
  */
@@ -20,7 +20,7 @@ import java.util.List;
 public class PhysicalMemoryExample {
 
     public static void main(String[] args) {
-        List<PhysicalMemory> memoryList = new PhysicalMemoryService().getPhysicalMemories();
+        List<PhysicalMemory> memoryList = new PhysicalMemoryService().get();
         memoryList.forEach(memory -> log.info("Physical Memory: \n{}", memory));
 
         // individual fields are accessible via getter methods

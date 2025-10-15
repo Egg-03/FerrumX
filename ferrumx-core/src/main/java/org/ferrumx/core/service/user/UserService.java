@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * This class retrieves the current user's details such as username,
  * home directory, and working directory using standard Java system properties.
- * <p>
+ * </p>
  *
  * <h2>Usage example</h2>
  * <pre>{@code
@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
  * User currentUser = userService.getUser();
  * System.out.println(currentUser);
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 public class UserService {

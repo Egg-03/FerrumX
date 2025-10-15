@@ -9,13 +9,12 @@ import org.ferrumx.core.service.user.UserService;
  * using {@link UserService}.
  * <p>
  * This class retrieves a {@link User} object representing the current system user
- * and logs its JSON representation. Individual fields such as user name, home directory,
+ * and logs its JSON representation. Individual fields such as username, home directory,
  * and current working directory can be accessed via getter methods.
+ * </p>
  */
 @Slf4j
 public class UserExample {
-
-    User user = new UserService().getUser();
 
     public static void main(String[] args) {
         User user = new UserService().getUser();

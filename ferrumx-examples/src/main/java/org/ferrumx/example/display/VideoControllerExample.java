@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class executes a CIM query to retrieve all video controllers on the
  * system and logs the JSON representation of each {@link VideoController} object.
- * <p>
+ * </p>
  * Individual attributes of each video controller can be accessed via
  * the getter methods of the {@link VideoController} class.
  */
@@ -21,7 +21,7 @@ public class VideoControllerExample {
 
     public static void main(String[] args) {
 
-        List<VideoController> videoControllers = new VideoControllerService().getVideoControllers();
+        List<VideoController> videoControllers = new VideoControllerService().get();
         videoControllers.forEach(videoController -> log.info("VideoController: \n{}", videoController));
 
         // individual fields are accessible via getter methods

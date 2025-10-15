@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.os;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.os.OperatingSystem;
 import org.ferrumx.core.mapping.MapperUtil;
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.service.CommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#OPERATING_SYSTEM_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link OperatingSystem} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,28 +24,32 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * OperatingSystemService osService = new OperatingSystemService();
- * List<OperatingSystem> operatingSystems = osService.getOperatingSystems();
+ * List<OperatingSystem> operatingSystems = osService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     OperatingSystemService osService = new OperatingSystemService();
- *     List<OperatingSystem> operatingSystems = osService.getOperatingSystems(session);
+ *     List<OperatingSystem> operatingSystems = osService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class OperatingSystemService {
+public class OperatingSystemService implements CommonServiceInterface<OperatingSystem> {
 
     /**
      * Retrieves a list of operating systems present on the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return a list of {@link OperatingSystem} objects representing the system's operating systems.
      *         Returns an empty list if none are detected.
      */
     @NotNull
-    public List<OperatingSystem> getOperatingSystems() {
+    @Override
+    public List<OperatingSystem> get() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.OPERATING_SYSTEM_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), OperatingSystem.class);
@@ -57,7 +63,8 @@ public class OperatingSystemService {
      *         Returns an empty list if none are detected.
      */
     @NotNull
-    public List<OperatingSystem> getOperatingSystems(PowerShell powerShell) {
+    @Override
+    public List<OperatingSystem> get(PowerShell powerShell) {
 
         PowerShellResponse response = powerShell.executeCommand(CimQuery.OPERATING_SYSTEM_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), OperatingSystem.class);

@@ -15,7 +15,8 @@ import java.util.Optional;
  * Provides methods to convert JSON responses (typically from PowerShell commands)
  * into either a {@link List} of objects or a single {@link Optional} object.
  * This class uses Gson for JSON deserialization.
- * <p>
+ * </p>
+ *
  * <b>Intended usage:</b> This utility is primarily designed to support the internal
  * service classes in {@code org.ferrumx.core.service} for mapping PowerShell JSON output
  * to domain entities. Consumers of the library should not need to invoke these methods directly,
@@ -26,6 +27,8 @@ import java.util.Optional;
  * List<Battery> batteries = MapperUtil.mapToList(jsonString, Battery.class);
  * Optional<Processor> processor = MapperUtil.mapToObject(jsonString, Processor.class);
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 public class MapperUtil {
@@ -41,6 +44,7 @@ public class MapperUtil {
      * <p>
      * If the JSON represents a single object, it is returned as a singleton list.
      * If the JSON is null or empty, returns an empty list.
+     * </p>
      *
      * @param json        the JSON string to parse; must not be null
      * @param objectClass the class of the objects in the list; must not be null
@@ -65,6 +69,7 @@ public class MapperUtil {
      * Converts a JSON string into an {@link Optional} object of the specified type.
      * <p>
      * Returns {@link Optional#empty()} if the JSON is null or cannot be parsed into an object.
+     * </p>
      *
      * @param json        the JSON string to parse; must not be null
      * @param objectClass the class of the object; must not be null

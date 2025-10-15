@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class retrieves a list of {@link NetworkAdapter} objects and logs their JSON
  * representation.
- * <p>
+ * </p>
  * Individual attributes of each {@link NetworkAdapter} object can be accessed
  * via their getter methods.
  */
@@ -21,7 +21,7 @@ public class NetworkAdapterExample {
 
     public static void main(String[] args) {
 
-        List<NetworkAdapter> networkAdapters = new NetworkAdapterService().getNetworkAdapters();
+        List<NetworkAdapter> networkAdapters = new NetworkAdapterService().get();
         networkAdapters.forEach(adapter -> log.info("Network Adapter: \n{}", adapter));
 
         // individual fields are accessible via getter methods

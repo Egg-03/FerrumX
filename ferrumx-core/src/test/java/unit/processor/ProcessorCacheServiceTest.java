@@ -55,7 +55,7 @@ class ProcessorCacheServiceTest {
         try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<ProcessorCache> cache = processorCacheService.getProcessorCaches();
+            List<ProcessorCache> cache = processorCacheService.get();
             assertFalse(cache.isEmpty());
             assertEquals("1", cache.get(0).getDeviceId());
             assertEquals("2", cache.get(1).getDeviceId());
@@ -71,7 +71,7 @@ class ProcessorCacheServiceTest {
         try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<ProcessorCache> cache = processorCacheService.getProcessorCaches();
+            List<ProcessorCache> cache = processorCacheService.get();
             assertTrue(cache.isEmpty());
         }
     }
@@ -85,7 +85,7 @@ class ProcessorCacheServiceTest {
         try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, ()-> processorCacheService.getProcessorCaches());
+            assertThrows(JsonSyntaxException.class, ()-> processorCacheService.get());
         }
     }
 
@@ -98,7 +98,7 @@ class ProcessorCacheServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<ProcessorCache> cache = processorCacheService.getProcessorCaches(mockShell);
+            List<ProcessorCache> cache = processorCacheService.get(mockShell);
             assertFalse(cache.isEmpty());
             assertEquals("1", cache.get(0).getDeviceId());
             assertEquals("2", cache.get(1).getDeviceId());
@@ -114,7 +114,7 @@ class ProcessorCacheServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<ProcessorCache> cache = processorCacheService.getProcessorCaches(mockShell);
+            List<ProcessorCache> cache = processorCacheService.get(mockShell);
             assertTrue(cache.isEmpty());
         }
     }
@@ -128,7 +128,7 @@ class ProcessorCacheServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, ()-> processorCacheService.getProcessorCaches(mockShell));
+            assertThrows(JsonSyntaxException.class, ()-> processorCacheService.get(mockShell));
         }
     }
 }

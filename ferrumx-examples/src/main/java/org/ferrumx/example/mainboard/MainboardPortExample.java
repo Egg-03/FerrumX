@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class fetches a list of {@link MainboardPort} objects and logs their
  * JSON representation.
- * <p>
+ * </p>
  * Individual attributes of each {@link MainboardPort} object can be accessed
  * via their getter methods.
  */
@@ -21,7 +21,7 @@ public class MainboardPortExample {
 
     public static void main(String[] args) {
 
-        List<MainboardPort> mainboardPorts = new MainboardPortService().getMainboardPorts();
+        List<MainboardPort> mainboardPorts = new MainboardPortService().get();
         mainboardPorts.forEach(port -> log.info("Port : \n{}", port));
 
         // individual fields are accessible via getter methods

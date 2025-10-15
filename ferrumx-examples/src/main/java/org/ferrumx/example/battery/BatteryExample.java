@@ -6,14 +6,13 @@ import org.ferrumx.core.service.battery.BatteryService;
 
 import java.util.List;
 
-
 /**
  * Example class demonstrating how to fetch and display battery information
  * using {@link BatteryService}.
  * <p>
  * This class executes a CIM query to retrieve all battery entries on the system
  * and logs the JSON representation of each battery object.
- * <p>
+ * </p>
  * Individual battery attributes can also be accessed via the getter methods
  * of the {@link Battery} class.
  */
@@ -22,7 +21,7 @@ public class BatteryExample {
 
     public static void main(String[] args) {
 
-        List<Battery> batteries = new BatteryService().getBatteries();
+        List<Battery> batteries = new BatteryService().get();
         batteries.forEach(battery -> log.info("Battery: \n{}", battery));
 
         // individual fields are accessible via getter methods

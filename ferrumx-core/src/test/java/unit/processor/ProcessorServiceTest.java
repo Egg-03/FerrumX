@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -44,59 +43,6 @@ class ProcessorServiceTest {
     }
 
     @Test
-    @Deprecated(forRemoval = true)
-    void test_getProcessorOptional_success() {
-
-        String jsonProcessor = """
-                {
-                    "DeviceID": "CPU0",
-                    "Name": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz"
-                }
-                """;
-
-        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
-        when(mockResponse.getCommandOutput()).thenReturn(jsonProcessor);
-
-        try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
-            mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
-
-            Optional<Processor> processor = processorService.getProcessor();
-            assertTrue(processor.isPresent());
-            assertEquals("CPU0", processor.get().getDeviceId());
-            assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processor.get().getName());
-        }
-    }
-
-    @Test
-    @Deprecated(forRemoval = true)
-    void test_getProcessorOptional_emptyJson_empty() {
-
-        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
-        when(mockResponse.getCommandOutput()).thenReturn("");
-
-        try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
-            mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
-
-            Optional<Processor> processor = processorService.getProcessor();
-            assertTrue(processor.isEmpty());
-        }
-    }
-
-    @Test
-    @Deprecated(forRemoval = true)
-    void test_getProcessorOptional_malformedJson_throwsException() {
-
-        PowerShellResponse mockResponse = mock(PowerShellResponse.class);
-        when(mockResponse.getCommandOutput()).thenReturn("invalid json");
-
-        try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
-            mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
-
-            assertThrows(JsonSyntaxException.class, ()-> processorService.getProcessor());
-        }
-    }
-
-    @Test
     void test_getProcessorList_success() {
 
         PowerShellResponse mockResponse = mock(PowerShellResponse.class);
@@ -105,7 +51,7 @@ class ProcessorServiceTest {
         try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<Processor> processorList = processorService.getProcessors();
+            List<Processor> processorList = processorService.get();
             assertFalse(processorList.isEmpty());
             assertEquals("CPU0", processorList.getFirst().getDeviceId());
             assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processorList.getFirst().getName());
@@ -123,7 +69,7 @@ class ProcessorServiceTest {
         try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<Processor> processorList = processorService.getProcessors();
+            List<Processor> processorList = processorService.get();
             assertTrue(processorList.isEmpty());
         }
     }
@@ -137,7 +83,7 @@ class ProcessorServiceTest {
         try(MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, ()-> processorService.getProcessors());
+            assertThrows(JsonSyntaxException.class, ()-> processorService.get());
         }
     }
 
@@ -150,7 +96,7 @@ class ProcessorServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<Processor> processorList = processorService.getProcessors(mockShell);
+            List<Processor> processorList = processorService.get(mockShell);
             assertFalse(processorList.isEmpty());
             assertEquals("CPU0", processorList.getFirst().getDeviceId());
             assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processorList.getFirst().getName());
@@ -168,7 +114,7 @@ class ProcessorServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<Processor> processorList = processorService.getProcessors(mockShell);
+            List<Processor> processorList = processorService.get(mockShell);
             assertTrue(processorList.isEmpty());
         }
     }
@@ -181,7 +127,7 @@ class ProcessorServiceTest {
 
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
-            assertThrows(JsonSyntaxException.class, ()-> processorService.getProcessors(mockShell));
+            assertThrows(JsonSyntaxException.class, ()-> processorService.get(mockShell));
         }
     }
 }

@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.storage;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.storage.DiskDrive;
 import org.ferrumx.core.mapping.MapperUtil;
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.service.CommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#DISK_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link DiskDrive} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,28 +24,32 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * DiskDriveService diskService = new DiskDriveService();
- * List<DiskDrive> drives = diskService.getDiskDrives();
+ * List<DiskDrive> drives = diskService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     DiskDriveService diskService = new DiskDriveService();
- *     List<DiskDrive> drives = diskService.getDiskDrives(session);
+ *     List<DiskDrive> drives = diskService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class DiskDriveService {
+public class DiskDriveService implements CommonServiceInterface<DiskDrive> {
 
     /**
      * Retrieves a non-null list of disk drives present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return a list of {@link DiskDrive} objects representing the disk drives.
      *         Returns an empty list if no disk drives are detected.
      */
     @NotNull
-    public List<DiskDrive> getDiskDrives() {
+    @Override
+    public List<DiskDrive> get() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.DISK_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), DiskDrive.class);
@@ -57,7 +63,8 @@ public class DiskDriveService {
      *         Returns an empty list if no disk drives are detected.
      */
     @NotNull
-    public List<DiskDrive> getDiskDrives(PowerShell powerShell) {
+    @Override
+    public List<DiskDrive> get(PowerShell powerShell) {
 
         PowerShellResponse response = powerShell.executeCommand(CimQuery.DISK_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), DiskDrive.class);

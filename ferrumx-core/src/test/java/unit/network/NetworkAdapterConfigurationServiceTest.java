@@ -11,7 +11,10 @@ import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -56,7 +59,7 @@ class NetworkAdapterConfigurationServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.getNetworkAdapterConfiguration();
+            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.get();
             assertFalse(configs.isEmpty());
             assertEquals(0, configs.get(0).getIndex());
             assertEquals(Boolean.TRUE, configs.get(0).getIpEnabled());
@@ -73,7 +76,7 @@ class NetworkAdapterConfigurationServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.getNetworkAdapterConfiguration();
+            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.get();
             assertTrue(configs.isEmpty());
         }
     }
@@ -86,7 +89,7 @@ class NetworkAdapterConfigurationServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> networkAdapterConfigurationService.getNetworkAdapterConfiguration());
+            assertThrows(JsonSyntaxException.class, () -> networkAdapterConfigurationService.get());
         }
     }
 
@@ -99,7 +102,7 @@ class NetworkAdapterConfigurationServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.getNetworkAdapterConfiguration(mockShell);
+            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.get(mockShell);
             assertFalse(configs.isEmpty());
             assertEquals(0, configs.get(0).getIndex());
             assertEquals(Boolean.TRUE, configs.get(0).getIpEnabled());
@@ -116,7 +119,7 @@ class NetworkAdapterConfigurationServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.getNetworkAdapterConfiguration(mockShell);
+            List<NetworkAdapterConfiguration> configs = networkAdapterConfigurationService.get(mockShell);
             assertTrue(configs.isEmpty());
         }
     }
@@ -129,7 +132,7 @@ class NetworkAdapterConfigurationServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> networkAdapterConfigurationService.getNetworkAdapterConfiguration(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> networkAdapterConfigurationService.get(mockShell));
         }
     }
 }

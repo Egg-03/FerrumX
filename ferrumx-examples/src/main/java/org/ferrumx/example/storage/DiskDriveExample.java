@@ -12,13 +12,14 @@ import java.util.List;
  * <p>
  * This class retrieves a list of {@link DiskDrive} objects and logs their JSON representation.
  * Individual fields of each disk drive can be accessed via the respective getter methods.
+ * </p>
  */
 @Slf4j
 public class DiskDriveExample {
 
     public static void main(String[] args) {
 
-        List<DiskDrive> diskDrives = new DiskDriveService().getDiskDrives();
+        List<DiskDrive> diskDrives = new DiskDriveService().get();
         diskDrives.forEach(diskDrive -> log.info("Disk Drive: \n{}", diskDrive));
 
         // individual fields are accessible via getter methods

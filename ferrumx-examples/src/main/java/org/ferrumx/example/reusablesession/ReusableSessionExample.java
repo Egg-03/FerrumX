@@ -10,14 +10,14 @@ import org.ferrumx.core.service.processor.ProcessorService;
 import java.util.List;
 
 /**
- * <p>
  * Unlike other examples where a session is managed for you automatically, this example contains methods
  * that allow you to pass a re-usable session as a parameter, that you create yourself.
  * This is useful if you want to run multiple queries in the same session,
  * since each session spawns it's individual powershell process.
- * </p>
+ * <p>
  * You are responsible for maintaining the scope of the session
- * PowerShell implements auto-closeable
+ * PowerShell implements auto-closeable.
+ * </p>
  */
 @Slf4j
 public class ReusableSessionExample {
@@ -26,9 +26,9 @@ public class ReusableSessionExample {
 
         try(PowerShell powerShell = PowerShell.openSession()) {
 
-            List<Processor> processorList = new ProcessorService().getProcessors(powerShell);
+            List<Processor> processorList = new ProcessorService().get(powerShell);
 
-            List<ProcessorCache> processorCacheList = new ProcessorCacheService().getProcessorCaches(powerShell);
+            List<ProcessorCache> processorCacheList = new ProcessorCacheService().get(powerShell);
 
             processorList.forEach(processor -> log.info(processor.toString()));
             processorCacheList.forEach(processorCache -> log.info(processorCache.toString()));

@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.memory;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.memory.PhysicalMemory;
 import org.ferrumx.core.mapping.MapperUtil;
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.service.CommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#PHYSICAL_MEMORY_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link PhysicalMemory} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,22 +24,25 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * PhysicalMemoryService memoryService = new PhysicalMemoryService();
- * List<PhysicalMemory> memories = memoryService.getPhysicalMemories();
+ * List<PhysicalMemory> memories = memoryService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     PhysicalMemoryService memoryService = new PhysicalMemoryService();
- *     List<PhysicalMemory> memories = memoryService.getPhysicalMemories(session);
+ *     List<PhysicalMemory> memories = memoryService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class PhysicalMemoryService {
+public class PhysicalMemoryService implements CommonServiceInterface<PhysicalMemory> {
 
     /**
      * Retrieves a list of physical memory modules present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return a list of {@link PhysicalMemory} objects representing the system's RAM.
      *         Returns an empty list if no memory modules are detected.
@@ -45,7 +50,8 @@ public class PhysicalMemoryService {
      *                          or parsing the output.
      */
     @NotNull
-    public List<PhysicalMemory> getPhysicalMemories() {
+    @Override
+    public List<PhysicalMemory> get() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.PHYSICAL_MEMORY_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), PhysicalMemory.class);
@@ -53,8 +59,6 @@ public class PhysicalMemoryService {
 
     /**
      * Retrieves a list of physical memory modules using the caller's {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return a list of {@link PhysicalMemory} objects representing the system's RAM.
@@ -63,7 +67,8 @@ public class PhysicalMemoryService {
      *                          or parsing the output.
      */
     @NotNull
-    public List<PhysicalMemory> getPhysicalMemories(PowerShell powerShell) {
+    @Override
+    public List<PhysicalMemory> get(PowerShell powerShell) {
 
         PowerShellResponse response = powerShell.executeCommand(CimQuery.PHYSICAL_MEMORY_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), PhysicalMemory.class);

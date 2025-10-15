@@ -11,7 +11,10 @@ import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -48,7 +51,7 @@ class OperatingSystemServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<OperatingSystem> os = operatingSystemService.getOperatingSystems();
+            List<OperatingSystem> os = operatingSystemService.get();
             assertFalse(os.isEmpty());
             assertEquals("Windows 11 Pro", os.getFirst().getName());
             assertEquals("Microsoft Windows 11 Pro", os.getFirst().getCaption());
@@ -65,7 +68,7 @@ class OperatingSystemServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<OperatingSystem> os = operatingSystemService.getOperatingSystems();
+            List<OperatingSystem> os = operatingSystemService.get();
             assertTrue(os.isEmpty());
         }
     }
@@ -78,7 +81,7 @@ class OperatingSystemServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> operatingSystemService.getOperatingSystems());
+            assertThrows(JsonSyntaxException.class, () -> operatingSystemService.get());
         }
     }
 
@@ -91,7 +94,7 @@ class OperatingSystemServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<OperatingSystem> os = operatingSystemService.getOperatingSystems(mockShell);
+            List<OperatingSystem> os = operatingSystemService.get(mockShell);
             assertFalse(os.isEmpty());
             assertEquals("Windows 11 Pro", os.getFirst().getName());
             assertEquals("Microsoft Windows 11 Pro", os.getFirst().getCaption());
@@ -108,7 +111,7 @@ class OperatingSystemServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<OperatingSystem> os = operatingSystemService.getOperatingSystems(mockShell);
+            List<OperatingSystem> os = operatingSystemService.get(mockShell);
             assertTrue(os.isEmpty());
         }
     }
@@ -121,7 +124,7 @@ class OperatingSystemServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> operatingSystemService.getOperatingSystems(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> operatingSystemService.get(mockShell));
         }
     }
 }

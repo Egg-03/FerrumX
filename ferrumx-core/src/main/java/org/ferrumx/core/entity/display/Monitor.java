@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
  * Immutable representation of a monitor device on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_DesktopMonitor} WMI class.
- * Values are captured at query time and do not update automatically.
+ * </p>
  * <p>
  * Instances are inherently thread-safe and may be safely shared or cached across threads.
- * <p>
+ * </p>
  *
  * <h2>Usage example</h2>
  * <pre>{@code
@@ -32,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
  * }</pre>
  *
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-desktopmonitor">Win32_DesktopMonitor</a>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 @Value

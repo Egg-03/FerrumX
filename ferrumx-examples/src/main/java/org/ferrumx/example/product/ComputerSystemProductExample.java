@@ -13,16 +13,17 @@ import java.util.Optional;
  * This class retrieves an {@link Optional} {@link ComputerSystemProduct} object and logs its JSON
  * representation. Individual attributes of the product can be accessed via the getter methods
  * of the {@link ComputerSystemProduct} class.
+ * </p>
  */
 @Slf4j
 public class ComputerSystemProductExample {
 
     public static void main(String[] args) {
 
-        Optional<ComputerSystemProduct> optionalProduct = new ComputerSystemProductService().getProduct();
+        Optional<ComputerSystemProduct> optionalProduct = new ComputerSystemProductService().get();
         optionalProduct.ifPresent(product -> log.info("Product Details: \n{}", product));
 
-        ComputerSystemProduct product = new ComputerSystemProductService().getProduct().orElseThrow(); // will throw NoSuchElementException if not found
+        ComputerSystemProduct product = new ComputerSystemProductService().get().orElseThrow(); // will throw NoSuchElementException if not found
         log.info("Product Details: \n{}", product);
 
         // individual fields are accessible via getter methods

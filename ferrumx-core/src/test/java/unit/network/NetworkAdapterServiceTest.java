@@ -11,7 +11,10 @@ import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -54,7 +57,7 @@ class NetworkAdapterServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters();
+            List<NetworkAdapter> adapters = networkAdapterService.get();
             assertFalse(adapters.isEmpty());
             assertEquals("1", adapters.get(0).getDeviceId());
             assertEquals("Ethernet Adapter", adapters.get(0).getName());
@@ -71,7 +74,7 @@ class NetworkAdapterServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters();
+            List<NetworkAdapter> adapters = networkAdapterService.get();
             assertTrue(adapters.isEmpty());
         }
     }
@@ -84,7 +87,7 @@ class NetworkAdapterServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> networkAdapterService.getNetworkAdapters());
+            assertThrows(JsonSyntaxException.class, () -> networkAdapterService.get());
         }
     }
 
@@ -97,7 +100,7 @@ class NetworkAdapterServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters(mockShell);
+            List<NetworkAdapter> adapters = networkAdapterService.get(mockShell);
             assertFalse(adapters.isEmpty());
             assertEquals("1", adapters.get(0).getDeviceId());
             assertEquals("Ethernet Adapter", adapters.get(0).getName());
@@ -114,7 +117,7 @@ class NetworkAdapterServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<NetworkAdapter> adapters = networkAdapterService.getNetworkAdapters(mockShell);
+            List<NetworkAdapter> adapters = networkAdapterService.get(mockShell);
             assertTrue(adapters.isEmpty());
         }
     }
@@ -127,7 +130,7 @@ class NetworkAdapterServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> networkAdapterService.getNetworkAdapters(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> networkAdapterService.get(mockShell));
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class retrieves a list of {@link ProcessorCache} objects and logs their JSON
  * representation.
- * <p>
+ * </p>
  * Individual attributes of each {@link ProcessorCache} object can be accessed
  * via their getter methods.
  */
@@ -21,7 +21,7 @@ public class ProcessorCacheExample {
 
     public static void main(String[] args) {
 
-        List<ProcessorCache> caches = new ProcessorCacheService().getProcessorCaches();
+        List<ProcessorCache> caches = new ProcessorCacheService().get();
         caches.forEach(cache -> log.info("Processor Cache: \n{}", cache));
 
         // individual fields are accessible via getter methods

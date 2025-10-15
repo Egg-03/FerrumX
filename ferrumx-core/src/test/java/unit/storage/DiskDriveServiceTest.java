@@ -11,7 +11,10 @@ import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -60,7 +63,7 @@ class DiskDriveServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskDrive> disks = diskDriveService.getDiskDrives();
+            List<DiskDrive> disks = diskDriveService.get();
             assertFalse(disks.isEmpty());
             assertEquals("Disk0", disks.get(0).getDeviceId());
             assertEquals("Samsung SSD 970", disks.get(0).getCaption());
@@ -77,7 +80,7 @@ class DiskDriveServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskDrive> disks = diskDriveService.getDiskDrives();
+            List<DiskDrive> disks = diskDriveService.get();
             assertTrue(disks.isEmpty());
         }
     }
@@ -90,7 +93,7 @@ class DiskDriveServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> diskDriveService.getDiskDrives());
+            assertThrows(JsonSyntaxException.class, () -> diskDriveService.get());
         }
     }
 
@@ -103,7 +106,7 @@ class DiskDriveServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskDrive> disks = diskDriveService.getDiskDrives(mockShell);
+            List<DiskDrive> disks = diskDriveService.get(mockShell);
             assertFalse(disks.isEmpty());
             assertEquals("Disk0", disks.get(0).getDeviceId());
             assertEquals("Samsung SSD 970", disks.get(0).getCaption());
@@ -120,7 +123,7 @@ class DiskDriveServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskDrive> disks = diskDriveService.getDiskDrives(mockShell);
+            List<DiskDrive> disks = diskDriveService.get(mockShell);
             assertTrue(disks.isEmpty());
         }
     }
@@ -133,7 +136,7 @@ class DiskDriveServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> diskDriveService.getDiskDrives(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> diskDriveService.get(mockShell));
         }
     }
 }

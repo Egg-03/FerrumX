@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class executes a CIM query to retrieve BIOS details of the system
  * and logs the JSON representation of each {@link Bios} object.
- * <p>
+ * </p>
  * Individual attributes of each BIOS entry can be accessed via
  * the getter methods of the {@link Bios} class.
  */
@@ -21,7 +21,7 @@ public class BiosExample {
 
     public static void main(String[] args) {
 
-        List<Bios> biosList = new BiosService().getBios();
+        List<Bios> biosList = new BiosService().get();
         biosList.forEach(bios -> log.info("Bios : \n{}", bios));
 
         // individual fields are accessible via getter methods

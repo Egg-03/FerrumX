@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.mainboard;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.mainboard.Bios;
 import org.ferrumx.core.mapping.MapperUtil;
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.service.CommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#BIOS_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link Bios} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,30 +24,33 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * BiosService biosService = new BiosService();
- * List<Bios> biosList = biosService.getBios();
+ * List<Bios> biosList = biosService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     BiosService biosService = new BiosService();
- *     List<Bios> biosList = biosService.getBios(session);
+ *     List<Bios> biosList = biosService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class BiosService {
+public class BiosService implements CommonServiceInterface<Bios> {
 
     /**
      * Retrieves a list of BIOS entries present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
-     *
+     * </p>
      * @return a list of {@link Bios} objects representing the system BIOS.
      *         Returns an empty list if no BIOS entries are detected.
      * @throws com.google.gson.JsonSyntaxException if there is an error executing the PowerShell command
      *                          or parsing the output.
      */
     @NotNull
-    public List<Bios> getBios() {
+    @Override
+    public List<Bios> get() {
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.BIOS_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), Bios.class);
     }
@@ -61,7 +66,8 @@ public class BiosService {
      *                          or parsing the output.
      */
     @NotNull
-    public List<Bios> getBios(PowerShell powerShell) {
+    @Override
+    public List<Bios> get(PowerShell powerShell) {
         PowerShellResponse response = powerShell.executeCommand(CimQuery.BIOS_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), Bios.class);
     }

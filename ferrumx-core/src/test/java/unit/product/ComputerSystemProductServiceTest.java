@@ -11,9 +11,13 @@ import org.mockito.MockedStatic;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 class ComputerSystemProductServiceTest {
 
@@ -46,7 +50,7 @@ class ComputerSystemProductServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<ComputerSystemProduct> product = productService.getProduct();
+            Optional<ComputerSystemProduct> product = productService.get();
             assertTrue(product.isPresent());
             assertEquals("MyPC", product.get().getName());
             assertEquals("Dell", product.get().getVendor());
@@ -62,7 +66,7 @@ class ComputerSystemProductServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<ComputerSystemProduct> product = productService.getProduct();
+            Optional<ComputerSystemProduct> product = productService.get();
             assertTrue(product.isEmpty());
         }
     }
@@ -75,7 +79,7 @@ class ComputerSystemProductServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> productService.getProduct());
+            assertThrows(JsonSyntaxException.class, () -> productService.get());
         }
     }
 
@@ -88,7 +92,7 @@ class ComputerSystemProductServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<ComputerSystemProduct> product = productService.getProduct(mockShell);
+            Optional<ComputerSystemProduct> product = productService.get(mockShell);
             assertTrue(product.isPresent());
             assertEquals("MyPC", product.get().getName());
             assertEquals("Dell", product.get().getVendor());
@@ -104,7 +108,7 @@ class ComputerSystemProductServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<ComputerSystemProduct> product = productService.getProduct(mockShell);
+            Optional<ComputerSystemProduct> product = productService.get(mockShell);
             assertTrue(product.isEmpty());
         }
     }
@@ -117,7 +121,7 @@ class ComputerSystemProductServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> productService.getProduct(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> productService.get(mockShell));
         }
     }
 }

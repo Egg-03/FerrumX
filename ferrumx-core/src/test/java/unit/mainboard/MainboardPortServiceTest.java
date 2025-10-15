@@ -11,9 +11,14 @@ import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 class MainboardPortServiceTest {
 
@@ -49,7 +54,7 @@ class MainboardPortServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<MainboardPort> mainboardPort = mainboardPortService.getMainboardPorts();
+            List<MainboardPort> mainboardPort = mainboardPortService.get();
             assertFalse(mainboardPort.isEmpty());
             assertEquals("Port1", mainboardPort.get(0).getTag());
             assertEquals("External1", mainboardPort.get(0).getExternalReferenceDesignator());
@@ -65,7 +70,7 @@ class MainboardPortServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<MainboardPort> mainboardPort = mainboardPortService.getMainboardPorts();
+            List<MainboardPort> mainboardPort = mainboardPortService.get();
             assertTrue(mainboardPort.isEmpty());
         }
     }
@@ -78,7 +83,7 @@ class MainboardPortServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> mainboardPortService.getMainboardPorts());
+            assertThrows(JsonSyntaxException.class, () -> mainboardPortService.get());
         }
     }
 
@@ -91,7 +96,7 @@ class MainboardPortServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<MainboardPort> mainboardPort = mainboardPortService.getMainboardPorts(mockShell);
+            List<MainboardPort> mainboardPort = mainboardPortService.get(mockShell);
             assertFalse(mainboardPort.isEmpty());
             assertEquals("Port1", mainboardPort.get(0).getTag());
             assertEquals("External1", mainboardPort.get(0).getExternalReferenceDesignator());
@@ -107,7 +112,7 @@ class MainboardPortServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<MainboardPort> mainboardPort = mainboardPortService.getMainboardPorts(mockShell);
+            List<MainboardPort> mainboardPort = mainboardPortService.get(mockShell);
             assertTrue(mainboardPort.isEmpty());
         }
     }
@@ -119,7 +124,7 @@ class MainboardPortServiceTest {
 
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
-            assertThrows(JsonSyntaxException.class, () -> mainboardPortService.getMainboardPorts(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> mainboardPortService.get(mockShell));
         }
     }
 }

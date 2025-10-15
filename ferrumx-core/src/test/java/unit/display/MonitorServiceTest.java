@@ -63,7 +63,7 @@ class MonitorServiceTest {
         try(MockedStatic<PowerShell> powerShellMockedStatic = mockStatic(PowerShell.class)) {
             powerShellMockedStatic.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockedResponse);
 
-            List<Monitor> monitors = monitorService.getMonitors();
+            List<Monitor> monitors = monitorService.get();
             assertFalse(monitors.isEmpty());
             assertEquals("MON1", monitors.get(0).getDeviceId());
             assertEquals("Dell U2720Q", monitors.get(0).getName());
@@ -81,7 +81,7 @@ class MonitorServiceTest {
         try(MockedStatic<PowerShell> powerShellMockedStatic = mockStatic(PowerShell.class)) {
             powerShellMockedStatic.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockedResponse);
 
-            List<Monitor> monitors = monitorService.getMonitors();
+            List<Monitor> monitors = monitorService.get();
             assertTrue(monitors.isEmpty());
         }
     }
@@ -95,7 +95,7 @@ class MonitorServiceTest {
         try (MockedStatic<PowerShell> powerShellMockedStatic = mockStatic(PowerShell.class)) {
             powerShellMockedStatic.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockedResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> monitorService.getMonitors());
+            assertThrows(JsonSyntaxException.class, () -> monitorService.get());
         }
     }
 
@@ -108,7 +108,7 @@ class MonitorServiceTest {
         try(PowerShell mockSession = mock(PowerShell.class)) {
             when(mockSession.executeCommand(anyString())).thenReturn(mockedResponse);
 
-            List<Monitor> monitors = monitorService.getMonitors(mockSession);
+            List<Monitor> monitors = monitorService.get(mockSession);
             assertFalse(monitors.isEmpty());
             assertEquals("MON1", monitors.get(0).getDeviceId());
             assertEquals("Dell U2720Q", monitors.get(0).getName());
@@ -126,7 +126,7 @@ class MonitorServiceTest {
         try(PowerShell mockSession = mock(PowerShell.class)) {
             when(mockSession.executeCommand(anyString())).thenReturn(mockedResponse);
 
-            List<Monitor> monitors = monitorService.getMonitors(mockSession);
+            List<Monitor> monitors = monitorService.get(mockSession);
             assertTrue(monitors.isEmpty());
         }
     }
@@ -139,7 +139,7 @@ class MonitorServiceTest {
 
         try(PowerShell mockSession = mock(PowerShell.class)) {
             when(mockSession.executeCommand(anyString())).thenReturn(mockedResponse);
-            assertThrows(JsonSyntaxException.class, () -> monitorService.getMonitors(mockSession));
+            assertThrows(JsonSyntaxException.class, () -> monitorService.get(mockSession));
         }
     }
 }

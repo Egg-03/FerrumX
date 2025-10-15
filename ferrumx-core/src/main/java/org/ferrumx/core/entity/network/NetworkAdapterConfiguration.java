@@ -13,10 +13,10 @@ import java.util.List;
  * Immutable representation of a network adapter configuration on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_NetworkAdapterConfiguration} WMI class.
- * Values are captured at query time and do not update automatically.
+ * </p>
  * <p>
  * Instances are thread-safe and may be safely cached or shared across threads.
- * <p>
+ * </p>
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -38,6 +38,8 @@ import java.util.List;
  *
  * See {@link NetworkAdapter} for the corresponding adapter entity
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-networkadapterconfiguration">Win32_NetworkAdapterConfiguration</a>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 @Value

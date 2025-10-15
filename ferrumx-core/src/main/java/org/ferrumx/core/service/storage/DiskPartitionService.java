@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.storage;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.storage.DiskPartition;
 import org.ferrumx.core.mapping.MapperUtil;
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.service.CommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#DISK_PARTITION_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link DiskPartition} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,28 +24,32 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * DiskPartitionService partitionService = new DiskPartitionService();
- * List<DiskPartition> partitions = partitionService.getDiskPartitions();
+ * List<DiskPartition> partitions = partitionService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     DiskPartitionService partitionService = new DiskPartitionService();
- *     List<DiskPartition> partitions = partitionService.getDiskPartitions(session);
+ *     List<DiskPartition> partitions = partitionService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class DiskPartitionService {
+public class DiskPartitionService implements CommonServiceInterface<DiskPartition> {
 
     /**
      * Retrieves a non-null list of disk partitions present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return a list of {@link DiskPartition} objects representing the disk partitions.
      *         Returns an empty list if no partitions are detected.
      */
     @NotNull
-    public List<DiskPartition> getDiskPartitions() {
+    @Override
+    public List<DiskPartition> get() {
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.DISK_PARTITION_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), DiskPartition.class);
     }
@@ -56,7 +62,8 @@ public class DiskPartitionService {
      *         Returns an empty list if no partitions are detected.
      */
     @NotNull
-    public List<DiskPartition> getDiskPartitions(PowerShell powerShell) {
+    @Override
+    public List<DiskPartition> get(PowerShell powerShell) {
         PowerShellResponse response = powerShell.executeCommand(CimQuery.DISK_PARTITION_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), DiskPartition.class);
     }

@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.processor;
 
-import org.ferrumx.core.constant.CimQuery;
-import org.ferrumx.core.entity.processor.ProcessorCache;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.constant.CimQuery;
+import org.ferrumx.core.entity.processor.ProcessorCache;
 import org.ferrumx.core.mapping.MapperUtil;
+import org.ferrumx.core.service.CommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#PROCESSOR_CACHE_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link ProcessorCache} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,28 +24,32 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * ProcessorCacheService cacheService = new ProcessorCacheService();
- * List<ProcessorCache> caches = cacheService.getProcessorCaches();
+ * List<ProcessorCache> caches = cacheService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     ProcessorCacheService cacheService = new ProcessorCacheService();
- *     List<ProcessorCache> caches = cacheService.getProcessorCaches(session);
+ *     List<ProcessorCache> caches = cacheService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class ProcessorCacheService {
+public class ProcessorCacheService implements CommonServiceInterface<ProcessorCache> {
 
     /**
      * Retrieves a list of processor cache entries present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return a list of {@link ProcessorCache} objects representing the CPU caches.
      *         Returns an empty list if none are detected.
      */
     @NotNull
-    public List<ProcessorCache> getProcessorCaches() {
+    @Override
+    public List<ProcessorCache> get() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.PROCESSOR_CACHE_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), ProcessorCache.class);
@@ -57,7 +63,8 @@ public class ProcessorCacheService {
      *         Returns an empty list if none are detected.
      */
     @NotNull
-    public List<ProcessorCache> getProcessorCaches(PowerShell powerShell) {
+    @Override
+    public List<ProcessorCache> get(PowerShell powerShell) {
 
         PowerShellResponse response = powerShell.executeCommand(CimQuery.PROCESSOR_CACHE_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), ProcessorCache.class);

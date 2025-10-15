@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class executes a CIM query to retrieve all monitors on the system
  * and logs the JSON representation of each monitor object.
- * <p>
+ * </p>
  * Individual monitor attributes can also be accessed via the getter methods
  * of the {@link Monitor} class.
  */
@@ -21,7 +21,7 @@ public class MonitorExample {
 
     public static void main(String[] args) {
 
-        List<Monitor> monitors = new MonitorService().getMonitors();
+        List<Monitor> monitors = new MonitorService().get();
         monitors.forEach(monitor -> log.info("Monitor: \n{}", monitor));
 
         // individual fields are accessible via getter methods

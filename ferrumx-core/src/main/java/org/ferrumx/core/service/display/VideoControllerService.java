@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.display;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.display.VideoController;
 import org.ferrumx.core.mapping.MapperUtil;
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.service.CommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#VIDEO_CONTROLLER_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link VideoController} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,22 +24,25 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * VideoControllerService videoControllerService = new VideoControllerService();
- * List<VideoController> controllers = videoControllerService.getVideoControllers();
+ * List<VideoController> controllers = videoControllerService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     VideoControllerService videoControllerService = new VideoControllerService();
- *     List<VideoController> controllers = videoControllerService.getVideoControllers(session);
+ *     List<VideoController> controllers = videoControllerService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class VideoControllerService {
+public class VideoControllerService implements CommonServiceInterface<VideoController> {
 
     /**
      * Retrieves a list of video controllers (GPUs) present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return a list of {@link VideoController} objects representing the video controllers.
      *         Returns an empty list if none are detected.
@@ -45,7 +50,8 @@ public class VideoControllerService {
      *                          or parsing the output.
      */
     @NotNull
-    public List<VideoController> getVideoControllers() {
+    @Override
+    public List<VideoController> get() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.VIDEO_CONTROLLER_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), VideoController.class);
@@ -62,7 +68,8 @@ public class VideoControllerService {
      *                          or parsing the output.
      */
     @NotNull
-    public List<VideoController> getVideoControllers(PowerShell powerShell) {
+    @Override
+    public List<VideoController> get(PowerShell powerShell) {
 
         PowerShellResponse response = powerShell.executeCommand(CimQuery.VIDEO_CONTROLLER_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), VideoController.class);

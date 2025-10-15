@@ -11,7 +11,10 @@ import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -60,7 +63,7 @@ class DiskPartitionServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskPartition> partitions = diskPartitionService.getDiskPartitions();
+            List<DiskPartition> partitions = diskPartitionService.get();
             assertFalse(partitions.isEmpty());
             assertEquals("Disk0_Part1", partitions.get(0).getDeviceId());
             assertEquals("C:", partitions.get(0).getName());
@@ -77,7 +80,7 @@ class DiskPartitionServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskPartition> partitions = diskPartitionService.getDiskPartitions();
+            List<DiskPartition> partitions = diskPartitionService.get();
             assertTrue(partitions.isEmpty());
         }
     }
@@ -90,7 +93,7 @@ class DiskPartitionServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> diskPartitionService.getDiskPartitions());
+            assertThrows(JsonSyntaxException.class, () -> diskPartitionService.get());
         }
     }
 
@@ -103,7 +106,7 @@ class DiskPartitionServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskPartition> partitions = diskPartitionService.getDiskPartitions(mockShell);
+            List<DiskPartition> partitions = diskPartitionService.get(mockShell);
             assertFalse(partitions.isEmpty());
             assertEquals("Disk0_Part1", partitions.get(0).getDeviceId());
             assertEquals("C:", partitions.get(0).getName());
@@ -120,7 +123,7 @@ class DiskPartitionServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<DiskPartition> partitions = diskPartitionService.getDiskPartitions(mockShell);
+            List<DiskPartition> partitions = diskPartitionService.get(mockShell);
             assertTrue(partitions.isEmpty());
         }
     }
@@ -133,7 +136,7 @@ class DiskPartitionServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> diskPartitionService.getDiskPartitions(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> diskPartitionService.get(mockShell));
         }
     }
 }

@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * <p>
  * Fields capture basic user information such as username, home directory, and user directory.
  * Instances are thread-safe and may be safely cached or shared across threads.
+ * </p>
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -27,6 +28,8 @@ import org.jetbrains.annotations.Nullable;
  *     .build();
  *
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 @Value

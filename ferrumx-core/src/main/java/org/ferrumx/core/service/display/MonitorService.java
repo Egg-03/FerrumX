@@ -1,11 +1,12 @@
 package org.ferrumx.core.service.display;
 
-import org.ferrumx.core.constant.CimQuery;
-import org.ferrumx.core.entity.display.Monitor;
-import org.ferrumx.core.mapping.MapperUtil;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import lombok.NonNull;
+import org.ferrumx.core.constant.CimQuery;
+import org.ferrumx.core.entity.display.Monitor;
+import org.ferrumx.core.mapping.MapperUtil;
+import org.ferrumx.core.service.CommonServiceInterface;
 
 import java.util.List;
 
@@ -14,7 +15,8 @@ import java.util.List;
  * <p>
  * This class executes the {@link CimQuery#MONITOR_QUERY} PowerShell command
  * and maps the resulting JSON into a list of {@link Monitor} objects.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,21 +24,24 @@ import java.util.List;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * MonitorService monitorService = new MonitorService();
- * List<Monitor> monitors = monitorService.getMonitors();
+ * List<Monitor> monitors = monitorService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
- *     List<Monitor> monitors = monitorService.getMonitors(session);
+ *     List<Monitor> monitors = monitorService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class MonitorService {
+public class MonitorService implements CommonServiceInterface<Monitor> {
 
     /**
      * Retrieves a list of monitors connected to the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return a list of {@link Monitor} objects representing connected monitors.
      *         Returns an empty list if no monitors are detected.
@@ -44,7 +49,8 @@ public class MonitorService {
      *                          or parsing the output.
      */
     @NonNull
-    public List<Monitor> getMonitors() {
+    @Override
+    public List<Monitor> get() {
 
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.MONITOR_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), Monitor.class);
@@ -61,7 +67,8 @@ public class MonitorService {
      *                          or parsing the output.
      */
     @NonNull
-    public List<Monitor> getMonitors(PowerShell powerShell) {
+    @Override
+    public List<Monitor> get(PowerShell powerShell) {
 
         PowerShellResponse response = powerShell.executeCommand(CimQuery.MONITOR_QUERY.getQuery());
         return MapperUtil.mapToList(response.getCommandOutput(), Monitor.class);

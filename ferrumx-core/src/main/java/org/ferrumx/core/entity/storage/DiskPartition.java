@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
  * Immutable representation of a logical disk partition on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_DiskPartition} WMI class.
- * Values are captured at query time and do not automatically update.
+ * </p>
  * <p>
  * Instances are thread-safe and may be safely cached or shared across threads.
- * JSON serialization and deserialization are handled by Gson.
+ * </p>
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -42,6 +42,8 @@ import org.jetbrains.annotations.Nullable;
  *
  * {@link DiskDrive} contains additional information about the physical disk.
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition">Win32_DiskPartition</a>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 @Value

@@ -1,10 +1,11 @@
 package org.ferrumx.core.service.mainboard;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import org.ferrumx.core.constant.CimQuery;
 import org.ferrumx.core.entity.mainboard.Mainboard;
 import org.ferrumx.core.mapping.MapperUtil;
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
+import org.ferrumx.core.service.OptionalCommonServiceInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -14,7 +15,8 @@ import java.util.Optional;
  * <p>
  * This class executes the {@link CimQuery#MAINBOARD_QUERY} PowerShell command
  * and maps the resulting JSON into a {@link Mainboard} object.
- * <p>
+ * </p>
+ *
  * <h2>Thread safety</h2>
  * Methods of class are not thread safe.
  *
@@ -22,22 +24,25 @@ import java.util.Optional;
  * <pre>{@code
  * // Convenience API (creates its own short-lived session)
  * MainboardService mainboardService = new MainboardService();
- * Optional<Mainboard> mainboard = mainboardService.getMainboard();
+ * Optional<Mainboard> mainboard = mainboardService.get();
  *
- * // API with re-usable session (caller manages session lifecycle, not thread-safe)
+ * // API with re-usable session (caller manages session lifecycle)
  * try (PowerShell session = PowerShell.openSession()) {
  *     MainboardService mainboardService = new MainboardService();
- *     Optional<Mainboard> mainboard = mainboardService.getMainboard(session);
+ *     Optional<Mainboard> mainboard = mainboardService.get(session);
  * }
  * }</pre>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
-public class MainboardService {
+public class MainboardService implements OptionalCommonServiceInterface<Mainboard> {
 
     /**
      * Retrieves an {@link Optional} containing the system's mainboard information.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
+     * </p>
      *
      * @return an {@link Optional} of {@link Mainboard} representing the system's mainboard.
      *
@@ -45,7 +50,8 @@ public class MainboardService {
      *                          or parsing the output.
      */
     @NotNull
-    public Optional<Mainboard> getMainboard() {
+    @Override
+    public Optional<Mainboard> get() {
         PowerShellResponse response = PowerShell.executeSingleCommand(CimQuery.MAINBOARD_QUERY.getQuery());
         return MapperUtil.mapToObject(response.getCommandOutput(), Mainboard.class);
     }
@@ -53,8 +59,6 @@ public class MainboardService {
     /**
      * Retrieves an {@link Optional} containing the system's mainboard information
      * using the caller's {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return an {@link Optional} of {@link Mainboard} representing the system's mainboard.
@@ -63,7 +67,8 @@ public class MainboardService {
      *                          or parsing the output.
      */
     @NotNull
-    public Optional<Mainboard> getMainboard(PowerShell powerShell) {
+    @Override
+    public Optional<Mainboard> get(PowerShell powerShell) {
         PowerShellResponse response = powerShell.executeCommand(CimQuery.MAINBOARD_QUERY.getQuery());
         return MapperUtil.mapToObject(response.getCommandOutput(), Mainboard.class);
     }

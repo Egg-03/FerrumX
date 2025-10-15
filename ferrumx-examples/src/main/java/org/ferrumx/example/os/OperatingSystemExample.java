@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * This class retrieves a list of {@link OperatingSystem} objects and logs their JSON
  * representation.
- * <p>
+ * </p>
  * Individual attributes of each {@link OperatingSystem} object can be accessed
  * via their getter methods.
  */
@@ -21,7 +21,7 @@ public class OperatingSystemExample {
 
     public static void main(String[] args) {
 
-        List<OperatingSystem> operatingSystems = new OperatingSystemService().getOperatingSystems();
+        List<OperatingSystem> operatingSystems = new OperatingSystemService().get();
         operatingSystems.forEach(os -> log.info("Operating System: \n{}", os));
 
         // individual fields are accessible via getter methods

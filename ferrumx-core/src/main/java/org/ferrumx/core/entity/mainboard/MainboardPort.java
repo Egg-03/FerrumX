@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
  * Immutable representation of a motherboard port on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_PortConnector} WMI class.
- * Values are captured at query time and do not update automatically.
+ * </p>
  * <p>
  * Instances are inherently thread-safe and may be safely cached or shared across threads.
- * <p>
+ * </p>
  *
  * <h2>Usage example</h2>
  * <pre>{@code
@@ -31,6 +31,8 @@ import org.jetbrains.annotations.Nullable;
  * {@link Mainboard} contains the details of the motherboard this port belongs to.
  *
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-portconnector">Win32_PortConnector</a>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 @Value

@@ -52,13 +52,14 @@ public class ProcessorExample {
 
     static void main(String[] args) {
         
-        List<Processor> processorList = new ProcessorService().getProcessors();
+        List<Processor> processorList = new ProcessorService().get();
         
         // you can also create and manage your own re-usable PowerShell session
         // good for cases where you need to fetch results for multiple queries
         List<Processor> processorListTwo;
         try(PowerShell session = PowerShell.openSession()) {
-            processorListTwo = new ProcessorService().getProcessors(session);
+            processorListTwo = new ProcessorService().get(session);
+            processorListTwo.forEach(processor -> log.info(processor.toString()));
         }
 
         // individual fields are accessible via getter methods

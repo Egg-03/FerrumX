@@ -11,7 +11,10 @@ import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -56,7 +59,7 @@ class BatteryServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<Battery> batteries = batteryService.getBatteries();
+            List<Battery> batteries = batteryService.get();
             assertFalse(batteries.isEmpty());
             assertEquals("BAT0", batteries.get(0).getDeviceId());
             assertEquals("Battery 0", batteries.get(0).getName());
@@ -73,7 +76,7 @@ class BatteryServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<Battery> batteries = batteryService.getBatteries();
+            List<Battery> batteries = batteryService.get();
             assertTrue(batteries.isEmpty());
         }
     }
@@ -86,7 +89,7 @@ class BatteryServiceTest {
         try (MockedStatic<PowerShell> powerShellMock = mockStatic(PowerShell.class)) {
             powerShellMock.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> batteryService.getBatteries());
+            assertThrows(JsonSyntaxException.class, () -> batteryService.get());
         }
     }
 
@@ -99,7 +102,7 @@ class BatteryServiceTest {
         try (PowerShell mockSession = mock(PowerShell.class)) {
             when(mockSession.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<Battery> batteries = batteryService.getBatteries(mockSession);
+            List<Battery> batteries = batteryService.get(mockSession);
             assertFalse(batteries.isEmpty());
             assertEquals("BAT0", batteries.get(0).getDeviceId());
             assertEquals("Battery 0", batteries.get(0).getName());
@@ -116,7 +119,7 @@ class BatteryServiceTest {
         try (PowerShell mockSession = mock(PowerShell.class)) {
             when(mockSession.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<Battery> batteries = batteryService.getBatteries(mockSession);
+            List<Battery> batteries = batteryService.get(mockSession);
             assertTrue(batteries.isEmpty());
         }
     }
@@ -129,7 +132,7 @@ class BatteryServiceTest {
         try (PowerShell mockSession = mock(PowerShell.class)) {
             when(mockSession.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> batteryService.getBatteries(mockSession));
+            assertThrows(JsonSyntaxException.class, () -> batteryService.get(mockSession));
         }
     }
 }

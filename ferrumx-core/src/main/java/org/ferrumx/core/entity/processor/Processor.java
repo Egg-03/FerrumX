@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
  * Immutable representation of a CPU device on a Windows system.
  * <p>
  * Fields correspond to properties retrieved from the {@code Win32_Processor} WMI class.
- * Values are captured at query time and do not automatically update.
+ * </p>
  * <p>
  * Instances are thread-safe and may be safely cached or shared across threads.
- *
+ * </p>
  * <h2>Usage examples</h2>
  * <pre>{@code
  * // Build a new Processor instance
@@ -33,6 +33,8 @@ import org.jetbrains.annotations.Nullable;
  *
  * {@link ProcessorCache} for related cache information.
  * @see <a href="https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor">Win32_Processor</a>
+ * @since 2.0.0
+ * @author Egg-03
  */
 
 @Value

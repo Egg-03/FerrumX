@@ -12,13 +12,14 @@ import java.util.List;
  * <p>
  * This class retrieves a list of {@link DiskPartition} objects and logs their JSON representation.
  * Individual fields of each disk partition can be accessed via the respective getter methods.
+ * </p>
  */
 @Slf4j
 public class DiskPartitionExample {
 
     public static void main(String[] args) {
 
-        List<DiskPartition> diskPartitions = new DiskPartitionService().getDiskPartitions();
+        List<DiskPartition> diskPartitions = new DiskPartitionService().get();
         diskPartitions.forEach(diskPartition -> log.info("Disk Partitions: \n{}", diskPartition));
 
         // individual fields are accessible via getter methods

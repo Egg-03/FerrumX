@@ -11,9 +11,14 @@ import org.mockito.MockedStatic;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 class MainboardServiceTest {
 
@@ -42,7 +47,7 @@ class MainboardServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<Mainboard> mainboard = mainboardService.getMainboard();
+            Optional<Mainboard> mainboard = mainboardService.get();
             assertFalse(mainboard.isEmpty());
             assertEquals("ASUS", mainboard.get().getManufacturer());
             assertEquals("ROG STRIX", mainboard.get().getModel());
@@ -57,7 +62,7 @@ class MainboardServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<Mainboard> mainboard = mainboardService.getMainboard();
+            Optional<Mainboard> mainboard = mainboardService.get();
             assertTrue(mainboard.isEmpty());
         }
     }
@@ -70,7 +75,7 @@ class MainboardServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)) {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> mainboardService.getMainboard());
+            assertThrows(JsonSyntaxException.class, () -> mainboardService.get());
         }
     }
 
@@ -83,7 +88,7 @@ class MainboardServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<Mainboard> mainboard = mainboardService.getMainboard(mockShell);
+            Optional<Mainboard> mainboard = mainboardService.get(mockShell);
             assertFalse(mainboard.isEmpty());
             assertEquals("ASUS", mainboard.get().getManufacturer());
             assertEquals("ROG STRIX", mainboard.get().getModel());
@@ -98,7 +103,7 @@ class MainboardServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            Optional<Mainboard> mainboard = mainboardService.getMainboard(mockShell);
+            Optional<Mainboard> mainboard = mainboardService.get(mockShell);
             assertTrue(mainboard.isEmpty());
         }
     }
@@ -111,7 +116,7 @@ class MainboardServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)) {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> mainboardService.getMainboard(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> mainboardService.get(mockShell));
         }
     }
 }

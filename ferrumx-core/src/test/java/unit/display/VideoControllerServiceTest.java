@@ -55,7 +55,7 @@ class VideoControllerServiceTest {
         try (MockedStatic<PowerShell> mockedPowershell = mockStatic(PowerShell.class)){
             mockedPowershell.when(()-> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<VideoController> videoControllers = videoControllerService.getVideoControllers();
+            List<VideoController> videoControllers = videoControllerService.get();
             assertFalse(videoControllers.isEmpty());
             assertEquals("Video1", videoControllers.getFirst().getDeviceId());
             assertEquals("NVIDIA RTX 3080", videoControllers.getFirst().getName());
@@ -72,7 +72,7 @@ class VideoControllerServiceTest {
         try (MockedStatic<PowerShell> mockedPowerShell = mockStatic(PowerShell.class)) {
             mockedPowerShell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
-            List<VideoController> controllers = videoControllerService.getVideoControllers();
+            List<VideoController> controllers = videoControllerService.get();
             assertTrue(controllers.isEmpty());
         }
     }
@@ -86,7 +86,7 @@ class VideoControllerServiceTest {
             mockedPowerShell.when(() -> PowerShell.executeSingleCommand(anyString()))
                     .thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> videoControllerService.getVideoControllers());
+            assertThrows(JsonSyntaxException.class, () -> videoControllerService.get());
         }
     }
 
@@ -99,7 +99,7 @@ class VideoControllerServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)){
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<VideoController> videoControllers = videoControllerService.getVideoControllers(mockShell);
+            List<VideoController> videoControllers = videoControllerService.get(mockShell);
             assertFalse(videoControllers.isEmpty());
             assertEquals("Video1", videoControllers.getFirst().getDeviceId());
             assertEquals("NVIDIA RTX 3080", videoControllers.getFirst().getName());
@@ -116,7 +116,7 @@ class VideoControllerServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)){
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            List<VideoController> videoControllers = videoControllerService.getVideoControllers(mockShell);
+            List<VideoController> videoControllers = videoControllerService.get(mockShell);
             assertTrue(videoControllers.isEmpty());
         }
     }
@@ -129,7 +129,7 @@ class VideoControllerServiceTest {
         try (PowerShell mockShell = mock(PowerShell.class)){
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
-            assertThrows(JsonSyntaxException.class, () -> videoControllerService.getVideoControllers(mockShell));
+            assertThrows(JsonSyntaxException.class, () -> videoControllerService.get(mockShell));
         }
     }
 }
