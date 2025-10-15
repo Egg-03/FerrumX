@@ -16,7 +16,7 @@ import java.util.List;
  * and maps the resulting JSON into a list of {@link VideoController} objects.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -38,11 +38,6 @@ public class VideoControllerService {
      * Retrieves a list of video controllers (GPUs) present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
-     * <p>
-     * Not thread-safe.
-     * <p>
-     * As a workaround, you may create and close an empty {@link PowerShell} session before
-     * calling this method or other methods of the same signature, concurrently.
      *
      * @return a list of {@link VideoController} objects representing the video controllers.
      *         Returns an empty list if none are detected.
@@ -59,8 +54,6 @@ public class VideoControllerService {
     /**
      * Retrieves a list of video controllers (GPUs) present in the system using the caller's
      * {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return a list of {@link VideoController} objects representing the video controllers.

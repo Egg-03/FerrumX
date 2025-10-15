@@ -15,7 +15,7 @@ import java.util.Optional;
  * and maps the resulting JSON into an {@link Optional} {@link ComputerSystemProduct} object.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -35,8 +35,6 @@ public class ComputerSystemProductService {
 
     /**
      * Retrieves an {@link Optional} containing the computer system product information.
-     * <p>
-     * Not thread-safe.
      *
      * @return an {@link Optional} of {@link ComputerSystemProduct} representing
      *         the computer system as a product. Returns {@link Optional#empty()} if no product information is detected.
@@ -50,8 +48,6 @@ public class ComputerSystemProductService {
     /**
      * Retrieves an {@link Optional} containing the computer system product information
      * using the caller's {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return an {@link Optional} of {@link ComputerSystemProduct} representing

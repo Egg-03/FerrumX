@@ -16,7 +16,7 @@ import java.util.List;
  * and maps the resulting JSON into a list of {@link DiskDrive} objects.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -37,7 +37,7 @@ public class DiskDriveService {
     /**
      * Retrieves a non-null list of disk drives present in the system.
      * <p>
-     * Not thread-safe.
+     * Each invocation creates and uses a short-lived PowerShell session internally.
      *
      * @return a list of {@link DiskDrive} objects representing the disk drives.
      *         Returns an empty list if no disk drives are detected.
@@ -51,8 +51,6 @@ public class DiskDriveService {
 
     /**
      * Retrieves a non-null list of disk drives using the caller's {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return a list of {@link DiskDrive} objects representing the disk drives.

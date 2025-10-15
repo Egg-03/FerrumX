@@ -16,7 +16,7 @@ import java.util.List;
  * and maps the resulting JSON into a list of {@link NetworkAdapterConfiguration} objects.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code

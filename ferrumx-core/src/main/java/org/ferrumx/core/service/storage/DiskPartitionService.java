@@ -16,7 +16,7 @@ import java.util.List;
  * and maps the resulting JSON into a list of {@link DiskPartition} objects.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -37,7 +37,7 @@ public class DiskPartitionService {
     /**
      * Retrieves a non-null list of disk partitions present in the system.
      * <p>
-     * Not thread-safe.
+     * Each invocation creates and uses a short-lived PowerShell session internally.
      *
      * @return a list of {@link DiskPartition} objects representing the disk partitions.
      *         Returns an empty list if no partitions are detected.
@@ -50,8 +50,6 @@ public class DiskPartitionService {
 
     /**
      * Retrieves a non-null list of disk partitions using the caller's {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return a list of {@link DiskPartition} objects representing the disk partitions.

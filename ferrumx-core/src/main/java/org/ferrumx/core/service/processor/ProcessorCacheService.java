@@ -16,7 +16,7 @@ import java.util.List;
  * and maps the resulting JSON into a list of {@link ProcessorCache} objects.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -38,7 +38,6 @@ public class ProcessorCacheService {
      * Retrieves a list of processor cache entries present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
-     * Not thread-safe.
      *
      * @return a list of {@link ProcessorCache} objects representing the CPU caches.
      *         Returns an empty list if none are detected.
@@ -52,8 +51,6 @@ public class ProcessorCacheService {
 
     /**
      * Retrieves a list of processor cache entries using the caller's {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return a list of {@link ProcessorCache} objects representing the CPU caches.

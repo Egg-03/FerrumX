@@ -16,7 +16,7 @@ import java.util.List;
  * and maps the resulting JSON into a list of {@link NetworkAdapter} objects.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -38,10 +38,6 @@ public class NetworkAdapterService {
      * Retrieves a list of network adapters present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
-     * Not thread-safe.
-     * <p>
-     * As a workaround, you may create and close an empty {@link PowerShell} session before
-     * calling this method concurrently.
      *
      * @return a list of {@link NetworkAdapter} objects representing the system's network adapters.
      *         Returns an empty list if no adapters are detected.
@@ -55,8 +51,6 @@ public class NetworkAdapterService {
 
     /**
      * Retrieves a list of network adapters using the caller's {@link PowerShell} session.
-     * <p>
-     * Not thread-safe. The provided session must not be shared across threads.
      *
      * @param powerShell an existing PowerShell session managed by the caller
      * @return a list of {@link NetworkAdapter} objects representing the system's network adapters.

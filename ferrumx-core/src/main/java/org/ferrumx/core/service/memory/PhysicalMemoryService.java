@@ -16,7 +16,7 @@ import java.util.List;
  * and maps the resulting JSON into a list of {@link PhysicalMemory} objects.
  * <p>
  * <h2>Thread safety</h2>
- * This class is not thread safe.
+ * Methods of class are not thread safe.
  *
  * <h2>Usage examples</h2>
  * <pre>{@code
@@ -38,11 +38,6 @@ public class PhysicalMemoryService {
      * Retrieves a list of physical memory modules present in the system.
      * <p>
      * Each invocation creates and uses a short-lived PowerShell session internally.
-     * <p>
-     * Not thread-safe.
-     * <p>
-     * As a workaround, you may create and close an empty {@link PowerShell} session before
-     * calling this method or other methods of the same signature, concurrently.
      *
      * @return a list of {@link PhysicalMemory} objects representing the system's RAM.
      *         Returns an empty list if no memory modules are detected.
