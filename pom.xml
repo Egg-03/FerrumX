@@ -2,7 +2,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.github.egg-03</groupId>
+    <groupId>io.github.eggy03</groupId>
     <artifactId>ferrum-x</artifactId>
     <version>2.2.0</version>
     <packaging>pom</packaging>
@@ -27,8 +27,8 @@
         <project.developer.name>Egg-03</project.developer.name>
         <project.developer.email>egg03@duck.com</project.developer.email>
 
-        <project.scm.url>https://github.com/Egg-03/FerrumX.git</project.scm.url>
-        <project.scm.dev>scm:git:ssh://git@github.com:Egg-03/FerrumX.git</project.scm.dev>
+        <project.scm.url>https://github.com/eggy03/FerrumX.git</project.scm.url>
+        <project.scm.dev>scm:git:ssh://git@github.com:eggy03/FerrumX.git</project.scm.dev>
     </properties>
 
     <!-- Mandatory fields for Sonatype Central -->
