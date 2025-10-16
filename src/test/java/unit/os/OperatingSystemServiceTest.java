@@ -53,10 +53,10 @@ class OperatingSystemServiceTest {
 
             List<OperatingSystem> os = operatingSystemService.get();
             assertFalse(os.isEmpty());
-            assertEquals("Windows 11 Pro", os.getFirst().getName());
-            assertEquals("Microsoft Windows 11 Pro", os.getFirst().getCaption());
-            assertEquals("DESKTOP-1234", os.getFirst().getCsName());
-            assertEquals("11.0.22000", os.getFirst().getVersion());
+            assertEquals("Windows 11 Pro", os.get(0).getName());
+            assertEquals("Microsoft Windows 11 Pro", os.get(0).getCaption());
+            assertEquals("DESKTOP-1234", os.get(0).getCsName());
+            assertEquals("11.0.22000", os.get(0).getVersion());
         }
     }
 
@@ -96,10 +96,10 @@ class OperatingSystemServiceTest {
 
             List<OperatingSystem> os = operatingSystemService.get(mockShell);
             assertFalse(os.isEmpty());
-            assertEquals("Windows 11 Pro", os.getFirst().getName());
-            assertEquals("Microsoft Windows 11 Pro", os.getFirst().getCaption());
-            assertEquals("DESKTOP-1234", os.getFirst().getCsName());
-            assertEquals("11.0.22000", os.getFirst().getVersion());
+            assertEquals("Windows 11 Pro", os.get(0).getName());
+            assertEquals("Microsoft Windows 11 Pro", os.get(0).getCaption());
+            assertEquals("DESKTOP-1234", os.get(0).getCsName());
+            assertEquals("11.0.22000", os.get(0).getVersion());
         }
     }
 

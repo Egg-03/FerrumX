@@ -53,10 +53,10 @@ class ProcessorServiceTest {
 
             List<Processor> processorList = processorService.get();
             assertFalse(processorList.isEmpty());
-            assertEquals("CPU0", processorList.getFirst().getDeviceId());
-            assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processorList.getFirst().getName());
-            assertEquals("CPU1", processorList.getLast().getDeviceId());
-            assertEquals("AMD Ryzen 3 1200 @ 3.10GHz", processorList.getLast().getName());
+            assertEquals("CPU0", processorList.get(0).getDeviceId());
+            assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processorList.get(0).getName());
+            assertEquals("CPU1", processorList.get(1).getDeviceId());
+            assertEquals("AMD Ryzen 3 1200 @ 3.10GHz", processorList.get(1).getName());
         }
     }
 
@@ -98,10 +98,10 @@ class ProcessorServiceTest {
 
             List<Processor> processorList = processorService.get(mockShell);
             assertFalse(processorList.isEmpty());
-            assertEquals("CPU0", processorList.getFirst().getDeviceId());
-            assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processorList.getFirst().getName());
-            assertEquals("CPU1", processorList.getLast().getDeviceId());
-            assertEquals("AMD Ryzen 3 1200 @ 3.10GHz", processorList.getLast().getName());
+            assertEquals("CPU0", processorList.get(0).getDeviceId());
+            assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processorList.get(0).getName());
+            assertEquals("CPU1", processorList.get(1).getDeviceId());
+            assertEquals("AMD Ryzen 3 1200 @ 3.10GHz", processorList.get(1).getName());
         }
     }
 

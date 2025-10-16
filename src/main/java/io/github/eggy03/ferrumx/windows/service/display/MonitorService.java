@@ -2,11 +2,11 @@ package io.github.eggy03.ferrumx.windows.service.display;
 
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
-import lombok.NonNull;
 import io.github.eggy03.ferrumx.windows.constant.CimQuery;
 import io.github.eggy03.ferrumx.windows.entity.display.Monitor;
 import io.github.eggy03.ferrumx.windows.mapping.MapperUtil;
 import io.github.eggy03.ferrumx.windows.service.CommonServiceInterface;
+import lombok.NonNull;
 
 import java.util.List;
 

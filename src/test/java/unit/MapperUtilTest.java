@@ -72,8 +72,8 @@ class MapperUtilTest {
                 """;
         List<Processor> processors = MapperUtil.mapToList(jsonProcessor, Processor.class);
         assertEquals(1, processors.size());
-        assertEquals("CPU0", processors.getFirst().getDeviceId());
-        assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processors.getFirst().getName());
+        assertEquals("CPU0", processors.get(0).getDeviceId());
+        assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", processors.get(0).getName());
     }
 
     @Test

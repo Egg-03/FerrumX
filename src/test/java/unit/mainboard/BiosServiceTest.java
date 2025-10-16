@@ -52,8 +52,8 @@ class BiosServiceTest {
 
             List<Bios> bios = biosService.get();
             assertFalse(bios.isEmpty());
-            assertEquals("BIOS", bios.getFirst().getCaption());
-            assertEquals("1.0.0", bios.getFirst().getVersion());
+            assertEquals("BIOS", bios.get(0).getCaption());
+            assertEquals("1.0.0", bios.get(0).getVersion());
         }
     }
 
@@ -93,8 +93,8 @@ class BiosServiceTest {
 
             List<Bios> bios = biosService.get(mockShell);
             assertFalse(bios.isEmpty());
-            assertEquals("BIOS", bios.getFirst().getCaption());
-            assertEquals("1.0.0", bios.getFirst().getVersion());
+            assertEquals("BIOS", bios.get(0).getCaption());
+            assertEquals("1.0.0", bios.get(0).getVersion());
         }
     }
 

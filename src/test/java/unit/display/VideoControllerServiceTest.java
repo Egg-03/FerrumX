@@ -57,8 +57,8 @@ class VideoControllerServiceTest {
 
             List<VideoController> videoControllers = videoControllerService.get();
             assertFalse(videoControllers.isEmpty());
-            assertEquals("Video1", videoControllers.getFirst().getDeviceId());
-            assertEquals("NVIDIA RTX 3080", videoControllers.getFirst().getName());
+            assertEquals("Video1", videoControllers.get(0).getDeviceId());
+            assertEquals("NVIDIA RTX 3080", videoControllers.get(0).getName());
             assertEquals("Video2", videoControllers.get(1).getDeviceId());
             assertEquals("Intel UHD Graphics 630", videoControllers.get(1).getName());
         }
@@ -101,8 +101,8 @@ class VideoControllerServiceTest {
 
             List<VideoController> videoControllers = videoControllerService.get(mockShell);
             assertFalse(videoControllers.isEmpty());
-            assertEquals("Video1", videoControllers.getFirst().getDeviceId());
-            assertEquals("NVIDIA RTX 3080", videoControllers.getFirst().getName());
+            assertEquals("Video1", videoControllers.get(0).getDeviceId());
+            assertEquals("NVIDIA RTX 3080", videoControllers.get(0).getName());
             assertEquals("Video2", videoControllers.get(1).getDeviceId());
             assertEquals("Intel UHD Graphics 630", videoControllers.get(1).getName());
         }
