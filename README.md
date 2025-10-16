@@ -27,15 +27,15 @@ For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/Ferrum
 Maven:
 ```xml
 <dependency>
-    <groupId>io.github.egg-03</groupId>
-    <artifactId>ferrumx-core</artifactId>
-    <version>2.1.0</version>
+    <groupId>io.github.eggy03</groupId>
+    <artifactId>ferrumx-windows</artifactId>
+    <version>2.2.0</version>
 </dependency>
 ```
 
 Gradle:
 ```gradle
-implementation group: 'io.github.egg-03', name: 'ferrumx-core', version: '2.1.0'
+implementation group: 'io.github.eggy03', name: 'ferrumx-windows', version: '2.2.0'
 ```
 
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
@@ -45,7 +45,7 @@ Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation
 
 # Usage
 > [!IMPORTANT]
-> All examples can be found [here](ferrumx-examples/src/main/java/org/ferrumx/example).
+> More usage examples can be found in the [Wiki](https://github.com/Egg-03/FerrumX/wiki).
 
 ```java
 public class ProcessorExample {
