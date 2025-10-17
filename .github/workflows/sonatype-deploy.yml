@@ -25,6 +25,9 @@ jobs:
 
       # 3️⃣ Configure Maven settings with OSSRH credentials
       - name: Configure Maven settings
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_TOKEN_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_TOKEN_PASSWORD }}
         run: |
           mkdir -p $HOME/.m2
           cat <<EOF > $HOME/.m2/settings.xml
@@ -32,8 +35,8 @@ jobs:
             <servers>
               <server>
                 <id>central</id>
-                <username>${{ secrets.OSSRH_TOKEN_USERNAME }}</username>
-                <password>${{ secrets.OSSRH_TOKEN_PASSWORD }}</password>
+                <username>${OSSRH_USERNAME}</username>
+                <password>${OSSRH_PASSWORD}</password>
               </server>
             </servers>
           </settings>
