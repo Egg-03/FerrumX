@@ -10,7 +10,7 @@ import java.util.Optional;
  * in the form of {@link Optional}
  * @param <S> the entity type returned by the service implementation
  * @author Egg-03
- * @since 2.1.0
+ * @since 2.2.0
  * @see CommonServiceInterface
  */
 public interface OptionalCommonServiceInterface<S> {

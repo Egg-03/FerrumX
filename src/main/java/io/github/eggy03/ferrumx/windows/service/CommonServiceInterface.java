@@ -10,7 +10,7 @@ import java.util.List;
  * in the form of a {@link List}
  * @param <S> the entity type returned by the service implementation
  * @author Egg-03
- * @since 2.1.0
+ * @since 2.2.0
  * @see OptionalCommonServiceInterface
  */
 public interface CommonServiceInterface<S> {
