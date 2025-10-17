@@ -6,12 +6,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Egg-03/FerrumX/.github%2Fworkflows%2Fbuild.yml)
 
-
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Egg-03_FerrumX&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Egg-03_FerrumX)
-
 [![License](https://img.shields.io/github/license/Egg-03/FerrumX)](https://github.com/Egg-03/FerrumX/blob/main/LICENSE)
 [![Maven Central Version](https://img.shields.io/maven-central/v/io.github.egg-03/ferrum-x)](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x)
 ![Commits to main since latest release](https://img.shields.io/github/commits-since/Egg-03/FerrumX/latest)
@@ -71,11 +65,10 @@ public class ProcessorExample {
 ```
 
 # License
-This project is licensed under the MIT License. Read the LICENSE.md for more information.
+This project is licensed under the MIT License.
 
 # Information about v2
 
 - Changes incorporated in v2.0.0 from v1.3.7 can be found in this [PR](https://github.com/Egg-03/FerrumX/pull/20)
-- A migration guide will be provided in the project's [Wiki](https://github.com/Egg-03/FerrumX/wiki) if you want to migrate from v1 to v2
 
 
