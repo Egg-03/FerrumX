@@ -9,6 +9,7 @@
 [![License](https://img.shields.io/github/license/Egg-03/FerrumX)](https://github.com/Egg-03/FerrumX/blob/main/LICENSE)
 [![Maven Central Version](https://img.shields.io/maven-central/v/io.github.egg-03/ferrum-x)](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x)
 ![Commits to main since latest release](https://img.shields.io/github/commits-since/Egg-03/FerrumX/latest)
+![Java Version](https://img.shields.io/badge/java-8%2B-blue)
 
 # About
 FerrumX is a lightweight Hardware and Network Information wrapper written in pure Java. It contacts some [Computer System Hardware Classes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes) and [Operating System Classes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/operating-system-classes) of Windows Management Instrumentation (WMI) through PowerShell to fetch comprehensive system details on Windows Operating Systems.
@@ -18,6 +19,8 @@ FerrumX has been tested to work exclusively on <strong>Windows 8.1, Windows 10 a
 For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/FerrumL)
 
 # Download
+> **Requires:** Java 8 or higher
+
 Maven:
 ```xml
 <dependency>
