@@ -38,7 +38,7 @@ implementation group: 'io.github.eggy03', name: 'ferrumx-windows', version: '2.2
 For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
 
 # Documentation
-Documentation can be found [here](https://egg-03.github.io/FerrumX-Documentation/)
+Documentation can be found [here](https://eggy03.github.io/FerrumX-Documentation/)
 
 # Usage
 > [!IMPORTANT]
