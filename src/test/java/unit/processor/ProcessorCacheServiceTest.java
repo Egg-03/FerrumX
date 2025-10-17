@@ -1,10 +1,14 @@
 package unit.processor;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.processor.ProcessorCache;
 import io.github.eggy03.ferrumx.windows.service.processor.ProcessorCacheService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,22 +28,29 @@ class ProcessorCacheServiceTest {
 
     private ProcessorCacheService processorCacheService;
 
-    private final String jsonProcessor = """
-                [
-                  {
-                    "DeviceID": "1",
-                    "Purpose": "Level 1 Cache",
-                    "InstalledSize": 32,
-                    "Associativity": 0
-                  },
-                  {
-                    "DeviceID": "2",
-                    "Purpose": "Level 2 Cache",
-                    "InstalledSize": 256,
-                    "Associativity": 7
-                  }
-                ]
-                """;
+    private static String jsonProcessor;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray caches = new JsonArray();
+
+        JsonObject cache1 = new JsonObject();
+        cache1.addProperty("DeviceID", "1");
+        cache1.addProperty("Purpose", "Level 1 Cache");
+        cache1.addProperty("InstalledSize", 32);
+        cache1.addProperty("Associativity", 0);
+
+        JsonObject cache2 = new JsonObject();
+        cache2.addProperty("DeviceID", "2");
+        cache2.addProperty("Purpose", "Level 2 Cache");
+        cache2.addProperty("InstalledSize", 256);
+        cache2.addProperty("Associativity", 7);
+
+        caches.add(cache1);
+        caches.add(cache2);
+
+        jsonProcessor = new Gson().toJson(caches);
+    }
 
     @BeforeEach
     void setUp() {

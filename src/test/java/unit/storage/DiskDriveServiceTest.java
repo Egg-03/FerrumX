@@ -1,10 +1,14 @@
 package unit.storage;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.storage.DiskDrive;
 import io.github.eggy03.ferrumx.windows.service.storage.DiskDriveService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,30 +28,37 @@ class DiskDriveServiceTest {
 
     private DiskDriveService diskDriveService;
 
-    private final String json = """
-                [
-                  {
-                    "DeviceID": "Disk0",
-                    "Caption": "Samsung SSD 970",
-                    "Model": "970 EVO Plus",
-                    "Size": 1000204886016,
-                    "SerialNumber": "S4EMNX0K123456",
-                    "Partitions": 3,
-                    "Status": "OK",
-                    "InterfaceType": "NVMe"
-                  },
-                  {
-                    "DeviceID": "Disk1",
-                    "Caption": "WD Blue HDD",
-                    "Model": "WD10EZEX",
-                    "Size": 1000204886016,
-                    "SerialNumber": "WD-WCC4E1234567",
-                    "Partitions": 1,
-                    "Status": "OK",
-                    "InterfaceType": "SATA"
-                  }
-                ]
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray disks = new JsonArray();
+
+        JsonObject disk0 = new JsonObject();
+        disk0.addProperty("DeviceID", "Disk0");
+        disk0.addProperty("Caption", "Samsung SSD 970");
+        disk0.addProperty("Model", "970 EVO Plus");
+        disk0.addProperty("Size", 1000204886016L);
+        disk0.addProperty("SerialNumber", "S4EMNX0K123456");
+        disk0.addProperty("Partitions", 3);
+        disk0.addProperty("Status", "OK");
+        disk0.addProperty("InterfaceType", "NVMe");
+
+        JsonObject disk1 = new JsonObject();
+        disk1.addProperty("DeviceID", "Disk1");
+        disk1.addProperty("Caption", "WD Blue HDD");
+        disk1.addProperty("Model", "WD10EZEX");
+        disk1.addProperty("Size", 1000204886016L);
+        disk1.addProperty("SerialNumber", "WD-WCC4E1234567");
+        disk1.addProperty("Partitions", 1);
+        disk1.addProperty("Status", "OK");
+        disk1.addProperty("InterfaceType", "SATA");
+
+        disks.add(disk0);
+        disks.add(disk1);
+
+        json = new Gson().toJson(disks);
+    }
 
     @BeforeEach
     void setUp() {

@@ -1,10 +1,14 @@
 package unit.processor;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.processor.Processor;
 import io.github.eggy03.ferrumx.windows.service.processor.ProcessorService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,18 +28,25 @@ class ProcessorServiceTest {
 
     private ProcessorService processorService;
 
-    private final String jsonProcessorArray = """
-                [
-                    {
-                        "DeviceID": "CPU0",
-                        "Name": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz"
-                    },
-                    {
-                        "DeviceID": "CPU1",
-                        "Name": "AMD Ryzen 3 1200 @ 3.10GHz"
-                    }
-                ]
-                """;
+    private static String jsonProcessorArray;
+
+    @BeforeAll
+    static void prepareJson() {
+        JsonArray jsonArray = new JsonArray();
+
+        JsonObject cpu0 = new JsonObject();
+        cpu0.addProperty("DeviceID", "CPU0");
+        cpu0.addProperty("Name", "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz");
+
+        JsonObject cpu1 = new JsonObject();
+        cpu1.addProperty("DeviceID", "CPU1");
+        cpu1.addProperty("Name", "AMD Ryzen 3 1200 @ 3.10GHz");
+
+        jsonArray.add(cpu0);
+        jsonArray.add(cpu1);
+
+        jsonProcessorArray = new Gson().toJson(jsonArray);
+    }
 
     @BeforeEach
     void setUp() {

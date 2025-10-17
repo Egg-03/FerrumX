@@ -6,6 +6,7 @@ import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,10 +59,10 @@ public class MapperUtil {
         if(json.startsWith("[")) {
             Type listType = TypeToken.getParameterized(List.class, objectClass).getType();
             List<S> result = gson.fromJson(json, listType);
-            return result!=null ? result : List.of();
+            return result!=null ? result : Collections.emptyList();
         } else {
             S singleObject = gson.fromJson(json, objectClass);
-            return singleObject!=null ? List.of(singleObject) : List.of();
+            return singleObject!=null ? Collections.singletonList(singleObject) : Collections.emptyList();
         }
     }
 

@@ -1,10 +1,14 @@
 package unit.network;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.network.NetworkAdapterConfiguration;
 import io.github.eggy03.ferrumx.windows.service.network.NetworkAdapterConfigurationService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,26 +28,44 @@ class NetworkAdapterConfigurationServiceTest {
 
     private NetworkAdapterConfigurationService networkAdapterConfigurationService;
 
-    private final String json = """
-                [
-                  {
-                    "Index": 0,
-                    "Description": "Ethernet Adapter",
-                    "IPEnabled": true,
-                    "IPAddress": ["192.168.0.10"],
-                    "IPSubnet": ["255.255.255.0"],
-                    "DefaultIPGateway": ["192.168.0.1"]
-                  },
-                  {
-                    "Index": 1,
-                    "Description": "Wi-Fi Adapter",
-                    "IPEnabled": false,
-                    "IPAddress": [],
-                    "IPSubnet": [],
-                    "DefaultIPGateway": []
-                  }
-                ]
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray adapters = new JsonArray();
+
+        // ethernet
+        JsonObject ethernet = new JsonObject();
+        ethernet.addProperty("Index", 0);
+        ethernet.addProperty("Description", "Ethernet Adapter");
+        ethernet.addProperty("IPEnabled", true);
+
+        JsonArray ipAddresses = new JsonArray();
+        ipAddresses.add("192.168.0.10");
+        ethernet.add("IPAddress", ipAddresses);
+
+        JsonArray subnets = new JsonArray();
+        subnets.add("255.255.255.0");
+        ethernet.add("IPSubnet", subnets);
+
+        JsonArray gateways = new JsonArray();
+        gateways.add("192.168.0.1");
+        ethernet.add("DefaultIPGateway", gateways);
+
+        // wifi
+        JsonObject wifi = new JsonObject();
+        wifi.addProperty("Index", 1);
+        wifi.addProperty("Description", "Wi-Fi Adapter");
+        wifi.addProperty("IPEnabled", false);
+        wifi.add("IPAddress", new JsonArray());
+        wifi.add("IPSubnet", new JsonArray());
+        wifi.add("DefaultIPGateway", new JsonArray());
+
+        adapters.add(ethernet);
+        adapters.add(wifi);
+
+        json = new Gson().toJson(adapters);
+    }
 
     @BeforeEach
     void setUp() {

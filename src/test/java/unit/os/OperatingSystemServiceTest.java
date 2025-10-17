@@ -1,10 +1,13 @@
 package unit.os;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.os.OperatingSystem;
 import io.github.eggy03.ferrumx.windows.service.os.OperatingSystemService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,18 +27,22 @@ class OperatingSystemServiceTest {
 
     private OperatingSystemService operatingSystemService;
 
-    private final String json = """
-                {
-                  "Name": "Windows 11 Pro",
-                  "Caption": "Microsoft Windows 11 Pro",
-                  "InstallDate": "20230915090000.000000+000",
-                  "CSName": "DESKTOP-1234",
-                  "LastBootUpTime": "20250920070000.000000+000",
-                  "NumberOfUsers": 1,
-                  "Version": "11.0.22000",
-                  "OSArchitecture": "64-bit"
-                }
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonObject windows = new JsonObject();
+        windows.addProperty("Name", "Windows 11 Pro");
+        windows.addProperty("Caption", "Microsoft Windows 11 Pro");
+        windows.addProperty("InstallDate", "20230915090000.000000+000");
+        windows.addProperty("CSName", "DESKTOP-1234");
+        windows.addProperty("LastBootUpTime", "20250920070000.000000+000");
+        windows.addProperty("NumberOfUsers", 1);
+        windows.addProperty("Version", "11.0.22000");
+        windows.addProperty("OSArchitecture", "64-bit");
+
+        json = new Gson().toJson(windows);
+    }
 
     @BeforeEach
     void setUp() {

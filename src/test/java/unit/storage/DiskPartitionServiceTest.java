@@ -1,10 +1,14 @@
 package unit.storage;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.storage.DiskPartition;
 import io.github.eggy03.ferrumx.windows.service.storage.DiskPartitionService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,30 +28,37 @@ class DiskPartitionServiceTest {
 
     private DiskPartitionService diskPartitionService;
 
-    private final String json = """
-                [
-                  {
-                    "DeviceID": "Disk0_Part1",
-                    "Name": "C:",
-                    "Description": "System Partition",
-                    "Size": 500107862016,
-                    "Bootable": true,
-                    "PrimaryPartition": true,
-                    "BootPartition": true,
-                    "DiskIndex": 0
-                  },
-                  {
-                    "DeviceID": "Disk0_Part2",
-                    "Name": "D:",
-                    "Description": "Data Partition",
-                    "Size": 500107862016,
-                    "Bootable": false,
-                    "PrimaryPartition": true,
-                    "BootPartition": false,
-                    "DiskIndex": 0
-                  }
-                ]
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray partitions = new JsonArray();
+
+        JsonObject part1 = new JsonObject();
+        part1.addProperty("DeviceID", "Disk0_Part1");
+        part1.addProperty("Name", "C:");
+        part1.addProperty("Description", "System Partition");
+        part1.addProperty("Size", 500107862016L);
+        part1.addProperty("Bootable", true);
+        part1.addProperty("PrimaryPartition", true);
+        part1.addProperty("BootPartition", true);
+        part1.addProperty("DiskIndex", 0);
+
+        JsonObject part2 = new JsonObject();
+        part2.addProperty("DeviceID", "Disk0_Part2");
+        part2.addProperty("Name", "D:");
+        part2.addProperty("Description", "Data Partition");
+        part2.addProperty("Size", 500107862016L);
+        part2.addProperty("Bootable", false);
+        part2.addProperty("PrimaryPartition", true);
+        part2.addProperty("BootPartition", false);
+        part2.addProperty("DiskIndex", 0);
+
+        partitions.add(part1);
+        partitions.add(part2);
+
+        json = new Gson().toJson(partitions);
+    }
 
     @BeforeEach
     void setUp() {

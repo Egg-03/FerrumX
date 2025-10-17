@@ -1,10 +1,14 @@
 package unit.memory;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.memory.PhysicalMemory;
 import io.github.eggy03.ferrumx.windows.service.memory.PhysicalMemoryService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,26 +28,33 @@ class PhysicalMemoryServiceTest {
 
     private PhysicalMemoryService physicalMemoryService;
 
-    private final String json = """
-                [
-                  {
-                    "Tag": "Physical Memory 0",
-                    "Name": "DIMM0",
-                    "Manufacturer": "Kingston",
-                    "Capacity": 8589934592,
-                    "Speed": 3200,
-                    "SerialNumber": "12345678"
-                  },
-                  {
-                    "Tag": "Physical Memory 1",
-                    "Name": "DIMM1",
-                    "Manufacturer": "Corsair",
-                    "Capacity": 8589934592,
-                    "Speed": 3200,
-                    "SerialNumber": "87654321"
-                  }
-                ]
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray memories = new JsonArray();
+
+        JsonObject mem0 = new JsonObject();
+        mem0.addProperty("Tag", "Physical Memory 0");
+        mem0.addProperty("Name", "DIMM0");
+        mem0.addProperty("Manufacturer", "Kingston");
+        mem0.addProperty("Capacity", 8589934592L);
+        mem0.addProperty("Speed", 3200);
+        mem0.addProperty("SerialNumber", "12345678");
+
+        JsonObject mem1 = new JsonObject();
+        mem1.addProperty("Tag", "Physical Memory 1");
+        mem1.addProperty("Name", "DIMM1");
+        mem1.addProperty("Manufacturer", "Corsair");
+        mem1.addProperty("Capacity", 8589934592L);
+        mem1.addProperty("Speed", 3200);
+        mem1.addProperty("SerialNumber", "87654321");
+
+        memories.add(mem0);
+        memories.add(mem1);
+
+        json = new Gson().toJson(memories);
+    }
 
     @BeforeEach
     void setUp() {

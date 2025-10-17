@@ -1,10 +1,14 @@
 package unit.mainboard;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.mainboard.MainboardPort;
 import io.github.eggy03.ferrumx.windows.service.mainboard.MainboardPortService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,21 +28,27 @@ class MainboardPortServiceTest {
 
     private MainboardPortService mainboardPortService;
 
-    private final String jsonMainboardPort = """
-                [
-                    {
-                        "Tag": "Port1",
-                        "ExternalReferenceDesignator": "External1",
-                        "InternalReferenceDesignator": "Internal1"
-                    },
-                    {
-                        "Tag": "Port2",
-                        "ExternalReferenceDesignator": "External2",
-                        "InternalReferenceDesignator": "Internal2"
-                    }
-                ]
-               
-                """;
+    private static String jsonMainboardPort;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray ports = new JsonArray();
+
+        JsonObject port1 = new JsonObject();
+        port1.addProperty("Tag", "Port1");
+        port1.addProperty("ExternalReferenceDesignator", "External1");
+        port1.addProperty("InternalReferenceDesignator", "Internal1");
+
+        JsonObject port2 = new JsonObject();
+        port2.addProperty("Tag", "Port2");
+        port2.addProperty("ExternalReferenceDesignator", "External2");
+        port2.addProperty("InternalReferenceDesignator", "Internal2");
+
+        ports.add(port1);
+        ports.add(port2);
+
+        jsonMainboardPort = new Gson().toJson(ports);
+    }
 
     @BeforeEach
     void setUp() {

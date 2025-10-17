@@ -1,10 +1,13 @@
 package unit.product;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.product.ComputerSystemProduct;
 import io.github.eggy03.ferrumx.windows.service.product.ComputerSystemProductService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -12,6 +15,7 @@ import org.mockito.MockedStatic;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,18 +27,22 @@ class ComputerSystemProductServiceTest {
 
     private ComputerSystemProductService productService;
 
-    private final String jsonProduct = """
-                {
-                  "Caption": "Computer System Product",
-                  "Description": "Some workstation",
-                  "IdentifyingNumber": "12345-67890",
-                  "Name": "MyPC",
-                  "SKUNumber": "SKU-001",
-                  "Vendor": "Dell",
-                  "Version": "1.0",
-                  "UUID": "550e8400-e29b-41d4-a716-446655440000"
-                }
-                """;
+    private static String jsonProduct;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonObject product = new JsonObject();
+        product.addProperty("Caption", "Computer System Product");
+        product.addProperty("Description", "Some workstation");
+        product.addProperty("IdentifyingNumber", "12345-67890");
+        product.addProperty("Name", "MyPC");
+        product.addProperty("SKUNumber", "SKU-001");
+        product.addProperty("Vendor", "Dell");
+        product.addProperty("Version", "1.0");
+        product.addProperty("UUID", "550e8400-e29b-41d4-a716-446655440000");
+
+        jsonProduct = new Gson().toJson(product);
+    }
 
     @BeforeEach
     void setUp() {
@@ -67,7 +75,7 @@ class ComputerSystemProductServiceTest {
             mockedPowershell.when(() -> PowerShell.executeSingleCommand(anyString())).thenReturn(mockResponse);
 
             Optional<ComputerSystemProduct> product = productService.get();
-            assertTrue(product.isEmpty());
+            assertFalse(product.isPresent());
         }
     }
 
@@ -109,7 +117,7 @@ class ComputerSystemProductServiceTest {
             when(mockShell.executeCommand(anyString())).thenReturn(mockResponse);
 
             Optional<ComputerSystemProduct> product = productService.get(mockShell);
-            assertTrue(product.isEmpty());
+            assertFalse(product.isPresent());
         }
     }
 

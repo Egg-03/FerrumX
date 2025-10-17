@@ -1,10 +1,14 @@
 package unit.display;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.display.VideoController;
 import io.github.eggy03.ferrumx.windows.service.display.VideoControllerService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,22 +28,29 @@ class VideoControllerServiceTest {
 
     private VideoControllerService videoControllerService;
 
-    private final String json = """
-                [
-                  {
-                    "DeviceID": "Video1",
-                    "Name": "NVIDIA RTX 3080",
-                    "CurrentHorizontalResolution": 2560,
-                    "CurrentVerticalResolution": 1440
-                  },
-                  {
-                    "DeviceID": "Video2",
-                    "Name": "Intel UHD Graphics 630",
-                    "CurrentHorizontalResolution": 1920,
-                    "CurrentVerticalResolution": 1080
-                  }
-                ]
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray videos = new JsonArray();
+
+        JsonObject video1 = new JsonObject();
+        video1.addProperty("DeviceID", "Video1");
+        video1.addProperty("Name", "NVIDIA RTX 3080");
+        video1.addProperty("CurrentHorizontalResolution", 2560);
+        video1.addProperty("CurrentVerticalResolution", 1440);
+
+        JsonObject video2 = new JsonObject();
+        video2.addProperty("DeviceID", "Video2");
+        video2.addProperty("Name", "Intel UHD Graphics 630");
+        video2.addProperty("CurrentHorizontalResolution", 1920);
+        video2.addProperty("CurrentVerticalResolution", 1080);
+
+        videos.add(video1);
+        videos.add(video2);
+
+        json = new Gson().toJson(videos);
+    }
 
     @BeforeEach
     void setUp() {

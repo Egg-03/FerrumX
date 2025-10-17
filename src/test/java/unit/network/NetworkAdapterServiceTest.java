@@ -1,10 +1,14 @@
 package unit.network;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.network.NetworkAdapter;
 import io.github.eggy03.ferrumx.windows.service.network.NetworkAdapterService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,24 +28,31 @@ class NetworkAdapterServiceTest {
 
     private NetworkAdapterService networkAdapterService;
 
-    private final String json = """
-                [
-                  {
-                    "DeviceID": "1",
-                    "Index": 0,
-                    "Name": "Ethernet Adapter",
-                    "MACAddress": "00-14-22-01-23-45",
-                    "NetEnabled": true
-                  },
-                  {
-                    "DeviceID": "2",
-                    "Index": 1,
-                    "Name": "Wi-Fi Adapter",
-                    "MACAddress": "00-16-36-FF-EE-11",
-                    "NetEnabled": false
-                  }
-                ]
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void setupJson() {
+        JsonArray adapters = new JsonArray();
+
+        JsonObject ethernet = new JsonObject();
+        ethernet.addProperty("DeviceID", "1");
+        ethernet.addProperty("Index", 0);
+        ethernet.addProperty("Name", "Ethernet Adapter");
+        ethernet.addProperty("MACAddress", "00-14-22-01-23-45");
+        ethernet.addProperty("NetEnabled", true);
+
+        JsonObject wifi = new JsonObject();
+        wifi.addProperty("DeviceID", "2");
+        wifi.addProperty("Index", 1);
+        wifi.addProperty("Name", "Wi-Fi Adapter");
+        wifi.addProperty("MACAddress", "00-16-36-FF-EE-11");
+        wifi.addProperty("NetEnabled", false);
+
+        adapters.add(ethernet);
+        adapters.add(wifi);
+
+        json = new Gson().toJson(adapters);
+    }
 
     @BeforeEach
     void setUp() {

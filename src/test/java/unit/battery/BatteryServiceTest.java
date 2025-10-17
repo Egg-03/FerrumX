@@ -1,10 +1,14 @@
 package unit.battery;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.profesorfalken.jpowershell.PowerShell;
 import com.profesorfalken.jpowershell.PowerShellResponse;
 import io.github.eggy03.ferrumx.windows.entity.battery.Battery;
 import io.github.eggy03.ferrumx.windows.service.battery.BatteryService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -24,26 +28,33 @@ class BatteryServiceTest {
 
     private BatteryService batteryService;
 
-    private final String json = """
-                [
-                  {
-                    "DeviceID": "BAT0",
-                    "Caption": "Internal Battery",
-                    "Name": "Battery 0",
-                    "Status": "OK",
-                    "BatteryStatus": 2,
-                    "EstimatedChargeRemaining": 85
-                  },
-                  {
-                    "DeviceID": "BAT1",
-                    "Caption": "External Battery",
-                    "Name": "Battery 1",
-                    "Status": "OK",
-                    "BatteryStatus": 2,
-                    "EstimatedChargeRemaining": 100
-                  }
-                ]
-                """;
+    private static String json;
+
+    @BeforeAll
+    static void loadJson() {
+        JsonArray batteries = new JsonArray();
+
+        JsonObject bat0 = new JsonObject();
+        bat0.addProperty("DeviceID", "BAT0");
+        bat0.addProperty("Caption", "Internal Battery");
+        bat0.addProperty("Name", "Battery 0");
+        bat0.addProperty("Status", "OK");
+        bat0.addProperty("BatteryStatus", 2);
+        bat0.addProperty("EstimatedChargeRemaining", 85);
+
+        JsonObject bat1 = new JsonObject();
+        bat1.addProperty("DeviceID", "BAT1");
+        bat1.addProperty("Caption", "External Battery");
+        bat1.addProperty("Name", "Battery 1");
+        bat1.addProperty("Status", "OK");
+        bat1.addProperty("BatteryStatus", 2);
+        bat1.addProperty("EstimatedChargeRemaining", 100);
+
+        batteries.add(bat0);
+        batteries.add(bat1);
+
+        json = new Gson().toJson(batteries);
+    }
 
     @BeforeEach
     void setUp() {
