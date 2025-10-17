@@ -7,8 +7,8 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Egg-03/FerrumX/.github%2Fworkflows%2Fbuild.yml)
 
 [![License](https://img.shields.io/github/license/Egg-03/FerrumX)](https://github.com/Egg-03/FerrumX/blob/main/LICENSE)
-[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.egg-03/ferrum-x)](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x)
-![Commits to main since latest release](https://img.shields.io/github/commits-since/Egg-03/FerrumX/latest)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.eggy03/ferrumx-windows)](https://central.sonatype.com/artifact/io.github.eggy03/ferrumx-windows)
+![Commits to main since latest release](https://img.shields.io/github/commits-since/eggy03/FerrumX/latest)
 ![Java Version](https://img.shields.io/badge/java-8%2B-blue)
 
 # About
@@ -16,7 +16,7 @@ FerrumX is a lightweight Hardware and Network Information wrapper written in pur
 
 # Supported Operating Systems
 FerrumX has been tested to work exclusively on <strong>Windows 8.1, Windows 10 and Windows 11</strong> devices.
-For Windows 7 and Vista support, see: [FerrumL](https://github.com/Egg-03/FerrumL)
+For Windows 7 and Vista support, see: [FerrumL](https://github.com/eggy03/FerrumL)
 
 # Download
 > **Requires:** Java 8 or higher
@@ -35,14 +35,14 @@ Gradle:
 implementation group: 'io.github.eggy03', name: 'ferrumx-windows', version: '2.2.0'
 ```
 
-For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.egg-03/ferrum-x/overview)
+For other build ecosystems, check out the [Maven Central Repository](https://central.sonatype.com/artifact/io.github.eggy03/ferrumx-windows/overview)
 
 # Documentation
 Documentation can be found [here](https://eggy03.github.io/FerrumX-Documentation/)
 
 # Usage
 > [!IMPORTANT]
-> More usage examples can be found in the [Wiki](https://github.com/Egg-03/FerrumX/wiki).
+> More usage examples can be found in the [Wiki](https://github.com/eggy03/FerrumX/wiki).
 
 ```java
 public class ProcessorExample {
@@ -72,6 +72,6 @@ This project is licensed under the MIT License.
 
 # Information about v2
 
-- Changes incorporated in v2.0.0 from v1.3.7 can be found in this [PR](https://github.com/Egg-03/FerrumX/pull/20)
+- Changes incorporated in v2.0.0 from v1.3.7 can be found in this [PR](https://github.com/eggy03/FerrumX/pull/20)
 
 
