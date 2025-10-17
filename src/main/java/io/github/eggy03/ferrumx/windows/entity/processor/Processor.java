@@ -53,6 +53,10 @@ public class Processor {
     @Nullable
     Integer numberOfCores;
 
+    @SerializedName("NumberOfEnabledCore")
+    @Nullable
+    Integer numberOfEnabledCores;
+
     @SerializedName("ThreadCount")
     @Nullable
     Integer threadCount;
